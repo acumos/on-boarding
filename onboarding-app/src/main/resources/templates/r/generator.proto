@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+message generateInput {
+	repeated string x = 1;
+}
+
+message generateOutput {
+	repeated string date_Xhour = 1;
+	repeated string source_Xip = 2;
+	repeated int32 n_Xuniq_Xtip = 3;
+}
+

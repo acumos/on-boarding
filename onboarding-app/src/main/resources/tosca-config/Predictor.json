@@ -1,0 +1,45 @@
+{
+  "self": {
+    "version": "1.0.0",
+    "name": "org.cognita.ml.Predictor",
+    "description": "Makes prediction on input KPI based on historical KPI data",
+    "component_type": "docker"
+  },
+  "streams": {},
+  "services": {
+    "calls": [
+      {
+        "config_key": "cognita-db",
+        "request": {
+          "format": "org.cognita.ml.request.Classifier",
+          "version": "1.0.0"
+        },
+        "response": {
+          "format": "org.cognita.ml.response.Classifier",
+          "version": "1.0.0"
+        }
+      }
+    ],
+    "provides": [
+      {
+        "route": "/predictor",
+        "request": {
+          "format": "org.cognita.ml.request.Predictor",
+          "version": "1.0.0"
+        },
+        "response": {
+          "format": "org.cognita.ml.response.Predictor",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "parameters": [],
+  "auxilary": {},
+  "artifacts": [
+    {
+      "uri": "fake.nexus.att.com/dcae/kpi_anomaly:1.0.0",
+      "type": "docker image"
+    }
+  ]
+}
