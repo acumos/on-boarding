@@ -1,0 +1,98 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Model upload server API.",
+    "version": "1.0.0",
+    "title": "Model Upload Server",
+    "contact": {
+      "name": "Pankaj Kumar",
+      "email": "test@gmail.com"
+    }
+  },
+  "basePath": "/onboarding-app",
+  "tags": [
+    {
+      "name": "Onboarding Service APIs",
+      "description": "Onboarding Controller"
+    }
+  ],
+  "paths": {
+    "/v2/models": {
+      "post": {
+        "tags": [
+          "Onboarding Service APIs"
+        ],
+        "summary": "Upload model file and its meta data to dockerize",
+        "operationId": "dockerizePayloadUsingPOST_1",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "formData",
+            "description": "model",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "metadata",
+            "in": "formData",
+            "description": "metadata",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "schema",
+            "in": "formData",
+            "description": "schema",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse"
+            }
+          },
+          "500": {
+            "description": "Something bad happened",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ServiceResponse": {
+      "type": "object",
+      "properties": {
+        "errorCode": {
+          "type": "string"
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "self": {
+    "version": "1.0.0",
+    "name": "org.cognita.utilities.Aggregator",
+    "description": "Aggregate raw KPIs and reformat",
+    "component_type": "docker"
+  },
+  "streams":{  
+      "subscribes": [],
+      "publishes": []
+   },
+
+  "services": {
+    "calls": [
+      {
+        "config_key": "cognita-db",
+        "request": {
+          "format": "org.cognita.ml.request.Predictor",
+          "version": "1.0.0"
+        },
+        "response": {
+          "format": "org.cognita.ml.response.Predictor",
+          "version": "1.0.0"
+        }
+      }
+    ],
+    "provides": [
+      {
+        "route": "/aggregator",
+        "request": {
+          "format": "org.cognita.ml.utilities.request.Aggregate",
+          "version": "1.0.0"
+        },
+        "response": {
+          "format": "org.cognita.ml.utilities.response.Aggregate",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  }
+  
+}
