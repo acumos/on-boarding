@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.acumos.onboarding</groupId>
+	<artifactId>onboarding-app</artifactId>
+	<version>1.7.6</version>
+	<name>onboarding-app</name>
+	<description> Onboarding Application</description>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.4.RELEASE</version>
+		<relativePath />
+	</parent>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<start-class>org.acumos.onboarding.Application</start-class>
+		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
+		<build.number>0</build.number>
+		<eelf.version>1.0.0</eelf.version>
+		<!-- tests require database to be running -->
+		<!--<skipTests>true</skipTests>-->
+		<!-- URL is overridden by Jenkins "CognitaSettings" -->
+		<cognita.nexus.url>http://cognita-nexus01.eastus.cloudapp.azure.com:8081</cognita.nexus.url>
+		<cognita.nexus.snapshot.path>repository/repo_cognita_platform_maven_snapshots</cognita.nexus.snapshot.path>
+		<cognita.nexus.release.path>repository/repo_cognita_platform_maven</cognita.nexus.release.path>
+		<!-- Docker daemon -->
+		<docker.host.url>unix:/var/run/docker.sock</docker.host.url>
+		<!-- Docker image registry -->
+		<docker.registry.url>cognita-nexus01:8002</docker.registry.url>
+		<docker.registry.login>Registry userId - supplied by jenkins</docker.registry.login>
+		<docker.registry.password>Registry password - supplied by jenkins</docker.registry.password>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>3.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>2.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<!-- Spring chooses <version>${slf4j.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<!-- Spring chooses <version>${logback.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<!-- Spring chooses <version>${logback.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>com.att.eelf</groupId>
+			<artifactId>eelf-core</artifactId>
+			<version>${eelf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acumos.common-dataservice</groupId>
+			<artifactId>cmn-data-svc-client</artifactId>
+			<version>1.9.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.cognita</groupId>
+			<artifactId>acumos-nexus-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.acumos.design-studio</groupId>
+			<artifactId>TOSCAModelGeneratorClient</artifactId>
+			<version>0.0.18-SNAPSHOT</version>
+			<!-- <scope>system</scope> <systemPath>${basedir}/jars/TOSCAModelGeneratorClient-0.0.8-SNAPSHOT.jar</systemPath> -->
+			<!-- <exclusions> <exclusion> <groupId>com.att.research.mlp</groupId> 
+				<artifactId>cmn-data-svc-client</artifactId> </exclusion> <exclusion> <groupId>org.cognita</groupId> 
+				<artifactId>cognita-nexus-client</artifactId> </exclusion> <exclusion> <groupId>org.cognita</groupId> 
+				<artifactId>cognita-nexus-client</artifactId> </exclusion> <exclusion> <groupId>org.cognita</groupId> 
+				<artifactId>cognita-nexus-client</artifactId> </exclusion> </exclusions> -->
+		</dependency>
+
+		<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-asl</artifactId> 
+			<version>1.9.13</version> </dependency> <dependency> <groupId>com.googlecode.json-simple</groupId> 
+			<artifactId>json-simple</artifactId> </dependency> -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<!-- Spring sets the <version>4.11</version> -->
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>cognita-snapshots</id>
+			<name>mlp-repository-snapshots</name>
+			<url>${cognita.nexus.url}/${cognita.nexus.snapshot.path}</url>
+		</repository>
+		<repository>
+			<id>cognita-releases</id>
+			<name>mlp-repository-releases</name>
+			<url>${cognita.nexus.url}/${cognita.nexus.release.path}</url>
+		</repository>
+	</repositories>
+	<build>
+		<!-- <finalName>onboarding-app</finalName> -->
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Build-Number>${project.version}.${build.number}</Build-Number>
+							<Build-Time>${maven.build.timestamp}</Build-Time>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- <configuration> <includeSystemScope>true</includeSystemScope> </configuration> -->
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.6.201602180812</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.21.0</version>
+				<configuration>
+					<verbose>true</verbose>
+					<dockerHost>${docker.host.url}</dockerHost>
+					<registry>${docker.registry.url}</registry>
+					<authConfig>
+						<username>${docker.registry.login}</username>
+						<password>${docker.registry.password}</password>
+					</authConfig>
+					<images>
+						<image>
+							<name>onboarding-app:${project.version}</name>
+							<build>
+								<!-- This is the same FROM used in a Dockerfile -->
+								<from>openjdk:8-jdk</from>
+								<assembly>
+									<inline>
+										<files>
+											<file>
+												<source>application.properties.template</source>
+												<outputDirectory />
+												<destName>application.properties</destName>
+											</file>
+											<file>
+												<source>target/${project.artifactId}-${project.version}.${project.packaging}</source>
+												<outputDirectory />
+											</file>
+										</files>
+									</inline>
+								</assembly>
+								<!-- This is the same CMD used in a Dockerfile -->
+								<cmd>
+									<shell>cd /maven; java -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}</shell>
+								</cmd>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>cognita-snapshots</id>
+			<name>portal-marketplace-snapshots</name>
+			<url>http://cognita-nexus01.eastus.cloudapp.azure.com:8081/repository/repo_cognita_platform_maven_snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>cognita-snapshots</id>
+			<name>portal-marketplace-releases</name>
+			<url>http://cognita-nexus01.eastus.cloudapp.azure.com:8081/repository/repo_cognita_platform_maven/</url>
+		</repository>
+	</distributionManagement>
+</project>

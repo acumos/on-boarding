@@ -1,0 +1,1 @@
+install.packages("cognita_0.1-0.tar.gz",repos=NULL,type="source")

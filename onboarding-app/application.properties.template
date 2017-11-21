@@ -1,0 +1,57 @@
+server.contextPath=/onboarding-app
+server.port=8090
+spring.http.multipart.max-file-size=1024MB
+spring.http.multipart.max-request-size=1024MB
+###########################################################################
+#Are these still used?
+#cognita.userId=
+#cognita.password=
+###########################################################################
+#Dev
+docker.host=cognita-dev1-vm01-core
+#IST
+#docker.host=cognita-ist-vm01-core
+#IST2
+#docker.host=cognita-ist2-vm01-core
+#Demo
+#docker.host=cognita-demo-core
+docker.port=4243
+docker.config=/docker_host/.docker
+docker.registry.url=http://cognita-nexus01:8001/
+#Provide appropriate credentials for docker registry
+#docker.registry.username=
+#docker.registry.password=
+#docker.registry.email=
+docker.tls.verify=false
+docker.api.version=1.23
+docker.imagetag.prefix=cognita-nexus01:8001
+docker.max_total_connections=1
+docker.max_per_route_connections=1
+###########################################################################
+#http_proxy_dev
+http_proxy=http://10.1.0.6:3128
+#http_proxy_ist
+#http_proxy=http://10.2.0.4:3128
+#IST2
+#http_proxy=http://10.2.0.7:3128
+#Demo
+#http_proxy=http://10.3.0.4:3128
+###########################################################################
+#Provide appropriate nexusEndPointURL credntials
+#nexus.nexusEndPointURL=http://username:passwd@cognita-nexus01:8081/repository/repo_cognita_model_maven
+#nexus.nexusEndPointURL=http://username:passwd@cognita-nexus01.eastus.cloudapp.azure.com:8081/repository/repo_cognita_model_maven
+#nexus.nexusUserName=
+#nexus.nexusPassword=
+nexus.nexusproxy=
+nexus.nexusGroupId=com.artifact
+###########################################################################
+cmndatasvc.cmnDataSvcEndPoinURL=http://cognita-dev1-vm01-core:8004/ccds
+#Provide appropriate CDS credentials
+#cmndatasvc.cmnDataSvcUser=ccds_client
+#cmndatasvc.cmnDataSvcPwd=ccds_client
+###########################################################################
+tosca.OutputFolder=/temp/
+tosca.GeneratorEndPointURL=http://cognita-dev1-vm01-core:8080/model_create
+###########################################################################
+###########################################################################
+###########################################################################
