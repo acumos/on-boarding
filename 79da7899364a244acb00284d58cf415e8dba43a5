@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a00e9c1_113a0922",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Please at least say \"Acumos On-Boarding Service\"",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ba46356_08fdaf77",
+        "filename": "onboarding-app/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Release notes should be in the docs/ area",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dcb5fd70_540e782a",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/Application.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "This is not the expected format of the License header.  Why all the tab characters?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d6d4023_82cfa9a7",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/component/docker/cmd/TagImageCommand.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Is this a file from com.github.dockerjava.api??  If so then you must NOT assert the Acumos license on it.",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "551077ed_cfb1cc8e",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/services/PortalRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Remove @author annotations",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01c56da0_2fec46ec",
+        "filename": "onboarding-app/src/main/resources/model-schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Can this be renamed to acumos?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d357fc86_4a0f1574",
+        "filename": "onboarding-app/src/main/resources/templates/r/cognita_0.1-0.tar.gz",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "What is this .tar.gz file?  This is exactly the kind of file that the LF will discover on git repo audits, and nag us to remove.  Can it be cleaned out now?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "10d1c687_77347104",
+        "filename": "onboarding-app/src/main/resources/templates/r/generator.bin",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "What is this binary file?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e8c4413_25208f0e",
+        "filename": "onboarding-app/src/main/resources/tosca-config/Classifier.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Why does this still say Cognita?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7130a57a_c5f5b15e",
+        "filename": "onboarding-app/src/test/resources/model.zip",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Can this zip archive be built as needed, instead of being stored in git?",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4990eaf_750ce2e2",
+        "filename": "onboarding-app/swagger-api-docs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-22T02:38:43Z",
+      "side": 1,
+      "message": "Why is the Swagger JSON stored in Git?  With proper annotations it is generated at runtime as needed by the springfox jar.",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
