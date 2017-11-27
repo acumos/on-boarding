@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "314fbadb_8e7cfaa4",
+        "filename": "onboarding-app/application.properties.template",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Please remove these username, password values",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8ea4b76_1590dfff",
+        "filename": "onboarding-app/outFile.csv",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Please remove this keyword from as many files as possible",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "23f54837_a53d5148",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Remove these commented out junk lines",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98867822_9380a492",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Should be \"acumos.nexus.url\", need to remove all Cognita",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9cdf23d9_9ef44096",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "remove unneeded lines, don\u0027t comment out",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1367fee6_884c2f1f",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "should be \"acumos-snapshots\"",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd3e9050_ab86ebe2",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Probably should be \"acumos-releases\"",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c80bb11f_61c30f6e",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/common/config/DockerClientConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "This is an ugly copyright line.  Please fix in all files.",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d3b11892_2f874bf4",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/model.zip",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "A 1MB zip file? Why is this here?",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3cd0b9d0_4da35836",
+        "filename": "onboarding-app/src/test/resources/metadata.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Why does this still say cognita?",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93162559_f35ff046",
+        "filename": "onboarding-app/src/test/resources/model.zip",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "A second copy of the 1MB zip file? Why is this here?",
+      "revId": "2bc7c77529b4e6bb55a383623e8507d26579223c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
