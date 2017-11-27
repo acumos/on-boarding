@@ -70,6 +70,23 @@
     },
     {
       "key": {
+        "uuid": "245b5b35_8925e754",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/component/docker/cmd/TagImageCommand.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-27T22:40:12Z",
+      "side": 1,
+      "message": "Is this a comment from the Acumos team, or a comment from the Docker team?  Please clarify and clean up as needed.",
+      "revId": "79da7899364a244acb00284d58cf415e8dba43a5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "551077ed_cfb1cc8e",
         "filename": "onboarding-app/src/main/java/org/acumos/onboarding/services/PortalRestClient.java",
         "patchSetId": 1
