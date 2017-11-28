@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6318e516_cdad9786",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-28T14:44:36Z",
+      "side": 1,
+      "message": "This pom should name the springfox.io dependencies to get auto-generated Swagger UI.  The controller methods are already annotated with @ApiOperation so all the hard work is already done.",
+      "revId": "091858fba3323931a6047ea2b1fcf12457061deb",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "37a396a4_514d0f55",
+        "filename": "onboarding-app/swagger-api-docs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-28T14:44:36Z",
+      "side": 1,
+      "message": "This file should be removed",
+      "revId": "091858fba3323931a6047ea2b1fcf12457061deb",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
