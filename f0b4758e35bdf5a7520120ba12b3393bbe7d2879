@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "58b45ab2_623b7e74",
+        "filename": "docs/release-notes.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Please add release notes, even if it\u0027s just \"1.0.0 Initial release December 2017\" that\u0027s better than nothing",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09c61e77_8e258052",
+        "filename": "docs/tutorials/index.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Please remove the lesson1, lesson2, lesson3 statements.  \nAdd some verbiage \"Tutorial coming soon\" at the very least.",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9fd3fb1_e326b9b9",
+        "filename": "docs/tutorials/lesson1.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Please remove this empty file",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04180099_5a5685b1",
+        "filename": "docs/tutorials/lesson2.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Please remove this empty file",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b5f26fbb_75ba5f22",
+        "filename": "docs/tutorials/lesson3.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Please remove this empty file",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17ac8dff_c795cda5",
+        "filename": "onboarding-app/src/main/resources/templates/r/acumos_0.2-3.tar.gz",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Can this be unpacked, then built on demand using tar and gzip?",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a459855e_d64f37ab",
+        "filename": "onboarding-app/src/test/resources/model.zip",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "If this is a pickle file from Python, drop it in directly to git, there is no need to encase it in a zip archive.",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1739014c_8f05b24b",
+        "filename": "onboarding-app/src/test/resources/sample.tar.gz",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-29T16:59:20Z",
+      "side": 1,
+      "message": "Can this tar file be built on demand?",
+      "revId": "f0b4758e35bdf5a7520120ba12b3393bbe7d2879",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
