@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="3 seconds" debug="false">
+
+  <!--  specify the component name -->
+  <property name="componentName" value="on-boarding"></property>
+  
+  <!--  specify the base path of the log directory -->
+  <property name="logDirPrefix" value="logs"></property>
+  
+  <!-- The directories where logs are written -->
+  <property name="logDirectory" value="${logDirPrefix}/${componentName}" />
+  
+  
+  <!--  log file names -->
+  <property name="logName" value="application" />
+   <property name="stdoutPattern" value="%msg%n" />
+ 
+  <property name="pattern" value="%date{ISO8601}|%thread- %msg%n" />
+ 
+  <!-- Example evaluator filter applied against console appender -->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${stdoutPattern}</pattern>
+    </encoder>
+  </appender>    
+    
+  <appender name="EELF"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logDirectory}/${logName}.log</file>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>${logDirectory}/${logName}.%i.log.zip
+      </fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>9</maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy
+      class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>5MB</maxFileSize>
+    </triggeringPolicy>
+    <encoder>
+      <pattern>${pattern}</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="asyncEELF" class="ch.qos.logback.classic.AsyncAppender">
+    <queueSize>256</queueSize>
+    <appender-ref ref="EELF" />
+  </appender>
+   
+  
+  <!-- ============================================================================ -->
+  <!--  EELF loggers -->
+  <!-- ============================================================================ -->
+  <logger name="com.att.eelf" level="info" additivity="false">
+    <appender-ref ref="asyncEELF" />
+  </logger>
+  
+  
+  <root level="info">
+		<appender-ref ref="asyncEELF" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+ <logger name="org.springframework.web" level="INFO"/>
+
+</configuration>
