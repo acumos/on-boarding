@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ddcc1b6_df66fead",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T22:19:15Z",
+      "side": 1,
+      "message": "Remaining org.cognita package needs to be renamed",
+      "revId": "e15fb342a407c302d1c50122c5ff69350571ff44",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "904c2ede_6bc4b63b",
+        "filename": "pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T22:19:15Z",
+      "side": 1,
+      "message": "Must be changed to org.acumos.*",
+      "revId": "e15fb342a407c302d1c50122c5ff69350571ff44",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
