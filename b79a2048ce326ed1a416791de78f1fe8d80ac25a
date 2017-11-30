@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d9e6adf_13952c0c",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Please update or remove comment",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dcd249f_9cef3f9e",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "please change to acumos.nexus.*",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ff2ca8f_8cba544a",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Why are these org.cognita prefixes still present?  This was a high-priority item to rename everything",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "100c168a_20bc070a",
+        "filename": "onboarding-app/src/main/resources/TOSCAApplication.properties",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Please remove commented-out lines with references to att.com sites",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b542f184_4cf0d118",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/HealthcheckControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Please remove author annotations from code",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cee9267d_08bbcb40",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Please remove \"techm\" keyword",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "30bc5a17_edee02ba",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "Use logger, not system.out",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f5839f9b_37bdb9fe",
+        "filename": "pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T11:15:09Z",
+      "side": 1,
+      "message": "This must be changed to prefix org.acumos",
+      "revId": "b79a2048ce326ed1a416791de78f1fe8d80ac25a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
