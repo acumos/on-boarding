@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "22c60474_bfda0b9d",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "Please change to prefix acumos.nexus. consistently in this file",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f57b5166_3038d742",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "Pleaes use \"acumos-nexus\" as the ID here",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f6a9106_2f1d8ff6",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "396345c0_d8a9868a",
+        "filename": "onboarding-app/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "Please update to get library with org.acumos package prefix",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b3afce1_6f8b9b10",
+        "filename": "onboarding-app/src/main/resources/TOSCAApplication.properties",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "Please remove this commented-out entries with personal information such as user ID, \"ATT, \"Cognita\" and so on.",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9d8bd0ff_6e07e93f",
+        "filename": "pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-30T19:56:09Z",
+      "side": 1,
+      "message": "This must be changed to org.acumos",
+      "revId": "4a94095be06c9410af0d8490b778a36343efabc5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
