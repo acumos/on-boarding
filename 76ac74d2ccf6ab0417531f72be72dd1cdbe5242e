@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0f8e9a4_ca12248e",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-12-01T15:51:46Z",
+      "side": 1,
+      "message": "Please change this to be a pointer over to the docs/ area.",
+      "revId": "76ac74d2ccf6ab0417531f72be72dd1cdbe5242e",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a61cda4c_2d9b97b4",
+        "filename": "onboarding-app/src/main/resources/TOSCAApplication.properties",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-12-01T15:51:46Z",
+      "side": 1,
+      "message": "Please remove these username/password credentials",
+      "revId": "76ac74d2ccf6ab0417531f72be72dd1cdbe5242e",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
