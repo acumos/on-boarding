@@ -45,7 +45,6 @@ public class OnboardingControllerTest {
 	@InjectMocks
 	PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
 
-
 	@SuppressWarnings("unchecked")
 	@Test
 	public void OnboardingWithAuthentication() throws Exception {
