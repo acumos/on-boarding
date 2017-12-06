@@ -45,5 +45,4 @@ public class HealthcheckControllerTest{
 			//e.printStackTrace();
 		}
 	}
-
 }
