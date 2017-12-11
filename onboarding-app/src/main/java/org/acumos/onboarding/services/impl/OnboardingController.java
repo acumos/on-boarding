@@ -41,6 +41,11 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.query.SearchCriteria;
+import org.acumos.cds.query.SearchCriterion;
+import org.acumos.cds.query.SearchOperation;
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -393,9 +398,18 @@ public class OnboardingController implements DockerService {
 
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
-
+		int page = 0;
+		int size = 9;
+		RestPageRequest pageRequest = new RestPageRequest(page, size);
 		/* TRUE - OR , FALSE - AND */
-		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
+		//List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
+		
+		SearchCriteria onboardSearchCriteria = new SearchCriteria(
+				new SearchCriterion("ownerId", SearchOperation.EQUALS, metadata.getOwnerId()))
+						.and(new SearchCriterion("name", SearchOperation.EQUALS, metadata.getModelName()));
+		RestPageResponse<MLPSolution> onboardMatches = cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
+		
+		List<MLPSolution>  list = onboardMatches.getContent();
 
 		return list;
 	}
