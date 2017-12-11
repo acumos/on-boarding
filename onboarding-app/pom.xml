@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app</artifactId>
-	<version>1.8.3-SNAPSHOT</version>
+	<version>1.8.4-SNAPSHOT</version>
 	<name>onboarding-app</name>
 	<description> Onboarding Application</description>
 	<parent>
