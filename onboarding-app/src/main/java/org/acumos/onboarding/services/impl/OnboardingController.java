@@ -502,11 +502,11 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+/*				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
 
 				if (mD.exists()) {
 					UtilityFunction.deleteDirectory(mD);
-				}
+				}*/
 
 			} catch (IOException e) {
 				logger.warn("H2O templatization failed", e);			
