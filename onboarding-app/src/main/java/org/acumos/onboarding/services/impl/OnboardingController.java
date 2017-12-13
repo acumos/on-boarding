@@ -61,6 +61,7 @@ import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.DockerClientFactory;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.acumos.onboarding.component.docker.cmd.CreateImageCommand;
+import org.acumos.onboarding.component.docker.cmd.DeleteImageCommand;
 import org.acumos.onboarding.component.docker.cmd.PushImageCommand;
 import org.acumos.onboarding.component.docker.cmd.TagImageCommand;
 import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
@@ -246,6 +247,7 @@ public class OnboardingController implements DockerService {
 			boolean isValidToken = valid.getStatus();
 
 			String ownerId;
+			String imageUri = null;
 
 			if (isValidToken) {
 				logger.info("Token validation successful");
@@ -261,7 +263,9 @@ public class OnboardingController implements DockerService {
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
 				outputFolder.mkdirs();
-				MetadataParser metadataParser = null;			
+				MetadataParser metadataParser = null;
+				boolean isSuccess = false;
+				
 				try {
 					File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 					try {
@@ -303,6 +307,10 @@ public class OnboardingController implements DockerService {
 					}
 
 					createSolutionRevision(mData);
+					
+					imageUri = dockerizeFile(metadataParser, localmodelFile);
+
+					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
 
 					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI);
 
@@ -310,15 +318,17 @@ public class OnboardingController implements DockerService {
 
 					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
 
-					String imageUri = dockerizeFile(metadataParser, localmodelFile);
-
-					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
-
-					generateTOSCA(localProtobufFile, localMetadataFile, mData);					
+					generateTOSCA(localProtobufFile, localMetadataFile, mData);	
+					
+					isSuccess = true;
 
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
 							HttpStatus.CREATED);
 				} finally {
+					if (isSuccess == false) {
+						logger.info("Onboarding Failed, Reverting failed solutions and artifacts.");
+						RevertbackOnboarding(metadataParser.getMetadata(), imageUri);
+					}
 					UtilityFunction.deleteDirectory(outputFolder);
 				}
 			} else {
@@ -808,5 +818,76 @@ public class OnboardingController implements DockerService {
 			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
 		}
 	}
+	
+	private void RevertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
 
+		try {
+
+			logger.info("In RevertbackOnboarding method");
+			
+			RepositoryLocation repositoryLocation = new RepositoryLocation();
+			repositoryLocation.setId("1");
+			repositoryLocation.setUrl(nexusEndPointURL);
+			repositoryLocation.setUsername(nexusUserName);
+			repositoryLocation.setPassword(nexusPassword);
+			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
+			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
+			
+			//Remove the image from docker registry
+			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+			logger.info("Image Name: " + imageTagName);
+			DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
+			deleteImageCommand.setClient(dockerClient);
+			deleteImageCommand.execute();
+
+			if (metadata.getSolutionId() != null) {
+				logger.info("Solution id: " + metadata.getSolutionId() + "Revision id: " + metadata.getRevisionId());
+
+				// get the Artifact IDs for given solution
+				List<MLPArtifact> artifactids = cdmsClient.getSolutionRevisionArtifacts(metadata.getSolutionId(),
+						metadata.getRevisionId());
+
+				// check if artifactids is empty
+				// Delete all the artifacts for given solution
+
+				for (MLPArtifact mlpArtifact : artifactids) {
+					String artifactId = mlpArtifact.getArtifactId();
+
+					// Delete SolutionRevisionArtifact
+					logger.info("Deleting Artifact: " + artifactId);
+					cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
+							artifactId);
+					logger.debug("--- Successfully Deleted the SolutionRevisionArtifact ---");
+
+					// Delete Artifact
+					cdmsClient.deleteArtifact(artifactId);
+					logger.debug("--- Successfully Deleted the CDump Artifact ---");
+
+					// Delete the file from the Nexus
+					nexusClient.deleteArtifact(mlpArtifact.getUri());
+					logger.debug("--- Successfully Deleted the Artifact from Nexus ---");
+				}
+				
+				// Delete current revision
+				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
+				logger.debug("--- Successfully Deleted the Solution Revision ---");
+				
+				// get other revision under the solution, if they exist
+				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
+
+				// Delete the solution ID if no other revision is associated
+				// with it
+				if (solRev.isEmpty()) {
+					cdmsClient.deleteSolution(metadata.getSolutionId());
+					logger.info("Deleting Solution: " + metadata.getSolutionId());
+				}
+								
+			}
+		} catch (Exception e) {
+			logger.info("Onboarding failed");
+			logger.error(e.getMessage(), e);
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Fail to revert back onboarding changes : " + e.getMessage());
+		}
+	}
 }
