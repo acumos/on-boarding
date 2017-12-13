@@ -25,13 +25,13 @@ RUN chown root /usr/local/bin/protoc
 #RUN echo $http_proxy
 
 #expose port for service
-EXPOSE 8334
+EXPOSE {0}
 
 #Deploy Model service
-ADD {0} /app/app.jar
-ADD {1} /app/models/Model.zip
+ADD {1} /app/app.jar
+ADD {2} /app/models/Model.zip
 ADD default.proto /app/models/default.proto
 #RUN mkdir plugin_root /app/plugin_root
 #RUN mkdir src /app/plugin_root/src
 #ADD classes /app/plugin_root/classes
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.config.location=application.properties","-jar","/app/app.jar"]

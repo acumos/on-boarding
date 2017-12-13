@@ -21,10 +21,13 @@
 package org.acumos.onboarding.component.docker.preparation;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Properties;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.UtilityFunction;
@@ -38,6 +41,7 @@ public class JavaGenericDockerPreparator {
 	private Metadata metadata;
 
 	private String rVersion;
+	private String serverPort;
 
 	/**
 	 * 
@@ -68,6 +72,19 @@ public class JavaGenericDockerPreparator {
 	 * @throws AcumosServiceException
 	 */
 	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
+		
+		Properties prop = new Properties();
+		InputStream input = null;	
+		try
+		{
+			input = new FileInputStream(new File(outputFolder,"application.properties"));
+			prop.load(input);
+			serverPort = prop.getProperty("server.port");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));
 	}
@@ -101,7 +118,7 @@ public class JavaGenericDockerPreparator {
 
 			String modelname = this.metadata.getSolutionName();
 			dockerFileAsString = MessageFormat.format(dockerFileAsString,
-					new Object[] { "GenericModelService.jar", modelname + ".jar", "default.proto" });
+					new Object[] { serverPort,"GenericModelService.jar", modelname + ".jar", "default.proto" });
 
 			FileWriter writer = new FileWriter(outDockerFile);
 			try {
