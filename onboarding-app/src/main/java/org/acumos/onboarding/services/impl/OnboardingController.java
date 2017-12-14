@@ -88,6 +88,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.lang.StringUtils;
 
 import com.github.dockerjava.api.DockerClient;
 
@@ -833,15 +834,21 @@ public class OnboardingController implements DockerService {
 			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
 			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 			
-			//Remove the image from docker registry
-			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
-			logger.info("Image Name: " + imageTagName);
-			DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
-			deleteImageCommand.setClient(dockerClient);
-			deleteImageCommand.execute();
+			// Remove the image from docker registry
+			// Check the value of imageUri, if it is null then do not delete the image
+			logger.info("Image Name from dockerize file method: " + imageUri);
+			
+			if (StringUtils.isNotBlank(imageUri)) {
+				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+				logger.info("Image Name: " + imageTagName);
+				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
+				deleteImageCommand.setClient(dockerClient);
+				deleteImageCommand.execute();
+				logger.info("--- Successfully Deleted the image from Docker Registry ---");
+			}
 
 			if (metadata.getSolutionId() != null) {
-				logger.info("Solution id: " + metadata.getSolutionId() + "Revision id: " + metadata.getRevisionId());
+				logger.info("Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
 
 				// get the Artifact IDs for given solution
 				List<MLPArtifact> artifactids = cdmsClient.getSolutionRevisionArtifacts(metadata.getSolutionId(),
@@ -861,11 +868,13 @@ public class OnboardingController implements DockerService {
 
 					// Delete Artifact
 					cdmsClient.deleteArtifact(artifactId);
-					logger.debug("--- Successfully Deleted the CDump Artifact ---");
+					logger.debug("--- Successfully Deleted the Artifact ---");
 
 					// Delete the file from the Nexus
-					nexusClient.deleteArtifact(mlpArtifact.getUri());
-					logger.debug("--- Successfully Deleted the Artifact from Nexus ---");
+					if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
+						nexusClient.deleteArtifact(mlpArtifact.getUri());
+						logger.debug("--- Successfully Deleted the Artifact from Nexus ---");
+					}
 				}
 				
 				// Delete current revision
@@ -886,6 +895,7 @@ public class OnboardingController implements DockerService {
 		} catch (Exception e) {
 			logger.info("Onboarding failed");
 			logger.error(e.getMessage(), e);
+			e.printStackTrace();
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}
