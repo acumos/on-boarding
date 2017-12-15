@@ -1,5 +1,4 @@
-# Use an official Python runtime as a base image
-FROM python:{0}
+FROM jfloff/alpine-python:3.5-slim
 
 # Set the working directory to /app
 WORKDIR /app

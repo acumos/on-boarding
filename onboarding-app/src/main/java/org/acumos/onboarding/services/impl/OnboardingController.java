@@ -546,11 +546,11 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+/*				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
 
 				if (mD.exists()) {
 					UtilityFunction.deleteDirectory(mD);
-				}
+				}*/
 
 			} catch (IOException e) {
 				logger.warn("Java-Generic templatization failed", e);
@@ -864,22 +864,22 @@ public class OnboardingController implements DockerService {
 					logger.info("Deleting Artifact: " + artifactId);
 					cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							artifactId);
-					logger.debug("--- Successfully Deleted the SolutionRevisionArtifact ---");
+					logger.info("--- Successfully Deleted the SolutionRevisionArtifact ---");
 
 					// Delete Artifact
 					cdmsClient.deleteArtifact(artifactId);
-					logger.debug("--- Successfully Deleted the Artifact ---");
+					logger.info("--- Successfully Deleted the Artifact ---");
 
 					// Delete the file from the Nexus
 					if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
 						nexusClient.deleteArtifact(mlpArtifact.getUri());
-						logger.debug("--- Successfully Deleted the Artifact from Nexus ---");
+						logger.info("--- Successfully Deleted the Artifact from Nexus ---");
 					}
 				}
 				
 				// Delete current revision
 				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
-				logger.debug("--- Successfully Deleted the Solution Revision ---");
+				logger.info("--- Successfully Deleted the Solution Revision ---");
 				
 				// get other revision under the solution, if they exist
 				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
