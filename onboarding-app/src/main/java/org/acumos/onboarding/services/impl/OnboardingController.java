@@ -449,8 +449,8 @@ public class OnboardingController implements DockerService {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
 			try {
-				File modelFolder = new File(outputFolder, "model");
-				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
+				//File modelFolder = new File(outputFolder, "model");
+				UtilityFunction.unzip(localmodelFile, outputFolder.getAbsolutePath());
 			} catch (IOException e) {
 				logger.warn("Python templatization failed", e);
 			}
