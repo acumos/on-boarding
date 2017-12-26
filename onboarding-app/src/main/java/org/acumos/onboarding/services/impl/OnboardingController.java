@@ -41,11 +41,6 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
-import org.acumos.cds.query.SearchCriteria;
-import org.acumos.cds.query.SearchCriterion;
-import org.acumos.cds.query.SearchOperation;
-import org.acumos.cds.transport.RestPageRequest;
-import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -72,6 +67,7 @@ import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.acumos.onboarding.services.DockerService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,7 +84,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.lang.StringUtils;
 
 import com.github.dockerjava.api.DockerClient;
 
@@ -449,7 +444,7 @@ public class OnboardingController implements DockerService {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
 			try {
-				//File modelFolder = new File(outputFolder, "model");
+				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, outputFolder.getAbsolutePath());
 			} catch (IOException e) {
 				logger.warn("Python templatization failed", e);
@@ -562,6 +557,9 @@ public class OnboardingController implements DockerService {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported runtime " + metadata.getRuntimeName());
 		}
+		logger.info("********* Resource List ***********");
+        listFilesAndFilesSubDirectories(outputFolder);
+        logger.info("********* End of Resource List ***********");    
 		logger.info("Started docker client");
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 		logger.info("Docker client created successfully");
@@ -900,4 +898,22 @@ public class OnboardingController implements DockerService {
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}
 	}
+	public void listFilesAndFilesSubDirectories(File directory)
+    {
+
+           File[] fList = directory.listFiles();
+
+           for (File file : fList)
+           {
+                  if (file.isFile())
+                  {
+                        System.out.println(file.getPath());
+                  }
+                  else if (file.isDirectory())
+                  {
+                        listFilesAndFilesSubDirectories(file);
+                  }
+           }
+    }
+
 }
