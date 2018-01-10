@@ -42,11 +42,6 @@ public class Application implements ApplicationContextAware {
 
 	public static final String CONFIG_ENV_VAR_NAME = "SPRING_APPLICATION_JSON";
 
-	/**
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
 	public static void main(String[] args) throws Exception {
 		final String springApplicationJson = System.getenv(CONFIG_ENV_VAR_NAME);
 
