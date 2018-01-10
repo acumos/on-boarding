@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.client.ICommonDataServiceRestClient;
 import org.acumos.cds.transport.SuccessTransport;
-import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.services.HealthcheckService;
@@ -63,10 +62,9 @@ public class HealthcheckController implements HealthcheckService {
 
 	/**
 	 * This method initialize the common data service
-	 * @throws AcumosServiceException
 	 */
 	@PostConstruct
-	public void init() throws AcumosServiceException {
+	public void init() {
 		logger.debug(EELFLoggerDelegate.debugLogger, "init: creating CDS client");
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 	}

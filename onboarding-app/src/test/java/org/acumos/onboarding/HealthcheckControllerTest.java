@@ -20,7 +20,6 @@
 
 package org.acumos.onboarding;
 
-import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.services.impl.HealthcheckController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,14 +34,7 @@ public class HealthcheckControllerTest{
 	
 	@Test
 	public void initTest(){
-		try {
-			healthcheckController.init();
-			assert(true);
-			
-		} catch (AcumosServiceException e) {
-			// TODO Auto-generated catch block
-			assert(false);
-			//e.printStackTrace();
-		}
+		healthcheckController.init();
+		assert(true);
 	}
 }

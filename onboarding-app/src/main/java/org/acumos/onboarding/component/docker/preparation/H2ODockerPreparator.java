@@ -33,11 +33,6 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
-/**
- * 
- * @author ****
- *
- */
 public class H2ODockerPreparator {
 	private Metadata metadata;
 
@@ -45,11 +40,6 @@ public class H2ODockerPreparator {
 	private String serverPort;
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(H2ODockerPreparator.class);
 
-	/**
-	 * 
-	 * @param metadataParser
-	 * @throws AcumosServiceException
-	 */
 	public H2ODockerPreparator(MetadataParser metadataParser) throws AcumosServiceException {
 		this.metadata = metadataParser.getMetadata();
 
@@ -68,24 +58,18 @@ public class H2ODockerPreparator {
 		}
 	}
 
-	/**
-	 * 
-	 * @param outputFolder
-	 * @throws AcumosServiceException
-	 */
 	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
-		
+
 		Properties prop = new Properties();
-		InputStream input = null;	
-		try
-		{
-			input = new FileInputStream(new File(outputFolder,"application.properties"));
+		InputStream input = null;
+		try {
+			input = new FileInputStream(new File(outputFolder, "application.properties"));
 			prop.load(input);
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
-		}	
+		}
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));
 	}
@@ -113,20 +97,15 @@ public class H2ODockerPreparator {
 		}
 	}
 
-	/**
-	 * @param inDockerFile
-	 * @param outDockerFile
-	 * @throws AcumosServiceException
-	 */
 	public void createDockerFile(File inDockerFile, File outDockerFile) throws AcumosServiceException {
 		try {
-			
+
 			String dockerFileAsString = new String(UtilityFunction.toBytes(inDockerFile));
 
 			String modelname = this.metadata.getSolutionName();
 
 			dockerFileAsString = MessageFormat.format(dockerFileAsString,
-					new Object[] {serverPort, modelname + "Service.jar", modelname + ".zip"});
+					new Object[] { serverPort, modelname + "Service.jar", modelname + ".zip" });
 
 			FileWriter writer = new FileWriter(outDockerFile);
 			try {
@@ -140,12 +119,6 @@ public class H2ODockerPreparator {
 		}
 	}
 
-	/**
-	 * 
-	 * @param baseVersion
-	 * @param currentVersion
-	 * @return
-	 */
 	public static int compareVersion(int[] baseVersion, int[] currentVersion) {
 		int result = 0;
 		for (int i = 0; i < baseVersion.length; i++) {
@@ -160,11 +133,6 @@ public class H2ODockerPreparator {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param version
-	 * @return
-	 */
 	public static int[] versionAsArray(String version) {
 		String[] versionArr = version.split("\\.");
 		int[] versionIntArr = new int[versionArr.length];
@@ -173,6 +141,5 @@ public class H2ODockerPreparator {
 		}
 		return versionIntArr;
 	}
-	
 
 }

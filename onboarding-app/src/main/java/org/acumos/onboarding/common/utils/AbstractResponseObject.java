@@ -20,30 +20,18 @@
 
 package org.acumos.onboarding.common.utils;
 
-/**
- * 
- * @author XXX
- *
- */
 public class AbstractResponseObject {
 
-	
 	private boolean loginPassExpire;
 	private String JwtToken;
-	
+
 	/**
 	 * Abstract superclass for Response from Controllers.
 	 */
 	public AbstractResponseObject() {
-		//default constructor
-		//default constructor
-		
+		// default constructor
 	}
 
-
-	/**
-	 * @return 
-	 */
 	public boolean isLoginPassExpire() {
 		return loginPassExpire;
 	}

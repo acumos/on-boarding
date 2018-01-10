@@ -7,29 +7,24 @@ import com.github.dockerjava.api.command.RemoveImageCmd;
 import com.github.dockerjava.api.exception.DockerException;
 
 public class DeleteImageCommand extends DockerCommand {
-	
+
 	private final String imageName;
-	
+
 	private final String tag;
 
 	private final String registry;
-	
-	/**
-	 * @param image
-	 * @param tag
-	 * @param registry
-	 */
-	public DeleteImageCommand(String image, String tag, String registry){
-		
+
+	public DeleteImageCommand(String image, String tag, String registry) {
+
 		this.imageName = image;
 		this.tag = tag;
 		this.registry = registry;
 	}
-	
+
 	public String getImageName() {
 		return imageName;
 	}
-	
+
 	public String getTag() {
 		return tag;
 	}
@@ -37,7 +32,7 @@ public class DeleteImageCommand extends DockerCommand {
 	public String getRegistry() {
 		return registry;
 	}
-	
+
 	@Override
 	public void execute() throws DockerException {
 		if (!StringUtils.isNotBlank(imageName)) {
@@ -50,7 +45,7 @@ public class DeleteImageCommand extends DockerCommand {
 		RemoveImageCmd removeImageCmd = client.removeImageCmd(imageFullName);
 		removeImageCmd.exec();
 	}
-	
+
 	@Override
 	public String getDisplayName() {
 		return "Push image";

@@ -38,12 +38,7 @@ public final class DockerClientFactory {
 	private DockerClientFactory() {
 		throw new IllegalAccessError("Docker Client Factory");
 	}
-/**
- * 
- * @param config
- * @return
- * @throws AcumosServiceException
- */
+
 	public static DockerClient getDockerClient(DockerConfiguration config) throws AcumosServiceException {
 		SSLConfig sslConfig;
 		if (config.isTlsVerify()) {

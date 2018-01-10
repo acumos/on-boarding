@@ -1,3 +1,5 @@
-# README #
+# Acumos On-Boarding
 
-Refer to the docs/ folder for details 
+The Acumos On-Boarding project contains the On-Boarding application.
+
+Refer to the docs/ folder for details. 

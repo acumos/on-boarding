@@ -21,25 +21,11 @@
 package org.acumos.onboarding.services;
 
 import org.acumos.onboarding.common.utils.JsonResponse;
-/**
- * 
- * @author ******
- *
- */
+
 public interface PortalRestClient {
 
-	/**
-	 * 
-	 * @param credentials
-	 * @return
-	 */
 	public String loginToAcumos(org.json.simple.JSONObject credentials);
 
-	/**
-	 * @param token
-	 * @param provider
-	 * @return
-	 */
 	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider);
 
 }

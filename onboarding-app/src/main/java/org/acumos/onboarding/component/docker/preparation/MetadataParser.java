@@ -37,11 +37,6 @@ import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
-/**
- * 
- * @author ****
- *
- */
 public class MetadataParser {
 
 	private Metadata metadata;
@@ -50,37 +45,33 @@ public class MetadataParser {
 
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 
-	
-	/**
-	 * 
-	 * @param dataFile
-	 * @throws AcumosServiceException
-	 */
 	public MetadataParser(File dataFile) throws AcumosServiceException {
 		try {
-			
+
 			String schemafile = null;
-			
+
 			this.metadataJson = JsonLoader.fromFile(dataFile);
 			String schemaVersion = metadataJson.get("schema").asText();
-			System.out.println("schemaVersion: "+schemaVersion);
-			
-/*			String schemaVersion1 = schemaVersion.replace(".", "");
-			schemafile = "SCHEMA_FILE"+"_"+schemaVersion1;
-			
-			System.out.println("schemafile: " + schemafile);*/
-			if(schemaVersion.contains("1")){
+			System.out.println("schemaVersion: " + schemaVersion);
+
+			/*
+			 * String schemaVersion1 = schemaVersion.replace(".", ""); schemafile =
+			 * "SCHEMA_FILE"+"_"+schemaVersion1;
+			 * 
+			 * System.out.println("schemafile: " + schemafile);
+			 */
+			if (schemaVersion.contains("1")) {
 				schemafile = "/model-schema-0.1.0.json";
-			}else if(schemaVersion.contains("2")){
+			} else if (schemaVersion.contains("2")) {
 				schemafile = "/model-schema-0.2.0.json";
-			}else if(schemaVersion.contains("3")){
+			} else if (schemaVersion.contains("3")) {
 				schemafile = "/model-schema-0.3.0.json";
-			}else if(schemaVersion.contains("4")){
+			} else if (schemaVersion.contains("4")) {
 				schemafile = "/model-schema-0.4.0.json";
-			}else if(schemaVersion.contains("5")){
+			} else if (schemaVersion.contains("5")) {
 				schemafile = "/model-schema-0.5.0.json";
 			}
-			
+
 			final JsonNode schema = JsonLoader.fromResource(schemafile);
 
 			final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
@@ -110,8 +101,7 @@ public class MetadataParser {
 			String modelName;
 			if (metadataJson.hasNonNull("name"))
 				modeldummy = metadataJson.get("name").asText();
-			
-			
+
 			modelName = modeldummy.replaceAll("\\s", "");
 
 			// validating Model-Name
@@ -132,9 +122,8 @@ public class MetadataParser {
 
 			if (metadataJson.hasNonNull("toolkit"))
 				metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
-			
-			if(runtimeNode.get("toolkit") != null)
-			{
+
+			if (runtimeNode.get("toolkit") != null) {
 				metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
 			}
 

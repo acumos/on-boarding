@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.apache.commons.io.IOUtils;
 
 import com.github.dockerjava.api.DockerClient;
@@ -33,12 +34,11 @@ import com.github.dockerjava.api.exception.NotFoundException;
 
 /**
  * This command removes specified Docker container(s).
- * 
- * @see docker save
- * 
- * 
  */
 public class SaveImageCommand extends DockerCommand {
+
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(SaveImageCommand.class);
+
 	private final String imageName;
 
 	private final String imageTag;
@@ -49,14 +49,6 @@ public class SaveImageCommand extends DockerCommand {
 
 	private final boolean ignoreIfNotFound;
 
-	/**
-	 * 
-	 * @param imageName
-	 * @param imageTag
-	 * @param destination
-	 * @param filename
-	 * @param ignoreIfNotFound
-	 */
 	public SaveImageCommand(final String imageName, final String imageTag, final String destination,
 			final String filename, final boolean ignoreIfNotFound) {
 		this.imageName = imageName;

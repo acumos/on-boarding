@@ -22,11 +22,6 @@ package org.acumos.onboarding.component.docker.preparation;
 
 import java.util.ArrayList;
 
-/**
- * 
- * @author ***
- *
- */
 public class Metadata {
 
 	private String ownerId;

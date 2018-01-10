@@ -162,11 +162,8 @@ public class OnboardingController implements DockerService {
 		// Property values are injected after the constructor finishes
 	}
 
-	/**
-	 * @throws AcumosServiceException
-	 */
 	@PostConstruct
-	public void init() throws AcumosServiceException {
+	public void init() {
 		logger.info("Creating docker service instance");
 		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		this.portalClient = new PortalRestClientImpl(portalURL);
@@ -206,7 +203,8 @@ public class OnboardingController implements DockerService {
 				return new ResponseEntity<ServiceResponse>(ServiceResponse.successJWTResponse(token), HttpStatus.OK);
 			} else {
 				logger.info("Either Username/Password is invalid.");
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,"Either Username/Password is invalid.");
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+						"Either Username/Password is invalid.");
 			}
 
 		} catch (AcumosServiceException e) {
@@ -229,15 +227,17 @@ public class OnboardingController implements DockerService {
 	@RequestMapping(value = "/models", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
-			@RequestPart(required = true) MultipartFile schema,@RequestHeader(value="Authorization", required= false) String authorization, @RequestHeader(value="provider", required= false) String provider) throws AcumosServiceException {
-		
+			@RequestPart(required = true) MultipartFile schema,
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@RequestHeader(value = "provider", required = false) String provider) throws AcumosServiceException {
+
 		logger.info("Started JWT token validation");
 
-		try 
-		{
-			//'authorization' represents JWT token here...!
-			if (authorization == null) {				
-					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,	"Token Not Available...!");
+		try {
+			// 'authorization' represents JWT token here...!
+			if (authorization == null) {
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+						"Token Not Available...!");
 			}
 
 			// Call to validate JWT Token.....!
@@ -253,7 +253,8 @@ public class OnboardingController implements DockerService {
 				ownerId = valid.getResponseBody().toString();
 
 				if (ownerId == null)
-					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND, "Either  username/password is invalid.");
+					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+							"Either  username/password is invalid.");
 
 				logger.info("Dockerization request recieved with " + model.getOriginalFilename() + " and metadata :"
 						+ metadata);
@@ -264,26 +265,26 @@ public class OnboardingController implements DockerService {
 				outputFolder.mkdirs();
 				MetadataParser metadataParser = null;
 				boolean isSuccess = false;
-				
+
 				try {
 					File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 					try {
 						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
-					} catch (IOException e) {						
+					} catch (IOException e) {
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download model file " + localmodelFile.getName());
 					}
 					File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
 					try {
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
-					} catch (IOException e) {						
+					} catch (IOException e) {
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download metadata file " + localMetadataFile.getName());
 					}
 					File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
 					try {
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
-					} catch (IOException e) {						
+					} catch (IOException e) {
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download protobuf file " + localProtobufFile.getName());
 					}
@@ -306,7 +307,7 @@ public class OnboardingController implements DockerService {
 					}
 
 					createSolutionRevision(mData);
-					
+
 					imageUri = dockerizeFile(metadataParser, localmodelFile);
 
 					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
@@ -317,8 +318,8 @@ public class OnboardingController implements DockerService {
 
 					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
 
-					generateTOSCA(localProtobufFile, localMetadataFile, mData);	
-					
+					generateTOSCA(localProtobufFile, localMetadataFile, mData);
+
 					isSuccess = true;
 
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
@@ -340,37 +341,33 @@ public class OnboardingController implements DockerService {
 				}
 			}
 
-		} catch (AcumosServiceException e) {			
-			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;	
-			logger.error(e.getErrorCode() +"  "+ e.getMessage());
-			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),	httpCode);
-		} 
-		catch (HttpClientErrorException e) 
-		{
-			//Handling #401				
-			if(HttpStatus.UNAUTHORIZED == e.getStatusCode())
-			{
+		} catch (AcumosServiceException e) {
+			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			logger.error(e.getErrorCode() + "  " + e.getMessage());
+			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
+					httpCode);
+		} catch (HttpClientErrorException e) {
+			// Handling #401
+			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
 				logger.info("Unauthorized User - Either Username/Password is invalid.");
-				return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(""+e.getStatusCode(),"Unauthorized User"), HttpStatus.UNAUTHORIZED);
-			}
-			else
-			{
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User"),
+						HttpStatus.UNAUTHORIZED);
+			} else {
 				logger.error(e.getMessage());
-				return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(""+e.getStatusCode(),e.getMessage()),e.getStatusCode());
-			}			
-		} 
-		catch (Exception e) 
-		{
-			logger.error(e.getMessage());
-			if(e instanceof AcumosServiceException)
-			{
-				return new ResponseEntity<ServiceResponse>(ServiceResponse
-						.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);				
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
 			}
-			else
-			{						
-				return new ResponseEntity<ServiceResponse>(ServiceResponse
-						.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			if (e instanceof AcumosServiceException) {
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage()),
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage()),
+						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 
@@ -395,8 +392,8 @@ public class OnboardingController implements DockerService {
 	}
 
 	/*
-	 * @Method Name : getExistingSolution Gives existing solution against
-	 * ownerId and Model name if any. *
+	 * @Method Name : getExistingSolution Gives existing solution against ownerId
+	 * and Model name if any. *
 	 */
 	private List<MLPSolution> getExistingSolution(Metadata metadata) {
 
@@ -407,20 +404,22 @@ public class OnboardingController implements DockerService {
 
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
-      
-		/*this below commneted logic is for CDS 1.10.0 */
-		
-	/*	int page = 0;
-		int size = 9;
-		RestPageRequest pageRequest = new RestPageRequest(page, size);
 
-		SearchCriteria onboardSearchCriteria = new SearchCriteria(
-				new SearchCriterion("ownerId", SearchOperation.EQUALS, metadata.getOwnerId()))
-						.and(new SearchCriterion("name", SearchOperation.EQUALS, metadata.getModelName()));
-		RestPageResponse<MLPSolution> onboardMatches = cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
-		
-		List<MLPSolution>  list = onboardMatches.getContent();*/
-		
+		/* this below commneted logic is for CDS 1.10.0 */
+
+		/*
+		 * int page = 0; int size = 9; RestPageRequest pageRequest = new
+		 * RestPageRequest(page, size);
+		 * 
+		 * SearchCriteria onboardSearchCriteria = new SearchCriteria( new
+		 * SearchCriterion("ownerId", SearchOperation.EQUALS, metadata.getOwnerId()))
+		 * .and(new SearchCriterion("name", SearchOperation.EQUALS,
+		 * metadata.getModelName())); RestPageResponse<MLPSolution> onboardMatches =
+		 * cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
+		 * 
+		 * List<MLPSolution> list = onboardMatches.getContent();
+		 */
+
 		/* TRUE - OR , FALSE - AND */
 		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
 
@@ -447,6 +446,7 @@ public class OnboardingController implements DockerService {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
 			try {
+				// TODO: why is this modelFolder variable ignored?
 				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, outputFolder.getAbsolutePath());
 			} catch (IOException e) {
@@ -501,14 +501,14 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-/*				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
-
-				if (mD.exists()) {
-					UtilityFunction.deleteDirectory(mD);
-				}*/
+				/*
+				 * File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+				 * 
+				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
+				 */
 
 			} catch (IOException e) {
-				logger.warn("H2O templatization failed", e);			
+				logger.warn("H2O templatization failed", e);
 			}
 			dockerPreprator.prepareDockerApp(outputFolder);
 
@@ -544,11 +544,11 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-/*				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
-
-				if (mD.exists()) {
-					UtilityFunction.deleteDirectory(mD);
-				}*/
+				/*
+				 * File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+				 * 
+				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
+				 */
 
 			} catch (IOException e) {
 				logger.warn("Java-Generic templatization failed", e);
@@ -561,8 +561,8 @@ public class OnboardingController implements DockerService {
 					"Unspported runtime " + metadata.getRuntimeName());
 		}
 		logger.info("********* Resource List ***********");
-        listFilesAndFilesSubDirectories(outputFolder);
-        logger.info("********* End of Resource List ***********");    
+		listFilesAndFilesSubDirectories(outputFolder);
+		logger.info("********* End of Resource List ***********");
 		logger.info("Started docker client");
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 		logger.info("Docker client created successfully");
@@ -573,7 +573,7 @@ public class OnboardingController implements DockerService {
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
 			logger.info("Docker image creation done");
-			String imageId = createCMD.getImageId();
+			// String imageId = createCMD.getImageId();
 			// TODO: remove local image
 
 			logger.info("Starting docker image tagging");
@@ -608,7 +608,6 @@ public class OnboardingController implements DockerService {
 		}
 	}
 
-
 	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
 		logger.info("Create solution call started");
 		MLPSolution solution = new MLPSolution();
@@ -630,7 +629,7 @@ public class OnboardingController implements DockerService {
 			metadata.setSolutionId(solution.getSolutionId());
 			logger.info("Solution created: " + solution.getSolutionId());
 			return solution;
-		} catch (HttpStatusCodeException e) {			
+		} catch (HttpStatusCodeException e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -679,7 +678,7 @@ public class OnboardingController implements DockerService {
 			metadata.setRevisionId(revision.getRevisionId());
 			logger.info("Solution revision created: " + revision.getRevisionId());
 			return revision;
-		} catch (HttpStatusCodeException e) {			
+		} catch (HttpStatusCodeException e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -732,13 +731,13 @@ public class OnboardingController implements DockerService {
 							modelArtifact.getArtifactId());
 					logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
 					return modelArtifact;
-				} catch (HttpStatusCodeException e) {					
+				} catch (HttpStatusCodeException e) {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
 									+ e.getResponseBodyAsString(),
 							e);
 				}
-			} catch (HttpStatusCodeException e) {				
+			} catch (HttpStatusCodeException e) {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
 			}
@@ -772,17 +771,17 @@ public class OnboardingController implements DockerService {
 					logger.info("addSolutionRevisionArtifact for " + uri + " successful");
 					return modelArtifact;
 
-				} catch (HttpStatusCodeException e) {					
+				} catch (HttpStatusCodeException e) {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
 				}
-			} catch (HttpStatusCodeException e) {				
+			} catch (HttpStatusCodeException e) {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
 			throw e;
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
@@ -820,13 +819,13 @@ public class OnboardingController implements DockerService {
 			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
 		}
 	}
-	
+
 	private void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
 
 		try {
 
 			logger.info("In RevertbackOnboarding method");
-			
+
 			RepositoryLocation repositoryLocation = new RepositoryLocation();
 			repositoryLocation.setId("1");
 			repositoryLocation.setUrl(nexusEndPointURL);
@@ -834,11 +833,11 @@ public class OnboardingController implements DockerService {
 			repositoryLocation.setPassword(nexusPassword);
 			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
 			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
-			
+
 			// Remove the image from docker registry
 			// Check the value of imageUri, if it is null then do not delete the image
 			logger.info("Image Name from dockerize file method: " + imageUri);
-			
+
 			if (StringUtils.isNotBlank(imageUri)) {
 				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
 				logger.info("Image Name: " + imageTagName);
@@ -877,11 +876,11 @@ public class OnboardingController implements DockerService {
 						logger.info("--- Successfully Deleted the Artifact from Nexus ---");
 					}
 				}
-				
+
 				// Delete current revision
 				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
 				logger.info("--- Successfully Deleted the Solution Revision ---");
-				
+
 				// get other revision under the solution, if they exist
 				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
 
@@ -891,7 +890,7 @@ public class OnboardingController implements DockerService {
 					cdmsClient.deleteSolution(metadata.getSolutionId());
 					logger.info("Deleting Solution: " + metadata.getSolutionId());
 				}
-								
+
 			}
 		} catch (Exception e) {
 			logger.info("Onboarding failed");
@@ -901,22 +900,18 @@ public class OnboardingController implements DockerService {
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}
 	}
-	private void listFilesAndFilesSubDirectories(File directory)
-    {
 
-           File[] fList = directory.listFiles();
+	private void listFilesAndFilesSubDirectories(File directory) {
 
-           for (File file : fList)
-           {
-                  if (file.isFile())
-                  {
-                        System.out.println(file.getPath());
-                  }
-                  else if (file.isDirectory())
-                  {
-                        listFilesAndFilesSubDirectories(file);
-                  }
-           }
-    }
+		File[] fList = directory.listFiles();
+
+		for (File file : fList) {
+			if (file.isFile()) {
+				System.out.println(file.getPath());
+			} else if (file.isDirectory()) {
+				listFilesAndFilesSubDirectories(file);
+			}
+		}
+	}
 
 }

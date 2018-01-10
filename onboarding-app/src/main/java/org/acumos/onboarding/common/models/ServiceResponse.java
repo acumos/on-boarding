@@ -36,22 +36,17 @@ public class ServiceResponse {
 	private String errorCode;
 
 	private String errorMessage;
-	
+
 	private String jwtToken;
 
 	private Object result;
-	
-	public static final  String sStatus = "SUCCESS";
 
-	//Default Constructor
+	public static final String sStatus = "SUCCESS";
+
 	public ServiceResponse() {
+		// Default Constructor
 	}
 
-	/**
-	 * @param errorCode
-	 * @param errorMessage
-	 * @return
-	 */
 	public static ServiceResponse errorResponse(String errorCode, String errorMessage) {
 		ServiceResponse error = new ServiceResponse();
 		error.setStatus("ERROR");
@@ -60,36 +55,23 @@ public class ServiceResponse {
 		return error;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public static ServiceResponse successResponse() {
 		ServiceResponse success = new ServiceResponse();
 		success.setStatus(sStatus);
 		return success;
 	}
 
-	/**
-	 * 
-	 * @param result
-	 * @return
-	 */
 	public static ServiceResponse successResponse(Object result) {
 		ServiceResponse success = new ServiceResponse();
 		success.setStatus(sStatus);
 		success.setResult(result);
 		return success;
 	}
-	
-	/**
-	 * 
-	 * @return jwtToken
-	 */
+
 	public static ServiceResponse successJWTResponse(String jwtToken) {
 		ServiceResponse token = new ServiceResponse();
 		token.setStatus(sStatus);
-		token.setJwtToken(jwtToken);		
+		token.setJwtToken(jwtToken);
 		return token;
 	}
 
@@ -105,15 +87,10 @@ public class ServiceResponse {
 		return errorCode;
 	}
 
-	
-	
 	public String getJwtToken() {
 		return jwtToken;
 	}
 
-	/**
-	 * @param jwtToken
-	 */
 	public void setJwtToken(String jwtToken) {
 		this.jwtToken = jwtToken;
 	}

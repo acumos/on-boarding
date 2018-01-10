@@ -22,8 +22,6 @@ package org.acumos.onboarding.component.docker.cmd;
 
 
 
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
-
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerException;
 
@@ -32,14 +30,9 @@ import com.github.dockerjava.api.exception.DockerException;
  */
 public abstract class DockerCommand
 {
-	// logger 
-	public static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(DockerCommand.class);
 
 	protected DockerClient client;
 
-	/**
-	 * @throws DockerException
-	 */
 	public abstract void execute() throws DockerException;
 
 	public abstract String getDisplayName();

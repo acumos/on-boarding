@@ -34,11 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import springfox.documentation.annotations.ApiIgnore;
 
-/**
- * 
- * @author 
- *
- */
 @RestController
 @ApiIgnore
 public class CustomErrorController implements ErrorController {
@@ -50,11 +45,6 @@ public class CustomErrorController implements ErrorController {
 		return PATH;
 	}
 
-	/**
-	 * @param request
-	 * @param exception
-	 * @return
-	 */
 	@RequestMapping(value = PATH)
 	@ResponseBody
 	@ExceptionHandler(value = { AcumosServiceException.class })
@@ -63,8 +53,7 @@ public class CustomErrorController implements ErrorController {
 
 		AcumosServiceException e = (AcumosServiceException) exception;
 		HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-		if(e.getErrorCode()==null)
-		{
+		if (e.getErrorCode() == null) {
 			e.setErrorCode(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR.name());
 		}
 		if (e.getErrorCode().equals(AcumosServiceException.ErrorCode.INVALID_PARAMETER.name())) {
