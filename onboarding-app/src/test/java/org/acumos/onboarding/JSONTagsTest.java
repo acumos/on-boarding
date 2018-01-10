@@ -20,19 +20,54 @@
 
 package org.acumos.onboarding;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JSONTags;
+import org.acumos.onboarding.services.impl.OnboardingController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ch.qos.logback.classic.Logger;
+
 @RunWith(MockitoJUnitRunner.class)
 public class JSONTagsTest {
+	
+	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(JSONTags.class);
 	
 	@Test
 	public void jsonTagTest() {
 		JSONTags jSONTagsObj;
-		System.out.println(JSONTags.ROLE_ID);
-		System.out.println(JSONTags.ROLE_MODIFIED);
+		
+		logger.info(JSONTags.TAG_REQUEST_FNAME);
+		logger.info(JSONTags.TAG_REQUEST_MNAME);
+		logger.info(JSONTags.TAG_STATUS_SUCCESS);
+		logger.info(JSONTags.TAG_RESPONSE_STATUS);
+		logger.info(JSONTags.TAG_RESPONSE_STATUS_CODE);
+		logger.info(JSONTags.TAG_REQUEST_FROM);
+		logger.info(JSONTags.TAG_REQUEST_ID);
+		
+		logger.info(JSONTags.TAG_REQUEST_BODY);
+		logger.info(JSONTags.TAG_REQUEST_UNIQUE_ID);
+		logger.info(JSONTags.TAG_STATUS_FAILURE);
+		logger.info(JSONTags.TAG_REQUEST_UID);
+		
+		logger.info(JSONTags.TAG_RESPONSE_DETAIL);
+		logger.info(JSONTags.TAG_RESPONSE_BODY);
+		logger.info(JSONTags.TAG_RESPONSE_MESSAGE);
+		logger.info(JSONTags.TAG_ERROR_CODE);
+		logger.info(JSONTags.TAG_RESPONSE_CODE);
+		logger.info(JSONTags.TAG_ERROR_CODE_SUCCESS);
+		logger.info(JSONTags.TAG_ERROR_CODE_FAILURE);
+		logger.info(JSONTags.TAG_ERROR_CODE_EXCEPTION);
+		logger.info(JSONTags.TAG_ERROR_CODE_RESET_USERNAME);
+		logger.info(JSONTags.TAG_ERROR_CODE_RESET_EMAILID);
+		logger.info(JSONTags.TAG_ERROR_CODE_OLDPASS_NOTMATCH);
+		
+		logger.info(JSONTags.ROLE_ID);
+		logger.info(JSONTags.ROLE_NAME);
+		logger.info(JSONTags.ROLE_ACTIVE);
+		logger.info(JSONTags.ROLE_MODIFIED);
+		logger.info(JSONTags.ROLE_MODIFIED);
 		
 		
 	}

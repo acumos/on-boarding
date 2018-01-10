@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
+import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -34,6 +35,8 @@ public class H2ODockerPreparatorTest {
 
 	@Mock
 	H2ODockerPreparator h2ODockerPreparator;
+	File f1 = new File("FirstFile");
+	File f2 = new File("SecondFile");
 
 	@Test
 	public void compareVersionTest() {
@@ -73,7 +76,16 @@ public class H2ODockerPreparatorTest {
 
   }
 	
-
+	@Test
+	public void createDockerFileTest() {
+		
+		try {
+			h2ODockerPreparator.createDockerFile(f1, f2);
+			assert(true);
+		} catch (AcumosServiceException e) {
+			assert(false);
+		}
+	}
 }
 
 
