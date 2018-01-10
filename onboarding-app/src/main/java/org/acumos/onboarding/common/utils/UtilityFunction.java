@@ -40,25 +40,13 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.core.io.Resource;
 
-/**
- * 
- * @author ******
- *
- */
 public class UtilityFunction {
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Application.class);
-	
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();
 	}
 
-	/**
-	 * 
-	 * @param inputFiles
-	 * @param outZipFilePath
-	 * @throws IOException
-	 */
 	public static void zipFile(File[] inputFiles, File outZipFilePath) throws IOException {
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outZipFilePath));
 		try {
@@ -85,12 +73,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param zipFile
-	 * @param outPath
-	 * @throws IOException
-	 */
 	public static void unzip(File zipFile, String outPath) throws IOException {
 		ZipInputStream in = new ZipInputStream(new FileInputStream(zipFile));
 		try {
@@ -119,10 +101,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param fileStreamPath
-	 */
 	public static void deleteDirectory(File fileStreamPath) {
 		if (fileStreamPath.exists()) {
 			if (fileStreamPath.isDirectory()) {
@@ -136,11 +114,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param data
-	 * @return
-	 */
 	public static String toMD5(String data) {
 		try {
 			StringBuilder result = new StringBuilder("");
@@ -158,12 +131,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param srcFile
-	 * @param destFile
-	 * @throws AcumosServiceException
-	 */
 	public static void copyFile(Resource srcFile, File destFile) throws AcumosServiceException {
 		try {
 			InputStream in = srcFile.getInputStream();
@@ -174,12 +141,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param srcFile
-	 * @param destFile
-	 * @throws AcumosServiceException
-	 */
 	public static void copyFile(File srcFile, File destFile) throws AcumosServiceException {
 		try {
 			InputStream in = new FileInputStream(srcFile);
@@ -190,12 +151,6 @@ public class UtilityFunction {
 		}
 	}
 
-	/**
-	 * 
-	 * @param in
-	 * @param destFile
-	 * @throws IOException
-	 */
 	public static void copyFile(InputStream in, File destFile) throws IOException {
 
 		try {
@@ -215,12 +170,6 @@ public class UtilityFunction {
 
 	}
 
-	/**
-	 * 
-	 * @param fileUrl
-	 * @return
-	 * @throws IOException
-	 */
 	public static byte[] toBytes(File fileUrl) throws IOException {
 		FileInputStream in = new FileInputStream(fileUrl);
 		try {
@@ -235,12 +184,6 @@ public class UtilityFunction {
 
 	}
 
-	/**
-	 * 
-	 * @param tarFile
-	 * @param destFile
-	 * @throws IOException
-	 */
 	public static void unTarFile(File tarFile, File destFile) throws IOException {
 		FileInputStream fis = new FileInputStream(tarFile);
 		TarArchiveInputStream tis = new TarArchiveInputStream(fis);
@@ -263,13 +206,6 @@ public class UtilityFunction {
 		tis.close();
 	}
 
-	/**
-	 * 
-	 * @param gZippedFile
-	 * @param tarFile
-	 * @return
-	 * @throws IOException
-	 */
 	public static File deCompressGZipFile(File gZippedFile, File tarFile) throws IOException {
 		FileInputStream fis = new FileInputStream(gZippedFile);
 		GZIPInputStream gZIPInputStream = new GZIPInputStream(fis);
@@ -287,22 +223,10 @@ public class UtilityFunction {
 
 	}
 
-	/**
-	 * 
-	 * @param inputFile
-	 * @param outputFolder
-	 * @return
-	 */
 	public static String getFileName(File inputFile, String outputFolder) {
 		return outputFolder + File.separator + inputFile.getName().substring(0, inputFile.getName().lastIndexOf('.'));
 	}
 
-	/**
-	 * 
-	 * @param resouce
-	 * @return
-	 * @throws IOException
-	 */
 	public static byte[] toBytes(Resource resouce) throws IOException {
 		InputStream in = resouce.getInputStream();
 
@@ -311,7 +235,7 @@ public class UtilityFunction {
 			int count = 0;
 			count = in.read(bytes);
 			logger.debug("Count is= " + count);
-				return bytes;
+			return bytes;
 		} finally {
 			in.close();
 		}

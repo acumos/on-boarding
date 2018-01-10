@@ -22,13 +22,7 @@ package org.acumos.onboarding.component.docker;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 
-/**
- * 
- * @author xxx
- *
- */
-public class DockerConfiguration
-{
+public class DockerConfiguration {
 	private String config;
 
 	private String apiVersion = "1.23";
@@ -40,7 +34,7 @@ public class DockerConfiguration
 	private String registryUsername;
 
 	private String registryPassword;
-	
+
 	private String imagetagPrefix;
 
 	private String registryUrl = "https://index.docker.io/v1/";
@@ -61,23 +55,15 @@ public class DockerConfiguration
 
 	private Integer maxPerRouteConnections = 100;
 
-	public String getConfig()
-	{
+	public String getConfig() {
 		return config;
 	}
 
-	public void setConfig(String config)
-	{
+	public void setConfig(String config) {
 		this.config = config;
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws AcumosServiceException
-	 */
-	public String toUrl() throws AcumosServiceException
-	{
+	public String toUrl() throws AcumosServiceException {
 		if (this.host == null)
 			throw new AcumosServiceException("host is required");
 		if (this.port == null)
@@ -85,53 +71,43 @@ public class DockerConfiguration
 		return ((this.socket) ? "unix" : "tcp") + "://" + host + ":" + port;
 	}
 
-	public String getApiVersion()
-	{
+	public String getApiVersion() {
 		return apiVersion;
 	}
 
-	public void setApiVersion(String apiVersion)
-	{
+	public void setApiVersion(String apiVersion) {
 		this.apiVersion = apiVersion;
 	}
 
-	public String getHost()
-	{
+	public String getHost() {
 		return host;
 	}
 
-	public void setHost(String host)
-	{
+	public void setHost(String host) {
 		this.host = host;
 	}
 
-	public Integer getPort()
-	{
+	public Integer getPort() {
 		return port;
 	}
 
-	public void setPort(Integer port)
-	{
+	public void setPort(Integer port) {
 		this.port = port;
 	}
 
-	public String getRegistryUsername()
-	{
+	public String getRegistryUsername() {
 		return registryUsername;
 	}
 
-	public void setRegistryUsername(String registryUsername)
-	{
+	public void setRegistryUsername(String registryUsername) {
 		this.registryUsername = registryUsername;
 	}
 
-	public String getRegistryPassword()
-	{
+	public String getRegistryPassword() {
 		return registryPassword;
 	}
 
-	public void setRegistryPassword(String registryPassword)
-	{
+	public void setRegistryPassword(String registryPassword) {
 		this.registryPassword = registryPassword;
 	}
 
@@ -143,99 +119,82 @@ public class DockerConfiguration
 	}
 
 	/**
-	 * @param imagetagPrefix the imagetagPrefix to set
+	 * @param imagetagPrefix
+	 *            the imagetagPrefix to set
 	 */
 	public void setImagetagPrefix(String imagetagPrefix) {
 		this.imagetagPrefix = imagetagPrefix;
 	}
 
-	public String getRegistryUrl()
-	{
+	public String getRegistryUrl() {
 		return registryUrl;
 	}
 
-	public void setRegistryUrl(String registryUrl)
-	{
+	public void setRegistryUrl(String registryUrl) {
 		this.registryUrl = registryUrl;
 	}
 
-	public String getRegistryEmail()
-	{
+	public String getRegistryEmail() {
 		return registryEmail;
 	}
 
-	public void setRegistryEmail(String registryEmail)
-	{
+	public void setRegistryEmail(String registryEmail) {
 		this.registryEmail = registryEmail;
 	}
 
-	public Integer getRequestTimeout()
-	{
+	public Integer getRequestTimeout() {
 		return requestTimeout;
 	}
 
-	public void setRequestTimeout(Integer requestTimeout)
-	{
+	public void setRequestTimeout(Integer requestTimeout) {
 		this.requestTimeout = requestTimeout;
 	}
 
-	public boolean isTlsVerify()
-	{
+	public boolean isTlsVerify() {
 		return tlsVerify;
 	}
 
-	public void setTlsVerify(boolean tlsVerify)
-	{
+	public void setTlsVerify(boolean tlsVerify) {
 		this.tlsVerify = tlsVerify;
 	}
 
-	public String getCertPath()
-	{
+	public String getCertPath() {
 		return certPath;
 	}
 
-	public void setCertPath(String certPath)
-	{
+	public void setCertPath(String certPath) {
 		this.certPath = certPath;
 	}
 
-	public boolean isSocket()
-	{
+	public boolean isSocket() {
 		return socket;
 	}
 
-	public void setSocket(boolean socket)
-	{
+	public void setSocket(boolean socket) {
 		this.socket = socket;
 	}
 
-	public String getCmdExecFactory()
-	{
+	public String getCmdExecFactory() {
 		return cmdExecFactory;
 	}
 
-	public void setCmdExecFactory(String cmdExecFactory)
-	{
+	public void setCmdExecFactory(String cmdExecFactory) {
 		this.cmdExecFactory = cmdExecFactory;
 	}
 
-	public Integer getMaxTotalConnections()
-	{
+	public Integer getMaxTotalConnections() {
 		return maxTotalConnections;
 	}
 
-	public void setMaxTotalConnections(Integer maxTotalConnections)
-	{
+	public void setMaxTotalConnections(Integer maxTotalConnections) {
 		this.maxTotalConnections = maxTotalConnections;
 	}
 
-	public Integer getMaxPerRouteConnections()
-	{
+	public Integer getMaxPerRouteConnections() {
 		return maxPerRouteConnections;
 	}
 
-	public void setMaxPerRouteConnections(Integer maxPerRouteConnections)
-	{
+	public void setMaxPerRouteConnections(Integer maxPerRouteConnections) {
 		this.maxPerRouteConnections = maxPerRouteConnections;
 	}
 }

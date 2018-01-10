@@ -20,6 +20,7 @@
 
 package org.acumos.onboarding.component.docker.cmd;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.apache.commons.lang.StringUtils;
 
 import com.github.dockerjava.api.DockerClient;
@@ -31,22 +32,18 @@ import com.github.dockerjava.core.command.PushImageResultCallback;
 /**
  * This command pulls Docker image from a repository.
  *
- * @see https://docs.docker.com/reference/api/docker_remote_api_v1.13/#push-an-image-on-the-registry
+ * @see <A HREF="https://docs.docker.com/reference/api/docker_remote_api_v1.13/#push-an-image-on-the-registry">Docker push</A>
  */
 public class PushImageCommand extends DockerCommand {
+	
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(PushImageCommand.class);
+
 	private final String image;
 
 	private final String tag;
 
 	private final String registry;
 
-	/**
-	 * 
-	 * @param image
-	 * @param tag
-	 * @param registry
-	 */
-	
 	public PushImageCommand(String image, String tag, String registry) {
 		//DockerRegistryEndpoint dockerRegistryEndpoint
 		this.image = image;

@@ -66,10 +66,6 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 	private String className;
 	private static ConcurrentMap<String, EELFLoggerDelegate> classMap = new ConcurrentHashMap<String, EELFLoggerDelegate>();
 
-	/**
-	 * 
-	 * @param _className
-	 */
 	public EELFLoggerDelegate(String _className) {
 		super(_className);
 		className = _className;
@@ -329,7 +325,7 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 	 */
 	public void error(EELFLogger logger, String msg, Object... arguments) {
 		MDC.put(MDC_CLASS_NAME, className);
-		logger.warn(msg, arguments);
+		logger.error(msg, arguments);
 		MDC.remove(MDC_CLASS_NAME);
 	}
 
@@ -345,7 +341,7 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 	 */
 	public void error(EELFLogger logger, String msg, Throwable th) {
 		MDC.put(MDC_CLASS_NAME, className);
-		logger.warn(msg, th);
+		logger.error(msg, th);
 		MDC.remove(MDC_CLASS_NAME);
 	}
 

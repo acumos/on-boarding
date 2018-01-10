@@ -20,7 +20,6 @@
 
 package org.acumos.onboarding.services;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,24 +30,12 @@ import org.acumos.onboarding.common.utils.JsonRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface DockerService
-{
-	/**
-	 * @param request
-	 * @param model
-	 * @param metadata
-	 * @param schema
-	 * @param authorization
-	 * @param provider
-	 * @return
-	 * @throws AcumosServiceException
-	 */
-	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request,MultipartFile model, MultipartFile metadata, MultipartFile schema,String authorization, String provider) throws AcumosServiceException;
-	/**
-	 * @param crediantials
-	 * @param response
-	 * @return
-	 * @throws AcumosServiceException
-	 */
-	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(JsonRequest<Crediantials> crediantials,HttpServletResponse response)throws AcumosServiceException;
+public interface DockerService {
+
+	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request, MultipartFile model,
+			MultipartFile metadata, MultipartFile schema, String authorization, String provider)
+			throws AcumosServiceException;
+
+	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(JsonRequest<Crediantials> crediantials,
+			HttpServletResponse response) throws AcumosServiceException;
 }

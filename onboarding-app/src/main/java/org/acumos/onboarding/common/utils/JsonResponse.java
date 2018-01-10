@@ -20,22 +20,17 @@
 
 package org.acumos.onboarding.common.utils;
 
-
-/**
-* This class represents a common format set for the response send to the client.
-* Getters and setters encapsulate the fields of a class by making them accessible 
-* only through its public methods and keep the values themselves private.
-* @JsonProperty(name), tells Jackson ObjectMapper to map the JSON property name to the annotated Java field's name.
-*/
-
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * 
- * @author *****
- *
- * @param <T>
+ * This class represents a common format set for the response send to the
+ * client. Getters and setters encapsulate the fields of a class by making them
+ * accessible only through its public methods and keep the values themselves
+ * private. @JsonProperty(name), tells Jackson ObjectMapper to map the JSON
+ * property name to the annotated Java field's name.
+ * @param <T> Wrapped type for response body
  */
 public class JsonResponse<T> implements Serializable {
 
@@ -52,7 +47,7 @@ public class JsonResponse<T> implements Serializable {
 	 */
 	@JsonProperty(value = JSONTags.TAG_RESPONSE_STATUS_CODE)
 	private int statusCode;
-	
+
 	/**
 	 * Json property responseDetail.
 	 */
@@ -70,7 +65,7 @@ public class JsonResponse<T> implements Serializable {
 	 */
 	@JsonProperty(value = JSONTags.TAG_RESPONSE_BODY)
 	private T responseBody;
-	
+
 	public Boolean getStatus() {
 		return status;
 	}
@@ -100,7 +95,7 @@ public class JsonResponse<T> implements Serializable {
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
-		
+
 	public String getResponseCode() {
 		return responseCode;
 	}

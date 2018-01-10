@@ -31,11 +31,6 @@ import java.util.Arrays;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
-/**
- * 
- * @author *****
- *
- */
 public class RDockerPreparator {
 	private Metadata metadata;
 
@@ -43,49 +38,35 @@ public class RDockerPreparator {
 
 	private String rhttpProxy;
 
-	/**
-	 * 
-	 * @param metadataParser
-	 * @param httpProxy
-	 * @throws AcumosServiceException
-	 */
 	public RDockerPreparator(MetadataParser metadataParser, String httpProxy) throws AcumosServiceException {
 		this.rhttpProxy = httpProxy;
 		this.metadata = metadataParser.getMetadata();
 		int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
 
 		/*
-		 * if (runtimeVersion[0] == 3) { int[] baseVersion = new int[] { 3, 3, 2
-		 * }; if (compareVersion(baseVersion, runtimeVersion) >= 0) {
-		 * this.rVersion = "3.3.2";
+		 * if (runtimeVersion[0] == 3) { int[] baseVersion = new int[] { 3, 3, 2 }; if
+		 * (compareVersion(baseVersion, runtimeVersion) >= 0) { this.rVersion = "3.3.2";
 		 */
 
 		if (runtimeVersion.length > 0) {
 			String version = Arrays.toString(runtimeVersion);
-			System.out.println("version: "+version);
-			
+			System.out.println("version: " + version);
+
 			version = version.replaceAll(", ", ".").replace("[", "").replace("]", "");
 			this.rVersion = version;
-			System.out.println("rVersion: "+rVersion);
+			System.out.println("rVersion: " + rVersion);
 		} else {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported r version " + metadata.getRuntimeVersion());
 		}
 
 		/*
-		 * } else { throw new
-		 * AcumosServiceException(AcumosServiceException.ErrorCode.
-		 * INVALID_PARAMETER, "Unspported r version " +
-		 * metadata.getRuntimeVersion()); }
+		 * } else { throw new AcumosServiceException(AcumosServiceException.ErrorCode.
+		 * INVALID_PARAMETER, "Unspported r version " + metadata.getRuntimeVersion()); }
 		 */
 
 	}
 
-	/**
-	 * 
-	 * @param outputFolder
-	 * @throws AcumosServiceException
-	 */
 	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createPackageR(new File(outputFolder, "packages.R"), new File(outputFolder, "packages.R"));
@@ -131,12 +112,6 @@ public class RDockerPreparator {
 		}
 	}
 
-	/**
-	 * 
-	 * @param baseVersion
-	 * @param currentVersion
-	 * @return
-	 */
 	public static int compareVersion(int[] baseVersion, int[] currentVersion) {
 		int result = 0;
 		for (int i = 0; i < baseVersion.length; i++) {
@@ -151,11 +126,6 @@ public class RDockerPreparator {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param version
-	 * @return
-	 */
 	public static int[] versionAsArray(String version) {
 		String[] versionArr = version.split("\\.");
 		int[] versionIntArr = new int[versionArr.length];

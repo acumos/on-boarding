@@ -45,35 +45,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * 
- * @author *****
- *
- */
-public class PortalRestClientImpl implements PortalRestClient
-{
-	
+public class PortalRestClientImpl implements PortalRestClient {
+
 	private static Logger logger = LoggerFactory.getLogger(PortalRestClientImpl.class);
 
 	private final String baseUrl;
 	private final RestTemplate restTemplate;
-	
 
 	/**
 	 * 
 	 */
-	public PortalRestClientImpl()
-	{
-		baseUrl ="";
+	public PortalRestClientImpl() {
+		baseUrl = "";
 		restTemplate = null;
 	}
-	/**
-	 * 
-	 * @param webapiUrl
-	 */
-	public PortalRestClientImpl(String webapiUrl)
-	{
-		
+
+	public PortalRestClientImpl(String webapiUrl) {
+
 		if (webapiUrl == null)
 			throw new IllegalArgumentException("Null URL not permitted");
 
@@ -86,24 +74,19 @@ public class PortalRestClientImpl implements PortalRestClient
 		}
 		final HttpHost httpHost = new HttpHost(url.getHost(), url.getPort());
 		// Build a client with a credentials provider
-				CloseableHttpClient httpClient = null;
-				
-				// Create request factory
-				httpClient = HttpClientBuilder.create().build();
-				HttpComponentsClientHttpRequestFactoryBasicAuth requestFactory = new HttpComponentsClientHttpRequestFactoryBasicAuth(
-						httpHost);
-				requestFactory.setHttpClient(httpClient);
+		CloseableHttpClient httpClient = null;
 
-				// Put the factory in the template
-				restTemplate = new RestTemplate();
-				restTemplate.setRequestFactory(requestFactory);
+		// Create request factory
+		httpClient = HttpClientBuilder.create().build();
+		HttpComponentsClientHttpRequestFactoryBasicAuth requestFactory = new HttpComponentsClientHttpRequestFactoryBasicAuth(
+				httpHost);
+		requestFactory.setHttpClient(httpClient);
+
+		// Put the factory in the template
+		restTemplate = new RestTemplate();
+		restTemplate.setRequestFactory(requestFactory);
 	}
-	/**
-	 * 
-	 * @param webapiUrl
-	 * @param user
-	 * @param pass
-	 */
+
 	public PortalRestClientImpl(String webapiUrl, String user, String pass) {
 		if (webapiUrl == null)
 			throw new IllegalArgumentException("Null URL not permitted");
@@ -135,7 +118,7 @@ public class PortalRestClientImpl implements PortalRestClient
 		restTemplate = new RestTemplate();
 		restTemplate.setRequestFactory(requestFactory);
 	}
-	
+
 	private URI buildUri(final String[] path, final Map<String, Object> queryParams, RestPageRequest pageRequest) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.baseUrl);
 		for (int p = 0; p < path.length; ++p)
@@ -166,33 +149,28 @@ public class PortalRestClientImpl implements PortalRestClient
 		return builder.build().encode().toUri();
 	}
 
-
 	@Override
-	public String loginToAcumos(org.json.simple.JSONObject credentials)
-	{
-		URI uri = buildUri(new String[] {"auth","jwtToken" }, null, null);
+	public String loginToAcumos(org.json.simple.JSONObject credentials) {
+		URI uri = buildUri(new String[] { "auth", "jwtToken" }, null, null);
 		logger.debug("jwtToken: uri {}", uri);
-		logger.info("Token URI : "+uri);			
+		logger.info("Token URI : " + uri);
 		AbstractResponseObject result = restTemplate.postForObject(uri, credentials, AbstractResponseObject.class);
-		
+
 		return result.getJwtToken();
 	}
-	
+
 	@Override
-	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider)
-	{
-		
-		URI uri = buildUri(new String[] {"auth","validateToken" }, null, null);
+	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider) {
+
+		URI uri = buildUri(new String[] { "auth", "validateToken" }, null, null);
 		logger.debug("jwtToken: uri {}", uri);
-		logger.info("Validation URI : "+uri);
-		
+		logger.info("Validation URI : " + uri);
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("provider", provider);
 		HttpEntity<?> entity = new HttpEntity<Object>(token, headers);
 		JsonResponse<Object> result = restTemplate.postForObject(uri, entity, JsonResponse.class);
-		
 		return result;
 	}
 
-	
 }

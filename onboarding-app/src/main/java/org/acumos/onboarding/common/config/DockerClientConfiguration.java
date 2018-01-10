@@ -21,7 +21,6 @@
 package org.acumos.onboarding.common.config;
 
 
-import org.acumos.onboarding.Application;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.slf4j.LoggerFactory;

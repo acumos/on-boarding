@@ -19,25 +19,19 @@
  */
 
 package org.acumos.onboarding.component.docker.preparation;
-/**
- * 
- * @author ****
- *
- */
+
 public class Requirement {
 	protected String name;
 	protected String version;
 	protected String operator;
+
 	@Override
 	public String toString() {
-		if(version!=null)
-		{
+		if (version != null) {
 			return "[name:" + name + ", version:" + version + ", operator:" + operator + "]";
-		}
-		else
-		{
+		} else {
 			return "[name:" + name + "]";
 		}
 	}
-	
+
 }

@@ -20,21 +20,11 @@
 
 package org.acumos.onboarding.common.exception;
 
-/**
- * 
- * @author *****
- *
- */
 public class AcumosServiceException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 * @author ****
-	 *
-	 */
 	public enum ErrorCode {
-		OBJECT_NOT_FOUND, CONNECTION_ISSUE, CONSTRAINT_VIOLATION, UNIQUE_CONSTRAINT_VIOLATION, FOREIGN_KEY_CONSTRAINT_VIOLATION, INTERNAL_SERVER_ERROR, OPERATION_NOT_ALLOWED, INVALID_PARAMETER, ACCESS_DENIED, INVALID_TOKEN, INVALID_LICENSE, LICENSE_EXPIRED, LICENSE_POLICY_VIOLATION, PASSWORD_POLICY_VIOLATION,UNKNOWN;
+		OBJECT_NOT_FOUND, CONNECTION_ISSUE, CONSTRAINT_VIOLATION, UNIQUE_CONSTRAINT_VIOLATION, FOREIGN_KEY_CONSTRAINT_VIOLATION, INTERNAL_SERVER_ERROR, OPERATION_NOT_ALLOWED, INVALID_PARAMETER, ACCESS_DENIED, INVALID_TOKEN, INVALID_LICENSE, LICENSE_EXPIRED, LICENSE_POLICY_VIOLATION, PASSWORD_POLICY_VIOLATION, UNKNOWN;
 	}
 
 	private String errorCode;
@@ -46,59 +36,28 @@ public class AcumosServiceException extends Exception {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param message
-	 */
 	public AcumosServiceException(String message) {
 		this(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR, message);
 	}
 
-	/**
-	 * 
-	 * @param message
-	 * @param tw
-	 */
 	public AcumosServiceException(String message, Throwable tw) {
 		this(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR, message, tw);
 	}
 
-	/**
-	 * 
-	 * @param errorCode
-	 * @param message
-	 */
 	public AcumosServiceException(String errorCode, String message) {
 		super(message);
 		this.errorCode = errorCode;
 	}
 
-	/**
-	 * 
-	 * @param errorCode
-	 * @param message
-	 * @param tw
-	 */
 	public AcumosServiceException(String errorCode, String message, Throwable tw) {
 		super(message, tw);
 		this.errorCode = errorCode;
 	}
 
-	/**
-	 * 
-	 * @param errorCode
-	 * @param message
-	 */
 	public AcumosServiceException(AcumosServiceException.ErrorCode errorCode, String message) {
 		this(errorCode.name(), message);
 	}
 
-	/**
-	 * 
-	 * @param errorCode
-	 * @param message
-	 * @param tw
-	 */
 	public AcumosServiceException(AcumosServiceException.ErrorCode errorCode, String message, Throwable tw) {
 		this(errorCode.name(), message, tw);
 	}

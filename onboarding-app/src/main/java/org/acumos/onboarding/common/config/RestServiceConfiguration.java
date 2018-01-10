@@ -41,24 +41,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  */
 public class RestServiceConfiguration {
-	/**
-	 * 
-	 * @return
-	 */
+
 	@Bean
 	public Docket api() {
-
 		Docket docket = new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage(OnboardingController.class.getPackage().getName()))
 				.paths(PathSelectors.any()).build().apiInfo(apiInfo());
 		docket.useDefaultResponseMessages(false);
 		return docket;
-
 	}
 
 	private ApiInfo apiInfo() {
 		ApiInfo apiInfo = new ApiInfoBuilder().title("Model Upload Server").description("Model upload server API.")
-				.version("1.0.0").contact(new Contact("Pankaj Kumar", null, "test@test.com")).build();
+				.version("1.0.0").contact(new Contact("Acumos On-Boarding Team", null, "test@test.com")).build();
 		return apiInfo;
 	}
 

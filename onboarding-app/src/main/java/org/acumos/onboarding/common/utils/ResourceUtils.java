@@ -27,28 +27,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 
-/**
- * 
- * @author ****
- *
- */
 public class ResourceUtils {
 	private ResourceLoader resourceLoader;
 
-	/**
-	 * 
-	 * @param resourceLoader
-	 */
 	public ResourceUtils(ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
-	/**
-	 * 
-	 * @param path
-	 * @return
-	 * @throws AcumosServiceException
-	 */
 	public Resource getResource(String path) throws AcumosServiceException {
 		Resource resource = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
 				.getResource("classpath:" + path);
@@ -58,23 +43,11 @@ public class ResourceUtils {
 		return resource;
 	}
 
-	/**
-	 * 
-	 * @param path
-	 * @return
-	 * @throws AcumosServiceException
-	 */
 	public boolean isResourceExists(String path) throws AcumosServiceException {
 		return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResource("classpath:" + path)
 				.exists();
 	}
 
-	/**
-	 * 
-	 * @param pattern
-	 * @return
-	 * @throws AcumosServiceException
-	 */
 	public Resource[] loadResources(String pattern) throws AcumosServiceException {
 		try {
 			return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(pattern);

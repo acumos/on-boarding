@@ -20,6 +20,8 @@
 
 package org.acumos.onboarding.component.docker.cmd;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.exception.DockerException;
 import com.github.dockerjava.api.exception.NotFoundException;
@@ -27,10 +29,12 @@ import com.github.dockerjava.api.exception.NotFoundException;
 /**
  * This command removes specified Docker image.
  *
- * @author draoullig
- * @see https://docs.docker.com/reference/api/docker_remote_api_v1.19/#tag-an-image-into-a-repository
+ * @see <A HREF="https://docs.docker.com/reference/api/docker_remote_api_v1.19/#tag-an-image-into-a-repository">Docker tag</A>
  */
 public class TagImageCommand extends DockerCommand {
+	
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(TagImageCommand.class);
+
 	private final String image;
 
 	private final String repository;
@@ -41,14 +45,6 @@ public class TagImageCommand extends DockerCommand {
 
 	private final boolean withForce;
 
-	/**
-	 * 
-	 * @param image
-	 * @param repository
-	 * @param tag
-	 * @param ignoreIfNotFound
-	 * @param withForce
-	 */
 	public TagImageCommand(final String image, final String repository, final String tag,
 			final boolean ignoreIfNotFound, final boolean withForce) {
 		this.image = image;

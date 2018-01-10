@@ -44,11 +44,6 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-/**
- * 
- * @author ****
- *
- */
 public class PythonDockerPreprator {
 
 	private Metadata metadata;
@@ -59,17 +54,12 @@ public class PythonDockerPreprator {
 	String extraIndexURL;
 	String trustedHost;
 
-	/**
-	 * @param metadataParser
-	 * @param extraIndexURL
-	 * @param trustedHost
-	 * @throws AcumosServiceException
-	 */
-	public PythonDockerPreprator(MetadataParser metadataParser,String extraIndexURL,String trustedHost) throws AcumosServiceException {
+	public PythonDockerPreprator(MetadataParser metadataParser, String extraIndexURL, String trustedHost)
+			throws AcumosServiceException {
 
 		this.extraIndexURL = extraIndexURL;
 		this.trustedHost = trustedHost;
-		
+
 		this.metadata = metadataParser.getMetadata();
 		this.metadataJson = metadataParser.getMetadataJson();
 		int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
@@ -97,24 +87,17 @@ public class PythonDockerPreprator {
 		}
 	}
 
-	/**
-	 * @param outputFolder
-	 * @throws AcumosServiceException
-	 */
 	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
 		this.prepareYaml(new File(outputFolder, "swagger.yaml"), new File(outputFolder, "swagger.yaml"));
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirementTxt(new File(outputFolder, "requirements.txt"),
 				new File(outputFolder, "requirements.txt"));
 	}
-	
-	/**
-	 * @param outputFolder
-	 * @throws AcumosServiceException
-	 */
+
 	public void prepareDockerAppV2(File outputFolder) throws AcumosServiceException {
-		//this.prepareYaml(new File(outputFolder, "swagger.yaml"), new File(outputFolder, "swagger.yaml"));
-		
+		// this.prepareYaml(new File(outputFolder, "swagger.yaml"), new
+		// File(outputFolder, "swagger.yaml"));
+
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirementTxt(new File(outputFolder, "requirements.txt"),
 				new File(outputFolder, "requirements.txt"));
@@ -182,7 +165,6 @@ public class PythonDockerPreprator {
 				definitionsNode.put("properties", itemsNode);
 			} else {
 
-
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 						"Unsupported media type " + mediaType + " for predict");
 			}
@@ -199,7 +181,8 @@ public class PythonDockerPreprator {
 	public void createDockerFile(File inDockerFile, File outDockerFile) throws AcumosServiceException {
 		try {
 			String dockerFileAsString = new String(UtilityFunction.toBytes(inDockerFile));
-			dockerFileAsString = MessageFormat.format(dockerFileAsString, new Object[] { this.pythonVersion,extraIndexURL,trustedHost });
+			dockerFileAsString = MessageFormat.format(dockerFileAsString,
+					new Object[] { this.pythonVersion, extraIndexURL, trustedHost });
 			FileWriter writer = new FileWriter(outDockerFile);
 			try {
 				writer.write(dockerFileAsString.trim());
@@ -300,11 +283,13 @@ public class PythonDockerPreprator {
 	}
 
 	/**
-	 * return -1 if input version is greater , 0 if equal and 1 if smaller
+	 * returns -1 if input version is greater , 0 if equal and 1 if smaller
 	 * 
-	 * @param inputVersion
-	 * @param desktopBaseVersion
-	 * @return
+	 * @param baseVersion
+	 *            base version
+	 * @param currentVersion
+	 *            current version
+	 * @return -1 if input version is greater , 0 if equal and 1 if smaller
 	 */
 	public static int compareVersion(int[] baseVersion, int[] currentVersion) {
 		int result = 0;
@@ -331,4 +316,3 @@ public class PythonDockerPreprator {
 	}
 
 }
-
