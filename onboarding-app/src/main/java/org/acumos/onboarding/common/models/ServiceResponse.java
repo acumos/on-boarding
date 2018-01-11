@@ -37,7 +37,7 @@ public class ServiceResponse {
 
 	private Object result;
 	
-	public static String sStatus = "SUCCESS";
+	public static final  String sStatus = "SUCCESS";
 
 	//Default Constructor
 	public ServiceResponse() {
