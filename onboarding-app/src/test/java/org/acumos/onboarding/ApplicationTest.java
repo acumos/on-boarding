@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ===============LICENSE_END=========================================================
- */
+ 
 
 package org.acumos.onboarding;
 
@@ -24,22 +24,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
+*//**
  * 
  * @author *****
  *
- */
+ *//*
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationTest {
 
 	@Test
 	public void contextLoads() throws Exception {
 		assert (true);
-		/*
+		
 		 * Application.main(new String[] { "--spring.main.web-environment=true",
 		 * 
 		 * })
 	
-		 */;
+		 ;
 	}
 }
+*/

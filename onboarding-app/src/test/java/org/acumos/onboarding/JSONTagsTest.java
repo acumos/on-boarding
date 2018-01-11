@@ -22,12 +22,9 @@ package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JSONTags;
-import org.acumos.onboarding.services.impl.OnboardingController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import ch.qos.logback.classic.Logger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JSONTagsTest {

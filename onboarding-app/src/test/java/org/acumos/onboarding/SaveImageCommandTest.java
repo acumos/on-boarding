@@ -23,7 +23,6 @@ package org.acumos.onboarding;
 import org.acumos.onboarding.component.docker.cmd.SaveImageCommand;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
