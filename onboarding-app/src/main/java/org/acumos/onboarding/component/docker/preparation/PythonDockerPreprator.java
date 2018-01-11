@@ -59,6 +59,12 @@ public class PythonDockerPreprator {
 	String extraIndexURL;
 	String trustedHost;
 
+	/**
+	 * @param metadataParser
+	 * @param extraIndexURL
+	 * @param trustedHost
+	 * @throws AcumosServiceException
+	 */
 	public PythonDockerPreprator(MetadataParser metadataParser,String extraIndexURL,String trustedHost) throws AcumosServiceException {
 
 		this.extraIndexURL = extraIndexURL;
@@ -91,6 +97,10 @@ public class PythonDockerPreprator {
 		}
 	}
 
+	/**
+	 * @param outputFolder
+	 * @throws AcumosServiceException
+	 */
 	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
 		this.prepareYaml(new File(outputFolder, "swagger.yaml"), new File(outputFolder, "swagger.yaml"));
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
@@ -98,6 +108,10 @@ public class PythonDockerPreprator {
 				new File(outputFolder, "requirements.txt"));
 	}
 	
+	/**
+	 * @param outputFolder
+	 * @throws AcumosServiceException
+	 */
 	public void prepareDockerAppV2(File outputFolder) throws AcumosServiceException {
 		//this.prepareYaml(new File(outputFolder, "swagger.yaml"), new File(outputFolder, "swagger.yaml"));
 		

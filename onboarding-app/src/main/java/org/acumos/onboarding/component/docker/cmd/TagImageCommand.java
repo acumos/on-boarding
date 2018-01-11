@@ -80,7 +80,6 @@ public class TagImageCommand extends DockerCommand {
 
 	@Override
 	public void execute() throws DockerException {
-		// TODO check it when submitting the form
 		if (image == null || image.isEmpty()) {
 			throw new IllegalArgumentException("Please provide an image name");
 		} else if (repository == null || repository.isEmpty()) {

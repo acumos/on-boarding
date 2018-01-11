@@ -50,6 +50,11 @@ public class CustomErrorController implements ErrorController {
 		return PATH;
 	}
 
+	/**
+	 * @param request
+	 * @param exception
+	 * @return
+	 */
 	@RequestMapping(value = PATH)
 	@ResponseBody
 	@ExceptionHandler(value = { AcumosServiceException.class })

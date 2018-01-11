@@ -25,11 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @javax.xml.bind.annotation.XmlRootElement
 @JsonInclude(Include.NON_NULL)
-/**
- * 
- * @author *****
- *
- */
+
 public class ServiceResponse {
 	private String status;
 
@@ -40,7 +36,10 @@ public class ServiceResponse {
 	private String jwtToken;
 
 	private Object result;
+	
+	public static String sStatus = "SUCCESS";
 
+	//Default Constructor
 	public ServiceResponse() {
 	}
 
@@ -58,7 +57,7 @@ public class ServiceResponse {
 	 */
 	public static ServiceResponse successResponse() {
 		ServiceResponse success = new ServiceResponse();
-		success.setStatus("SUCCESS");
+		success.setStatus(sStatus);
 		return success;
 	}
 
@@ -69,15 +68,18 @@ public class ServiceResponse {
 	 */
 	public static ServiceResponse successResponse(Object result) {
 		ServiceResponse success = new ServiceResponse();
-		success.setStatus("SUCCESS");
+		success.setStatus(sStatus);
 		success.setResult(result);
 		return success;
 	}
 	
-	
+	/**
+	 * 
+	 * @return jwtToken
+	 */
 	public static ServiceResponse successJWTResponse(String jwtToken) {
 		ServiceResponse token = new ServiceResponse();
-		token.setStatus("SUCCESS");
+		token.setStatus(sStatus);
 		token.setJwtToken(jwtToken);		
 		return token;
 	}

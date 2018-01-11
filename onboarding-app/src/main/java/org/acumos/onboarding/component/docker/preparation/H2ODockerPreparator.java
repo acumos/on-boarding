@@ -29,7 +29,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Properties;
 
+import org.acumos.onboarding.Application;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
 /**
@@ -42,6 +44,7 @@ public class H2ODockerPreparator {
 
 	private String rVersion;
 	private String serverPort;
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(H2ODockerPreparator.class);
 
 	/**
 	 * 
@@ -81,8 +84,8 @@ public class H2ODockerPreparator {
 			prop.load(input);
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}	
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));
@@ -111,8 +114,14 @@ public class H2ODockerPreparator {
 		}
 	}
 
+	/**
+	 * @param inDockerFile
+	 * @param outDockerFile
+	 * @throws AcumosServiceException
+	 */
 	public void createDockerFile(File inDockerFile, File outDockerFile) throws AcumosServiceException {
 		try {
+			
 			String dockerFileAsString = new String(UtilityFunction.toBytes(inDockerFile));
 
 			String modelname = this.metadata.getSolutionName();

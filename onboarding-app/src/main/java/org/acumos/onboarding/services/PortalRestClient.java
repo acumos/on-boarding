@@ -36,8 +36,8 @@ public interface PortalRestClient {
 	public String loginToAcumos(org.json.simple.JSONObject credentials);
 
 	/**
-	 * 
 	 * @param token
+	 * @param provider
 	 * @return
 	 */
 	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider);

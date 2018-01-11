@@ -132,7 +132,7 @@ public class UtilityFunction {
 				}
 			}
 			boolean deleteFlag = fileStreamPath.delete();
-			//logger.info("File Deleted Status = " + deleteFlag);
+			logger.debug("File Deleted Status = " + deleteFlag);
 		}
 	}
 
@@ -143,7 +143,6 @@ public class UtilityFunction {
 	 */
 	public static String toMD5(String data) {
 		try {
-			//StringBuffer result = new StringBuffer("");
 			StringBuilder result = new StringBuilder("");
 			byte[] bytes = MessageDigest.getInstance("MD5").digest(data.getBytes());
 			for (int i = 0; i < bytes.length; i++) {

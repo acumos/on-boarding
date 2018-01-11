@@ -35,8 +35,6 @@ public class H2ODockerPreparatorTest {
 
 	@Mock
 	H2ODockerPreparator h2ODockerPreparator;
-	File f1 = new File("FirstFile");
-	File f2 = new File("SecondFile");
 
 	@Test
 	public void compareVersionTest() {
@@ -80,7 +78,7 @@ public class H2ODockerPreparatorTest {
 	public void createDockerFileTest() {
 		
 		try {
-			h2ODockerPreparator.createDockerFile(f1, f2);
+			h2ODockerPreparator.createDockerFile(new File("dFile"), new File("dFile1"));
 			assert(true);
 		} catch (AcumosServiceException e) {
 			assert(false);

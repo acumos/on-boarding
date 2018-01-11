@@ -37,6 +37,9 @@ public abstract class DockerCommand
 
 	protected DockerClient client;
 
+	/**
+	 * @throws DockerException
+	 */
 	public abstract void execute() throws DockerException;
 
 	public abstract String getDisplayName();

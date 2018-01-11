@@ -162,6 +162,9 @@ public class OnboardingController implements DockerService {
 		// Property values are injected after the constructor finishes
 	}
 
+	/**
+	 * @throws AcumosServiceException
+	 */
 	@PostConstruct
 	public void init() throws AcumosServiceException {
 		logger.info("Creating docker service instance");

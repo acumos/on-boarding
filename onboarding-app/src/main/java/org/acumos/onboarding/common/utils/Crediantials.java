@@ -21,7 +21,7 @@
 package org.acumos.onboarding.common.utils;
 /**
  * 
- * @author ***
+ * 
  *
  */
 public class Crediantials 
@@ -30,8 +30,10 @@ public class Crediantials
 	private String username;
 	private String password;
 	
+	
+	//Default Constructor
 	public Crediantials() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public String getUsername() {

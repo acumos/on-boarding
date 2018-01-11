@@ -55,6 +55,14 @@ public class CreateImageCommand extends DockerCommand
 	
 	private String imageId;
 
+	/**
+	 * @param dockerFolder
+	 * @param imageName
+	 * @param imageTag
+	 * @param dockerFile
+	 * @param noCache
+	 * @param rm
+	 */
 	public CreateImageCommand(File dockerFolder, String imageName,String imageTag, String dockerFile, boolean noCache, boolean rm)
 	{
 		this.dockerFolder = dockerFolder;

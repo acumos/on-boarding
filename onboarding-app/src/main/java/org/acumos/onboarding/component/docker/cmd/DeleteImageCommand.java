@@ -14,6 +14,11 @@ public class DeleteImageCommand extends DockerCommand {
 
 	private final String registry;
 	
+	/**
+	 * @param image
+	 * @param tag
+	 * @param registry
+	 */
 	public DeleteImageCommand(String image, String tag, String registry){
 		
 		this.imageName = image;

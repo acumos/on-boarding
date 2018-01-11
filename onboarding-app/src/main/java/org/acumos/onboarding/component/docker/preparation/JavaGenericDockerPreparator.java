@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
 /**
@@ -42,7 +43,7 @@ public class JavaGenericDockerPreparator {
 
 	private String rVersion;
 	private String serverPort;
-
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(H2ODockerPreparator.class);
 	/**
 	 * 
 	 * @param metadataParser
@@ -81,8 +82,8 @@ public class JavaGenericDockerPreparator {
 			prop.load(input);
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}	
 		
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
@@ -112,6 +113,11 @@ public class JavaGenericDockerPreparator {
 		}
 	}
 
+	/**
+	 * @param inDockerFile
+	 * @param outDockerFile
+	 * @throws AcumosServiceException
+	 */
 	public void createDockerFile(File inDockerFile, File outDockerFile) throws AcumosServiceException {
 		try {
 			String dockerFileAsString = new String(UtilityFunction.toBytes(inDockerFile));
