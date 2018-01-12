@@ -23,6 +23,10 @@
  */
 package org.acumos.onboarding;
 
+import java.io.File;
+
+import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
@@ -244,6 +248,17 @@ public class OnboardingControllerTest {
 	 * INVALID_PARAMETER.name())) { httpCode = HttpStatus.BAD_REQUEST; } } catch
 	 * (Exception e) { e.printStackTrace(); } }
 	 */
+
+	@Test
+	public void generateTOSCATest() {
+		 String filePath = FilePathTest.filePath();
+		 File localProtobufFile = new File(filePath+"model.proto");
+		 File localMetadataFile = new File(filePath+"metadata.json");
+		 Metadata m= new Metadata();
+		 on.generateTOSCA(localProtobufFile, localMetadataFile, m);
+		 assert(true);
+		
+	}
 
 	@Test
 	public void getToolTypeCodeTest() {

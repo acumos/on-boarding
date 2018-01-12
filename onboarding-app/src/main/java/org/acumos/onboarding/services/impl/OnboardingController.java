@@ -381,7 +381,7 @@ public class OnboardingController implements DockerService {
 	 * Validates it and returns validity status and ownerId.
 	 */
 	@SuppressWarnings("unchecked")
-	public JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
+	protected JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
 
 		JSONObject obj1 = new JSONObject();
 		obj1.put("jwtToken", jwtToken);
@@ -789,7 +789,7 @@ public class OnboardingController implements DockerService {
 
 	}
 
-	private void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
+	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
 		logger.info("Generate TOSCA started");
 		try {
 
@@ -821,7 +821,7 @@ public class OnboardingController implements DockerService {
 		}
 	}
 	
-	public void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+	private void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
 
 		try {
 
@@ -901,7 +901,7 @@ public class OnboardingController implements DockerService {
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}
 	}
-	public void listFilesAndFilesSubDirectories(File directory)
+	private void listFilesAndFilesSubDirectories(File directory)
     {
 
            File[] fList = directory.listFiles();
