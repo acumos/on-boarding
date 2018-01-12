@@ -326,7 +326,7 @@ public class OnboardingController implements DockerService {
 				} finally {
 					if (isSuccess == false) {
 						logger.info("Onboarding Failed, Reverting failed solutions and artifacts.");
-						RevertbackOnboarding(metadataParser.getMetadata(), imageUri);
+						revertbackOnboarding(metadataParser.getMetadata(), imageUri);
 					}
 					UtilityFunction.deleteDirectory(outputFolder);
 				}
@@ -685,7 +685,7 @@ public class OnboardingController implements DockerService {
 		}
 	}
 
-	private String getModelVersion(String solutionId) {
+	public String getModelVersion(String solutionId) {
 		int count = 0;
 		List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
@@ -821,7 +821,7 @@ public class OnboardingController implements DockerService {
 		}
 	}
 	
-	private void RevertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+	public void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
 
 		try {
 

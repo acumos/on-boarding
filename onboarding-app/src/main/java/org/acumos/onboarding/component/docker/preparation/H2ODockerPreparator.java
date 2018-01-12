@@ -29,7 +29,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Properties;
 
-import org.acumos.onboarding.Application;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;

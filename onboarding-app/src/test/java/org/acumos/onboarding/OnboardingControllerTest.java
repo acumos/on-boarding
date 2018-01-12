@@ -23,9 +23,15 @@
  */
 package org.acumos.onboarding;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
+import org.acumos.cds.domain.MLPArtifact;
+import org.acumos.nexus.client.NexusArtifactClient;
+import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
@@ -249,8 +255,42 @@ public class OnboardingControllerTest {
 	 */
 
 	@Test
-	public void listFilesAndFilesSubDirectories() throws AcumosServiceException {
+	public void listFilesAndFilesSubDirectoriesTest() throws AcumosServiceException {
 		on.listFilesAndFilesSubDirectories(new File("dFile"));
 		assert (true);
+	}
+	@Test
+	public void revertbackOnboardingTest() throws AcumosServiceException {
+		
+		String imageUri="abcd";
+		Metadata metadataParser = new Metadata();
+		on.revertbackOnboarding(metadataParser, imageUri);
+		RepositoryLocation repositoryLocation = new RepositoryLocation();
+		repositoryLocation.setId("1");
+		repositoryLocation.setUrl("http://cognita_model_rw:not4you@cognita-nexus01:8081/repository/repo_cognita_model_maven");
+		repositoryLocation.setUsername("cognita_model_rw");
+		repositoryLocation.setPassword("not4you");
+		NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
+		MLPArtifact mlpArtifact = new MLPArtifact();
+		mlpArtifact.setArtifactTypeCode("hello");
+		mlpArtifact.setUri("http://cognita_model_rw:not4you@cognita-nexus01:8081/repository/repo_cognita_model_maven");
+		
+		if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
+			try {
+				nexusClient.deleteArtifact(mlpArtifact.getUri());
+				assert (true);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				assert (true);
+			}
+			
+		}
+	}
+	@Test 
+	public void getModelVersionTest(){
+		String solutionId="d237fefc-1d2f-41d5-9bb4-2abbf533e687";
+		on.getModelVersion(solutionId);
+		assert(true);
 	}
 }
