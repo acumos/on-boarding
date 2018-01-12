@@ -23,15 +23,6 @@
  */
 package org.acumos.onboarding;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-
-import org.acumos.cds.domain.MLPArtifact;
-import org.acumos.nexus.client.NexusArtifactClient;
-import org.acumos.nexus.client.RepositoryLocation;
-import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
@@ -46,10 +37,10 @@ import org.springframework.web.client.RestTemplate;
 public class OnboardingControllerTest {
 
 	@Mock
-	OnboardingController on = new OnboardingController();
-
-	@Mock
 	RestTemplate restTemplate;
+    
+	
+	OnboardingController on = new OnboardingController();
 
 	@InjectMocks
 	PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
@@ -255,14 +246,9 @@ public class OnboardingControllerTest {
 	 */
 
 	@Test
-	public void listFilesAndFilesSubDirectoriesTest() throws AcumosServiceException {
-		on.listFilesAndFilesSubDirectories(new File("dFile"));
+	public void getToolTypeCodeTest() {
+		String toolkit = "Scikit-Learn";
+		on.getToolTypeCode(toolkit);
 		assert (true);
-	}
-	@Test 
-	public void getModelVersionTest(){
-		String solutionId="d237fefc-1d2f-41d5-9bb4-2abbf533e687";
-		on.getModelVersion(solutionId);
-		assert(true);
 	}
 }

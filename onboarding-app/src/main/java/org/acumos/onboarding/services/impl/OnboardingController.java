@@ -381,7 +381,7 @@ public class OnboardingController implements DockerService {
 	 * Validates it and returns validity status and ownerId.
 	 */
 	@SuppressWarnings("unchecked")
-	protected JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
+	public JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
 
 		JSONObject obj1 = new JSONObject();
 		obj1.put("jwtToken", jwtToken);
@@ -609,7 +609,7 @@ public class OnboardingController implements DockerService {
 	}
 
 
-	protected MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
+	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
 		logger.info("Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
@@ -636,7 +636,7 @@ public class OnboardingController implements DockerService {
 		}
 	}
 
-	private String getToolTypeCode(String toolkit) {
+	public String getToolTypeCode(String toolkit) {
 		ToolkitTypeCode code = null;
 
 		if (toolkit.equals("Scikit-Learn".toLowerCase())) {
