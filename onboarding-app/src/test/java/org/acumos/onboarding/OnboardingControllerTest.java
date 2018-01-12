@@ -259,34 +259,6 @@ public class OnboardingControllerTest {
 		on.listFilesAndFilesSubDirectories(new File("dFile"));
 		assert (true);
 	}
-	@Test
-	public void revertbackOnboardingTest() throws AcumosServiceException {
-		
-		String imageUri="abcd";
-		Metadata metadataParser = new Metadata();
-		on.revertbackOnboarding(metadataParser, imageUri);
-		RepositoryLocation repositoryLocation = new RepositoryLocation();
-		repositoryLocation.setId("1");
-		repositoryLocation.setUrl("http://cognita_model_rw:not4you@cognita-nexus01:8081/repository/repo_cognita_model_maven");
-		repositoryLocation.setUsername("cognita_model_rw");
-		repositoryLocation.setPassword("not4you");
-		NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
-		MLPArtifact mlpArtifact = new MLPArtifact();
-		mlpArtifact.setArtifactTypeCode("hello");
-		mlpArtifact.setUri("http://cognita_model_rw:not4you@cognita-nexus01:8081/repository/repo_cognita_model_maven");
-		
-		if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
-			try {
-				nexusClient.deleteArtifact(mlpArtifact.getUri());
-				assert (true);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				assert (true);
-			}
-			
-		}
-	}
 	@Test 
 	public void getModelVersionTest(){
 		String solutionId="d237fefc-1d2f-41d5-9bb4-2abbf533e687";
