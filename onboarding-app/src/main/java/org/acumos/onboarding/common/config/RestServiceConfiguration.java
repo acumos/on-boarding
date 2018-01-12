@@ -37,7 +37,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 /**
  * 
- * @author ****
+ * provides information of the rest api.
  *
  */
 public class RestServiceConfiguration {

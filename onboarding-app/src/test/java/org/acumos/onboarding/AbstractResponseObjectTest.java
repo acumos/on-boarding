@@ -23,6 +23,7 @@ package org.acumos.onboarding;
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -33,7 +34,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractResponseObjectTest {
 
-	AbstractResponseObject abstractResponseObject = new AbstractResponseObject();
+	@Mock
+	AbstractResponseObject abstractResponseObject;
 
 	@Test
 	public void AbstractResponseTest() {

@@ -53,4 +53,9 @@ public class AcumosServiceExceptionTest {
 	public void AcumosServiceExceptionTest2() {
 		AcumosServiceException acumosServiceException = new AcumosServiceException(AcumosServiceException.ErrorCode.CONNECTION_ISSUE,"Service is not available");
 	}
+	
+	@Test
+	public void AcumosServiceExceptionTest3() {
+		acumosServiceException.setErrorCode("OBJECT_NOT_FOUND");
+	}
 }

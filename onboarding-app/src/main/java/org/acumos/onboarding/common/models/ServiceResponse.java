@@ -23,6 +23,10 @@ package org.acumos.onboarding.common.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * used to set the status
+ *
+ */
 @javax.xml.bind.annotation.XmlRootElement
 @JsonInclude(Include.NON_NULL)
 
@@ -43,6 +47,11 @@ public class ServiceResponse {
 	public ServiceResponse() {
 	}
 
+	/**
+	 * @param errorCode
+	 * @param errorMessage
+	 * @return
+	 */
 	public static ServiceResponse errorResponse(String errorCode, String errorMessage) {
 		ServiceResponse error = new ServiceResponse();
 		error.setStatus("ERROR");
@@ -102,6 +111,9 @@ public class ServiceResponse {
 		return jwtToken;
 	}
 
+	/**
+	 * @param jwtToken
+	 */
 	public void setJwtToken(String jwtToken) {
 		this.jwtToken = jwtToken;
 	}

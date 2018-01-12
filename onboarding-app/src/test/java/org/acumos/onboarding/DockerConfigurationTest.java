@@ -31,11 +31,13 @@ public class DockerConfigurationTest {
 	
 	DockerConfiguration dockerConfiguration = new DockerConfiguration();
 	
+	/**
+	 * test case method
+	 */
 	@Test 
 	public void dockerConfigurationTest1() {
 		//#docker.config=/docker_host/.docker
 		dockerConfiguration.setConfig("/docker_host/.docker");
-		String apiVersion = dockerConfiguration.getApiVersion();
 		dockerConfiguration.getHost();
 		dockerConfiguration.getImagetagPrefix();
 		dockerConfiguration.getPort();
@@ -51,8 +53,7 @@ public class DockerConfigurationTest {
 		dockerConfiguration.setRegistryUrl("https://index.docker.io/v1/");
 		dockerConfiguration.setPort(8080);
 		dockerConfiguration.setRequestTimeout(10);
-		dockerConfiguration.setSocket(true);
-		boolean issocket = dockerConfiguration.isSocket();
+		dockerConfiguration.setSocket(true);;
 		dockerConfiguration.getMaxTotalConnections();
 		dockerConfiguration.setMaxTotalConnections(20);
 		dockerConfiguration.getRequestTimeout();

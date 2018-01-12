@@ -4,14 +4,15 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.ResourceLoader;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceUtilsTest {
 
-	@Mock
-	ResourceUtils resourceUtils;
+	
+	private ResourceLoader resourceLoader;
+	ResourceUtils resourceUtils = new ResourceUtils(resourceLoader);
 
 	String path = "samplePath";
 

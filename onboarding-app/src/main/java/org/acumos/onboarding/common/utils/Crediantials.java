@@ -19,9 +19,9 @@
  */
 
 package org.acumos.onboarding.common.utils;
+
 /**
- * 
- * 
+ * class used for credential information
  *
  */
 public class Crediantials 
@@ -30,8 +30,9 @@ public class Crediantials
 	private String username;
 	private String password;
 	
-	
-	//Default Constructor
+	/**
+	 * Default Constructor
+	 */
 	public Crediantials() {
 		
 	}

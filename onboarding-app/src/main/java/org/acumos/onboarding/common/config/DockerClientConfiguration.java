@@ -21,6 +21,8 @@
 package org.acumos.onboarding.common.config;
 
 
+import org.acumos.onboarding.Application;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,7 @@ import ch.qos.logback.classic.Level;
 
 /**
  * 
- * @author  xxx
- * 
+ *  
  * Set the docker configuration.
  * 
  *
@@ -44,6 +45,8 @@ public class DockerClientConfiguration
 	
 	@Autowired
 	private Environment environment;
+	
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(DockerClientConfiguration.class);
 
 	@Bean
 	public DockerConfiguration dockerConfiguration()
@@ -73,7 +76,7 @@ public class DockerClientConfiguration
 		config.setCmdExecFactory(environment.getProperty("docker.cmdExecFactory", config.getCmdExecFactory()));
 		config.setMaxTotalConnections(Integer.parseInt(environment.getProperty("docker.max_total_connections", String.valueOf(config.getMaxTotalConnections()))));
 		config.setMaxPerRouteConnections(Integer.parseInt(environment.getProperty("docker.max_per_route_connections", String.valueOf(config.getMaxPerRouteConnections()))));
-		System.err.println("docker host:"+config.getHost());
+		logger.error("docker host:"+config.getHost());
 		return config;
 	}
 }

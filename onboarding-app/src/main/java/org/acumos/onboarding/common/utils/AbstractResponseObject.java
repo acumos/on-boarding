@@ -40,8 +40,10 @@ public class AbstractResponseObject {
 		
 	}
 
-	
 
+	/**
+	 * @return 
+	 */
 	public boolean isLoginPassExpire() {
 		return loginPassExpire;
 	}
