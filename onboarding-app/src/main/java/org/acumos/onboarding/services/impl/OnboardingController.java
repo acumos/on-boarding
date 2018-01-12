@@ -142,9 +142,9 @@ public class OnboardingController implements DockerService {
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	private String portalURL;
 
-	String modelOriginalName = null;
+	String modelOriginalName;
 
-	String dockerImageURI = null;
+	String dockerImageURI;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
