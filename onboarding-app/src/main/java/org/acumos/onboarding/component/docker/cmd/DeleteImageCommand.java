@@ -30,6 +30,14 @@ public class DeleteImageCommand extends DockerCommand {
 		return imageName;
 	}
 	
+	public String getTag() {
+		return tag;
+	}
+
+	public String getRegistry() {
+		return registry;
+	}
+	
 	@Override
 	public void execute() throws DockerException {
 		if (!StringUtils.isNotBlank(imageName)) {
