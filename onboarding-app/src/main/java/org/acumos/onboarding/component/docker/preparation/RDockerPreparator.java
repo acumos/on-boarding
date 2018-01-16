@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
+import java.util.Arrays;
+
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
@@ -51,18 +53,32 @@ public class RDockerPreparator {
 		this.rhttpProxy = httpProxy;
 		this.metadata = metadataParser.getMetadata();
 		int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
-		if (runtimeVersion[0] == 3) {
-			int[] baseVersion = new int[] { 3, 3, 2 };
-			if (compareVersion(baseVersion, runtimeVersion) >= 0) {
-				this.rVersion = "3.3.2";
-			} else {
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"Unspported r version " + metadata.getRuntimeVersion());
-			}
+
+		/*
+		 * if (runtimeVersion[0] == 3) { int[] baseVersion = new int[] { 3, 3, 2
+		 * }; if (compareVersion(baseVersion, runtimeVersion) >= 0) {
+		 * this.rVersion = "3.3.2";
+		 */
+
+		if (runtimeVersion.length > 0) {
+			String version = Arrays.toString(runtimeVersion);
+			System.out.println("version: "+version);
+			
+			version = version.replaceAll(", ", ".").replace("[", "").replace("]", "");
+			this.rVersion = version;
+			System.out.println("rVersion: "+rVersion);
 		} else {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported r version " + metadata.getRuntimeVersion());
 		}
+
+		/*
+		 * } else { throw new
+		 * AcumosServiceException(AcumosServiceException.ErrorCode.
+		 * INVALID_PARAMETER, "Unspported r version " +
+		 * metadata.getRuntimeVersion()); }
+		 */
+
 	}
 
 	/**

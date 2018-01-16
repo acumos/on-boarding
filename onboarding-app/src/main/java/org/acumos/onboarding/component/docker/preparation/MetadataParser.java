@@ -43,7 +43,6 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
  *
  */
 public class MetadataParser {
-	private final String SCHEMA_FILE = "/model-schema.json";
 
 	private Metadata metadata;
 
@@ -59,8 +58,30 @@ public class MetadataParser {
 	 */
 	public MetadataParser(File dataFile) throws AcumosServiceException {
 		try {
-			final JsonNode schema = JsonLoader.fromResource(SCHEMA_FILE);
+			
+			String schemafile = null;
+			
 			this.metadataJson = JsonLoader.fromFile(dataFile);
+			String schemaVersion = metadataJson.get("schema").asText();
+			System.out.println("schemaVersion: "+schemaVersion);
+			
+/*			String schemaVersion1 = schemaVersion.replace(".", "");
+			schemafile = "SCHEMA_FILE"+"_"+schemaVersion1;
+			
+			System.out.println("schemafile: " + schemafile);*/
+			if(schemaVersion.contains("1")){
+				schemafile = "/model-schema-0.1.0.json";
+			}else if(schemaVersion.contains("2")){
+				schemafile = "/model-schema-0.2.0.json";
+			}else if(schemaVersion.contains("3")){
+				schemafile = "/model-schema-0.3.0.json";
+			}else if(schemaVersion.contains("4")){
+				schemafile = "/model-schema-0.4.0.json";
+			}else if(schemaVersion.contains("5")){
+				schemafile = "/model-schema-0.5.0.json";
+			}
+			
+			final JsonNode schema = JsonLoader.fromResource(schemafile);
 
 			final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
 			com.github.fge.jsonschema.main.JsonValidator validator = factory.getValidator();
@@ -85,9 +106,13 @@ public class MetadataParser {
 			}
 
 			this.metadata = new Metadata();
-			String modelName = UtilityFunction.getGUID();
+			String modeldummy = UtilityFunction.getGUID();
+			String modelName;
 			if (metadataJson.hasNonNull("name"))
-				modelName = metadataJson.get("name").asText();
+				modeldummy = metadataJson.get("name").asText();
+			
+			
+			modelName = modeldummy.replaceAll("\\s", "");
 
 			// validating Model-Name
 			if (!modelName.matches("^[a-zA-Z0-9_-]*$")) {
