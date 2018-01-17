@@ -70,9 +70,6 @@
             },
             {
               "$ref": "#/definitions/H2ODependencies"
-            },
-            {
-              "$ref": "#/definitions/RDependencies"
             }
           ]
         }

@@ -241,16 +241,16 @@ public class OnboardingController implements DockerService {
 			}
 
 			// Call to validate JWT Token.....!
-			//JsonResponse<Object> valid = validate(authorization, provider);
+			JsonResponse<Object> valid = validate(authorization, provider);
 
-			boolean isValidToken = true; //valid.getStatus();
+			boolean isValidToken = valid.getStatus();
 
 			String ownerId;
 			String imageUri = null;
 
 			if (isValidToken) {
 				logger.info("Token validation successful");
-				ownerId = "SampleOwner"; //valid.getResponseBody().toString();
+				ownerId = valid.getResponseBody().toString();
 
 				if (ownerId == null)
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND, "Either  username/password is invalid.");
@@ -294,7 +294,7 @@ public class OnboardingController implements DockerService {
 
 					MLPSolution mlpSolution = null;
 
-/*					List<MLPSolution> solList = getExistingSolution(mData);
+					List<MLPSolution> solList = getExistingSolution(mData);
 
 					boolean isListEmpty = solList.isEmpty();
 
@@ -305,7 +305,7 @@ public class OnboardingController implements DockerService {
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
 
-					createSolutionRevision(mData);*/
+					createSolutionRevision(mData);
 					
 					imageUri = dockerizeFile(metadataParser, localmodelFile);
 
