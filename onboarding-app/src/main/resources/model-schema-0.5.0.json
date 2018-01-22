@@ -15,8 +15,7 @@
       "description": "The name of the model being on-boarded to Acumos, e.g. 'my-model'."
     },
     "runtime": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/Runtime"},
+      "$ref": "#/definitions/Runtime",
       "description": "Describes the runtime and dependencies required by the model to operate."
     },
     "methods": {
@@ -71,9 +70,6 @@
             },
             {
               "$ref": "#/definitions/H2ODependencies"
-            },
-            {
-              "$ref": "#/definitions/RDependencies"
             }
           ]
         }
