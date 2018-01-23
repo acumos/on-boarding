@@ -25,7 +25,6 @@ package org.acumos.onboarding;
 
 import java.io.File;
 
-import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
