@@ -54,12 +54,6 @@ public class MetadataParser {
 			String schemaVersion = metadataJson.get("schema").asText();
 			System.out.println("schemaVersion: " + schemaVersion);
 
-			/*
-			 * String schemaVersion1 = schemaVersion.replace(".", ""); schemafile =
-			 * "SCHEMA_FILE"+"_"+schemaVersion1;
-			 * 
-			 * System.out.println("schemafile: " + schemafile);
-			 */
 			if (schemaVersion.contains("1")) {
 				schemafile = "/model-schema-0.1.0.json";
 			} else if (schemaVersion.contains("2")) {
@@ -114,29 +108,57 @@ public class MetadataParser {
 
 			if (metadataJson.hasNonNull("modelVersion"))
 				metadata.setVersion(metadataJson.get("modelVersion").asText());
-
-			JsonNode runtimeNode = metadataJson.get("runtime");
-			String runtimeName = runtimeNode.get("name").asText().toLowerCase();
-			metadata.setRuntimeName(runtimeName);
-			metadata.setRuntimeVersion(runtimeNode.get("version").asText());
-
-			if (metadataJson.hasNonNull("toolkit"))
-				metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
-
-			if (runtimeNode.get("toolkit") != null) {
-				metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
-			}
-
+			
+			String runtimeName;
 			JsonNode requirementsNode = null;
+			JsonNode runtimeNode = metadataJson.get("runtime");
+			
+			if(runtimeNode.isArray()){
+				
+				for(JsonNode trav : runtimeNode){
+					runtimeName = trav.get("name").asText().toLowerCase();
+					metadata.setRuntimeName(runtimeName);
+					metadata.setRuntimeVersion(trav.get("version").asText());
 
-			if (("python").equals(runtimeName)) {
-				requirementsNode = runtimeNode.get("dependencies").get("pip").get("requirements");
-			} else if (("r").equals(runtimeName)) {
-				requirementsNode = runtimeNode.get("dependencies").get("packages");
-			} else if (("h2o").equals(runtimeName)) {
-				requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
-			} else if (("javageneric").equals(runtimeName)) {
-				requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
+					if (metadataJson.hasNonNull("toolkit"))
+						metadata.setToolkit(trav.get("toolkit").asText().toLowerCase());
+
+					if (trav.get("toolkit") != null) {
+						metadata.setToolkit(trav.get("toolkit").asText().toLowerCase());
+					}
+
+					if (("python").equals(runtimeName)) {
+						requirementsNode = trav.get("dependencies").get("pip").get("requirements");
+					} else if (("r").equals(runtimeName)) {
+						requirementsNode = trav.get("dependencies").get("packages");
+					} else if (("h2o").equals(runtimeName)) {
+						requirementsNode = trav.get("dependencies").get("java").get("requirements");
+					} else if (("javageneric").equals(runtimeName)) {
+						requirementsNode = trav.get("dependencies").get("java").get("requirements");
+					}
+				}
+			}
+			else {
+				runtimeName = runtimeNode.get("name").asText().toLowerCase();
+				metadata.setRuntimeName(runtimeName);
+				metadata.setRuntimeVersion(runtimeNode.get("version").asText());
+
+				if (metadataJson.hasNonNull("toolkit"))
+					metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
+
+				if (runtimeNode.get("toolkit") != null) {
+					metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
+				}
+
+				if (("python").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("pip").get("requirements");
+				} else if (("r").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("packages");
+				} else if (("h2o").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
+				} else if (("javageneric").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
+				}
 			}
 
 			if (requirementsNode != null) {
