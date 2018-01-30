@@ -241,16 +241,16 @@ public class OnboardingController implements DockerService {
 			}
 
 			// Call to validate JWT Token.....!
-			//JsonResponse<Object> valid = validate(authorization, provider);
+			JsonResponse<Object> valid = validate(authorization, provider);
 
-			boolean isValidToken = true;//valid.getStatus();
+			boolean isValidToken = valid.getStatus();
 
 			String ownerId;
 			String imageUri = null;
 
 			if (isValidToken) {
 				logger.info("Token validation successful");
-				ownerId = "SampleOwner";//valid.getResponseBody().toString();
+				ownerId = valid.getResponseBody().toString();
 
 				if (ownerId == null)
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
@@ -295,7 +295,7 @@ public class OnboardingController implements DockerService {
 
 					MLPSolution mlpSolution = null;
 
-				/*	List<MLPSolution> solList = getExistingSolution(mData);
+					List<MLPSolution> solList = getExistingSolution(mData);
 
 					boolean isListEmpty = solList.isEmpty();
 
@@ -306,7 +306,7 @@ public class OnboardingController implements DockerService {
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
 
-					createSolutionRevision(mData);*/
+					createSolutionRevision(mData);
 
 					imageUri = dockerizeFile(metadataParser, localmodelFile);
 
@@ -709,9 +709,8 @@ public class OnboardingController implements DockerService {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = fileInputStream.available();
-			UploadArtifactInfo artifactInfo = null;
-			/*artifactClient.uploadArtifact(nexusGroupId, metadata.getModelName(),
-					metadata.getVersion(), ext, size, fileInputStream);*/
+			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId, metadata.getModelName(),
+					metadata.getVersion(), ext, size, fileInputStream);
 			logger.info(
 					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
