@@ -9,6 +9,8 @@ RUN echo $http_proxy
 RUN echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
 
 RUN apt-get update
+RUN curl -OL https://github.com/google/protobuf/releases/download/v3.4.0/protoc-3.4.0-linux-x86_64.zip
+RUN unzip protoc-3.4.0-linux-x86_64.zip
 RUN apt-get -y install r-base
 RUN apt-get -y install libprotobuf-dev
 RUN apt-get -y install libcurl4-gnutls-dev
