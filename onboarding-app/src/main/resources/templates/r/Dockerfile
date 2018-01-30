@@ -9,7 +9,6 @@ RUN echo $http_proxy
 RUN echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
 
 RUN apt-get update
-wget http://website.com/files/file.zip
 RUN apt-get -y install r-base
 RUN apt-get -y install libprotobuf-dev
 RUN apt-get -y install libcurl4-gnutls-dev
