@@ -448,7 +448,7 @@ public class OnboardingController implements DockerService {
 			try {
 				// TODO: why is this modelFolder variable ignored?
 				File modelFolder = new File(outputFolder, "model");
-				UtilityFunction.unzip(localmodelFile, outputFolder.getAbsolutePath());
+				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
 			} catch (IOException e) {
 				logger.warn("Python templatization failed", e);
 			}
