@@ -28,6 +28,10 @@ RUN chown -R root /usr/local/include/google
 EXPOSE {0}
 
 #Deploy Model service
+ADD /app/bin/getVersion.sh /app/bin/getVersion.sh
+RUN chmod 777 /app/bin/getVersion.sh
+ADD /app/bin/protoc /app/bin/protoc
+RUN chmod 777 /app/bin/protoc
 ADD {1} /app/app.jar
 ADD {2} /app/models/model.jar
 ADD default.proto /app/models/default.proto
