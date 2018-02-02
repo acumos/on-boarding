@@ -36,4 +36,4 @@ ADD {1} /app/app.jar
 ADD {2} /app/models/model.jar
 ADD default.proto /app/models/default.proto
 ADD modelConfig.properties /app/models/modelConfig.properties
-#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.config.location=application.properties","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.config.location=application.properties","-jar","/app/app.jar"]
