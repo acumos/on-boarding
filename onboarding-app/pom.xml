@@ -28,8 +28,7 @@
 		section. The Jenkins server specifies Acumos repositories. Developers should 
 		ensure their ~/.m2/settings.xml file has the following URLs in both the repositories 
 		and pluginRepositories sections or in a profile: https://nexus.acumos.org/content/repositories/snapshots/ 
-		https://nexus.acumos.org/content/repositories/releases/ -->
-		
+		https://nexus.acumos.org/content/repositories/releases/ -->	
 
 	<dependencies>
 		<dependency>
