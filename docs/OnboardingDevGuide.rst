@@ -274,6 +274,6 @@ It gets invoked after the successful authentication.
 .. |image4| image:: ./media/image5.png
    :width: 6.26806in
    :height: 2.5in
-.. |image5| image:: ./media/image8.png
+.. |image5| image:: ./media/image6.png
    :width: 3.90625in
    :height: 4.94792in
