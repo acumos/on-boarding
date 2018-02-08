@@ -1,9 +1,11 @@
-on-boarding
------------
-    
+Acumos On-Boarding Application
+------------------------------
+
 .. toctree::
        :maxdepth: 2
-    
-       on-boarding
+
+       OnboardingDevGuide
+       OnboardingUserGuide
        release-notes
-       tutorials/index                  
+       tutorials/index
+
