@@ -424,9 +424,8 @@ public class OnboardingController implements DockerService {
 		 */
 
 		/* TRUE - OR , FALSE - AND */
-		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0, 9));
-		PageImpl<MLPSolution>  list =   pageResponse.pageImpl();
-		return list.getContent();
+		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0,9));
+		return pageResponse.getContent();
 
 	}
 
