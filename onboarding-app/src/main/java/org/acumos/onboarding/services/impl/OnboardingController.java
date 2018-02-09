@@ -42,6 +42,7 @@ import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -74,6 +75,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -422,9 +424,9 @@ public class OnboardingController implements DockerService {
 		 */
 
 		/* TRUE - OR , FALSE - AND */
-		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0, 9));
-
-		return list;
+		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0, 9));
+		PageImpl<MLPSolution>  list =   pageResponse.pageImpl();
+		return list.getContent();
 
 	}
 
