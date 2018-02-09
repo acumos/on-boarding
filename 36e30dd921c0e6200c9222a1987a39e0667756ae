@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1514d130_e3b420d8",
+        "filename": "docs/OnboardingDevGuide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-09T11:02:08Z",
+      "side": 1,
+      "message": "This does not look like valid RST.  It adds the section numbers automatically, right?",
+      "revId": "36e30dd921c0e6200c9222a1987a39e0667756ae",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5b58caa_0ea8793c",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-09T11:02:08Z",
+      "side": 1,
+      "message": "Please use March 2018?",
+      "revId": "36e30dd921c0e6200c9222a1987a39e0667756ae",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
