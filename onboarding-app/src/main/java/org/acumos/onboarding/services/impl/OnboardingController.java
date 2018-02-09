@@ -41,6 +41,7 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -421,7 +422,7 @@ public class OnboardingController implements DockerService {
 		 */
 
 		/* TRUE - OR , FALSE - AND */
-		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
+		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0, 9));
 
 		return list;
 
