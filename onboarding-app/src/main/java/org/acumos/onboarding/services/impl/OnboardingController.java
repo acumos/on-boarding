@@ -408,21 +408,6 @@ public class OnboardingController implements DockerService {
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
 
-		/* this below commneted logic is for CDS 1.10.0 */
-
-		/*
-		 * int page = 0; int size = 9; RestPageRequest pageRequest = new
-		 * RestPageRequest(page, size);
-		 * 
-		 * SearchCriteria onboardSearchCriteria = new SearchCriteria( new
-		 * SearchCriterion("ownerId", SearchOperation.EQUALS, metadata.getOwnerId()))
-		 * .and(new SearchCriterion("name", SearchOperation.EQUALS,
-		 * metadata.getModelName())); RestPageResponse<MLPSolution> onboardMatches =
-		 * cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
-		 * 
-		 * List<MLPSolution> list = onboardMatches.getContent();
-		 */
-
 		/* TRUE - OR , FALSE - AND */
 		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0,9));
 		return pageResponse.getContent();
