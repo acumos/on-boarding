@@ -1,16 +1,13 @@
-**=========================================**
+=============================
+Acumos Onboarding Users Guide
+=============================
 
-**Acumos Onboarding Users Guide**
+1. Introduction
+---------------
 
-**=========================================**
+**This is the User guide for Onboarding.**
 
-**1. Introduction**
-
-**========================**
-
-**This is the User guide for Onboarding. **
-
-**\**1.1 What is Onboarding \\?*\***
+**1.1 What is Onboarding ?**
 
 Acumos is intended to enable the use of a wide range of tools and
 technologies in the development of machine learning models including
@@ -36,13 +33,11 @@ We must collect enough model metadata to enable this.
 
 In short, our goals are to:
 
-• Create wrapper libraries that can serialize/deserialize models and
-provide a standard native interface
+- Create wrapper libraries that can serialize/deserialize models and provide a standard native interface
 
-• Represent model I/O such that Acumos can generate microservices and
-validate connections between them.
+- Represent model I/O such that Acumos can generate microservices and validate connections between them.
 
-**\**1.2 Target Users*\***
+**1.2 Target Users**
 
 This guide is targeted towards the open source user community that:
 
@@ -51,9 +46,8 @@ This guide is targeted towards the open source user community that:
 2. Intends to contribute code to enhance the functionality of the
 Onboarding.
 
-**2. Technology & Framework Used**
-
-**==============================**
+2. Technology & Framework Used
+------------------------------
 
 Technology and Framework used are as follows:
 
@@ -65,11 +59,10 @@ Technology and Framework used are as follows:
 
 -  Docker Java Library
 
-**3. Onboarding Architecture & API’s**
+3. Onboarding Architecture & APIs
+---------------------------------
 
-**==================================**
-
-**\**3.1 Onboarding High Level Architecture \*\***
+**3.1 Onboarding High Level Architecture**
 
 Below is the High Level Architecture for Onboarding
 
@@ -89,7 +82,7 @@ use the acumos client library to upload model to platform.Acumos
 Onboarding server exposes REST interface, which is used by client
 library for uploading the model to platform.
 
-**\**3.2 Onboarding Backend API’s*\***
+**3.2 Onboarding Backend APIs**
 
 -**OnboardingWithAuthentication:-**
 
@@ -101,90 +94,80 @@ This API is used for actual Onboarding the Models.
 
 It gets invoked after the successful authentication.
 
-**4. Onboarding Methods,Semantics & Model Requirements**
+4. Onboarding Methods,Semantics & Model Requirements
+----------------------------------------------------
 
-**=====================================================**
-
-**\**4.1 Onboarding Methods and Semantics*\***
+**4.1 Onboarding Methods and Semantics**
 
 Acumos is a machine learning platform, thus we need to provide certain
 “methods” in our wrapped models that Acumos can invoke in order to
 support various workflows. In a machine learning setting, these methods
 might look like:
 
-•fit(message) -> model state
+- fit(message) -> model state
 
-•Does a full “batch” fit, replacing previous internal model parameters.
+- Does a full “batch” fit, replacing previous internal model parameters.
 
-•Returns a “model state” object that provides a standard serialization
-method.
+- Returns a “model state” object that provides a standard serialization method.
 
-•partial_fit(message) -> model state
+- partial_fit(message) -> model state
 
-•Does a partial fit, updating internal model parameters.
+- Does a partial fit, updating internal model parameters.
 
-•Returns a “model state” object that provides a standard serialization
-method.
+- Returns a “model state” object that provides a standard serialization method.
 
-•transform(message) -> message
+- transform(message) -> message
 
-•Returns an object that provides a standard serialization method.
+- Returns an object that provides a standard serialization method.
 
 Notes:
 
-•We may choose to combine fit and partial_fit,and provide fit a flag
-such as partial=True or similar.
+- We may choose to combine fit and partial_fit,and provide fit a flag such as partial=True or similar.
 
-•Wrapped models can provide any number of additional functions, but they
-will not be semantically meaningful to Acumos.
+- Wrapped models can provide any number of additional functions, but they will not be semantically meaningful to Acumos.
 
-•The microservice wrapper may choose to expose additional APIs that are
-compositions of these methods.
+- The microservice wrapper may choose to expose additional APIs that are compositions of these methods.
 
-•For example,/api/partialFitTransform may invoke partial_fit,persist the
-model, and return the transformed data.
+- For example,/api/partialFitTransform may invoke partial_fit,persist the model, and return the transformed data.
 
-**\**4.2 Onboarding Model Wrapper Requirements*\***
+**4.2 Onboarding Model Wrapper Requirements**
 
-1.Model wrapper must provide an abstract API that supports the fit,
-partial_fit,and transform methods.
+1.Model wrapper must provide an abstract API that supports the fit, partial_fit,and transform methods.
 
-•This abstract API will be invoked by the transport-layer application.
+- This abstract API will be invoked by the transport-layer application.
 
 2.The fitand partial_fitmethods must accept a Protobuf message and
 return a custom “Model State” object that can be serialized and
 deserialized.
 
-•The Model State should provide an abstract serialize/deserialize API
-that is subclassed by concrete applications.
+- The Model State should provide an abstract serialize/deserialize API that is subclassed by concrete applications.
 
-•The Model State provides a way to persist or checkpoint models.
+- The Model State provides a way to persist or checkpoint models.
 
 3.The transform method must accept a Protobuf message and return a
 Protobuf message.
 
 4.Model wrapper must be able to serialize itself to a file.
 
-•The file can contain anything the wrapper needs to deserialize itself.
+- The file can contain anything the wrapper needs to deserialize itself.
 
-•E.g. it could be a zip file containing binaries, custom metadata, etc.
+- E.g. it could be a zip file containing binaries, custom metadata, etc.
 
 5.Model wrapper must provide functionality to deserialize a wrapped
 model from file for native use.
 
-•The transport-layer application would use this API to initially load
-the model.
+- The transport-layer application would use this API to initially load the model.
 
-•E.g. provide a static function.
+- E.g. provide a static function.
 
-**\**4.3 Onboarding Client Library Requirements*\***
+**4.3 Onboarding Client Library Requirements**
 
 1.The client library must be able to produce a serialized wrapped model.
 
 2.The client library must be able to produce a valid model metadata file
 version 0.2.0
 
-1.https://acumos.atlassian.net/wiki/display/CW/E1+Model+Design
+- https://acumos.atlassian.net/wiki/display/CW/E1+Model+Design
 
 3.The client library must generate new Protobuf files with unique
 package names for custom data types.
@@ -193,43 +176,40 @@ package names for custom data types.
 metadata file, and any new defined message types to the model upload
 server.
 
-**\**4.4 Onboarding Metadata Requirements*\***
+**4.4 Onboarding Metadata Requirements**
 
 1.Each technology owner must create a jsonschema which validates the
 “runtime” object of the model metadata.
 
-•Refer to https://acumos.atlassian.net/wiki/display/CW/E1+Model+Design
+- Refer to https://acumos.atlassian.net/wiki/display/CW/E1+Model+Design
 
-•The runtime metadata is used to generate a Docker image with
-appropriate dependencies installed.
+- The runtime metadata is used to generate a Docker image with appropriate dependencies installed.
 
-**\**4.5 Public Model Metadata*\***
+**4.5 Public Model Metadata**
 
 Each model type must provide the same public metadata. The runtime
 dependencies will depend on the implementation, but there will still be
 standardized schemas for Python, Java, R, etc. One breakdown may look
 like:
 
-•Models
+- Models
 
-•Methods
+- Methods
 
-•I/O specification
+- I/O specification
 
-•Parameters - e.g. runtime configurable options, or partially applied
-functions
+- Parameters - e.g. runtime configurable options, or partially applied functions
 
-•Runtime
+- Runtime
 
-•Dependencies - e.g. Python requirements.txt or Java pom.xml
+- Dependencies - e.g. Python requirements.txt or Java pom.xml
 
-•Deployment hints - e.g. # of CPUs, RAM
+- Deployment hints - e.g. # of CPUs, RAM
 
-**5. Onboarding Use Case Illustration & Data Formats**
+5. Onboarding Use Case Illustration & Data Formats
+--------------------------------------------------
 
-**=================================================**
-
-**\**5.1 Onboarding Use Case Illustration*\***
+**5.1 Onboarding Use Case Illustration**
 
 Below, custom transformation functions which consume and produce a
 native DataFrame are converted to standardized native models. The
@@ -244,7 +224,7 @@ represented abstractly in order to validate this workflow.
 
 |image4|
 
-**\**5.2 Method Description: Data Formats*\***
+**5.2 Method Description: Data Formats**
 
 Acumos must be able to generate microservices and validate microservice
 compositions. Thus models must provide sufficient metadata to enable
@@ -256,20 +236,17 @@ while avoiding specifying the underlying transport.
 
 We can use three tiers of specification:
 
-•Media type (e.g. application/json, image/png, video/mp4, etc.)
+- Media type (e.g. application/json, image/png, video/mp4, etc.)
 
-•If media type is application/json, require a reference to public and
-frozen jsonschema
+- If media type is application/json, require a reference to public and frozen jsonschema
 
-•If media type is application/json, optionally allow a “format” which
-provides additional information
+- If media type is application/json, optionally allow a “format” which provides additional information
 
 Notes
 
-•An alternative to this approach may be using popular serialization
-tools such as Protobuf or Avro
+- An alternative to this approach may be using popular serialization tools such as Protobuf or Avro
 
-**\**5.3 Method Description: Data Formats: DataFrame*\***
+**5.3 Method Description: Data Formats: DataFrame**
 
 Let’s consider the DataFrame, a common data structure in machine
 learning, as an example. The DataFrame is a complex data structure; it
@@ -287,27 +264,21 @@ By specifying an additional piece of schema-specific information, called
 the format, we can completely specify the input. For example, the 3
 float column DataFrame might be represented with:
 
-•media type: “application/json”
+- media type: “application/json”
 
-•schema: “acumos.research.att.com/schema/types/DataFrame/v1”
+- schema: “acumos.research.att.com/schema/types/DataFrame/v1”
 
-•format: {“columns”: 3, “types”: “float”, “names”: null}
+- format: {“columns”: 3, “types”: “float”, “names”: null}
 
-•Or {“columns”: [“float”, “float”, “float”], “names”: [“foo”, “bar”,
-“baz”]} i.e. multiple schemas can be valid
+- Or {“columns”: [“float”, “float”, “float”], “names”: [“foo”, “bar”, “baz”]} i.e. multiple schemas can be valid
 
 Notes
 
-•The format would have its own schema, which is co-located with and
-corresponds to the DataFrame schema.
+- The format would have its own schema, which is co-located with and corresponds to the DataFrame schema.
 
-•E.g. the format schema would exist at
-acumos.research.att.com/schema/types/DataFrame/v1/format
+- E.g. the format schema would exist at acumos.research.att.com/schema/types/DataFrame/v1/format
 
-•While we are using jsonschema to abstractly represent data structures,
-we do not wish to be married to a particular serialization method.
-Ideally we should have enough information to generate specifications for
-other tools, e.g. Protobuf.
+- While we are using jsonschema to abstractly represent data structures, we do not wish to be married to a particular serialization method.  Ideally we should have enough information to generate specifications for other tools, e.g. Protobuf.
 
 import pandas as pd
 
@@ -323,9 +294,8 @@ public DataFrame javaFunc(DataFrame df) {
 
 }
 
-**6. Docker Image Creation Process Details**
-
-**========================================**
+6. Docker Image Creation Process Details
+----------------------------------------
 
 The onboarding server exposes REST API for model and metadata upload.
 
@@ -356,27 +326,20 @@ store model and metadata to
 
 artifact repository.
 
-**7. Model Validation Workflow**
-
-**============================**
+7. Model Validation Workflow
+----------------------------
 
 Following steps needs to be executed as part of model validation
 workflow:
 
--  Onboarding server will expose an REST API for validating the model.
-   The REST API will take solutionID and metadata JSON containing model
-   features as input parameters.
+-  Onboarding server will expose an REST API for validating the model.  The REST API will take solutionID and metadata JSON containing model features as input parameters.
 
--  The server will fetch the docker image details for the corresponding
-   solution and run the model image.
+-  The server will fetch the docker image details for the corresponding solution and run the model image.
 
--  The input metadata JSON features will be send to predict API exposed
-   by model docker image and output of predict method will be returned
-   as API output.
+-  The input metadata JSON features will be send to predict API exposed by model docker image and output of predict method will be returned as API output.
 
-**8. Onboard any Model By Command line or Web Based Onboarding**
-
-**=========================================================**
+8. Onboard any Model By Command line or Web Based Onboarding
+------------------------------------------------------------
 
 The Acumos on-boarding process generates everything needed to create an
 executable microservice for your model and add it to the catalog. Acumos
@@ -406,7 +369,7 @@ We have to ways to Onboard any Model:
 
 Onboarding H20 Model by Command Line:
 
------------------------------------------------------------------------------------
+-------------------------------------
 
 This toolkit generates everything to create an executable Acumos
 microservice around H2o models.
@@ -417,17 +380,13 @@ The H2o model is exported in the MOJO model format (.zip file) using any
 interface (eg.Python, Flow, R) provided by H2o. To on-board your model,
 you need to download the h2o-genmodel.jar file using any interface
 (eg.Python, Flow, R) provided by H2o. At present, the common data format
-conversion is done in the modelerâ€™s local enviornment, so the protoc
-application is also required.
+conversion is done in the modeler's local enviornment, so the protoc application is also required.
 
 Before you begin
 
-- We assume you have H2o 3.14.0.2 installed on your machine. If not
-please take a look at https://www.h2o.ai/download/
+- We assume you have H2o 3.14.0.2 installed on your machine. If not please take a look at https://www.h2o.ai/download/
 
-- You must have protobuf 3 installed. Please visit the protobuf
-repository for more information on how to install protoc. Install
-version 3 (version 2 will not work).
+- You must have protobuf 3 installed. Please visit the protobuf repository for more information on how to install protoc. Install version 3 (version 2 will not work).
 
 - Your on-boarding url is: XYZ
 
@@ -593,12 +552,9 @@ application is also required.
 
 --------------------------------------------------------------------------------------------------------------------
 
-- We assume you have H2o 3.14.0.2 installed on your machine. If not
-please take a look https://www.h2o.ai/download/
+- We assume you have H2o 3.14.0.2 installed on your machine. If not please take a look https://www.h2o.ai/download/
 
-- You must have protobuf 3 installed. Please visit the protobuf
-repository for more information on how to install protoc.Install version
-3 (version 2 will not work).
+- You must have protobuf 3 installed. Please visit the protobuf repository for more information on how to install protoc. Install version 3 (version 2 will not work).
 
 - Your on-boarding url is: XYZ
 
@@ -755,30 +711,30 @@ You can also check this Onboarded Model on Acumos Web based Portal also.
 
 \************************************End******************************************\*
 
-.. |image0| image:: ./media/image8.png
+.. |image0| image:: ./media/UG_image1.png
    :width: 6.26806in
    :height: 1.51389in
-.. |image8| image:: ./media/image9.png
+.. |image1| image:: ./media/UG_image2.png
    :width: 5.64583in
    :height: 5.55208in
-.. |image9| image:: ./media/image10.png
+.. |image2| image:: ./media/UG_image3.png
    :width: 6.26806in
    :height: 0.95556in
-.. |image10| image:: ./media/image11.png
+.. |image3| image:: ./media/UG_image4.png
    :width: 6.26806in
    :height: 0.93542in
-.. |image11| image:: ./media/image12.png
+.. |image4| image:: ./media/UG_image5.png
    :width: 6.26806in
    :height: 0.97847in
-.. |image12| image:: ./media/image13.png
+.. |image5| image:: ./media/UG_image6.png
    :width: 5.32292in
    :height: 4.05208in
-.. |image13| image:: ./media/image14.png
+.. |image6| image:: ./media/UG_image7.png
    :width: 4.53125in
    :height: 2.6875in
-.. |image14| image:: ./media/image15.png
+.. |image7| image:: ./media/UG_image8.png
    :width: 6.26806in
    :height: 3.00486in
-.. |image15| image:: ./media/image16.png
+.. |image8| image:: ./media/UG_image9.png
    :width: 6.26806in
    :height: 2.15764in
