@@ -800,12 +800,8 @@ public class OnboardingController implements DockerService {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = fileInputStream.available();
-			UploadArtifactInfo artifactInfo = null;
-			/*
-			 * artifactClient.uploadArtifact(nexusGroupId,
-			 * metadata.getModelName(), metadata.getVersion(), ext, size,
-			 * fileInputStream);
-			 */
+			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
+			 
 			logger.info(
 					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
