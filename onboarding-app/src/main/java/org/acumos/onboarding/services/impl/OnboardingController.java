@@ -148,7 +148,7 @@ public class OnboardingController implements DockerService {
 	String modelOriginalName;
 
 	String dockerImageURI;
-	
+
 	OnboardingNotification onboardingStatus;
 
 	@Autowired
@@ -245,13 +245,14 @@ public class OnboardingController implements DockerService {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Token Not Available...!");
 			}
-			
-			// If trackingID is provided in the header create a OnboardingNotification object that will be used to update status against that trackingID
-			if (trackingID != null )
-			{
+
+			// If trackingID is provided in the header create a
+			// OnboardingNotification object that will be used to update status
+			// against that trackingID
+			if (trackingID != null) {
 				onboardingStatus = new OnboardingNotification();
 				onboardingStatus.setTrackingId(trackingID);
-	
+
 			}
 
 			// Call to validate JWT Token.....!
@@ -259,7 +260,7 @@ public class OnboardingController implements DockerService {
 
 			boolean isValidToken = valid.getStatus();
 
-			String ownerId;
+			String ownerId = null;
 			String imageUri = null;
 
 			if (isValidToken) {
@@ -270,19 +271,20 @@ public class OnboardingController implements DockerService {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 							"Either  username/password is invalid.");
 
-				//update userId in onboardingStatus
-				if(onboardingStatus != null)
+				// update userId in onboardingStatus
+				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
-				
+
 				logger.info("Dockerization request recieved with " + model.getOriginalFilename() + " and metadata :"
 						+ metadata);
-				
-				//Notify Create solution or get existing solution ID has started
-				if(onboardingStatus != null)
-				{
-					onboardingStatus.notifyOnboardingStatus("CreateSolution", "Started", "CreateSolution Started");
+
+				// Notify Create solution or get existing solution ID has
+				// started
+				if (onboardingStatus != null) {
+					onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started",
+							onboardingStatus);
 				}
-				
+
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
@@ -329,49 +331,50 @@ public class OnboardingController implements DockerService {
 						mlpSolution = solList.get(0);
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
-                    
-					
+
 					createSolutionRevision(mData);
-					
-					//Solution id creation completed
-					//Notify Creation of solution ID is successful
-					if(onboardingStatus != null)
-					{
-						//set solution Id
-						if(mlpSolution.getSolutionId()!=null){
-						onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
+
+					// Solution id creation completed
+					// Notify Creation of solution ID is successful
+					if (onboardingStatus != null) {
+						// set solution Id
+						if (mlpSolution.getSolutionId() != null) {
+							onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
 						}
-						//set revision id
-						onboardingStatus.setRevisionId(mData.getRevisionId());
-						//notify
-						onboardingStatus.notifyOnboardingStatus("CreateSolution","Success", "CreateSolution Successful");
+						// set revision id
+						if (mData.getRevisionId() != null) {
+							onboardingStatus.setRevisionId(mData.getRevisionId());
+						}
+						// notify
+						onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU", "CreateSolution Successful",
+								onboardingStatus);
 					}
-					
-					
-					//Notify Create docker image has started
-					if(onboardingStatus != null)
-					{
-						onboardingStatus.notifyOnboardingStatus("CreateDockerImage","Started", "Create Docker Image Started");
+
+					// Notify Create docker image has started
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateDockerImage", "ST",
+								"Create Docker Image Started", onboardingStatus);
 					}
-					
-					try{
-					imageUri = dockerizeFile(metadataParser, localmodelFile);
-					}catch (Exception e) {
-						//Notify Create docker image failed
-						if(onboardingStatus != null)
-						{
-							onboardingStatus.notifyOnboardingStatus("CreateDockerImage","Failed", "Create Docker Image Failed");
-						} 
+
+					try {
+						imageUri = dockerizeFile(metadataParser, localmodelFile);
+					} catch (Exception e) {
+						// Notify Create docker image failed
+						if (onboardingStatus != null) {
+							onboardingStatus.notifyOnboardingStatus("CreateDockerImage", "FA",
+									"Create Docker Image Failed", onboardingStatus);
+						}
 						throw e;
 					}
-					
-					//Notify Create docker image is successful
-					if(onboardingStatus != null)
-					{
-						onboardingStatus.notifyOnboardingStatus("CreateDockerImage","Success", "Created Docker Image Succesful");
-					} 
-					
-					//Add artifacts started. Notification will be handed by addArtifact method itself for started/success/failure					
+
+					// Notify Create docker image is successful
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateDockerImage", "SU",
+								"Created Docker Image Succesful", onboardingStatus);
+					}
+
+					// Add artifacts started. Notification will be handed by
+					// addArtifact method itself for started/success/failure
 					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
 
 					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI);
@@ -380,21 +383,20 @@ public class OnboardingController implements DockerService {
 
 					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
 
-					
-					//Notify TOSCA generation started
-					if(onboardingStatus != null)
-					{
-						onboardingStatus.notifyOnboardingStatus("TOSCAGeneration","Started", "TOSCA Generation Started");
+					// Notify TOSCA generation started
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("TOSCAGeneration", "ST", "TOSCA Generation Started",
+								onboardingStatus);
 					}
-					
+
 					generateTOSCA(localProtobufFile, localMetadataFile, mData);
 
-					//Notify TOSCA generation successful
-					if(onboardingStatus != null)
-					{
-						onboardingStatus.notifyOnboardingStatus("TOSCAGeneration","Success", "TOSCA Generation Successful");
+					// Notify TOSCA generation successful
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("TOSCAGeneration", "SU", "TOSCA Generation Successful",
+								onboardingStatus);
 					}
-					
+
 					isSuccess = true;
 
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
@@ -430,11 +432,13 @@ public class OnboardingController implements DockerService {
 						HttpStatus.UNAUTHORIZED);
 			} else {
 				logger.error(e.getMessage());
+				e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage()),
@@ -467,8 +471,8 @@ public class OnboardingController implements DockerService {
 	}
 
 	/*
-	 * @Method Name : getExistingSolution Gives existing solution against ownerId
-	 * and Model name if any. *
+	 * @Method Name : getExistingSolution Gives existing solution against
+	 * ownerId and Model name if any. *
 	 */
 	private List<MLPSolution> getExistingSolution(Metadata metadata) {
 
@@ -481,7 +485,8 @@ public class OnboardingController implements DockerService {
 		queryParameters.put("name", modelName);
 
 		/* TRUE - OR , FALSE - AND */
-		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false, new RestPageRequest(0,9));
+		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
+				new RestPageRequest(0, 9));
 		return pageResponse.getContent();
 
 	}
@@ -561,11 +566,12 @@ public class OnboardingController implements DockerService {
 				}
 
 				/*
-				 * File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
+				 * modelOriginalName);
 				 * 
 				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
 				 */
-			
+
 				// Creat solution id - success
 			} catch (IOException e) {
 				logger.warn("H2O templatization failed", e);
@@ -605,7 +611,8 @@ public class OnboardingController implements DockerService {
 				}
 
 				/*
-				 * File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
+				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
+				 * modelOriginalName);
 				 * 
 				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
 				 */
@@ -633,16 +640,11 @@ public class OnboardingController implements DockerService {
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
 			logger.info("Docker image creation done");
-			//put catch here
+			// put catch here
 			// /Microservice/Docker image nexus creation -success
-			
-		   //in catch /Microservice/Docker image nexus creation -failure
-			
-			
-			
-			
-			
-			
+
+			// in catch /Microservice/Docker image nexus creation -failure
+
 			// String imageId = createCMD.getImageId();
 			// TODO: remove local image
 
@@ -666,9 +668,8 @@ public class OnboardingController implements DockerService {
 			logger.info("Docker image URI : " + dockerImageURI);
 
 			logger.info("Docker image pushed in nexus successfully");
-			
-			//Microservice/Docker image pushed to nexus  -success
-			
+
+			// Microservice/Docker image pushed to nexus -success
 
 			return dockerImageURI;
 
@@ -702,19 +703,19 @@ public class OnboardingController implements DockerService {
 			metadata.setSolutionId(solution.getSolutionId());
 			logger.info("Solution created: " + solution.getSolutionId());
 			// Creat solution id - success
-			//OnboardingNotification notify= new OnboardingNotification();
-			//notify.successResponse();
+			// OnboardingNotification notify= new OnboardingNotification();
+			// notify.successResponse();
 
 			return solution;
-			
+
 		} catch (HttpStatusCodeException e) {
-			//Creat solution id - fail
-			//Create Solution failed. Notify
-			if(onboardingStatus != null)
-			{
-				//notify
-				onboardingStatus.notifyOnboardingStatus("CreateSolution","Failed", "Create Solution Failed");		
-			}				
+			// Creat solution id - fail
+			// Create Solution failed. Notify
+			if (onboardingStatus != null) {
+				// notify
+				onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", "Create Solution Failed",
+						onboardingStatus);
+			}
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -791,17 +792,20 @@ public class OnboardingController implements DockerService {
 		repositoryLocation.setPassword(nexusPassword);
 		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
 		logger.info("Upload Artifact for " + file.getName() + " started");
-		//Notify add artifacts started
-		if(onboardingStatus != null)
-		{
-			onboardingStatus.notifyOnboardingStatus("AddArtifact","Started", "Add Artifact for" + file.getName() + " Started");
-		} 
+		// Notify add artifacts started
+		if (onboardingStatus != null) {
+			onboardingStatus.notifyOnboardingStatus("AddArtifact", "ST",
+					"Add Artifact for" + file.getName() + " Started", onboardingStatus);
+		}
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = fileInputStream.available();
 			UploadArtifactInfo artifactInfo = null;
-			/*artifactClient.uploadArtifact(nexusGroupId, metadata.getModelName(),
-					metadata.getVersion(), ext, size, fileInputStream);*/
+			/*
+			 * artifactClient.uploadArtifact(nexusGroupId,
+			 * metadata.getModelName(), metadata.getVersion(), ext, size,
+			 * fileInputStream);
+			 */
 			logger.info(
 					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
@@ -821,11 +825,11 @@ public class OnboardingController implements DockerService {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
 					logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
-					//Notify add artifacts successful
-					if(onboardingStatus != null)
-					{
-						onboardingStatus.notifyOnboardingStatus("AddArtifact","Succesful", "Add Artifact for" + file.getName() + " Succesful");
-					} 
+					// Notify add artifacts successful
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("AddArtifact", "SU",
+								"Add Artifact for" + file.getName() + " Succesful", onboardingStatus);
+					}
 					return modelArtifact;
 				} catch (HttpStatusCodeException e) {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -840,11 +844,11 @@ public class OnboardingController implements DockerService {
 		} catch (AcumosServiceException e) {
 			throw e;
 		} catch (Exception e) {
-			//Notify add artifacts failed
-			if(onboardingStatus != null)
-			{
-				onboardingStatus.notifyOnboardingStatus("AddArtifact","Failed", "Add Artifact for" + file.getName() + " Failed");
-			} 
+			// Notify add artifacts failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("AddArtifact", "FA",
+						"Add Artifact for" + file.getName() + " Failed", onboardingStatus);
+			}
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
 		}
@@ -883,10 +887,10 @@ public class OnboardingController implements DockerService {
 		} catch (AcumosServiceException e) {
 			throw e;
 		} catch (Exception e) {
-			//Notify model artifact upload failed
-			if(onboardingStatus != null)
-			{
-				onboardingStatus.notifyOnboardingStatus("TOSCAGeneration","Failed", "Upload Artifact for Failed");
+			// Notify model artifact upload failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("TOSCAGeneration", "FA", "Upload Artifact for Failed",
+						onboardingStatus);
 			}
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
@@ -922,13 +926,14 @@ public class OnboardingController implements DockerService {
 			logger.info("Generate TOSCA completed result:" + result);
 
 		} catch (Exception e) {
-			//Notify TOSCA generation failed
-			if(onboardingStatus != null)
-			{
-				onboardingStatus.notifyOnboardingStatus("TOSCAGeneration","Failed", "TOSCA Generation Failed");
+			// Notify TOSCA generation failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("TOSCAGeneration", "FA", "TOSCA Generation Failed",
+						onboardingStatus);
 			}
 			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
-			//Storage of artifact location references in Common Data Store-failure
+			// Storage of artifact location references in Common Data
+			// Store-failure
 		}
 	}
 
@@ -947,7 +952,8 @@ public class OnboardingController implements DockerService {
 			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 
 			// Remove the image from docker registry
-			// Check the value of imageUri, if it is null then do not delete the image
+			// Check the value of imageUri, if it is null then do not delete the
+			// image
 			logger.info("Image Name from dockerize file method: " + imageUri);
 
 			if (StringUtils.isNotBlank(imageUri)) {
@@ -1024,6 +1030,18 @@ public class OnboardingController implements DockerService {
 				listFilesAndFilesSubDirectories(file);
 			}
 		}
+	}
+
+	public String getCmnDataSvcEndPoinURL() {
+		return cmnDataSvcEndPoinURL;
+	}
+
+	public String getCmnDataSvcUser() {
+		return cmnDataSvcUser;
+	}
+
+	public String getCmnDataSvcPwd() {
+		return cmnDataSvcPwd;
 	}
 
 }

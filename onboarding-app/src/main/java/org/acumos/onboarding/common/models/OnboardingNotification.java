@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.Date;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPStepResult;
+import org.acumos.onboarding.services.impl.OnboardingController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @javax.xml.bind.annotation.XmlRootElement
 @JsonInclude(Include.NON_NULL)
@@ -24,29 +26,32 @@ public class OnboardingNotification {
 	private Date endDate;
 
 	private CommonDataServiceRestClientImpl cdmsClient;
-
-	public OnboardingNotification() {
-		// Default Constructor
+	
+	@Autowired
+    OnboardingController onboarding;
+    
+	public OnboardingNotification() 
+	{
+		cdmsClient = new  CommonDataServiceRestClientImpl(onboarding.getCmnDataSvcEndPoinURL(),onboarding.getCmnDataSvcUser(),onboarding.getCmnDataSvcPwd());
 	}
 
 	// current step, status and description sent to be logged.
-	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
+	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription,OnboardingNotification onboardingStatus) {
 		if (trackingId != null) {
 
-			this.setTrackingId(trackingId);
-			this.setStatusCode(currentStatus);
-			this.setStepCode("OB");
-			//this.setStartDate(startDate); // use current date and timestamp which DB Update
-			//this.setStartDate(endDate);
-		    
-			// Call CDS API to save this status to Database.
 			MLPStepResult stepResult = new MLPStepResult();
-			stepResult.setSolutionId(this.getSolutionId());
-			stepResult.setRevisionId(this.revisionId);
-			stepResult.setStatusCode(this.getStepCode());
-			stepResult.setTrackingId(this.trackingId);
-			stepResult.setStepCode(currentDescription);
+			
+			
+			stepResult.setSolutionId(onboardingStatus.getSolutionId());
+			stepResult.setRevisionId(onboardingStatus.getRevisionId());
+			stepResult.setStatusCode(currentStatus);
+			stepResult.setTrackingId(onboardingStatus.getTrackingId());
+			stepResult.setName(currentstep);
+			stepResult.setStartDate(new Date());
+			stepResult.setEndDate(new Date());
+			stepResult.setStepCode("OB");
 			cdmsClient.createStepResult(stepResult);
+	
 		}
 
 	}
