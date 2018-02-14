@@ -44,6 +44,8 @@ public class OnboardingNotification {
 			
 			stepResult.setSolutionId(onboardingStatus.getSolutionId());
 			stepResult.setRevisionId(onboardingStatus.getRevisionId());
+			stepResult.setArtifactId(null);// right now it is null in portal we need to get this from somewhere.
+			stepResult.setUserId(onboardingStatus.getUserId());
 			stepResult.setStatusCode(currentStatus);
 			stepResult.setTrackingId(onboardingStatus.getTrackingId());
 			stepResult.setName(currentstep);
