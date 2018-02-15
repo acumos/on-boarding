@@ -250,7 +250,7 @@ public class OnboardingController implements DockerService {
 			// OnboardingNotification object that will be used to update status
 			// against that trackingID
 			if (trackingID != null) {
-				onboardingStatus = new OnboardingNotification();
+				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL,cmnDataSvcUser,cmnDataSvcPwd);
 				onboardingStatus.setTrackingId(trackingID);
 
 			}

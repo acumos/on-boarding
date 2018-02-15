@@ -1,12 +1,12 @@
 package org.acumos.onboarding.common.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.Date;
+
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPStepResult;
-import org.acumos.onboarding.services.impl.OnboardingController;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @javax.xml.bind.annotation.XmlRootElement
 @JsonInclude(Include.NON_NULL)
@@ -24,15 +24,13 @@ public class OnboardingNotification {
 	private String result;
 	private Date startDate;
 	private Date endDate;
-
-	private CommonDataServiceRestClientImpl cdmsClient;
 	
-	@Autowired
-    OnboardingController onboarding;
+	private CommonDataServiceRestClientImpl cdmsClient;
     
-	public OnboardingNotification() 
+	public OnboardingNotification(String cmnDataSvcEndPoinURL,String cmnDataSvcUser,String cmnDataSvcPwd) 
 	{
-		cdmsClient = new  CommonDataServiceRestClientImpl(onboarding.getCmnDataSvcEndPoinURL(),onboarding.getCmnDataSvcUser(),onboarding.getCmnDataSvcPwd());
+		
+		cdmsClient = new  CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL,cmnDataSvcUser,cmnDataSvcPwd);
 	}
 
 	// current step, status and description sent to be logged.
