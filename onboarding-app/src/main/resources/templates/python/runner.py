@@ -58,7 +58,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=3330)
     parser.add_argument("--modeldir", type=str, default='model', help='specify the model directory to load')
-    parser.add_argument("--json_io", action='store_false', help='input+output rich JSON instead of protobuf')
+    parser.add_argument("--json_io", action='store_true', help='input+output rich JSON instead of protobuf')
     parser.add_argument("--return_output", action='store_true',
                         help='return output in response instead of just downstream')
     pargs = parser.parse_args()

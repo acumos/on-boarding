@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPStepResult;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -24,34 +25,34 @@ public class OnboardingNotification {
 	private String result;
 	private Date startDate;
 	private Date endDate;
-	
+
 	private CommonDataServiceRestClientImpl cdmsClient;
-    
-	public OnboardingNotification(String cmnDataSvcEndPoinURL,String cmnDataSvcUser,String cmnDataSvcPwd) 
-	{
-		
-		cdmsClient = new  CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL,cmnDataSvcUser,cmnDataSvcPwd);
+	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingNotification.class);
+
+	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
+
+		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 	}
 
 	// current step, status and description sent to be logged.
-	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription,OnboardingNotification onboardingStatus) {
+	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
+		logger.info("Notify" + currentDescription);
 		if (trackingId != null) {
 
 			MLPStepResult stepResult = new MLPStepResult();
-			
-			
-			stepResult.setSolutionId(onboardingStatus.getSolutionId());
-			stepResult.setRevisionId(onboardingStatus.getRevisionId());
-			stepResult.setArtifactId(null);// right now it is null in portal we need to get this from somewhere.
-			stepResult.setUserId(onboardingStatus.getUserId());
+
+			stepResult.setSolutionId(this.solutionId);
+			stepResult.setRevisionId(this.revisionId);
+			stepResult.setArtifactId(this.artifactId);
+			stepResult.setUserId(this.userId);
 			stepResult.setStatusCode(currentStatus);
-			stepResult.setTrackingId(onboardingStatus.getTrackingId());
+			stepResult.setTrackingId(this.trackingId);
 			stepResult.setName(currentstep);
 			stepResult.setStartDate(new Date());
 			stepResult.setEndDate(new Date());
 			stepResult.setStepCode("OB");
 			cdmsClient.createStepResult(stepResult);
-	
+
 		}
 
 	}
