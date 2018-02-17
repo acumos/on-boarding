@@ -38,7 +38,8 @@ import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.apache.commons.io.FileUtils;
-
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -369,7 +370,7 @@ public class CommonOnboarding {
 	/*
 	 * @Method Name : getExistingSolution Gives existing solution against
 	 * ownerId and Model name if any. *
-	 */
+	 
 	protected List<MLPSolution> getExistingSolution(Metadata metadata) {
 
 		String ownerId = metadata.getOwnerId();
@@ -380,9 +381,9 @@ public class CommonOnboarding {
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
       
-		/*this below commneted logic is for CDS 1.10.0 */
+		this below commneted logic is for CDS 1.10.0 
 		
-	/*	int page = 0;
+		int page = 0;
 		int size = 9;
 		RestPageRequest pageRequest = new RestPageRequest(page, size);
 
@@ -391,12 +392,30 @@ public class CommonOnboarding {
 						.and(new SearchCriterion("name", SearchOperation.EQUALS, metadata.getModelName()));
 		RestPageResponse<MLPSolution> onboardMatches = cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
 		
-		List<MLPSolution>  list = onboardMatches.getContent();*/
+		List<MLPSolution>  list = onboardMatches.getContent();
 		
-		/* TRUE - OR , FALSE - AND */
+		 TRUE - OR , FALSE - AND 
 		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
 
 		return list;
+
+	}
+	*/
+	
+	private List<MLPSolution> getExistingSolution(Metadata metadata) {
+
+		String ownerId = metadata.getOwnerId();
+		String modelName = metadata.getModelName();
+
+		Map<String, Object> queryParameters = new HashMap<String, Object>();
+
+		queryParameters.put("ownerId", ownerId);
+		queryParameters.put("name", modelName);
+
+		/* TRUE - OR , FALSE - AND */
+		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
+				new RestPageRequest(0, 9));
+		return pageResponse.getContent();
 
 	}
 	
@@ -563,6 +582,5 @@ public class CommonOnboarding {
 			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
 		}
 	}
-
 
 }
