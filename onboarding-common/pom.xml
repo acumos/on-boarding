@@ -7,7 +7,7 @@
   	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>onboarding-app-common</name>
-	<description> Onboarding Application</description>
+	<description>Onboarding common project</description>
 
 
 	<parent>
@@ -20,7 +20,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>org.acumos.onboarding.Application</start-class>
+		<!-- <start-class>org.acumos.onboarding.Application</start-class> -->
 		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
 		<build.number>0</build.number>
 		<eelf.version>1.0.0</eelf.version>
@@ -28,26 +28,25 @@
 		<!--<skipTests>true</skipTests> -->
 		<!-- URL to be overridden by Jenkins "AcumosSettings" -->
 	
-		<lf.nexus.url>https://nexus.acumos.org/content</lf.nexus.url>
+		<!-- <lf.nexus.url>https://nexus.acumos.org/content</lf.nexus.url>
 		<lf.nexus.snapshot.path>repositories/snapshots/</lf.nexus.snapshot.path>
 		<lf.nexus.release.path>repositories/releases/</lf.nexus.release.path>
 		
 		<acumos.nexus.url>http://cognita-nexus01.eastus.cloudapp.azure.com:8081</acumos.nexus.url>
 		<acumos.nexus.snapshot.path>repository/repo_cognita_platform_maven_snapshots</acumos.nexus.snapshot.path>
-		<acumos.nexus.release.path>repository/repo_cognita_platform_maven</acumos.nexus.release.path>
+		<acumos.nexus.release.path>repository/repo_cognita_platform_maven</acumos.nexus.release.path> -->
 		
 		
 		<!-- Docker daemon -->
-		<docker.host.url>unix:/var/run/docker.sock</docker.host.url>
-		<!-- Docker image registry -->
+		<!-- <docker.host.url>unix:/var/run/docker.sock</docker.host.url>
+		Docker image registry
 		<docker.registry.url>cognita-nexus01:8001</docker.registry.url>
 		<docker.registry.login>Registry userId - supplied by jenkins</docker.registry.login>
-		<docker.registry.password>Registry password - supplied by jenkins</docker.registry.password>
+		<docker.registry.password>Registry password - supplied by jenkins</docker.registry.password> -->
 	</properties>
 	
 	
-	 <repositories>
-	 
+	 <!-- <repositories>
 		<repository>
 			<id>lf-snapshots</id>
 			<name>lf-repository-snapshots</name>
@@ -70,12 +69,8 @@
 			<name>acumos-repository-releases</name>
 			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
 		</repository>
-		
-		
-		
-	
 	</repositories>
-
+ -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -160,25 +155,6 @@
 			<version>${eelf.version}</version>
 		</dependency>
 	  
-	   <!--<dependency>
-    		<groupId>com.googlecode.json-simple</groupId>
-    		<artifactId>json-simple</artifactId>
-    		<version>1.1</version>
-		</dependency> -->
-		
-		<!-- <dependency>
-			<groupId>org.acumos</groupId>
- 			<artifactId>acumos-nexus-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
- 		</dependency> -->
-		
-	<!-- 	<dependency>
-			<groupId>org.acumos.common-dataservice</groupId>
-			<artifactId>cmn-data-svc-client</artifactId>
-			 <version>1.10.1-SNAPSHOT</version>
-			 <version>1.12.0</version>
-		</dependency> -->
-		
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-commons</artifactId>
@@ -188,7 +164,7 @@
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
-			 <version>1.13.0-SNAPSHOT</version>
+			 <version>1.13.0</version>
 		</dependency>
 		
 		<dependency>
@@ -311,7 +287,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<!-- Spring sets the <version>2.8</version> -->
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			
+			<!-- <plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.21.0</version>
@@ -323,7 +309,7 @@
 						<username>${docker.registry.login}</username>
 						<password>${docker.registry.password}</password>
 					</authConfig>
-					<!-- <images>
+					<images>
 						<image>
 							<name>onboarding-app:${project.version}</name>
 							<build>
@@ -352,13 +338,13 @@
 								</cmd>
 							</build>
 						</image>
-					</images> -->
+					</images>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 
-	<distributionManagement>
+	<!-- <distributionManagement>
 		<snapshotRepository>
 			<id>acumos-nexus</id>
 			<name>acumos-repository-snapshots</name>
@@ -369,5 +355,5 @@
 			<name>acumos-repository-releases</name>
 			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 </project>
