@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.acumos.onboarding</groupId>
+	<artifactId>onboarding-app-open</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<name>onboarding-app-open</name>
+	<description>Cognita Onboarding Application for Open Source</description>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.4.RELEASE</version>
+		<relativePath />
+	</parent> 
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<start-class>org.acumos.onboarding.open.OnboardingApplication</start-class> 
+		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
+		<build.number>0</build.number>
+		<skipTests>true</skipTests>
+		<!-- Not supplied to all jobs; e.g., Javadoc -->
+		<docker.pull.registry>docker.io</docker.pull.registry>
+		<!-- Supplied by Jenkins -->
+		<acumos.r.registry.url/>
+		<acumos.r.registry.login/>
+		<acumos.r.registry.password/>
+	</properties>
+	<!-- Some dependencies are specific to Acumos, but this POM defines no repositories 
+		section. The Jenkins server specifies Acumos repositories. Developers should 
+		ensure their ~/.m2/settings.xml file has the following URLs in both the repositories 
+		and pluginRepositories sections or in a profile: https://nexus.acumos.org/content/repositories/snapshots/ 
+		https://nexus.acumos.org/content/repositories/releases/ -->
+	<dependencies>
+		<!-- Common jar for on-boarding -->
+		<!-- <dependency>
+			<groupId>org.acumos.onboarding</groupId>
+			<artifactId>onboarding-app-common</artifactId>
+			<version>${project.version}</version>
+		</dependency> -->
+		
+		<dependency> 
+            <groupId>org.acumos.onboarding</groupId> 
+            <artifactId>onboarding-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version> 
+        </dependency> 
+        
+		<dependency>
+			<groupId>org.acumos.design-studio</groupId>
+			<artifactId>TOSCAModelGeneratorClient</artifactId>
+			<version>0.0.23</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>3.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jpmml</groupId>
+			<artifactId>pmml-evaluator</artifactId>
+			<version>1.3.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>4.9.2.201712150930-r</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>2.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<!-- Spring chooses <version>${slf4j.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<!-- Spring chooses <version>${logback.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<!-- Spring chooses <version>${logback.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>com.att.eelf</groupId>
+			<artifactId>eelf-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<!-- Spring sets the <version>4.11</version> -->
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Build-Number>${project.version}.${build.number}</Build-Number>
+							<Build-Time>${maven.build.timestamp}</Build-Time>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- Skip the jar deployment step -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration> 
+					<mainClass>org.acumos.onboarding.open.OnboardingApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.9</version>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.24.0</version>
+				<configuration>
+					<verbose>true</verbose>
+					<pullRegistry>${docker.pull.registry}</pullRegistry>
+					<pushRegistry>${acumos.r.registry.url}</pushRegistry>
+					<authConfig>
+						<push>
+							<username>${acumos.r.registry.login}</username>
+							<password>${acumos.r.registry.password}</password>
+						</push>
+					</authConfig>
+					<images>
+						<image>
+							<name>onboarding-app-prop:${project.version}</name>
+							<build>
+								<from>openjdk:8-jdk</from>
+								<assembly>
+									<inline>
+										<files>
+											<file>
+												<source>application.properties.template</source>
+												<outputDirectory />
+												<destName>application.properties</destName>
+											</file>
+											<file>
+												<source>target/${project.artifactId}-${project.version}.${project.packaging}</source>
+												<outputDirectory />
+											</file>
+										</files>
+									</inline>
+								</assembly>
+								<cmd>
+									<!-- CDATA prevents Eclipse formatter from breaking line -->
+									<shell><![CDATA[java -Xms128m -Xmx512m -Djava.security.egd=file:/dev/./urandom -jar /maven/${project.artifactId}-${project.version}.${project.packaging}]]></shell>
+								</cmd>
+							</build>
+						</image>
+					</images> 
+				</configuration>
+				<!-- build Docker images in install phase, push in deploy phase -->
+				<!-- <executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions> -->
+			</plugin>
+		</plugins>
+	</build>
+</project>
