@@ -402,7 +402,7 @@ public class CommonOnboarding {
 	}
 	*/
 	
-	private List<MLPSolution> getExistingSolution(Metadata metadata) {
+	public List<MLPSolution> getExistingSolution(Metadata metadata) {
 
 		String ownerId = metadata.getOwnerId();
 		String modelName = metadata.getModelName();
