@@ -15,7 +15,7 @@
   <property name="logName" value="application" />
    <property name="stdoutPattern" value="%msg%n" />
  
-  <property name="pattern" value="%date{ISO8601}|%thread- %msg%n" />
+  <property name="pattern" value="%date{ISO8601}|%X{RequestId}|%X{ServiceInstanceId}|%thread|%X{VirtualServerName}|%X{ServiceName}|%X{InstanceUUID}|%.-5level|%c-|%X{AlertSeverity}|%X{ServerIPAddress}|%X{ServerFQDN}|%X{RemoteHost}|%X{ClassName}|%X{Timer}| %msg%n" />
  
   <!-- Example evaluator filter applied against console appender -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
