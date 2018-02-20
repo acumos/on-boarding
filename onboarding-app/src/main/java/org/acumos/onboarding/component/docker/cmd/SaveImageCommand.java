@@ -97,22 +97,22 @@ public class SaveImageCommand extends DockerCommand {
 		}
 		final DockerClient client = getClient();
 		try {
-			logger.info(String.format("Started save image '%s' ... ", imageName + " " + imageTag));
+			logger.debug(EELFLoggerDelegate.debugLogger,String.format("Started save image '%s' ... ", imageName + " " + imageTag));
 			final OutputStream output = new FileOutputStream(new File(destination, filename));
 			IOUtils.copy(client.saveImageCmd(imageName + ":" + imageTag).exec(), output);
 			IOUtils.closeQuietly(output);
-			logger.info("Finished save image " + imageName + " " + imageTag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Finished save image " + imageName + " " + imageTag);
 		} catch (NotFoundException e) {
 			if (!ignoreIfNotFound) {
-				logger.error(String.format("image '%s' not found ", imageName + " " + imageTag));
+				logger.error(EELFLoggerDelegate.errorLogger,String.format("image '%s' not found ", imageName + " " + imageTag));
 				throw e;
 			} else {
-				logger.info(
+				logger.error(EELFLoggerDelegate.errorLogger,
 						String.format("image '%s' not found, but skipping this error is turned on, let's continue ... ",
 								imageName + " " + imageTag));
 			}
 		} catch (IOException e) {
-			logger.error(
+			logger.error(EELFLoggerDelegate.errorLogger,
 					String.format("Error to save '%s' ", imageName + " " + imageTag) + " " + e.getLocalizedMessage());
 			throw new DockerException(
 					String.format("Error to save '%s' ", imageName + " " + imageTag) + " " + e.getLocalizedMessage(),

@@ -117,7 +117,7 @@ public class UtilityFunction {
 				}
 			}
 			boolean deleteFlag = fileStreamPath.delete();
-			logger.debug("File Deleted Status = " + deleteFlag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"File Deleted Status = " + deleteFlag);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class UtilityFunction {
 			}
 			return result.toString();
 		} catch (NoSuchAlgorithmException e) {
-			logger.error(e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
 			return data;
 		}
 	}
@@ -183,7 +183,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug("Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
 			return bytes;
 		} finally {
 			in.close();
@@ -241,7 +241,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug("Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
 			return bytes;
 		} finally {
 			in.close();

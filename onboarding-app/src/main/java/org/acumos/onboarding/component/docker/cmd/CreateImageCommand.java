@@ -98,14 +98,14 @@ public class CreateImageCommand extends DockerCommand {
 			throw new IllegalArgumentException("configured dockerFolder '" + dockerFolder + "' does not exist.");
 		final Map<String, String> buildArgsMap = new HashMap<String, String>();
 		if ((buildArgs != null) && (!buildArgs.trim().isEmpty())) {
-			logger.info("Parsing buildArgs: " + buildArgs);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Parsing buildArgs: " + buildArgs);
 			String[] split = buildArgs.split(",|;");
 			for (String arg : split) {
 				String[] pair = arg.split("=");
 				if (pair.length == 2) {
 					buildArgsMap.put(pair[0].trim(), pair[1].trim());
 				} else {
-					logger.error("Invalid format for " + arg + ". Buildargs should be formatted as key=value");
+					logger.debug(EELFLoggerDelegate.debugLogger,"Invalid format for " + arg + ". Buildargs should be formatted as key=value");
 				}
 			}
 		}
@@ -122,15 +122,15 @@ public class CreateImageCommand extends DockerCommand {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null)
-						logger.info("\t" + item.getStream());
+						logger.debug(EELFLoggerDelegate.debugLogger,"\t" + item.getStream());
 					else
-						logger.info("\t" + item);
+						logger.debug(EELFLoggerDelegate.debugLogger,"\t" + item);
 					super.onNext(item);
 				}
 
 				@Override
 				public void onError(Throwable throwable) {
-					logger.error("Failed to creating docker image", throwable);
+					logger.error(EELFLoggerDelegate.errorLogger,"Failed to creating docker image", throwable);
 					throwable.printStackTrace();
 					super.onError(throwable);
 				}

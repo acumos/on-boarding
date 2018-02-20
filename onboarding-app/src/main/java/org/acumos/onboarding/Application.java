@@ -49,10 +49,10 @@ public class Application implements ApplicationContextAware {
 			final ObjectMapper mapper = new ObjectMapper();
 			// ensure it's valid
 			mapper.readTree(springApplicationJson);
-			logger.info("Successfully parsed configuration from environment {" + CONFIG_ENV_VAR_NAME + "}");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Successfully parsed configuration from environment {" + CONFIG_ENV_VAR_NAME + "}");
 		} else {
 
-			logger.warn("No configuration found in environment {" + CONFIG_ENV_VAR_NAME + "}");
+			logger.debug(EELFLoggerDelegate.debugLogger,"No configuration found in environment {" + CONFIG_ENV_VAR_NAME + "}");
 		}
 		
 		SpringApplication.run(Application.class, args);
