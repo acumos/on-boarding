@@ -191,8 +191,8 @@ public class OnboardingController implements DockerService {
 		try {
 			Crediantials obj = cred.getBody();
 
-			String user = "rohit";//obj.getUsername();
-			String pass = "Test@123";obj.getPassword();
+			String user = obj.getUsername();
+			String pass = obj.getPassword();
 
 			JSONObject crediantials = new JSONObject();
 			crediantials.put("username", user);
@@ -201,7 +201,7 @@ public class OnboardingController implements DockerService {
 			JSONObject reqObj = new JSONObject();
 			reqObj.put("request_body", crediantials);
 
-			String token = "xyz";//portalClient.loginToAcumos(reqObj);
+			String token = portalClient.loginToAcumos(reqObj);
 
 			if (token != null) {
 				// Setting JWT token in header
@@ -261,16 +261,16 @@ public class OnboardingController implements DockerService {
 			}
 
 			// Call to validate JWT Token.....!
-			//JsonResponse<Object> valid = validate(authorization, provider);
+			JsonResponse<Object> valid = validate(authorization, provider);
 
-			boolean isValidToken = true;//valid.getStatus();
+			boolean isValidToken = valid.getStatus();
 
 			String ownerId = null;
 			String imageUri = null;
 
 			if (isValidToken) {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Token validation successful");
-				ownerId = "xyz";//valid.getResponseBody().toString();
+				ownerId = valid.getResponseBody().toString();
 
 				if (ownerId == null)
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
