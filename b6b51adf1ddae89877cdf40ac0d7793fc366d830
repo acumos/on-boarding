@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "561b50c6_cdaab3f4",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/preparation/PythonDockerPreprator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-22T12:10:38Z",
+      "side": 0,
+      "message": "Is this code really duplicated?  Same class in two different submodules? Can you eliminate the duplication??",
+      "revId": "b6b51adf1ddae89877cdf40ac0d7793fc366d830",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
