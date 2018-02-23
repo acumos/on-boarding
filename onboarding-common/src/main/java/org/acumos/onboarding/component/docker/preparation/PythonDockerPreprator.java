@@ -28,7 +28,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -63,9 +62,14 @@ public class PythonDockerPreprator {
 
 		this.metadata = metadataParser.getMetadata();
 		this.metadataJson = metadataParser.getMetadataJson();
-		int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
+		this.pythonVersion=metadata.getRuntimeVersion()+"-slim";
+		
+	    /*commenting out fixed version of python docker base image*/
+		
+		/*int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
 		this.pythonVersion = Arrays.toString(runtimeVersion);
-/*		if (runtimeVersion[0] == 2) {
+		
+		if (runtimeVersion[0] == 2) {
 			int[] baseVersion = new int[] { 2, 7, 13 };
 			if (compareVersion(baseVersion, runtimeVersion) >= 0) {
 
