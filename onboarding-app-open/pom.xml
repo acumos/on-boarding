@@ -169,6 +169,29 @@
 					</archive>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>license-maven-plugin</artifactId>
+		        <version>1.14</version>
+		        <configuration>
+		                <licenseName>acumos</licenseName>
+		                <licenseResolver>${project.baseUri}/src/license</licenseResolver>
+		                <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+		                <processStartTag>===============LICENSE_START=======================================================</processStartTag>
+		                <processEndTag>===============LICENSE_END=========================================================</processEndTag>
+		                <sectionDelimiter>===================================================================================</sectionDelimiter>
+		                <inceptionYear>2017</inceptionYear>
+		                <organizationName>AT&amp;T Intellectual Property &amp; Tech Mahindra. All rights reserved.</organizationName>
+		                <projectName>Acumos</projectName>
+		                <canUpdateCopyright>false</canUpdateCopyright>
+		                <canUpdateDescription>false</canUpdateDescription>
+		                <canUpdateLicense>flase</canUpdateLicense>
+		                <emptyLineAfterHeader>true</emptyLineAfterHeader>
+		        </configuration>
+		</plugin>
+			
+			
 			<!-- Skip the jar deployment step -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
