@@ -51,6 +51,9 @@ public class CommandUtilsTest {
 		}
 	}
 
+	/**
+	 * Test image
+	 */
 	@Test
 	public void imageFullNameFromTest() {
 
@@ -60,7 +63,6 @@ public class CommandUtilsTest {
 		} else {
 			assert (true);
 		}
-
 	}
 
 }
