@@ -40,6 +40,9 @@ public class CommandUtilsTest {
 
 	}
 
+	/**
+	 * Test sizeInBytes
+	 */
 	@Test
 	public void sizeInBytesTest() {
 		String str = "Dockerimages";
@@ -51,6 +54,9 @@ public class CommandUtilsTest {
 		}
 	}
 
+	/**
+	 * Test image
+	 */
 	@Test
 	public void imageFullNameFromTest() {
 
@@ -60,7 +66,6 @@ public class CommandUtilsTest {
 		} else {
 			assert (true);
 		}
-
 	}
 
 }
