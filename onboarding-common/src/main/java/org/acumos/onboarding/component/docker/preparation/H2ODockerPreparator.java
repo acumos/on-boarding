@@ -33,7 +33,7 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
-public class H2ODockerPreparator {
+public class H2ODockerPreparator { 
 	private Metadata metadata;
 
 	private String rVersion;
@@ -68,7 +68,7 @@ public class H2ODockerPreparator {
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error(e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
 		}
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));
