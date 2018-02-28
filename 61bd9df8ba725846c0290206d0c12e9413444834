@@ -1,0 +1,707 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e73290f_f858dfe0",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "This is wrong, you should not use 1.13.1-SNAPSHOT of the common data service, the release version is available.",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a465dc19_cc172996",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "I believe you should also use 2.0.0 release version here",
+      "range": {
+        "startLine": 47,
+        "startChar": 21,
+        "endLine": 47,
+        "endChar": 22
+      },
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e839535_59700e0f",
+        "filename": "onboarding-app/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Did the T.M.G.C. change?  I think you should be using the release version here.",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a338f23_68f42fd9",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "use the release version, not snapshot",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a2de71cd_b837ac1f",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "use the release version, not snapshot",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8d037f0_b01a1a22",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/config/DockerClientConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e23d7efb_51562f02",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/models/OnboardingNotification.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "532ce8e6_caffa8db",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use method name, not e.getMessage() as second arg",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bbca4836_1c766580",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e435552_ba9259ed",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/CreateImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba68b178_0be68d41",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/CreateImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Maybe this should be warn or error? \n\nUse {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9f8f37cb_2ddc0d69",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/CreateImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Don\u0027t use tabs in logger output",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5d50805_c0a0cbb7",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/CreateImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "DOn\u0027t print stack trace like this",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be7c8ab2_a8909f61",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/PushImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "No, pass the throwable as the last arg to the logger",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d074bd9_c6017e2e",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/SaveImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "763f9751_53c8041d",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/SaveImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Pass the exception as the last arg to logger",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5d6dedeb_15202d01",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/TagImageCommand.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature, not String.format",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a37e930d_789706d0",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/preparation/H2ODockerPreparator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Don\u0027t print stack trace.  Pass method name and e to the logger, not e.getMessage",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7bebc020_8f5044c1",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/preparation/JavaGenericDockerPreparator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "DOn\u0027t print stack trace.  Pass method name and e to logger.",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5b01af1_ed460e87",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/preparation/MetadataParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "add method name",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "faf6a49c_23fa709d",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/Application.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Remove @author",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ec67ed4_248a704e",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/Application.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "I suggest reverting this change",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ad23e22_6f89ed7b",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use the method name as the second argument NOT the exception message.  This will save YOU time.  E.g.., \"OnboardingWithAuthentication\"",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "efcb449c_72c09002",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "No, use the logger like this:\nlogger.error(EELFLD.errorLogger, \"Methodname failed\", e);",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f5b31e3_d975b42b",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "see above",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3bc5b821_75802ed9",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Do not print stack trace - the logger does that if invoked correctly",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b2e51a2_2bf55645",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "See above",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d3600141_2669170c",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "830b2aed_79209df5",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "This is exactly the right way, but I might use the method name \"dockerizeFile: python temp failed\" for clarity",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80f3b582_679d325a",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "see above",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f60672b0_7575d547",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "remove code, don\u0027t comment out",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28ed48f8_6980c63c",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Log the exception",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67886679_5d7bcfb5",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Log the exception",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98929b14_119806b8",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b7520e31_b340b8c5",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Log the exception",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0b3a4c7f_04ebfcdc",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Use the {} feature",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "893ed816_20105ec3",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "See above, call logger with the exception, not the message",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "053a690c_87e32f2e",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/PortalRestClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "Please be consistent - use the {} feature of the logger instead of string catenation",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "182885f2_80de6e06",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/PortalRestClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "see above",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08766681_3d493fff",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/PortalRestClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "see above",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7194d3b2_5d3321b0",
+        "filename": "onboarding-common/src/main/resources/logback.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T11:10:45Z",
+      "side": 1,
+      "message": "I don\u0027t recommend moving the debug log to a different place - what is going on here?",
+      "revId": "61bd9df8ba725846c0290206d0c12e9413444834",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
