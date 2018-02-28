@@ -75,7 +75,7 @@ public class DockerClientConfiguration
 		config.setCmdExecFactory(environment.getProperty("docker.cmdExecFactory", config.getCmdExecFactory()));
 		config.setMaxTotalConnections(Integer.parseInt(environment.getProperty("docker.max_total_connections", String.valueOf(config.getMaxTotalConnections()))));
 		config.setMaxPerRouteConnections(Integer.parseInt(environment.getProperty("docker.max_per_route_connections", String.valueOf(config.getMaxPerRouteConnections()))));
-		logger.error("docker host:"+config.getHost());
+		logger.debug(EELFLoggerDelegate.debugLogger,"docker host:"+config.getHost());
 		return config;
 	}
 }

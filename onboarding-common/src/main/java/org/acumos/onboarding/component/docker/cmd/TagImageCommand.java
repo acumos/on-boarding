@@ -85,15 +85,15 @@ public class TagImageCommand extends DockerCommand {
 		}
 		DockerClient client = getClient();
 		try {
-			logger.info("start tagging image " + image + " in " + repository + " as " + tag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"start tagging image " + image + " in " + repository + " as " + tag);
 			client.tagImageCmd(image, repository, tag).withForce(withForce).exec();
-			logger.info("Tagged image " + image + " in " + repository + " as " + tag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Tagged image " + image + " in " + repository + " as " + tag);
 		} catch (NotFoundException e) {
 			if (!ignoreIfNotFound) {
-				logger.error(String.format("image '%s' not found ", image));
+				logger.error(EELFLoggerDelegate.errorLogger,String.format("image '%s' not found ", image));
 				throw e;
 			} else {
-				logger.info(String.format(
+				logger.error(EELFLoggerDelegate.errorLogger,String.format(
 						"image '%s' not found, but skipping this error is turned on, let's continue ... ", image));
 			}
 		}

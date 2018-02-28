@@ -44,6 +44,7 @@ import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
+
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
@@ -169,7 +170,8 @@ public class OnboardingController implements DockerService {
 
 	@PostConstruct
 	public void init() {
-		logger.info("Creating docker service instance");
+		
+		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
 		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		this.portalClient = new PortalRestClientImpl(portalURL);
 		this.resourceUtils = new ResourceUtils(resourceLoader);
@@ -185,7 +187,7 @@ public class OnboardingController implements DockerService {
 	@RequestMapping(value = "/auth", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(@RequestBody JsonRequest<Crediantials> cred,
 			HttpServletResponse response) throws AcumosServiceException {
-		logger.info("Started User Authentication");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Started User Authentication");
 		try {
 			Crediantials obj = cred.getBody();
 
@@ -204,16 +206,16 @@ public class OnboardingController implements DockerService {
 			if (token != null) {
 				// Setting JWT token in header
 				response.setHeader("jwtToken", token);
-				logger.info("User Authentication Succesful");
+				logger.debug(EELFLoggerDelegate.debugLogger,"User Authentication Succesful");
 				return new ResponseEntity<ServiceResponse>(ServiceResponse.successJWTResponse(token), HttpStatus.OK);
 			} else {
-				logger.info("Either Username/Password is invalid.");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Either Username/Password is invalid.");
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Either Username/Password is invalid.");
 			}
 
 		} catch (AcumosServiceException e) {
-			logger.error(e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					HttpStatus.UNAUTHORIZED);
 		}
@@ -237,7 +239,7 @@ public class OnboardingController implements DockerService {
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider) throws AcumosServiceException {
 
-		logger.info("Started JWT token validation");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Started JWT token validation");
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -267,7 +269,7 @@ public class OnboardingController implements DockerService {
 			String imageUri = null;
 
 			if (isValidToken) {
-				logger.info("Token validation successful");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Token validation successful");
 				ownerId = valid.getResponseBody().toString();
 
 				if (ownerId == null)
@@ -278,7 +280,7 @@ public class OnboardingController implements DockerService {
 				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
 
-				logger.info("Dockerization request recieved with " + model.getOriginalFilename() + " and metadata :"
+				logger.debug(EELFLoggerDelegate.debugLogger,"Dockerization request recieved with " + model.getOriginalFilename() + " and metadata :"
 						+ metadata);
 
 				// Notify Create solution or get existing solution ID has
@@ -401,7 +403,7 @@ public class OnboardingController implements DockerService {
 							HttpStatus.CREATED);
 				} finally {
 					if (isSuccess == false) {
-						logger.info("Onboarding Failed, Reverting failed solutions and artifacts.");
+						logger.debug(EELFLoggerDelegate.debugLogger,"Onboarding Failed, Reverting failed solutions and artifacts.");
 						revertbackOnboarding(metadataParser.getMetadata(), imageUri);
 					}
 					UtilityFunction.deleteDirectory(outputFolder);
@@ -418,24 +420,24 @@ public class OnboardingController implements DockerService {
 
 		} catch (AcumosServiceException e) {
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error(e.getErrorCode() + "  " + e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger,e.getErrorCode() + "  " + e.getMessage());
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					httpCode);
 		} catch (HttpClientErrorException e) {
 			// Handling #401
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
-				logger.info("Unauthorized User - Either Username/Password is invalid.");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Unauthorized User - Either Username/Password is invalid.");
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User"),
 						HttpStatus.UNAUTHORIZED);
 			} else {
-				logger.error(e.getMessage());
+				logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
 				e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
@@ -495,7 +497,7 @@ public class OnboardingController implements DockerService {
 	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
 		File outputFolder = localmodelFile.getParentFile();
 		Metadata metadata = metadataParser.getMetadata();
-		logger.info("Preparing app in " + outputFolder);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in " + outputFolder);
 		if (metadata.getRuntimeName().equals("python")) {
 			outputFolder = new File(localmodelFile.getParentFile(), "app");
 			outputFolder.mkdir();
@@ -512,7 +514,7 @@ public class OnboardingController implements DockerService {
 				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
 			} catch (IOException e) {
-				logger.warn("Python templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed", e);
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
@@ -529,7 +531,7 @@ public class OnboardingController implements DockerService {
 				tarFile = UtilityFunction.deCompressGZipFile(localmodelFile, tarFile);
 				UtilityFunction.unTarFile(tarFile, outputFolder);
 			} catch (IOException e) {
-				logger.warn("Java Argus templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Java Argus templatization failed", e);
 			}
 		} else if (metadata.getRuntimeName().equals("h2o")) {
 
@@ -572,7 +574,7 @@ public class OnboardingController implements DockerService {
 
 				// Creat solution id - success
 			} catch (IOException e) {
-				logger.warn("H2O templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"H2O templatization failed", e);
 			}
 			dockerPreprator.prepareDockerApp(outputFolder);
 
@@ -616,7 +618,7 @@ public class OnboardingController implements DockerService {
 				 */
 
 			} catch (IOException e) {
-				logger.warn("Java-Generic templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Java-Generic templatization failed", e);
 			}
 
 			dockerPreprator.prepareDockerApp(outputFolder);
@@ -625,19 +627,19 @@ public class OnboardingController implements DockerService {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported runtime " + metadata.getRuntimeName());
 		}
-		logger.info("********* Resource List ***********");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Resource List");
 		listFilesAndFilesSubDirectories(outputFolder);
-		logger.info("********* End of Resource List ***********");
-		logger.info("Started docker client");
+		logger.debug(EELFLoggerDelegate.debugLogger,"End of Resource List");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Started docker client");
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
-		logger.info("Docker client created successfully");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
 		try {
 			logger.info("Docker image creation started");
 			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName(),
 					metadata.getVersion(), null, false, true);
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
-			logger.info("Docker image creation done");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image creation done");
 			// put catch here
 			// /Microservice/Docker image nexus creation -success
 
@@ -646,16 +648,16 @@ public class OnboardingController implements DockerService {
 			// String imageId = createCMD.getImageId();
 			// TODO: remove local image
 
-			logger.info("Starting docker image tagging");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Starting docker image tagging");
 			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
 
 			TagImageCommand tagImageCommand = new TagImageCommand(metadata.getModelName() + ":" + metadata.getVersion(),
 					imageTagName, metadata.getVersion(), true, false);
 			tagImageCommand.setClient(dockerClient);
 			tagImageCommand.execute();
-			logger.info("Docker image tagging completed successfully");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image tagging completed successfully");
 
-			logger.info("Starting pushing with Imagename:" + imageTagName + " and version : " + metadata.getVersion()
+			logger.debug(EELFLoggerDelegate.debugLogger,"Starting pushing with Imagename:" + imageTagName + " and version : " + metadata.getVersion()
 					+ " in nexus");
 			PushImageCommand pushImageCmd = new PushImageCommand(imageTagName, metadata.getVersion(), "");
 			pushImageCmd.setClient(dockerClient);
@@ -663,9 +665,9 @@ public class OnboardingController implements DockerService {
 
 			dockerImageURI = imageTagName + ":" + metadata.getVersion();
 
-			logger.info("Docker image URI : " + dockerImageURI);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image URI : " + dockerImageURI);
 
-			logger.info("Docker image pushed in nexus successfully");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image pushed in nexus successfully");
 
 			// Microservice/Docker image pushed to nexus -success
 
@@ -675,13 +677,13 @@ public class OnboardingController implements DockerService {
 			try {
 				dockerClient.close();
 			} catch (IOException e) {
-				logger.warn("Fail to close docker client gracefully", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Fail to close docker client gracefully", e);
 			}
 		}
 	}
 
 	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
-		logger.info("Create solution call started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
 		solution.setDescription(metadata.getSolutionName());
@@ -699,7 +701,7 @@ public class OnboardingController implements DockerService {
 		try {
 			solution = cdmsClient.createSolution(solution);
 			metadata.setSolutionId(solution.getSolutionId());
-			logger.info("Solution created: " + solution.getSolutionId());
+			logger.debug(EELFLoggerDelegate.debugLogger,"Solution created: " + solution.getSolutionId());
 			// Creat solution id - success
 			// OnboardingNotification notify= new OnboardingNotification();
 			// notify.successResponse();
@@ -742,7 +744,7 @@ public class OnboardingController implements DockerService {
 	}
 
 	protected MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
-		logger.info("Create solution revision call started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
 		revision.setOwnerId(metadata.getOwnerId());
 
@@ -759,7 +761,7 @@ public class OnboardingController implements DockerService {
 		try {
 			revision = cdmsClient.createSolutionRevision(revision);
 			metadata.setRevisionId(revision.getRevisionId());
-			logger.info("Solution revision created: " + revision.getRevisionId());
+			logger.debug(EELFLoggerDelegate.debugLogger,"Solution revision created: " + revision.getRevisionId());
 			return revision;
 		} catch (HttpStatusCodeException e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -788,7 +790,7 @@ public class OnboardingController implements DockerService {
 		repositoryLocation.setUsername(nexusUserName);
 		repositoryLocation.setPassword(nexusPassword);
 		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-		logger.info("Upload Artifact for " + file.getName() + " started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + file.getName() + " started");
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
 			onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
@@ -799,10 +801,10 @@ public class OnboardingController implements DockerService {
 			int size = fileInputStream.available();
 			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
 			 
-			logger.info(
+			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
-				logger.info("Add Artifact called for " + file.getName());
+				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact called for " + file.getName());
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(file.getName());
 				modelArtifact.setDescription(file.getName());
@@ -812,12 +814,13 @@ public class OnboardingController implements DockerService {
 				modelArtifact.setUri(artifactInfo.getArtifactMvnPath());
 				modelArtifact.setSize(size);
 				modelArtifact = cdmsClient.createArtifact(modelArtifact);
-				logger.info("Artifact created for " + file.getName());
-				logger.info("addSolutionRevisionArtifact for " + file.getName() + " called");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Artifact created for " + file.getName());
+				logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact for " + file.getName() + " called");
 				try {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
-					logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
+					logger.debug(EELFLoggerDelegate.debugLogger, "addSolutionRevisionArtifact for " + file.getName() + " successful");
+					//logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
 					// Notify add artifacts successful
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
@@ -854,7 +857,7 @@ public class OnboardingController implements DockerService {
 
 		try {
 			try {
-				logger.info("Upload Artifact for " + uri + " started");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + uri + " started");
 				// Notify add artifacts started
 				if (onboardingStatus != null) {
 					onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
@@ -872,7 +875,7 @@ public class OnboardingController implements DockerService {
 				try {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
-					logger.info("addSolutionRevisionArtifact for " + uri + " successful");
+					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact for " + uri + " successful");
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 						onboardingStatus.notifyOnboardingStatus("AddToRepository","SU", "Upload Artifact for" + modelArtifact.getName() +" Successful");
@@ -901,23 +904,22 @@ public class OnboardingController implements DockerService {
 	}
 
 	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
-		logger.info("Generate TOSCA started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA started");
 		try {
 
 			// TODO : Include toscaOutputFolder =/tmp/ and
 			// toscaGeneratorEndPointURL=http://cognita-demo-core:8080/model_create
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
-			logger.debug("******************************");
-			logger.debug("toscaOutputFolder : " + toscaOutputFolder);
-			logger.debug("toscaGeneratorEndPointURL : " + toscaGeneratorEndPointURL);
-			logger.debug("nexusEndPointURL : " + nexusEndPointURL);
-			logger.debug("nexusUserName : " + nexusUserName);
-			logger.debug("nexusPassword : " + nexusPassword);
-			logger.debug("nexusGroupId : " + nexusGroupId);
-			logger.debug("cmnDataSvcEndPoinURL : " + cmnDataSvcEndPoinURL);
-			logger.debug("cmnDataSvcUser : " + cmnDataSvcUser);
-			logger.debug("cmnDataSvcPwd : " + cmnDataSvcPwd);
+			logger.debug(EELFLoggerDelegate.debugLogger,"toscaOutputFolder : " + toscaOutputFolder);
+			logger.debug(EELFLoggerDelegate.debugLogger,"toscaGeneratorEndPointURL : " + toscaGeneratorEndPointURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusEndPointURL : " + nexusEndPointURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusUserName : " + nexusUserName);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusPassword : " + nexusPassword);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusGroupId : " + nexusGroupId);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcEndPoinURL : " + cmnDataSvcEndPoinURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcUser : " + cmnDataSvcUser);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcPwd : " + cmnDataSvcPwd);
 
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
@@ -925,14 +927,14 @@ public class OnboardingController implements DockerService {
 
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 					metadata.getRevisionId(), localProtobufFile, localMetadataFile);
-			logger.info("Generate TOSCA completed result:" + result);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA completed result:" + result);
 
 		} catch (Exception e) {
 			// Notify TOSCA generation failed
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", "TOSCA Generation Failed");
 			}
-			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - " + e.getMessage(), e);
 			// Storage of artifact location references in Common Data
 			// Store-failure
 		}
@@ -942,7 +944,7 @@ public class OnboardingController implements DockerService {
 
 		try {
 
-			logger.info("In RevertbackOnboarding method");
+			logger.debug(EELFLoggerDelegate.debugLogger,"In RevertbackOnboarding method");
 
 			RepositoryLocation repositoryLocation = new RepositoryLocation();
 			repositoryLocation.setId("1");
@@ -955,19 +957,19 @@ public class OnboardingController implements DockerService {
 			// Remove the image from docker registry
 			// Check the value of imageUri, if it is null then do not delete the
 			// image
-			logger.info("Image Name from dockerize file method: " + imageUri);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Image Name from dockerize file method: " + imageUri);
 
 			if (StringUtils.isNotBlank(imageUri)) {
 				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
-				logger.info("Image Name: " + imageTagName);
+				logger.debug(EELFLoggerDelegate.debugLogger,"Image Name: " + imageTagName);
 				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
 				deleteImageCommand.setClient(dockerClient);
 				deleteImageCommand.execute();
-				logger.info("--- Successfully Deleted the image from Docker Registry ---");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the image from Docker Registry");
 			}
 
 			if (metadata.getSolutionId() != null) {
-				logger.info("Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
+				logger.debug(EELFLoggerDelegate.debugLogger,"Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
 
 				// get the Artifact IDs for given solution
 				List<MLPArtifact> artifactids = cdmsClient.getSolutionRevisionArtifacts(metadata.getSolutionId(),
@@ -980,25 +982,25 @@ public class OnboardingController implements DockerService {
 					String artifactId = mlpArtifact.getArtifactId();
 
 					// Delete SolutionRevisionArtifact
-					logger.info("Deleting Artifact: " + artifactId);
+					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Artifact: " + artifactId);
 					cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							artifactId);
-					logger.info("--- Successfully Deleted the SolutionRevisionArtifact ---");
+					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the SolutionRevisionArtifact");
 
 					// Delete Artifact
 					cdmsClient.deleteArtifact(artifactId);
-					logger.info("--- Successfully Deleted the Artifact ---");
+					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact");
 
 					// Delete the file from the Nexus
 					if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
 						nexusClient.deleteArtifact(mlpArtifact.getUri());
-						logger.info("--- Successfully Deleted the Artifact from Nexus ---");
+						logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact from Nexus");
 					}
 				}
 
 				// Delete current revision
 				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
-				logger.info("--- Successfully Deleted the Solution Revision ---");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Solution Revision");
 
 				// get other revision under the solution, if they exist
 				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
@@ -1007,13 +1009,13 @@ public class OnboardingController implements DockerService {
 				// with it
 				if (solRev.isEmpty()) {
 					cdmsClient.deleteSolution(metadata.getSolutionId());
-					logger.info("Deleting Solution: " + metadata.getSolutionId());
+					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Solution: " + metadata.getSolutionId());
 				}
 
 			}
 		} catch (Exception e) {
-			logger.info("Onboarding failed");
-			logger.error(e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Onboarding failed");
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
 			e.printStackTrace();
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to revert back onboarding changes : " + e.getMessage());
@@ -1045,5 +1047,4 @@ public class OnboardingController implements DockerService {
 		return cmnDataSvcPwd;
 	}
 
-	
 }

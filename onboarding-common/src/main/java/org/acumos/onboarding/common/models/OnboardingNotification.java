@@ -47,10 +47,6 @@ public class OnboardingNotification {
 
 	private CommonDataServiceRestClientImpl cdmsClient;
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingNotification.class);
-	
-	public OnboardingNotification() {
-		
-	}
 
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
@@ -59,7 +55,7 @@ public class OnboardingNotification {
 
 	// current step, status and description sent to be logged.
 	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
-		logger.info("Notify" + currentDescription);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Notify" + currentDescription);
 		if (trackingId != null) {
 
 			MLPStepResult stepResult = new MLPStepResult();

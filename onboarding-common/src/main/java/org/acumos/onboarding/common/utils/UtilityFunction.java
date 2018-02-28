@@ -35,6 +35,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.acumos.onboarding.Application;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -42,7 +44,7 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.core.io.Resource;
 
 public class UtilityFunction {
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Application.class);
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();
@@ -115,7 +117,7 @@ public class UtilityFunction {
 				}
 			}
 			boolean deleteFlag = fileStreamPath.delete();
-			logger.debug("File Deleted Status = " + deleteFlag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"File Deleted Status = " + deleteFlag);
 		}
 	}
 
@@ -131,7 +133,7 @@ public class UtilityFunction {
 			}
 			return result.toString();
 		} catch (NoSuchAlgorithmException e) {
-			logger.error(e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
 			return data;
 		}
 	}
@@ -181,7 +183,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug("Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
 			return bytes;
 		} finally {
 			in.close();
@@ -239,7 +241,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug("Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
 			return bytes;
 		} finally {
 			in.close();

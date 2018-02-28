@@ -14,7 +14,7 @@
 	<modules>
 		<!-- Child modules do NOT name this parent. -->
 		<module>onboarding-app</module>
-		<module>onboarding-common</module>
+		<!--<module>onboarding-common</module>-->
 	</modules>
 	<build>
 		<plugins>
