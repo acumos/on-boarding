@@ -18,9 +18,9 @@
  * ===============LICENSE_END=========================================================
  */
 
-package org.acumos.onboarding;
+package org.acumos.onboarding.services;
 
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+/*import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,11 +31,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication
-/**
+*//**
  * 
  * @author ****
  *
- */
+ *//*
 public class Application implements ApplicationContextAware {
 
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Application.class);
@@ -62,4 +62,4 @@ public class Application implements ApplicationContextAware {
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
 		((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("src");
 	}
-}
+}*/

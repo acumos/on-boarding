@@ -23,17 +23,27 @@ package org.acumos.onboarding;
 import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RDockerPreparatorTest {
 
-	@Mock
-	RDockerPreparator rDockerPreparator;
+	String filePath = FilePathTest.filePath(); 
+	File jsonFile = new File(filePath+"modelDetails.json");
+	
+	
+	public RDockerPreparatorTest() throws AcumosServiceException {
+		new MetadataParser(jsonFile);
+	}
+	
+	MetadataParser metadataParser = new MetadataParser(jsonFile);
+	private String httpProxy= "http://10.1.0.6:3128";
+	
+	RDockerPreparator rDockerPreparator = new RDockerPreparator(metadataParser, httpProxy);
 
 	@Test
 	public void compareVersionTest() {
@@ -69,9 +79,10 @@ public class RDockerPreparatorTest {
 			rDockerPreparator.prepareDockerApp(new File("dFile"));
 			assert(true);
 		} catch (AcumosServiceException e) {
-			assert(false);
+			e.printStackTrace();
 		}
 
   }
+	
 }
 

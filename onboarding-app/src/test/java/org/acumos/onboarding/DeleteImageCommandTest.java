@@ -61,5 +61,13 @@ public class DeleteImageCommandTest {
 		deleteImageCommand.getRegistry();
 		assert (true);
 	}
-
+	@Test
+	public void executeTest() {
+		try {
+			deleteImageCommand.execute();
+			assert (true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

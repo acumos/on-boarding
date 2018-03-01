@@ -66,6 +66,10 @@ public class DockerConfigurationTest {
 		dockerConfiguration.getCmdExecFactory();
 		dockerConfiguration.getMaxPerRouteConnections();
 		dockerConfiguration.isTlsVerify();
+		dockerConfiguration.getConfig();
+		dockerConfiguration.getApiVersion();
+		dockerConfiguration.isSocket();
+		
 		assert(true);
 	}
 	

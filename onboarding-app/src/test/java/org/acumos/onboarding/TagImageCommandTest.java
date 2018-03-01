@@ -60,5 +60,13 @@ public class TagImageCommandTest {
 		tagImageCommand.getWithForce();
 		assert (true);
 	}
-
+	@Test
+	public void executeTest() {
+		try {
+			tagImageCommand.execute();
+			assert (true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

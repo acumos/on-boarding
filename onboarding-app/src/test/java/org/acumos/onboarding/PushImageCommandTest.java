@@ -62,4 +62,14 @@ public class PushImageCommandTest {
 		pushImageCommand.getRegistry();
 		assert (true);
 	}
+	@Test
+	public void executeTest() {
+		try {
+			pushImageCommand.execute();
+			assert (true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
