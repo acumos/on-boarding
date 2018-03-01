@@ -66,27 +66,19 @@ public class DockerConfigurationTest {
 		dockerConfiguration.getCmdExecFactory();
 		dockerConfiguration.getMaxPerRouteConnections();
 		dockerConfiguration.isTlsVerify();
+		dockerConfiguration.getConfig();
+		dockerConfiguration.getApiVersion();
+		dockerConfiguration.isSocket();
+		
 		assert(true);
 	}
 	
 	@Test
-	public void dockerConfigurationTest2() {
-		try {
+	public void dockerConfigurationTest2() throws AcumosServiceException {
+	
 			dockerConfiguration.toUrl();
-			assert(true);
-			dockerConfiguration.setHost(null);
-			dockerConfiguration.toUrl();
-			dockerConfiguration.setPort(null);
-			dockerConfiguration.toUrl();
-			
-			
-		} catch (AcumosServiceException e) {
-			assert(true);
-		}
+			dockerConfiguration.setHost("localhost");
+			dockerConfiguration.setPort(8080);	
+	
 	}
-	
-	
-	
-	
-
 }

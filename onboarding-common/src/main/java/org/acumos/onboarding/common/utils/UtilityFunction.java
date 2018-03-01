@@ -35,8 +35,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import org.acumos.onboarding.Application;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -44,7 +42,7 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.core.io.Resource;
 
 public class UtilityFunction {
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Application.class);
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();

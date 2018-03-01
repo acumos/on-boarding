@@ -20,21 +20,25 @@
 
 package org.acumos.onboarding;
 
+import static org.mockito.Mockito.mock;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.acumos.onboarding.services.impl.HealthcheckController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HealthcheckControllerTest{
 	
-	@Mock
-	HealthcheckController healthcheckController;
+	HealthcheckController healthcheckController = new HealthcheckController();
 	
 	@Test
-	public void initTest(){
-		healthcheckController.init();
-		assert(true);
+	public void getHealthTest(){
+		HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+		HttpServletResponse mockReponse= mock(HttpServletResponse.class);
+		healthcheckController.getHealth(mockRequest, mockReponse);
 	}
 }

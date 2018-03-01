@@ -26,11 +26,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * 
- * @author ****
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class TagImageCommandTest {
 
@@ -60,5 +55,12 @@ public class TagImageCommandTest {
 		tagImageCommand.getWithForce();
 		assert (true);
 	}
-
+	@Test
+	public void executeTest() {
+		try {
+			tagImageCommand.execute();
+		} catch (Exception e) {
+			
+		}
+	}
 }

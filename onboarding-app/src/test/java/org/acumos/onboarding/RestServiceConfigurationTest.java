@@ -17,26 +17,22 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-
 package org.acumos.onboarding;
 
-import org.acumos.onboarding.common.utils.Crediantials;
+import org.acumos.onboarding.common.config.RestServiceConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CrediantialTest {
+public class RestServiceConfigurationTest {
 
+	RestServiceConfiguration confg= new RestServiceConfiguration();
+	
+	
 	@Test
-	public void CrediantialsTest() {
-		Crediantials crediantials = new Crediantials();
-		crediantials.setUsername("testUser");
-		crediantials.setPassword("password");
-		crediantials.getUsername();
-		crediantials.getPassword();
-		
-
+	public void apiTest() {
+		confg.api();
+		assert(true);
 	}
-
 }
