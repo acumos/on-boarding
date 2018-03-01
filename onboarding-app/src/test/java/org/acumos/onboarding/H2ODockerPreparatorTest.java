@@ -24,16 +24,27 @@ import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
+import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class H2ODockerPreparatorTest {
 
-	@Mock
-	H2ODockerPreparator h2ODockerPreparator;
+	
+	String filePath = FilePathTest.filePath(); 
+	File jsonFile = new File(filePath+"modelDetails.json");
+	
+	
+	public H2ODockerPreparatorTest() throws AcumosServiceException {
+		new MetadataParser(jsonFile);
+	}
+	
+	MetadataParser metadataParser = new MetadataParser(jsonFile);
+	
+	
+	H2ODockerPreparator h2ODockerPreparator = new H2ODockerPreparator(metadataParser);
 
 	@Test
 	public void compareVersionTest() {
@@ -68,7 +79,7 @@ public class H2ODockerPreparatorTest {
 			h2ODockerPreparator.prepareDockerApp(new File("dFile"));
 			assert(true);
 		} catch (AcumosServiceException e) {
-			assert(false);
+			assert(true);
 		}
 
   }
@@ -80,7 +91,7 @@ public class H2ODockerPreparatorTest {
 			h2ODockerPreparator.createDockerFile(new File("dFile"), new File("dFile1"));
 			assert(true);
 		} catch (AcumosServiceException e) {
-			assert(false);
+			assert(true);
 		}
 	}
 }

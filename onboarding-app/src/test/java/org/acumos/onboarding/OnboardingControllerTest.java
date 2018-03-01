@@ -25,6 +25,9 @@ package org.acumos.onboarding;
 
 import java.io.File;
 
+import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
@@ -34,6 +37,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,11 +47,18 @@ public class OnboardingControllerTest {
 	@Mock
 	RestTemplate restTemplate;
     
-	
+	@Autowired
+	private ResourceLoader resourceLoader;
+
 	OnboardingController on = new OnboardingController();
 
 	@InjectMocks
 	PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
+
+
+	private CommonDataServiceRestClientImpl cdmsClient;
+
+	private ResourceUtils resourceUtils;
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -264,5 +276,18 @@ public class OnboardingControllerTest {
 		String toolkit = "Scikit-Learn";
 		on.getToolTypeCode(toolkit);
 		assert (true);
+	}
+	
+	@Test
+	public void getCmnDataSvcEndPoinURLTest() {
+       on.getCmnDataSvcEndPoinURL();
+	}
+	@Test
+	public void getCmnDataSvcUserTest() {
+       on.getCmnDataSvcUser();
+	}
+	@Test
+	public void getCmnDataSvcPwdTest() {
+       on.getCmnDataSvcPwd();
 	}
 }

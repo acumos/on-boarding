@@ -467,7 +467,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	private String getToolTypeCode(String toolkit) {
+	public String getToolTypeCode(String toolkit) {
 		ToolkitTypeCode code = null;
 
 		if (toolkit.equals("Scikit-Learn".toLowerCase())) {
@@ -571,7 +571,7 @@ public class CommonOnboarding {
 	
 
 	
-	protected void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
+	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
 		logger.info("Generate TOSCA started");
 		try {
 

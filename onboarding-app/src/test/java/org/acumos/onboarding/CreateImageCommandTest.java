@@ -75,5 +75,14 @@ public class CreateImageCommandTest {
     	createImageCommand.getDisplayName();
     	assert(true);
      }
+    @Test
+	public void executeTest() {
+		try {
+			createImageCommand.execute();
+			assert (true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 	
