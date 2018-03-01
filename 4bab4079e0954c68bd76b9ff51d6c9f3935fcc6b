@@ -1,0 +1,378 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0129102_b88ca93e",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/AbstractResponseObjectTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Remove @Author",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43bc50f3_6bf3c1ea",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/EELFLoggerDelegateTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Remove @author",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "73bec51b_1d6179b7",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/HealthcheckControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "should be private",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6c60e4e0_c45ab950",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "credentials",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d3669d04_bff0c05a",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/OnboardingNotificationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Missing license",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f4789ca1_bbac7227",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/RDockerPreparatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "What is this? Hardcoded IP addresses??",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d73c6688_b8dfe81b",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/RestServiceConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Missing license",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95f93621_cc01863f",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/TagImageCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Remove assert true",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d3b269ad_4c5b7e9f",
+        "filename": "onboarding-app/src/test/java/org/acumos/onboarding/TagImageCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Let exceptions come thru",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6527ef04_deb0cebe",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/Application.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "remove @author",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1194065e_573cf8af",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/AbstractResponseObjectTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "remove @author",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1579d0ea_217494d5",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/ApplicationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "remove author",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e55d9378_ccd9ee50",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/CommonOnboardingTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "pls fix format",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f30e9c0_5da58d61",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/CrediantialTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Credential\n\nplease fix typo",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8903f624_d4bef40d",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/CustomErrorControllerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "remove code don\u0027t comment out",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b4be38f_b93a5e4f",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/DeleteImageCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "don\u0027t catch, let exception come thru",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7041bde6_a2204765",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/DeleteImageCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Assert needs to check something.  This is worthless.",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e630f7e8_65611989",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/DockerClientConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Remove entirely??",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f52f14d7_029502cc",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/DockerConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "This is worthless.",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "807df050_7a62a8e6",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/DockerConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "DOn\u0027t catch",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9e27c233_214d8e16",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/UtilityFunctionTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "Remove code don\u0027t comment out",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "53090481_fdb5933f",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/UtilityFunctionTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-03-01T14:30:34Z",
+      "side": 1,
+      "message": "This does not actually test anything, and it discards any exception.  It is, unfortunately, worthless.",
+      "revId": "4bab4079e0954c68bd76b9ff51d6c9f3935fcc6b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
