@@ -20,12 +20,15 @@
 
 package org.acumos.onboarding;
 
+import java.io.IOException;
+
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceUtilsTest {
@@ -35,12 +38,13 @@ public class ResourceUtilsTest {
 	ResourceUtils resourceUtils = new ResourceUtils(resourceLoader);
 
 	String path = "samplePath";
+	String pattern = "samplePath";
 
 	@Test
 	public void getResourceTest() {
 
 		try {
-			resourceUtils.isResourceExists(path);
+			resourceUtils.getResource(path);
 			assert (true);
 
 		} catch (AcumosServiceException ae) {
@@ -49,12 +53,16 @@ public class ResourceUtilsTest {
 	}
 
 	@Test
-	public void loadResourcesTest() {
+	public void loadResourcesTest() throws AcumosServiceException {
 		try {
 			resourceUtils.loadResources(path);
+			ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(pattern);
 			assert (true);
 		} catch (AcumosServiceException ae) {
 			assert (false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

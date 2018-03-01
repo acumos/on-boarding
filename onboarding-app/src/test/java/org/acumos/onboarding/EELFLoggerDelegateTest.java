@@ -33,12 +33,91 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class EELFLoggerDelegateTest {
 	
-	EELFLoggerDelegate eelfLoggerDelegate = new EELFLoggerDelegate("CustomErrorController");
+	EELFLoggerDelegate eelfLoggerDelegate = new EELFLoggerDelegate("EELFLoggerDelegate");
 	
 	@Test
-	public void setGlobalLoggingContext(){
+	public void error(){
+	
+		eelfLoggerDelegate.error("Failure");	
+		
+	}
+	@Test
+	public void errorDiff(){
+		Throwable th =null;
+		eelfLoggerDelegate.error("Fail", th);;	
+		
+	}
+	
+	@Test
+	public void init(){
 	
 		eelfLoggerDelegate.init();	
+		
+	}
+	
+	@Test
+	public void warn(){
+	
+		eelfLoggerDelegate.warn("warn");	
+		
+	}
+	@Test
+	public void warndiff(){
+		Throwable th =null;
+		eelfLoggerDelegate.warn("warndiff", th);;	
+		
+	}
+	@Test
+	public void info(){
+	
+		eelfLoggerDelegate.warn("info");	
+		
+	}
+	@Test
+	public void infodiff(){
+		Throwable th =null;
+		eelfLoggerDelegate.info("infodiff", th);;	
+		
+	}
+	@Test
+	public void debug(){
+	
+		eelfLoggerDelegate.debug("debug");	
+		
+	}
+	@Test
+	public void debugdiff(){
+		Throwable th =null;
+		eelfLoggerDelegate.debug("debugdiff", th);;	
+		
+	}
+	@Test
+	public void trace(){
+	
+		eelfLoggerDelegate.trace("trace");	
+		
+	}
+	@Test
+	public void tracediff(){
+		Throwable th =null;
+		eelfLoggerDelegate.trace("tracediff", th);;	
+		
+	}
+	@Test
+	public void getLoggerTest(){
+		
+		eelfLoggerDelegate.getLogger("Logger");	
+		
+	}
+	@Test
+	public void getLoggerTest1(){
+		
+		try {
+			eelfLoggerDelegate.getLogger(Class.forName("EELFLoggerDelegateTest"));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		
 	}
 }

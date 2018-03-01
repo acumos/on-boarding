@@ -23,14 +23,13 @@ package org.acumos.onboarding;
 import org.acumos.onboarding.component.docker.cmd.CommandUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandUtilsTest {
 
-	@Mock
-	CommandUtils commandUtilsTest;
+	
+	CommandUtils commandUtilsTest =new CommandUtils();
 
 	@Test
 	public void addLatestTagIfNeededTest() {
