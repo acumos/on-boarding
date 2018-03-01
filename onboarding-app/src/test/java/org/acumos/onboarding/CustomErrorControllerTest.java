@@ -34,42 +34,38 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomErrorControllerTest {
-	
-	
+
 	@Mock
 	CustomErrorController customErrorController;
-	
+
 	@Test
 	public void cognitaServiceExceptionHandlerTest() {
-		
-		HttpServletRequest request = null;// = new MockHttpServletRequest();
-		
+
+		HttpServletRequest request = null;
+
 		AcumosServiceException acumosServiceException = new AcumosServiceException("service not available");
-		//customErrorController.cognitaServiceExceptionHandler(request, exception);
 		acumosServiceException.setErrorCode(null);
-		
-		ResponseEntity<ServiceResponse>  response = customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
+
+		ResponseEntity<ServiceResponse> response = customErrorController.acumosServiceExceptionHandler(request,
+				acumosServiceException);
 		customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
 		when(customErrorController.acumosServiceExceptionHandler(request, acumosServiceException)).thenReturn(response);
-		assert(true);
-		
-			
+		assert (true);
+
 	}
-	
+
 	@Test
 	public void cognitaServiceExceptionHandlerTest1() {
-		
-		HttpServletRequest request = null;// = new MockHttpServletRequest();
-		
+
+		HttpServletRequest request = null;
+
 		AcumosServiceException acumosServiceException = new AcumosServiceException("service not available");
-		//customErrorController.cognitaServiceExceptionHandler(request, exception);
 		acumosServiceException.setErrorCode(AcumosServiceException.ErrorCode.INVALID_PARAMETER.name());
-		
-		ResponseEntity<ServiceResponse>  response = customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
+		ResponseEntity<ServiceResponse> response = customErrorController.acumosServiceExceptionHandler(request,
+				acumosServiceException);
 		customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
 		when(customErrorController.acumosServiceExceptionHandler(request, acumosServiceException)).thenReturn(response);
-		assert(true);
-		}
+		assert (true);
+	}
 
-	
 }

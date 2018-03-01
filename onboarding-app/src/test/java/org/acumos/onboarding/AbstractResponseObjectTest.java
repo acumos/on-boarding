@@ -23,23 +23,16 @@ package org.acumos.onboarding;
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * 
- * @author ***
- *
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractResponseObjectTest {
 
-	@Mock
-	AbstractResponseObject abstractResponseObject;
-
 	@Test
-	public void AbstractResponseTest() {
-		abstractResponseObject.setLoginPassExpire(true);
+	private void AbstractResponseTest() {
+		AbstractResponseObject abstractResponseObject = new AbstractResponseObject();
+		abstractResponseObject.setLoginPassExpire(false);
 		abstractResponseObject.isLoginPassExpire();
 		abstractResponseObject.setJwtToken("34sd34-3434");
 		abstractResponseObject.getJwtToken();

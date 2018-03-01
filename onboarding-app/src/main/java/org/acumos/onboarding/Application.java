@@ -31,11 +31,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootApplication
-/**
- * 
- * @author ****
- *
- */
 public class Application implements ApplicationContextAware {
 
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Application.class);

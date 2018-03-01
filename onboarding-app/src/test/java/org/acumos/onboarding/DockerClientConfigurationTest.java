@@ -34,15 +34,6 @@ public class DockerClientConfigurationTest {
 
 	@Test
 	 public void dockerConfigurationTest() {
-		
-		/*DockerConfiguration config = new DockerConfiguration();
-	  	
-		when(dockerCConfig.dockerConfiguration());//.thenReturn(config);
-		assert(true);*/
-		 
-	 }
-
-
- 
-
+			 
+	}
 }
