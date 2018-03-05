@@ -55,7 +55,7 @@ public class OnboardingNotification {
 
 	// current step, status and description sent to be logged.
 	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
-		logger.debug(EELFLoggerDelegate.debugLogger,"Notify" + currentDescription);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Notify: {}", currentDescription);
 		if (trackingId != null) {
 
 			MLPStepResult stepResult = new MLPStepResult();
