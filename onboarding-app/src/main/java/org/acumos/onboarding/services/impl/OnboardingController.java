@@ -215,7 +215,7 @@ public class OnboardingController implements DockerService {
 			}
 
 		} catch (AcumosServiceException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,"OnboardingWithAuthentication: {}", e);
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					HttpStatus.UNAUTHORIZED);
 		}
@@ -420,7 +420,7 @@ public class OnboardingController implements DockerService {
 
 		} catch (AcumosServiceException e) {
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error(EELFLoggerDelegate.errorLogger,e.getErrorCode() + "  " + e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "dockerizePayload: {}" + e);
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					httpCode);
 		} catch (HttpClientErrorException e) {
@@ -431,14 +431,12 @@ public class OnboardingController implements DockerService {
 						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User"),
 						HttpStatus.UNAUTHORIZED);
 			} else {
-				logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
-				e.printStackTrace();
+				logger.error(EELFLoggerDelegate.errorLogger, "dockerizePayload: {}" + e);
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
 			}
 		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
-			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage()),
@@ -497,7 +495,7 @@ public class OnboardingController implements DockerService {
 	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
 		File outputFolder = localmodelFile.getParentFile();
 		Metadata metadata = metadataParser.getMetadata();
-		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in " + outputFolder);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in: {}", outputFolder);
 		if (metadata.getRuntimeName().equals("python")) {
 			outputFolder = new File(localmodelFile.getParentFile(), "app");
 			outputFolder.mkdir();
@@ -514,7 +512,7 @@ public class OnboardingController implements DockerService {
 				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
 			} catch (IOException e) {
-				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed: {}", e);
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
@@ -531,7 +529,7 @@ public class OnboardingController implements DockerService {
 				tarFile = UtilityFunction.deCompressGZipFile(localmodelFile, tarFile);
 				UtilityFunction.unTarFile(tarFile, outputFolder);
 			} catch (IOException e) {
-				logger.error(EELFLoggerDelegate.errorLogger,"Java Argus templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Java Argus templatization failed: {}", e);
 			}
 		} else if (metadata.getRuntimeName().equals("h2o")) {
 
@@ -564,13 +562,6 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName));
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
-
-				/*
-				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
-				 * modelOriginalName);
-				 * 
-				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
-				 */
 
 				// Creat solution id - success
 			} catch (IOException e) {
@@ -764,6 +755,7 @@ public class OnboardingController implements DockerService {
 			logger.debug(EELFLoggerDelegate.debugLogger,"Solution revision created: " + revision.getRevisionId());
 			return revision;
 		} catch (HttpStatusCodeException e) {
+			logger.error(EELFLoggerDelegate.errorLogger,"Creation of solution revision failed: {}", e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -790,7 +782,7 @@ public class OnboardingController implements DockerService {
 		repositoryLocation.setUsername(nexusUserName);
 		repositoryLocation.setPassword(nexusPassword);
 		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + file.getName() + " started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for {}", file.getName() + " started");
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
 			onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
@@ -802,7 +794,7 @@ public class OnboardingController implements DockerService {
 			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
-					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
+					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
 			try {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact called for " + file.getName());
 				MLPArtifact modelArtifact = new MLPArtifact();
@@ -829,6 +821,7 @@ public class OnboardingController implements DockerService {
 					}
 					return modelArtifact;
 				} catch (HttpStatusCodeException e) {
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact: {}", e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
 									+ e.getResponseBodyAsString(),
@@ -912,7 +905,7 @@ public class OnboardingController implements DockerService {
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
 			logger.debug(EELFLoggerDelegate.debugLogger,"toscaOutputFolder : " + toscaOutputFolder);
-			logger.debug(EELFLoggerDelegate.debugLogger,"toscaGeneratorEndPointURL : " + toscaGeneratorEndPointURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"toscaGeneratorEndPointURL : {}", toscaGeneratorEndPointURL);
 			logger.debug(EELFLoggerDelegate.debugLogger,"nexusEndPointURL : " + nexusEndPointURL);
 			logger.debug(EELFLoggerDelegate.debugLogger,"nexusUserName : " + nexusUserName);
 			logger.debug(EELFLoggerDelegate.debugLogger,"nexusPassword : " + nexusPassword);
@@ -934,7 +927,7 @@ public class OnboardingController implements DockerService {
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", "TOSCA Generation Failed");
 			}
-			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - " + e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - {}", e);
 			// Storage of artifact location references in Common Data
 			// Store-failure
 		}

@@ -81,7 +81,7 @@ public class PushImageCommand extends DockerCommand {
 
 			@Override
 			public void onError(Throwable throwable) {
-				logger.error(EELFLoggerDelegate.errorLogger,"Failed to push image:" + throwable.getMessage());
+				logger.error(EELFLoggerDelegate.errorLogger,"Failed to push image: {}", throwable.getMessage());
 				super.onError(throwable);
 			}
 		};
