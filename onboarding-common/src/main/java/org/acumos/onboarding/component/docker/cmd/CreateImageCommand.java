@@ -105,7 +105,7 @@ public class CreateImageCommand extends DockerCommand {
 				if (pair.length == 2) {
 					buildArgsMap.put(pair[0].trim(), pair[1].trim());
 				} else {
-					logger.debug(EELFLoggerDelegate.debugLogger,"Invalid format for " + arg + ". Buildargs should be formatted as key=value");
+					logger.error(EELFLoggerDelegate.debugLogger,"Invalid format for " + arg + ". Buildargs should be formatted as key=value");
 				}
 			}
 		}
@@ -122,16 +122,15 @@ public class CreateImageCommand extends DockerCommand {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null)
-						logger.debug(EELFLoggerDelegate.debugLogger,"\t" + item.getStream());
+						logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
 					else
-						logger.debug(EELFLoggerDelegate.debugLogger,"\t" + item);
+						logger.debug(EELFLoggerDelegate.debugLogger, " " + item);
 					super.onNext(item);
 				}
 
 				@Override
 				public void onError(Throwable throwable) {
 					logger.error(EELFLoggerDelegate.errorLogger,"Failed to creating docker image", throwable);
-					throwable.printStackTrace();
 					super.onError(throwable);
 				}
 			};

@@ -93,8 +93,7 @@ public class TagImageCommand extends DockerCommand {
 				logger.error(EELFLoggerDelegate.errorLogger,String.format("image '%s' not found ", image));
 				throw e;
 			} else {
-				logger.error(EELFLoggerDelegate.errorLogger,String.format(
-						"image '%s' not found, but skipping this error is turned on, let's continue ... ", image));
+				logger.error(EELFLoggerDelegate.errorLogger,"image '%s' not found, but skipping this error is turned on, let's continue ... {}", image);
 			}
 		}
 	}

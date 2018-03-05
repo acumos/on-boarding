@@ -151,8 +151,8 @@ public class PortalRestClientImpl implements PortalRestClient {
 	@Override
 	public String loginToAcumos(org.json.simple.JSONObject credentials) {
 		URI uri = buildUri(new String[] { "auth", "jwtToken" }, null, null);
-		logger.debug(EELFLoggerDelegate.debugLogger,"jwtToken: uri {}", uri);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Token URI : " + uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"jwtToken:  {}", uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Token URI : ", uri);
 		AbstractResponseObject result = restTemplate.postForObject(uri, credentials, AbstractResponseObject.class);
 
 		return result.getJwtToken();
@@ -163,7 +163,7 @@ public class PortalRestClientImpl implements PortalRestClient {
 
 		URI uri = buildUri(new String[] { "auth", "validateToken" }, null, null);
 		logger.debug(EELFLoggerDelegate.debugLogger,"jwtToken: uri {}", uri);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Validation URI : " + uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Validation URI : ", uri);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("provider", provider);

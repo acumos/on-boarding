@@ -73,7 +73,7 @@ public class MetadataParser {
 			ProcessingReport report = validator.validate(schema, this.metadataJson);
 
 			if (!report.isSuccess()) {
-				logger.debug(EELFLoggerDelegate.debugLogger,report.toString());
+				logger.debug(EELFLoggerDelegate.debugLogger, "MetadataParser:", report.toString());
 				StringBuilder sb = new StringBuilder();
 				for (ProcessingMessage processingMessage : report) {
 					if (!processingMessage.getMessage()

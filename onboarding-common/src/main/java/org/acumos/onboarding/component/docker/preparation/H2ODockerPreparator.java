@@ -67,7 +67,6 @@ public class H2ODockerPreparator {
 			prop.load(input);
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
-			e.printStackTrace();
 			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
 		}
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
