@@ -68,7 +68,7 @@ public class H2ODockerPreparator {
 			serverPort = prop.getProperty("server.port");
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger,"prepareDockerApp: {}", e);
 		}
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));

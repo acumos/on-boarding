@@ -101,7 +101,7 @@ public class SaveImageCommand extends DockerCommand {
 			final OutputStream output = new FileOutputStream(new File(destination, filename));
 			IOUtils.copy(client.saveImageCmd(imageName + ":" + imageTag).exec(), output);
 			IOUtils.closeQuietly(output);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Finished save image " + imageName + " " + imageTag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Finished save image: {}", imageName, "{}", imageTag);
 		} catch (NotFoundException e) {
 			if (!ignoreIfNotFound) {
 				logger.error(EELFLoggerDelegate.errorLogger,String.format("image '%s' not found ", imageName + " " + imageTag));
@@ -112,8 +112,7 @@ public class SaveImageCommand extends DockerCommand {
 								imageName + " " + imageTag));
 			}
 		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,
-					String.format("Error to save '%s' ", imageName + " " + imageTag) + " " + e.getLocalizedMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "Error to save '%s' {}", imageName + " " + imageTag + " " + e.getLocalizedMessage());
 			throw new DockerException(
 					String.format("Error to save '%s' ", imageName + " " + imageTag) + " " + e.getLocalizedMessage(),
 					org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR);
