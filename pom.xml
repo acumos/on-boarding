@@ -13,8 +13,8 @@
 	</properties>
 	<modules>
 		<!-- Child modules do NOT name this parent. -->
-		<module>onboarding-app</module>
 		<module>onboarding-common</module>
+		<module>onboarding-app-open</module>
 	</modules>
 	<build>
 		<plugins>
