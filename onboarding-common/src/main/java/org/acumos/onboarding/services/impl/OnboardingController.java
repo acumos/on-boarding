@@ -21,11 +21,8 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -33,21 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 
-import org.acumos.cds.AccessTypeCode;
 import org.acumos.cds.ArtifactTypeCode;
-import org.acumos.cds.ToolkitTypeCode;
-import org.acumos.cds.ValidationStatusCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
-import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
-import org.acumos.cds.domain.MLPSolutionRevision;
-import org.acumos.cds.transport.RestPageRequest;
-import org.acumos.cds.transport.RestPageResponse;
-import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
-
-import org.acumos.nexus.client.NexusArtifactClient;
-import org.acumos.nexus.client.RepositoryLocation;
-import org.acumos.nexus.client.data.UploadArtifactInfo;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
@@ -57,26 +42,11 @@ import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.common.utils.UtilityFunction;
-import org.acumos.onboarding.component.docker.DockerClientFactory;
-import org.acumos.onboarding.component.docker.DockerConfiguration;
-import org.acumos.onboarding.component.docker.cmd.CreateImageCommand;
-import org.acumos.onboarding.component.docker.cmd.DeleteImageCommand;
-import org.acumos.onboarding.component.docker.cmd.PushImageCommand;
-import org.acumos.onboarding.component.docker.cmd.TagImageCommand;
-import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
-import org.acumos.onboarding.component.docker.preparation.JavaGenericDockerPreparator;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
-import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
-import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.acumos.onboarding.services.DockerService;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,10 +56,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.github.dockerjava.api.DockerClient;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -107,74 +74,8 @@ import io.swagger.annotations.ApiResponses;
 public class OnboardingController extends CommonOnboarding  implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 
-	@Value("${nexus.nexusEndPointURL}")
-	private String nexusEndPointURL;
-
-	@Value("${nexus.nexusUserName}")
-	private String nexusUserName;
-
-	@Value("${nexus.nexusPassword}")
-	private String nexusPassword;
-
-	@Value("${nexus.nexusGroupId}")
-	private String nexusGroupId;
-
-	@Value("${cmndatasvc.cmnDataSvcEndPoinURL}")
-	private String cmnDataSvcEndPoinURL;
-
-	@Value("${cmndatasvc.cmnDataSvcUser}")
-	private String cmnDataSvcUser;
-
-	@Value("${cmndatasvc.cmnDataSvcPwd}")
-	private String cmnDataSvcPwd;
-
-	@Value("${tosca.OutputFolder}")
-	String toscaOutputFolder;
-
-	@Value("${tosca.GeneratorEndPointURL}")
-	String toscaGeneratorEndPointURL;
-
-	@Value("${http_proxy}")
-	String http_proxy;
-
-	@Value("${requirements.extraIndexURL}")
-	String extraIndexURL;
-
-	@Value("${requirements.trustedHost}")
-	String trustedHost;
-
-	@Value("${mktPlace.mktPlaceEndPoinURL}")
-	private String portalURL;
-
-	String modelOriginalName;
-
-	String dockerImageURI;
-
-	OnboardingNotification onboardingStatus;
-
-	@Autowired
-	private ResourceLoader resourceLoader;
-
-	@Autowired
-	private DockerConfiguration dockerConfiguration;
-
-	private CommonDataServiceRestClientImpl cdmsClient;
-
-	private PortalRestClientImpl portalClient;
-
-	private ResourceUtils resourceUtils;
-
 	public OnboardingController() {
 		// Property values are injected after the constructor finishes
-	}
-
-	@PostConstruct
-	public void init() {
-		
-		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
-		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
-		this.portalClient = new PortalRestClientImpl(portalURL);
-		this.resourceUtils = new ResourceUtils(resourceLoader);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -452,6 +353,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 	}
 
+<<<<<<< HEAD
 	/*
 	 * @Method Name : validate Accepts JWT token in the form of String object.
 	 * Validates it and returns validity status and ownerId.
@@ -1035,6 +937,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 		}
 	}*/
 
+=======
+>>>>>>> ca5d2be... logging
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;
 	}
