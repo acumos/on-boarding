@@ -115,7 +115,7 @@ public class UtilityFunction {
 				}
 			}
 			boolean deleteFlag = fileStreamPath.delete();
-			logger.debug(EELFLoggerDelegate.debugLogger,"File Deleted Status = " + deleteFlag);
+			logger.debug(EELFLoggerDelegate.debugLogger,"File Deleted Status = {}", deleteFlag);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class UtilityFunction {
 			copyFile(in, destFile);
 		} catch (IOException e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-					"Fail to copy file" + srcFile.getFilename() + " form classpath cause:" + e.getMessage(), e);
+					"Fail to copy file "+ srcFile.getFilename()+ " form classpath cause: ", e);
 		}
 	}
 
@@ -152,7 +152,7 @@ public class UtilityFunction {
 			copyFile(in, destFile);
 		} catch (IOException e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-					"Fail to copy file" + srcFile.getName() + " cause:" + e.getMessage(), e);
+					"Fail to copy file " + srcFile.getName() + " cause: ", e);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= {}", count);
 			return bytes;
 		} finally {
 			in.close();
@@ -239,7 +239,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= " + count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= {}", count);
 			return bytes;
 		} finally {
 			in.close();

@@ -104,7 +104,7 @@ import io.swagger.annotations.ApiResponses;
  * @author *****
  *
  */
-public class OnboardingController implements DockerService {
+public class OnboardingController extends CommonOnboarding  implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 
 	@Value("${nexus.nexusEndPointURL}")
@@ -456,7 +456,7 @@ public class OnboardingController implements DockerService {
 	 * @Method Name : validate Accepts JWT token in the form of String object.
 	 * Validates it and returns validity status and ownerId.
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	protected JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
 
 		JSONObject obj1 = new JSONObject();
@@ -468,13 +468,13 @@ public class OnboardingController implements DockerService {
 		JsonResponse<Object> valid = portalClient.tokenValidation(obj2, provider);
 
 		return valid;
-	}
+	}*/
 
 	/*
 	 * @Method Name : getExistingSolution Gives existing solution against
 	 * ownerId and Model name if any. *
 	 */
-	private List<MLPSolution> getExistingSolution(Metadata metadata) {
+	/*private List<MLPSolution> getExistingSolution(Metadata metadata) {
 
 		String ownerId = metadata.getOwnerId();
 		String modelName = metadata.getModelName();
@@ -484,17 +484,17 @@ public class OnboardingController implements DockerService {
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
 
-		/* TRUE - OR , FALSE - AND */
+		 TRUE - OR , FALSE - AND 
 		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
 				new RestPageRequest(0, 9));
 		return pageResponse.getContent();
 
-	}
+	}*/
 
 	/*
 	 * @Method Name : dockerizeFile Performs complete dockerization process.
 	 */
-	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
+	/*public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
 		File outputFolder = localmodelFile.getParentFile();
 		Metadata metadata = metadataParser.getMetadata();
 		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in " + outputFolder);
@@ -565,12 +565,12 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				/*
+				
 				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
 				 * modelOriginalName);
 				 * 
 				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
-				 */
+				 
 
 				// Creat solution id - success
 			} catch (IOException e) {
@@ -610,12 +610,12 @@ public class OnboardingController implements DockerService {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				/*
+				
 				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
 				 * modelOriginalName);
 				 * 
 				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
-				 */
+				 
 
 			} catch (IOException e) {
 				logger.error(EELFLoggerDelegate.errorLogger,"Java-Generic templatization failed", e);
@@ -680,9 +680,9 @@ public class OnboardingController implements DockerService {
 				logger.error(EELFLoggerDelegate.errorLogger,"Fail to close docker client gracefully", e);
 			}
 		}
-	}
+	}*/
 
-	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
+	/*public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
@@ -718,9 +718,9 @@ public class OnboardingController implements DockerService {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
-	}
+	}*/
 
-	public String getToolTypeCode(String toolkit) {
+	/*public String getToolTypeCode(String toolkit) {
 		ToolkitTypeCode code = null;
 
 		if (toolkit.equals("Scikit-Learn".toLowerCase())) {
@@ -741,14 +741,14 @@ public class OnboardingController implements DockerService {
 			return code.name();
 		else
 			return null;
-	}
+	}*/
 
-	protected MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
+	/*protected MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
 		revision.setOwnerId(metadata.getOwnerId());
 
-		/******************* Version Management *********************/
+		*//******************* Version Management *********************//*
 		String version = metadata.getVersion();
 
 		if (version == null) {
@@ -767,9 +767,9 @@ public class OnboardingController implements DockerService {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
-	}
+	}*/
 
-	public String getModelVersion(String solutionId) {
+	/*public String getModelVersion(String solutionId) {
 		int count = 0;
 		List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
@@ -779,9 +779,9 @@ public class OnboardingController implements DockerService {
 		count++;
 
 		return "" + count;
-	}
+	}*/
 
-	protected MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode)
+	/*protected MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -850,9 +850,9 @@ public class OnboardingController implements DockerService {
 					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
 		}
 
-	}
+	}*/
 
-	protected MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode)
+	/*protected MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode)
 			throws AcumosServiceException {
 
 		try {
@@ -901,9 +901,9 @@ public class OnboardingController implements DockerService {
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
 
-	}
+	}*/
 
-	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
+	/*public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA started");
 		try {
 
@@ -938,9 +938,9 @@ public class OnboardingController implements DockerService {
 			// Storage of artifact location references in Common Data
 			// Store-failure
 		}
-	}
+	}*/
 
-	private void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+	/*private void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
 
 		try {
 
@@ -1020,9 +1020,9 @@ public class OnboardingController implements DockerService {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}
-	}
+	}*/
 
-	private void listFilesAndFilesSubDirectories(File directory) {
+	/*private void listFilesAndFilesSubDirectories(File directory) {
 
 		File[] fList = directory.listFiles();
 
@@ -1033,7 +1033,7 @@ public class OnboardingController implements DockerService {
 				listFilesAndFilesSubDirectories(file);
 			}
 		}
-	}
+	}*/
 
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;

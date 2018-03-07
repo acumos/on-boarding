@@ -42,6 +42,7 @@ import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.ResourceUtils;
@@ -49,6 +50,7 @@ import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.DockerClientFactory;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.acumos.onboarding.component.docker.cmd.CreateImageCommand;
+import org.acumos.onboarding.component.docker.cmd.DeleteImageCommand;
 import org.acumos.onboarding.component.docker.cmd.PushImageCommand;
 import org.acumos.onboarding.component.docker.cmd.TagImageCommand;
 import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
@@ -58,6 +60,7 @@ import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.json.simple.JSONObject;
@@ -116,6 +119,7 @@ public class CommonOnboarding {
 
 	protected String dockerImageURI = null;
 	
+	OnboardingNotification onboardingStatus;
 	
 	@Autowired
 	protected ResourceLoader resourceLoader;
@@ -131,16 +135,20 @@ public class CommonOnboarding {
 	protected ResourceUtils resourceUtils;
 	
 	@PostConstruct
-	public void init() throws AcumosServiceException {
+	public void init() {
 		
+		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
 		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		this.portalClient = new PortalRestClientImpl(portalURL);
 		this.resourceUtils = new ResourceUtils(resourceLoader);
 	}
 	
-	
+	/*
+	 * @Method Name : validate Accepts JWT token in the form of String object.
+	 * Validates it and returns validity status and ownerId.
+	 */
 	@SuppressWarnings("unchecked")
-	protected JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
+	public JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
 
 		JSONObject obj1 = new JSONObject();
 		obj1.put("jwtToken", jwtToken);
@@ -152,13 +160,35 @@ public class CommonOnboarding {
 
 		return valid;
 	}
-	
-	
-	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException 
-	{
+
+	/*
+	 * @Method Name : getExistingSolution Gives existing solution against
+	 * ownerId and Model name if any. *
+	 */
+	public List<MLPSolution> getExistingSolution(Metadata metadata) {
+
+		String ownerId = metadata.getOwnerId();
+		String modelName = metadata.getModelName();
+
+		Map<String, Object> queryParameters = new HashMap<String, Object>();
+
+		queryParameters.put("ownerId", ownerId);
+		queryParameters.put("name", modelName);
+
+		/* TRUE - OR , FALSE - AND */
+		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
+				new RestPageRequest(0, 9));
+		return pageResponse.getContent();
+
+	}
+
+	/*
+	 * @Method Name : dockerizeFile Performs complete dockerization process.
+	 */
+	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
 		File outputFolder = localmodelFile.getParentFile();
 		Metadata metadata = metadataParser.getMetadata();
-		logger.info("Preparing app in " + outputFolder);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in: {}", outputFolder);
 		if (metadata.getRuntimeName().equals("python")) {
 			outputFolder = new File(localmodelFile.getParentFile(), "app");
 			outputFolder.mkdir();
@@ -171,10 +201,11 @@ public class CommonOnboarding {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
 			try {
+				// TODO: why is this modelFolder variable ignored?
 				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
 			} catch (IOException e) {
-				logger.warn("Python templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed: {}", e);
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
@@ -191,7 +222,7 @@ public class CommonOnboarding {
 				tarFile = UtilityFunction.deCompressGZipFile(localmodelFile, tarFile);
 				UtilityFunction.unTarFile(tarFile, outputFolder);
 			} catch (IOException e) {
-				logger.warn("Java Argus templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Java Argus templatization failed: {}", e);
 			}
 		} else if (metadata.getRuntimeName().equals("h2o")) {
 
@@ -225,14 +256,9 @@ public class CommonOnboarding {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
-
-				if (mD.exists()) {
-					UtilityFunction.deleteDirectory(mD);
-				}
-
+				// Creat solution id - success
 			} catch (IOException e) {
-				logger.warn("H2O templatization failed", e);			
+				logger.error(EELFLoggerDelegate.errorLogger,"H2O templatization failed", e);
 			}
 			dockerPreprator.prepareDockerApp(outputFolder);
 
@@ -249,7 +275,6 @@ public class CommonOnboarding {
 			for (Resource resource : resources) {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
-					
 
 			try {
 
@@ -269,14 +294,15 @@ public class CommonOnboarding {
 					UtilityFunction.deleteDirectory(new File(outputFolder.getAbsolutePath() + "/" + mm[0]));
 				}
 
-				File mD = new File(outputFolder.getAbsolutePath() + "/" + modelOriginalName);
-
-				if (mD.exists()) {
-					UtilityFunction.deleteDirectory(mD);
-				}
+				/*
+				 * File mD = new File(outputFolder.getAbsolutePath() + "/" +
+				 * modelOriginalName);
+				 * 
+				 * if (mD.exists()) { UtilityFunction.deleteDirectory(mD); }
+				 */
 
 			} catch (IOException e) {
-				logger.warn("Java-Generic templatization failed", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Java-Generic templatization failed", e);
 			}
 
 			dockerPreprator.prepareDockerApp(outputFolder);
@@ -285,30 +311,37 @@ public class CommonOnboarding {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported runtime " + metadata.getRuntimeName());
 		}
-		
-		logger.info("Started docker client");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Resource List");
+		listFilesAndFilesSubDirectories(outputFolder);
+		logger.debug(EELFLoggerDelegate.debugLogger,"End of Resource List");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Started docker client");
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
-		logger.info("Docker client created successfully");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
 		try {
 			logger.info("Docker image creation started");
 			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName(),
 					metadata.getVersion(), null, false, true);
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
-			logger.info("Docker image creation done");
-			String imageId = createCMD.getImageId();
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image creation done");
+			// put catch here
+			// /Microservice/Docker image nexus creation -success
+
+			// in catch /Microservice/Docker image nexus creation -failure
+
+			// String imageId = createCMD.getImageId();
 			// TODO: remove local image
 
-			logger.info("Starting docker image tagging");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Starting docker image tagging");
 			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
 
 			TagImageCommand tagImageCommand = new TagImageCommand(metadata.getModelName() + ":" + metadata.getVersion(),
 					imageTagName, metadata.getVersion(), true, false);
 			tagImageCommand.setClient(dockerClient);
 			tagImageCommand.execute();
-			logger.info("Docker image tagging completed successfully");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image tagging completed successfully");
 
-			logger.info("Starting pushing with Imagename:" + imageTagName + " and version : " + metadata.getVersion()
+			logger.debug(EELFLoggerDelegate.debugLogger,"Starting pushing with Imagename:" + imageTagName + " and version : " + metadata.getVersion()
 					+ " in nexus");
 			PushImageCommand pushImageCmd = new PushImageCommand(imageTagName, metadata.getVersion(), "");
 			pushImageCmd.setClient(dockerClient);
@@ -316,9 +349,11 @@ public class CommonOnboarding {
 
 			dockerImageURI = imageTagName + ":" + metadata.getVersion();
 
-			logger.info("Docker image URI : " + dockerImageURI);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image URI : " + dockerImageURI);
 
-			logger.info("Docker image pushed in nexus successfully");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image pushed in nexus successfully");
+
+			// Microservice/Docker image pushed to nexus -success
 
 			return dockerImageURI;
 
@@ -326,122 +361,13 @@ public class CommonOnboarding {
 			try {
 				dockerClient.close();
 			} catch (IOException e) {
-				logger.warn("Fail to close docker client gracefully", e);
+				logger.error(EELFLoggerDelegate.errorLogger,"Fail to close docker client gracefully", e);
 			}
 		}
 	}
-	
-	
-	protected MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode) throws AcumosServiceException {
-		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-		RepositoryLocation repositoryLocation = new RepositoryLocation();
-		repositoryLocation.setId("1");
-		repositoryLocation.setUrl(nexusEndPointURL);
-		repositoryLocation.setUsername(nexusUserName);
-		repositoryLocation.setPassword(nexusPassword);
-		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-		logger.info("Upload Artifact for " + file.getName() + " started");
-		try {
-			FileInputStream fileInputStream = new FileInputStream(file);
-			int size = fileInputStream.available();
-			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId, metadata.getModelName(),
-					metadata.getVersion(), ext, size, fileInputStream);
-			logger.info(
-					"Upload Artifact for " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
-			try {
-				logger.info("Add Artifact called for " + file.getName());
-				MLPArtifact modelArtifact = new MLPArtifact();
-				modelArtifact.setName(file.getName());
-				modelArtifact.setDescription(file.getName());
-				modelArtifact.setVersion(metadata.getVersion());
-				modelArtifact.setArtifactTypeCode(typeCode.name());
-				modelArtifact.setOwnerId(metadata.getOwnerId());
-				modelArtifact.setUri(artifactInfo.getArtifactMvnPath());
-				modelArtifact.setSize(size);
-				modelArtifact = cdmsClient.createArtifact(modelArtifact);
-				logger.info("Artifact created for " + file.getName());
-				logger.info("addSolutionRevisionArtifact for " + file.getName() + " called");
-				try {
-					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
-							modelArtifact.getArtifactId());
-					logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
-					return modelArtifact;
-				} catch (HttpStatusCodeException e) {					
-					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
-									+ e.getResponseBodyAsString(),
-							e);
-				}
-			} catch (HttpStatusCodeException e) {				
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-						"Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
-			}
-		} catch (AcumosServiceException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
-		}
 
-	}
-	
-	
-	
-	/*
-	 * @Method Name : getExistingSolution Gives existing solution against
-	 * ownerId and Model name if any. *
-	 
-	protected List<MLPSolution> getExistingSolution(Metadata metadata) {
-
-		String ownerId = metadata.getOwnerId();
-		String modelName = metadata.getModelName();
-
-		Map<String, Object> queryParameters = new HashMap<String, Object>();
-
-		queryParameters.put("ownerId", ownerId);
-		queryParameters.put("name", modelName);
-      
-		this below commneted logic is for CDS 1.10.0 
-		
-		int page = 0;
-		int size = 9;
-		RestPageRequest pageRequest = new RestPageRequest(page, size);
-
-		SearchCriteria onboardSearchCriteria = new SearchCriteria(
-				new SearchCriterion("ownerId", SearchOperation.EQUALS, metadata.getOwnerId()))
-						.and(new SearchCriterion("name", SearchOperation.EQUALS, metadata.getModelName()));
-		RestPageResponse<MLPSolution> onboardMatches = cdmsClient.searchSolutions(onboardSearchCriteria, new RestPageRequest(0, 9));
-		
-		List<MLPSolution>  list = onboardMatches.getContent();
-		
-		 TRUE - OR , FALSE - AND 
-		List<MLPSolution> list = cdmsClient.searchSolutions(queryParameters, false);
-
-		return list;
-
-	}
-	*/
-	
-	public List<MLPSolution> getExistingSolution(Metadata metadata) {
-
-		String ownerId = metadata.getOwnerId();
-		String modelName = metadata.getModelName();
-
-		Map<String, Object> queryParameters = new HashMap<String, Object>();
-
-		queryParameters.put("ownerId", ownerId);
-		queryParameters.put("name", modelName);
-
-		/* TRUE - OR , FALSE - AND */
-		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
-				new RestPageRequest(0, 9));
-		return pageResponse.getContent();
-
-	}
-	
-	
-	protected MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
-		logger.info("Create solution call started");
+	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
+		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
 		solution.setDescription(metadata.getSolutionName());
@@ -459,9 +385,20 @@ public class CommonOnboarding {
 		try {
 			solution = cdmsClient.createSolution(solution);
 			metadata.setSolutionId(solution.getSolutionId());
-			logger.info("Solution created: " + solution.getSolutionId());
+			logger.debug(EELFLoggerDelegate.debugLogger,"Solution created: " + solution.getSolutionId());
+			// Creat solution id - success
+			// OnboardingNotification notify= new OnboardingNotification();
+			// notify.successResponse();
+
 			return solution;
-		} catch (HttpStatusCodeException e) {			
+
+		} catch (HttpStatusCodeException e) {
+			// Creat solution id - fail
+			// Create Solution failed. Notify
+			if (onboardingStatus != null) {
+				// notify
+				onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "FA", "Create Solution Failed");
+			}
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -490,12 +427,12 @@ public class CommonOnboarding {
 			return null;
 	}
 
-	protected MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
-		logger.info("Create solution revision call started");
+	public MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
+		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
 		revision.setOwnerId(metadata.getOwnerId());
 
-		//******************* Version Management *********************//*
+		/******************* Version Management *********************/
 		String version = metadata.getVersion();
 
 		if (version == null) {
@@ -508,17 +445,16 @@ public class CommonOnboarding {
 		try {
 			revision = cdmsClient.createSolutionRevision(revision);
 			metadata.setRevisionId(revision.getRevisionId());
-			logger.info("Solution revision created: " + revision.getRevisionId());
+			logger.debug(EELFLoggerDelegate.debugLogger,"Solution revision created: " + revision.getRevisionId());
 			return revision;
-		} catch (HttpStatusCodeException e) {			
+		} catch (HttpStatusCodeException e) {
+			logger.error(EELFLoggerDelegate.errorLogger,"Creation of solution revision failed: {}", e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
-		/*metadata.setVersion("1.0.0");
-		return null;*/
 	}
 
-	protected String getModelVersion(String solutionId) {
+	public String getModelVersion(String solutionId) {
 		int count = 0;
 		List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
@@ -529,14 +465,90 @@ public class CommonOnboarding {
 
 		return "" + count;
 	}
-	
-	
-	protected MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode)
+
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode)
+			throws AcumosServiceException {
+		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+		RepositoryLocation repositoryLocation = new RepositoryLocation();
+		repositoryLocation.setId("1");
+		repositoryLocation.setUrl(nexusEndPointURL);
+		repositoryLocation.setUsername(nexusUserName);
+		repositoryLocation.setPassword(nexusPassword);
+		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for {}", file.getName() + " started");
+		// Notify add artifacts started
+		if (onboardingStatus != null) {
+			onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
+					"Add Artifact for" + file.getName() + " Started");
+		}
+		try {
+			FileInputStream fileInputStream = new FileInputStream(file);
+			int size = fileInputStream.available();
+			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
+			 
+			logger.debug(EELFLoggerDelegate.debugLogger,
+					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
+			try {
+				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact called for " + file.getName());
+				MLPArtifact modelArtifact = new MLPArtifact();
+				modelArtifact.setName(file.getName());
+				modelArtifact.setDescription(file.getName());
+				modelArtifact.setVersion(metadata.getVersion());
+				modelArtifact.setArtifactTypeCode(typeCode.name());
+				modelArtifact.setOwnerId(metadata.getOwnerId());
+				modelArtifact.setUri(artifactInfo.getArtifactMvnPath());
+				modelArtifact.setSize(size);
+				modelArtifact = cdmsClient.createArtifact(modelArtifact);
+				logger.debug(EELFLoggerDelegate.debugLogger,"Artifact created for " + file.getName());
+				logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact for " + file.getName() + " called");
+				try {
+					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
+							modelArtifact.getArtifactId());
+					logger.debug(EELFLoggerDelegate.debugLogger, "addSolutionRevisionArtifact for " + file.getName() + " successful");
+					//logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
+					// Notify add artifacts successful
+					if (onboardingStatus != null) {
+						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
+						onboardingStatus.notifyOnboardingStatus("AddToRepository", "SU",
+								"Add Artifact for" + file.getName() + " Succesful");
+					}
+					return modelArtifact;
+				} catch (HttpStatusCodeException e) {
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact: {}", e);
+					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
+									+ e.getResponseBodyAsString(),
+							e);
+				}
+			} catch (HttpStatusCodeException e) {
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+						"Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
+			}
+		} catch (AcumosServiceException e) {
+			throw e;
+		} catch (Exception e) {
+			// Notify add artifacts failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA",
+						"Add Artifact for" + file.getName() + " Failed");
+			}
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
+		}
+
+	}
+
+	public MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode)
 			throws AcumosServiceException {
 
 		try {
 			try {
-				logger.info("Upload Artifact for " + uri + " started");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + uri + " started");
+				// Notify add artifacts started
+				if (onboardingStatus != null) {
+					onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
+							"Add Artifact for" + uri + " Started");
+				}
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(uri);
 				modelArtifact.setDescription(uri);
@@ -549,46 +561,51 @@ public class CommonOnboarding {
 				try {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
-					logger.info("addSolutionRevisionArtifact for " + uri + " successful");
+					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact for " + uri + " successful");
+					if (onboardingStatus != null) {
+						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
+						onboardingStatus.notifyOnboardingStatus("AddToRepository","SU", "Upload Artifact for" + modelArtifact.getName() +" Successful");
+					}
 					return modelArtifact;
 
-				} catch (HttpStatusCodeException e) {					
+				} catch (HttpStatusCodeException e) {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
 				}
-			} catch (HttpStatusCodeException e) {				
+			} catch (HttpStatusCodeException e) {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
 			throw e;
-		} catch (Exception e) {			
+		} catch (Exception e) {
+			// Notify model artifact upload failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", "Upload Artifact for" + uri + "Failed");
+			}
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
 
 	}
-	
 
-	
 	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
-		logger.info("Generate TOSCA started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA started");
 		try {
 
 			// TODO : Include toscaOutputFolder =/tmp/ and
 			// toscaGeneratorEndPointURL=http://cognita-demo-core:8080/model_create
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
-			logger.debug("******************************");
-			logger.debug("toscaOutputFolder : " + toscaOutputFolder);
-			logger.debug("toscaGeneratorEndPointURL : " + toscaGeneratorEndPointURL);
-			logger.debug("nexusEndPointURL : " + nexusEndPointURL);
-			logger.debug("nexusUserName : " + nexusUserName);
-			logger.debug("nexusPassword : " + nexusPassword);
-			logger.debug("nexusGroupId : " + nexusGroupId);
-			logger.debug("cmnDataSvcEndPoinURL : " + cmnDataSvcEndPoinURL);
-			logger.debug("cmnDataSvcUser : " + cmnDataSvcUser);
-			logger.debug("cmnDataSvcPwd : " + cmnDataSvcPwd);
+			logger.debug(EELFLoggerDelegate.debugLogger,"toscaOutputFolder : " + toscaOutputFolder);
+			logger.debug(EELFLoggerDelegate.debugLogger,"toscaGeneratorEndPointURL : {}", toscaGeneratorEndPointURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusEndPointURL : " + nexusEndPointURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusUserName : " + nexusUserName);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusPassword : " + nexusPassword);
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusGroupId : " + nexusGroupId);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcEndPoinURL : " + cmnDataSvcEndPoinURL);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcUser : " + cmnDataSvcUser);
+			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcPwd : " + cmnDataSvcPwd);
 
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
@@ -596,11 +613,124 @@ public class CommonOnboarding {
 
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 					metadata.getRevisionId(), localProtobufFile, localMetadataFile);
-			logger.info("Generate TOSCA completed result:" + result);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA completed result:" + result);
 
 		} catch (Exception e) {
-			logger.warn("Fail to generate TOSCA for solution - " + e.getMessage(), e);
+			// Notify TOSCA generation failed
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", "TOSCA Generation Failed");
+			}
+			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - {}", e);
+			// Storage of artifact location references in Common Data
+			// Store-failure
 		}
 	}
 
+	public void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+
+		try {
+
+			logger.debug(EELFLoggerDelegate.debugLogger,"In RevertbackOnboarding method");
+
+			RepositoryLocation repositoryLocation = new RepositoryLocation();
+			repositoryLocation.setId("1");
+			repositoryLocation.setUrl(nexusEndPointURL);
+			repositoryLocation.setUsername(nexusUserName);
+			repositoryLocation.setPassword(nexusPassword);
+			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
+			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
+
+			// Remove the image from docker registry
+			// Check the value of imageUri, if it is null then do not delete the
+			// image
+			logger.debug(EELFLoggerDelegate.debugLogger,"Image Name from dockerize file method: " + imageUri);
+
+			if (StringUtils.isNotBlank(imageUri)) {
+				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+				logger.debug(EELFLoggerDelegate.debugLogger,"Image Name: " + imageTagName);
+				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
+				deleteImageCommand.setClient(dockerClient);
+				deleteImageCommand.execute();
+				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the image from Docker Registry");
+			}
+
+			if (metadata.getSolutionId() != null) {
+				logger.debug(EELFLoggerDelegate.debugLogger,"Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
+
+				// get the Artifact IDs for given solution
+				List<MLPArtifact> artifactids = cdmsClient.getSolutionRevisionArtifacts(metadata.getSolutionId(),
+						metadata.getRevisionId());
+
+				// check if artifactids is empty
+				// Delete all the artifacts for given solution
+
+				for (MLPArtifact mlpArtifact : artifactids) {
+					String artifactId = mlpArtifact.getArtifactId();
+
+					// Delete SolutionRevisionArtifact
+					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Artifact: " + artifactId);
+					cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
+							artifactId);
+					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the SolutionRevisionArtifact");
+
+					// Delete Artifact
+					cdmsClient.deleteArtifact(artifactId);
+					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact");
+
+					// Delete the file from the Nexus
+					if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
+						nexusClient.deleteArtifact(mlpArtifact.getUri());
+						logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact from Nexus");
+					}
+				}
+
+				// Delete current revision
+				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
+				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Solution Revision");
+
+				// get other revision under the solution, if they exist
+				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
+
+				// Delete the solution ID if no other revision is associated
+				// with it
+				if (solRev.isEmpty()) {
+					cdmsClient.deleteSolution(metadata.getSolutionId());
+					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Solution: " + metadata.getSolutionId());
+				}
+
+			}
+		} catch (Exception e) {
+			logger.error(EELFLoggerDelegate.errorLogger,"Onboarding failed");
+			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
+			e.printStackTrace();
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Fail to revert back onboarding changes : " + e.getMessage());
+		}
+	}
+
+	public void listFilesAndFilesSubDirectories(File directory) {
+
+		File[] fList = directory.listFiles();
+
+		for (File file : fList) {
+			if (file.isFile()) {
+				System.out.println(file.getPath());
+			} else if (file.isDirectory()) {
+				listFilesAndFilesSubDirectories(file);
+			}
+		}
+	}
+
+	public String getCmnDataSvcEndPoinURL() {
+		return cmnDataSvcEndPoinURL;
+	}
+
+	public String getCmnDataSvcUser() {
+		return cmnDataSvcUser;
+	}
+
+	public String getCmnDataSvcPwd() {
+		return cmnDataSvcPwd;
+	}
+	
 }

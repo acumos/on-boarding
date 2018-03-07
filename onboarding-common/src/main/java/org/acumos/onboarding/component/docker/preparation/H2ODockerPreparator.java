@@ -66,6 +66,10 @@ public class H2ODockerPreparator {
 			input = new FileInputStream(new File(outputFolder, "application.properties"));
 			prop.load(input);
 			serverPort = prop.getProperty("server.port");
+			if(serverPort.equals(null) || serverPort.equals(""))
+			{
+				serverPort = "3330";
+			}			
 		} catch (IOException e) {
 			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
 		}

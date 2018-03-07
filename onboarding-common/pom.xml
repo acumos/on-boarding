@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
   	<artifactId>onboarding-common</artifactId>
-  	<version>2.0.0-SNAPSHOT</version>
+  	<version>1.12.0</version>
 	<packaging>jar</packaging>
 	<name>onboarding-app-common</name>
 	<description>Onboarding common project</description>
@@ -24,53 +24,7 @@
 		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
 		<build.number>0</build.number>
 		<eelf.version>1.0.0</eelf.version>
-		<!-- tests require database to be running -->
-		<!--<skipTests>true</skipTests> -->
-		<!-- URL to be overridden by Jenkins "AcumosSettings" -->
-	
-		<!-- <lf.nexus.url>https://nexus.acumos.org/content</lf.nexus.url>
-		<lf.nexus.snapshot.path>repositories/snapshots/</lf.nexus.snapshot.path>
-		<lf.nexus.release.path>repositories/releases/</lf.nexus.release.path>
-		
-		<acumos.nexus.url>http://cognita-nexus01.eastus.cloudapp.azure.com:8081</acumos.nexus.url>
-		<acumos.nexus.snapshot.path>repository/repo_cognita_platform_maven_snapshots</acumos.nexus.snapshot.path>
-		<acumos.nexus.release.path>repository/repo_cognita_platform_maven</acumos.nexus.release.path> -->
-		
-		
-		<!-- Docker daemon -->
-		<!-- <docker.host.url>unix:/var/run/docker.sock</docker.host.url>
-		Docker image registry
-		<docker.registry.url>cognita-nexus01:8001</docker.registry.url>
-		<docker.registry.login>Registry userId - supplied by jenkins</docker.registry.login>
-		<docker.registry.password>Registry password - supplied by jenkins</docker.registry.password> -->
 	</properties>
-	
-	
-	 <!-- <repositories>
-		<repository>
-			<id>lf-snapshots</id>
-			<name>lf-repository-snapshots</name>
-			<url>${lf.nexus.url}/${lf.nexus.snapshot.path}</url>
-		</repository>
-		
-		<repository>
-			<id>lf-releases</id>
-			<name>lf-repository-releases</name>
-			<url>${lf.nexus.url}/${lf.nexus.release.path}</url>
-		</repository>
-		
-		<repository>
-			<id>acumos-snapshots</id>
-			<name>acumos-repository-snapshots</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url>
-		</repository>
-		<repository>
-			<id>acumos-releases</id>
-			<name>acumos-repository-releases</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
-		</repository>
-	</repositories>
- -->
 	<dependencies>
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
