@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.utils.JsonRequest;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -29,15 +30,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class JsonRequestTest {
 	
 	@Test
-	public void JsonRequestTesting(){
-		JsonRequest<?> jsonRequest = new JsonRequest();
-		jsonRequest.setRequestFrom("req1");
-		jsonRequest.setRequestId("reqId");
-		jsonRequest.getRequestFrom();
-		if(jsonRequest.getRequestId().equalsIgnoreCase("reqId")){
-		  assert(true);	
-		}
+	public void testJsonRequestParameter(){
 		
+		Object body = new Object();		
+		String requestFrom = "testReqFrom";
+		String requestId = "testReqId";
+		
+		JsonRequest jsonReq = new JsonRequest();
+		jsonReq.setBody(body);
+		jsonReq.setRequestFrom(requestFrom);		
+		jsonReq.setRequestId(requestId);
+		
+		Assert.assertNotNull(jsonReq);
 	}
 	
 

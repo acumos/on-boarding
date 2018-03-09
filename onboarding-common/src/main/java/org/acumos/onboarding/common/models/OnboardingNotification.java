@@ -60,8 +60,7 @@ public class OnboardingNotification {
 
 			MLPStepResult stepResult = new MLPStepResult();
 
-			stepResult.setSolutionId(this.solutionId);
-			stepResult.setRevisionId(this.revisionId);
+			
 			stepResult.setArtifactId(this.artifactId);
 			stepResult.setUserId(this.userId);
 			stepResult.setStatusCode(currentStatus);
@@ -70,6 +69,10 @@ public class OnboardingNotification {
 			stepResult.setStartDate(new Date());
 			stepResult.setEndDate(new Date());
 			stepResult.setStepCode("OB");
+			if(currentstep.equals("CreateTOSCA") && currentStatus.equals("SU")) {
+			stepResult.setSolutionId(this.solutionId);
+			stepResult.setRevisionId(this.revisionId);
+			}
 			cdmsClient.createStepResult(stepResult);
 
 		}
