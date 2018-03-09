@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>1.12.2-SNAPSHOT</version>
+	<version>1.12.3-SNAPSHOT</version>
 	<name>onboarding-app-open</name>
 	<description>Cognita Onboarding Application for Open Source</description>
 	
@@ -43,7 +43,7 @@
 		<dependency> 
             <groupId>org.acumos.on-boarding</groupId> 
             <artifactId>onboarding-common</artifactId>
-            <version>1.12.2-SNAPSHOT</version> 
+            <version>1.12.3-SNAPSHOT</version> 
         </dependency> 
         <!-- 
 		<dependency>
