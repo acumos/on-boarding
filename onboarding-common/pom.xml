@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
-  	<artifactId>onboarding-common</artifactId>
-  	<version>1.12.1-SNAPSHOT</version>
+	<artifactId>onboarding-common</artifactId>
+	<version>1.12.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>onboarding-common</name>
 	<description>Onboarding common project</description>
@@ -15,7 +15,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.4.RELEASE</version>
 		<relativePath />
-	</parent>  
+	</parent>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -27,14 +27,14 @@
 	</properties>
 	<dependencies>
 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-aop</artifactId>    
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -50,6 +50,13 @@
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
 
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>2.0.8</version>			
+		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -112,19 +119,19 @@
 			<artifactId>eelf-core</artifactId>
 			<version>${eelf.version}</version>
 		</dependency>
-	  
+
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-commons</artifactId>
 			<version>1.13.7.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
-			 <version>1.14.1</version>
+			<version>1.14.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.acumos.acumos-nexus-client</groupId>
 			<artifactId>acumos-nexus-client</artifactId>
@@ -148,33 +155,26 @@
 			<artifactId>TOSCAModelGeneratorClient</artifactId>
 			<version>0.0.23</version>
 		</dependency>
-		
+
 		<dependency>
-    		<groupId>com.googlecode.json-simple</groupId>
-    		<artifactId>json-simple</artifactId>
-    		<version>1.1</version>
-		</dependency> 
-		
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<!-- Spring sets the <version>4.11</version> -->
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
-	<!-- <repositories>
-		<repository>
-			<id>acumos-snapshots</id>
-			<name>mlp-repository-snapshots</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url>
-		</repository>
-		<repository>
-			<id>acumos-releases</id>
-			<name>mlp-repository-releases</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
-		</repository>
-	</repositories> -->
+	<!-- <repositories> <repository> <id>acumos-snapshots</id> <name>mlp-repository-snapshots</name> 
+		<url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url> </repository> 
+		<repository> <id>acumos-releases</id> <name>mlp-repository-releases</name> 
+		<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url> </repository> 
+		</repositories> -->
 	<build>
 
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -209,22 +209,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-                            <classifier>exec</classifier>
-                        </configuration>						
-					</execution>
-					</executions>
-				
-				<configuration> <includeSystemScope>true</includeSystemScope> </configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
+				<executions> <execution> <goals> <goal>repackage</goal> </goals> <configuration> 
+				<classifier>exec</classifier> </configuration> </execution> </executions> 
+				<configuration> <includeSystemScope>true</includeSystemScope> </configuration> 
+				</plugin> -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -245,7 +234,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
@@ -254,65 +243,26 @@
 					<skip>false</skip>
 				</configuration>
 			</plugin>
-			
-			<!-- <plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.21.0</version>
-				<configuration>
-					<verbose>true</verbose>
-					<dockerHost>${docker.host.url}</dockerHost>
-					<registry>${docker.registry.url}</registry>
-					<authConfig>
-						<username>${docker.registry.login}</username>
-						<password>${docker.registry.password}</password>
-					</authConfig>
-					<images>
-						<image>
-							<name>onboarding-app:${project.version}</name>
-							<build>
-								This is the same FROM used in a Dockerfile
-								<from>openjdk:8-jdk</from>
-								<assembly>
-									<inline>
-										<files>
-											<file>
-												<source>application.properties.template</source>
-												<outputDirectory />
-												<destName>application.properties</destName>
-											</file>
-											<file>
-												<source>target/${project.artifactId}-${project.version}.${project.packaging}</source>
-												<outputDirectory />
-											</file>
-										</files>
-									</inline>
-								</assembly>
-								This is the same CMD used in a Dockerfile
-								<cmd>
-									<shell>cd /maven; java -Djava.security.egd=file:/dev/./urandom
-										-jar
-										${project.artifactId}-${project.version}.${project.packaging}</shell>
-								</cmd>
-							</build>
-						</image>
-					</images>
-				</configuration>
-			</plugin> -->
+
+			<!-- <plugin> <groupId>io.fabric8</groupId> <artifactId>docker-maven-plugin</artifactId> 
+				<version>0.21.0</version> <configuration> <verbose>true</verbose> <dockerHost>${docker.host.url}</dockerHost> 
+				<registry>${docker.registry.url}</registry> <authConfig> <username>${docker.registry.login}</username> 
+				<password>${docker.registry.password}</password> </authConfig> <images> <image> 
+				<name>onboarding-app:${project.version}</name> <build> This is the same FROM 
+				used in a Dockerfile <from>openjdk:8-jdk</from> <assembly> <inline> <files> 
+				<file> <source>application.properties.template</source> <outputDirectory 
+				/> <destName>application.properties</destName> </file> <file> <source>target/${project.artifactId}-${project.version}.${project.packaging}</source> 
+				<outputDirectory /> </file> </files> </inline> </assembly> This is the same 
+				CMD used in a Dockerfile <cmd> <shell>cd /maven; java -Djava.security.egd=file:/dev/./urandom 
+				-jar ${project.artifactId}-${project.version}.${project.packaging}</shell> 
+				</cmd> </build> </image> </images> </configuration> </plugin> -->
 		</plugins>
 	</build>
 
 
-	<!-- <distributionManagement>
-		<snapshotRepository>
-			<id>acumos-nexus</id>
-			<name>acumos-repository-snapshots</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url>
-		</snapshotRepository>
-		<repository>
-			<id>acumos-nexus</id>
-			<name>acumos-repository-releases</name>
-			<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url>
-		</repository>
-	</distributionManagement> -->
+	<!-- <distributionManagement> <snapshotRepository> <id>acumos-nexus</id> 
+		<name>acumos-repository-snapshots</name> <url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url> 
+		</snapshotRepository> <repository> <id>acumos-nexus</id> <name>acumos-repository-releases</name> 
+		<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url> </repository> 
+		</distributionManagement> -->
 </project>

@@ -116,6 +116,8 @@ public class CommonOnboarding {
 	protected String portalURL;
 
 	protected String modelOriginalName = null;
+	
+	protected boolean dcaeflag = false;
 
 	protected String dockerImageURI = null;
 	
@@ -192,11 +194,21 @@ public class CommonOnboarding {
 		if (metadata.getRuntimeName().equals("python")) {
 			outputFolder = new File(localmodelFile.getParentFile(), "app");
 			outputFolder.mkdir();
+			
+			Resource[] resources = null;
+			
+			if(dcaeflag)
+			{
+				resources = this.resourceUtils.loadResources("classpath*:templates/dcae_python/*");
+			}
+			else
+			{
+				resources = this.resourceUtils.loadResources("classpath*:templates/python/*");
+			}
 
 			PythonDockerPreprator dockerPreprator = new PythonDockerPreprator(metadataParser, extraIndexURL,
 					trustedHost);
-
-			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/python/*");
+			
 			for (Resource resource : resources) {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
@@ -208,6 +220,7 @@ public class CommonOnboarding {
 				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed: {}", e);
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
+			dcaeflag = false;
 		} else if (metadata.getRuntimeName().equals("r")) {
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
