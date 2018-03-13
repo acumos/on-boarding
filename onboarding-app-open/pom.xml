@@ -217,8 +217,7 @@
 					<!-- docker runs on the LF build minion so the default value is ok -->
 					 <dockerHost>unix:///var/run/docker.sock</dockerHost> 
 					<pullRegistry>${docker.pull.registry}</pullRegistry>
-					<!-- <pushRegistry>${docker.push.registry}</pushRegistry>-->
-					<pushRegistry>nexus3.acumos.org:10004</pushRegistry>
+					<pushRegistry>${docker.push.registry}</pushRegistry>
 					<!-- LF credentials are not supplied here -->
 					<images>
 						<image>
