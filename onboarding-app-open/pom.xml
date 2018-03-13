@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>1.13.0-SNAPSHOT</version>
+	<version>1.12.4-SNAPSHOT</version>
 	<name>onboarding-app-open</name>
 	<description>Cognita Onboarding Application for Open Source</description>
 	
@@ -215,9 +215,10 @@
 				<configuration>
 					<verbose>true</verbose>
 					<!-- docker runs on the LF build minion so the default value is ok -->
-					<!-- LF <dockerHost>unix:///var/run/docker.sock</dockerHost> LF -->
+					 <dockerHost>unix:///var/run/docker.sock</dockerHost> 
 					<pullRegistry>${docker.pull.registry}</pullRegistry>
-					<pushRegistry>${docker.push.registry}</pushRegistry>
+					<!-- <pushRegistry>${docker.push.registry}</pushRegistry>-->
+					<pushRegistry>nexus3.acumos.org:10004</pushRegistry>
 					<!-- LF credentials are not supplied here -->
 					<images>
 						<image>
