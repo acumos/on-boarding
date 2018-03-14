@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 
 import com.github.dockerjava.api.DockerClient;
@@ -86,16 +87,21 @@ public class CreateImageCommand extends DockerCommand {
 	@Override
 	public void execute() throws DockerException {
 		if (dockerFolder == null) {
+			logger.error(EELFLoggerDelegate.errorLogger, "dockerFolder is not configured");
 			throw new IllegalArgumentException("dockerFolder is not configured");
 		}
 		if (imageName == null) {
+			logger.error(EELFLoggerDelegate.errorLogger, "imageName is not configured");
 			throw new IllegalArgumentException("imageName is not configured");
 		}
 		if (imageTag == null) {
+			logger.error(EELFLoggerDelegate.errorLogger, "imageName is not configured");
 			throw new IllegalArgumentException("imageTag is not configured");
 		}
-		if (!dockerFolder.exists())
+		if (!dockerFolder.exists()) {
+			logger.error(EELFLoggerDelegate.errorLogger, "configured dockerFolder '" + dockerFolder + "' does not exist.");
 			throw new IllegalArgumentException("configured dockerFolder '" + dockerFolder + "' does not exist.");
+		}
 		final Map<String, String> buildArgsMap = new HashMap<String, String>();
 		if ((buildArgs != null) && (!buildArgs.trim().isEmpty())) {
 			logger.debug(EELFLoggerDelegate.debugLogger,"Parsing buildArgs: " + buildArgs);
@@ -112,8 +118,8 @@ public class CreateImageCommand extends DockerCommand {
 		String dockerFile = this.dockerFile == null ? "Dockerfile" : this.dockerFile;
 		File docker = new File(dockerFolder, dockerFile);
 		if (!docker.exists()) {
-			throw new IllegalArgumentException(
-					String.format("Configured Docker file '%s' does not exist.", dockerFile));
+			logger.error(EELFLoggerDelegate.errorLogger, "Configured Docker file '%s' does not exist. {}", dockerFile);
+			throw new IllegalArgumentException(String.format("Configured Docker file '%s' does not exist.", dockerFile));
 		}
 		DockerClient client = getClient();
 		try {
@@ -121,10 +127,15 @@ public class CreateImageCommand extends DockerCommand {
 			BuildImageResultCallback callback = new BuildImageResultCallback() {
 				@Override
 				public void onNext(BuildResponseItem item) {
-					if (item.getStream() != null)
+					logger.debug(EELFLoggerDelegate.debugLogger,"In onNext()");
+					if (item.getStream() != null) {
+						logger.debug(EELFLoggerDelegate.debugLogger,"In onNext() if");
 						logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
-					else
+					}
+					else {
+						logger.debug(EELFLoggerDelegate.debugLogger,"In onNext() else");
 						logger.debug(EELFLoggerDelegate.debugLogger, " " + item);
+					}
 					super.onNext(item);
 				}
 
@@ -134,6 +145,7 @@ public class CreateImageCommand extends DockerCommand {
 					super.onError(throwable);
 				}
 			};
+			logger.debug(EELFLoggerDelegate.debugLogger,"In Execute() outside onNext()");
 			BuildImageCmd buildImageCmd = client.buildImageCmd(docker)
 					.withTags(new HashSet<>(Arrays.asList(imageName + ":" + imageTag))).withNoCache(noCache)
 					.withRemove(rm);// .withTag(imageName + ":" + imageTag)
@@ -143,9 +155,11 @@ public class CreateImageCommand extends DockerCommand {
 				}
 			}
 			BuildImageResultCallback result = buildImageCmd.exec(callback);
+			logger.debug(EELFLoggerDelegate.debugLogger,"After buildImageCmd.exec(callback)");
 			this.imageId = result.awaitImageId();
 
 		} catch (Exception e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Error {}", e);
 			throw new RuntimeException(e);
 		}
 	}

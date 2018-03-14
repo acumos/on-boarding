@@ -321,6 +321,7 @@ public class CommonOnboarding {
 			dockerPreprator.prepareDockerApp(outputFolder);
 
 		} else {
+			logger.error(EELFLoggerDelegate.errorLogger,"Unspported runtime {}", metadata.getRuntimeName());
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 					"Unspported runtime " + metadata.getRuntimeName());
 		}
@@ -331,7 +332,7 @@ public class CommonOnboarding {
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
 		try {
-			logger.info("Docker image creation started");
+			logger.debug("Docker image creation started");
 			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName(),
 					metadata.getVersion(), null, false, true);
 			createCMD.setClient(dockerClient);
@@ -412,6 +413,7 @@ public class CommonOnboarding {
 				// notify
 				onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "FA", "Create Solution Failed");
 			}
+			logger.error(EELFLoggerDelegate.errorLogger, "Creation of solution failed - {}", e.getResponseBodyAsString(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -534,10 +536,12 @@ public class CommonOnboarding {
 							e);
 				}
 			} catch (HttpStatusCodeException e) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for {}", file.getName() + " - {}", e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
+			logger.error(EELFLoggerDelegate.errorLogger,"Error: {}", e);
 			throw e;
 		} catch (Exception e) {
 			// Notify add artifacts failed
@@ -545,6 +549,7 @@ public class CommonOnboarding {
 				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA",
 						"Add Artifact for" + file.getName() + " Failed");
 			}
+			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", file.getName() + " - {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
 		}
@@ -582,20 +587,25 @@ public class CommonOnboarding {
 					return modelArtifact;
 
 				} catch (HttpStatusCodeException e) {
+					
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for {}", e.getResponseBodyAsString(), e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
 				}
 			} catch (HttpStatusCodeException e) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for {}", e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Error: {}", e);
 			throw e;
 		} catch (Exception e) {
 			// Notify model artifact upload failed
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", "Upload Artifact for" + uri + "Failed");
 			}
+			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
@@ -715,7 +725,6 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger,"Onboarding failed");
 			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
-			e.printStackTrace();
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to revert back onboarding changes : " + e.getMessage());
 		}

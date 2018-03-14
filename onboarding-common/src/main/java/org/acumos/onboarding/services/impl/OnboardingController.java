@@ -189,6 +189,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 				if(!runTime.equals("python"))
 				{
+					logger.error(EELFLoggerDelegate.errorLogger, "Invalid Runtime [Only 'python' runtime allowed..!]");
 					throw new AcumosServiceException("Invalid Runtime [Only 'python' runtime allowed..!]");
 				}
 
@@ -205,14 +206,14 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 			}
 			else
-			{				
+			{		
+				logger.error(EELFLoggerDelegate.errorLogger, "Model artifacts not available..!");
 				throw new AcumosServiceException("Model artifacts not available..!");				
 			}
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();	
+			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");	
 			throw new AcumosServiceException("Unable to read Model artifacts..!");				
 		}	
 		catch (AcumosServiceException e) {
@@ -222,7 +223,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					httpCode);
 		}	
 		catch (Exception e)
-		{						
+		{	
+			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
 			throw new AcumosServiceException("Unable to read Model artifacts..!");				
 		}	
 		finally
@@ -252,6 +254,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 		try {
 			// 'authorization' represents JWT token here...!
 			if (authorization == null) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Token Not Available...!");
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Token Not Available...!");
 			}
@@ -280,9 +283,11 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				logger.debug(EELFLoggerDelegate.debugLogger,"Token validation successful");
 				ownerId = valid.getResponseBody().toString();
 
-				if (ownerId == null)
+				if (ownerId == null){
+					logger.error(EELFLoggerDelegate.errorLogger, "Either  username/password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 							"Either  username/password is invalid.");
+				}
 
 				// update userId in onboardingStatus
 				if (onboardingStatus != null)
@@ -309,6 +314,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					try {
 						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
 					} catch (IOException e) {
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download model file {}", localmodelFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download model file " + localmodelFile.getName());
 					}
@@ -316,6 +322,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					try {
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
 					} catch (IOException e) {
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download metadata file {}", localMetadataFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download metadata file " + localMetadataFile.getName());
 					}
@@ -323,6 +330,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					try {
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
 					} catch (IOException e) {
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download protobuf file {}", localProtobufFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download protobuf file " + localProtobufFile.getName());
 					}
@@ -374,6 +382,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA",
 									"Create Docker Image Failed");
 						}
+						logger.error(EELFLoggerDelegate.errorLogger,"Error {}", e);
 						throw e;
 					}
 
@@ -418,6 +427,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				}
 			} else {
 				try {
+					logger.error(EELFLoggerDelegate.errorLogger, "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
 				} catch (AcumosServiceException e) {
