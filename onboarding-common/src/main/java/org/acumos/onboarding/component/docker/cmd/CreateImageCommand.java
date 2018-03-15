@@ -127,13 +127,10 @@ public class CreateImageCommand extends DockerCommand {
 			BuildImageResultCallback callback = new BuildImageResultCallback() {
 				@Override
 				public void onNext(BuildResponseItem item) {
-					logger.debug(EELFLoggerDelegate.debugLogger,"In onNext()");
 					if (item.getStream() != null) {
-						logger.debug(EELFLoggerDelegate.debugLogger,"In onNext() if");
 						logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
 					}
 					else {
-						logger.debug(EELFLoggerDelegate.debugLogger,"In onNext() else");
 						logger.debug(EELFLoggerDelegate.debugLogger, " " + item);
 					}
 					super.onNext(item);
@@ -145,7 +142,6 @@ public class CreateImageCommand extends DockerCommand {
 					super.onError(throwable);
 				}
 			};
-			logger.debug(EELFLoggerDelegate.debugLogger,"In Execute() outside onNext()");
 			BuildImageCmd buildImageCmd = client.buildImageCmd(docker)
 					.withTags(new HashSet<>(Arrays.asList(imageName + ":" + imageTag))).withNoCache(noCache)
 					.withRemove(rm);// .withTag(imageName + ":" + imageTag)
@@ -155,7 +151,6 @@ public class CreateImageCommand extends DockerCommand {
 				}
 			}
 			BuildImageResultCallback result = buildImageCmd.exec(callback);
-			logger.debug(EELFLoggerDelegate.debugLogger,"After buildImageCmd.exec(callback)");
 			this.imageId = result.awaitImageId();
 
 		} catch (Exception e) {
