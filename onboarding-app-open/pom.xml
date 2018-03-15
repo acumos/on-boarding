@@ -215,7 +215,8 @@
 				<configuration>
 					<verbose>true</verbose>
 					<!-- docker runs on the LF build minion so the default value is ok -->
-					 <dockerHost>unix:///var/run/docker.sock</dockerHost> 
+					 <!-- <dockerHost>unix:///var/run/docker.sock</dockerHost> -->
+					 <dockerHost>http://20.190.62.49:4243</dockerHost> 
 					<pullRegistry>${docker.pull.registry}</pullRegistry>
 					<pushRegistry>${docker.push.registry}</pushRegistry>
 					<!-- LF credentials are not supplied here -->
