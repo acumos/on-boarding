@@ -128,6 +128,12 @@ public class CommonOnboarding {
 
 	@Autowired
 	protected DockerConfiguration dockerConfiguration;
+	
+	protected MetadataParser metadataParser = null;
+    protected Metadata mData = null;
+
+    
+    protected String modelName = null;
 
 
 	protected CommonDataServiceRestClientImpl cdmsClient;

@@ -22,6 +22,8 @@ package org.acumos.onboarding.services.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,6 +46,7 @@ import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -51,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -133,7 +137,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
 	@RequestMapping(value = "/dcae_models", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,String solutioId, String revisionId,
+	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,@RequestParam(required=false)String modName,String solutioId, String revisionId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider) throws AcumosServiceException 
@@ -178,12 +182,23 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			File modelFile = new File(files,artifactName+".zip");		
 			File MetaFile = new File(files,artifactName+".json");
 			File protoFile = new File(files,artifactName+".proto");	
+			
+			if(modName != null)
+            {
+                Object obj = new JSONParser().parse(new FileReader(MetaFile));            
+                JSONObject jo = (JSONObject) obj;            
+                jo.put("name",modName);                    
+                String jsonFile = jo.toString();            
+                FileOutputStream fout = new FileOutputStream(MetaFile);
+                fout.write(jsonFile.getBytes());
+                fout.close();    
+            }
 
 
 			if((modelFile.exists()) && (MetaFile.exists()) && (protoFile.exists()))			
 			{
-				MetadataParser metadataParser = new MetadataParser(MetaFile);
-				Metadata mData = metadataParser.getMetadata();
+				metadataParser = new MetadataParser(MetaFile);
+				mData = metadataParser.getMetadata();
 
 				String runTime = mData.getRuntimeName();
 
@@ -305,8 +320,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
-				outputFolder.mkdirs();
-				MetadataParser metadataParser = null;
+				outputFolder.mkdirs();				
 				boolean isSuccess = false;
 
 				try {
@@ -334,10 +348,18 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download protobuf file " + localProtobufFile.getName());
 					}
+					
+					
+					if(!dcaeflag)
+                    {
+                        metadataParser = new MetadataParser(localMetadataFile);
+                        mData = metadataParser.getMetadata();
+                        mData.setOwnerId(ownerId);                                        
+                    }
 
-					metadataParser = new MetadataParser(localMetadataFile);
+					/*metadataParser = new MetadataParser(localMetadataFile);
 					Metadata mData = metadataParser.getMetadata();
-					mData.setOwnerId(ownerId);
+					mData.setOwnerId(ownerId);*/
 
 					MLPSolution mlpSolution = null;
 

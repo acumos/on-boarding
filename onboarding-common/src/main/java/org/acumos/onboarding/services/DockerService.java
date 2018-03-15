@@ -40,7 +40,7 @@ public interface DockerService {
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(JsonRequest<Crediantials> crediantials,
 			HttpServletResponse response) throws AcumosServiceException;
 	
-	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,String solutioId, String revisionId,
+	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,String modName,String solutioId, String revisionId,
 			String authorization,
 			 String trackingID,
 			String provider) throws AcumosServiceException;
