@@ -396,8 +396,11 @@ public class CommonOnboarding {
 
 		String toolKit = metadata.getToolkit();
 
-		if (toolKit != null)
+		if (toolKit != null) {
 			solution.setToolkitTypeCode(getToolTypeCode(toolKit));
+		} else if (dcaeflag) {
+			solution.setToolkitTypeCode("ON");
+		}
 
 		solution.setAccessTypeCode(AccessTypeCode.PR.name());
 		solution.setValidationStatusCode(ValidationStatusCode.IP.name());
