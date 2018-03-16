@@ -42,7 +42,6 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.UtilityFunction;
-import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
@@ -350,13 +349,13 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					}
 					
 					
-					if(!dcaeflag)
+					if(mData == null)
                     {
                         metadataParser = new MetadataParser(localMetadataFile);
-                        mData = metadataParser.getMetadata();
-                        mData.setOwnerId(ownerId);                                        
+                        mData = metadataParser.getMetadata();                                                             
                     }
 
+					 mData.setOwnerId(ownerId);  
 					/*metadataParser = new MetadataParser(localMetadataFile);
 					Metadata mData = metadataParser.getMetadata();
 					mData.setOwnerId(ownerId);*/
