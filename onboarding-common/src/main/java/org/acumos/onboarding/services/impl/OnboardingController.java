@@ -445,6 +445,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 						revertbackOnboarding(metadataParser.getMetadata(), imageUri);
 					}
 					UtilityFunction.deleteDirectory(outputFolder);
+					mData = null;
+					dcaeflag = false;
 				}
 			} else {
 				try {
