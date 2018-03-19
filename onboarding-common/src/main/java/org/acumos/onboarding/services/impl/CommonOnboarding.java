@@ -393,6 +393,8 @@ public class CommonOnboarding {
 		solution.setDescription(metadata.getSolutionName());
 		solution.setOwnerId(metadata.getOwnerId());
 		// String toolTypeCode = getToolTypeCode(metadata.getToolkit());
+		
+		logger.debug(EELFLoggerDelegate.debugLogger,"Model name[CreateSolutionMethod] :"+metadata.getSolutionName());
 
 		String toolKit = metadata.getToolkit();
 

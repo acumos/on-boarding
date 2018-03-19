@@ -22,6 +22,8 @@ package org.acumos.onboarding.component.docker.preparation;
 
 import java.util.ArrayList;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+
 public class Metadata {
 
 	private String ownerId;
@@ -33,6 +35,8 @@ public class Metadata {
 	private String runtimeName;
 	private String runtimeVersion;
 	private String toolkit;
+	
+	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Metadata.class);
 
 	private ArrayList<Requirement> requirements;
 
@@ -42,7 +46,8 @@ public class Metadata {
 
 	public void setModelName(String modelName) {
 		this.solutionName = modelName;
-		this.modelName = modelName.toLowerCase();
+		this.modelName = modelName.toLowerCase();		
+		logger.debug(EELFLoggerDelegate.debugLogger,"Model name :"+modelName);
 	}
 
 	public String getModelName() {

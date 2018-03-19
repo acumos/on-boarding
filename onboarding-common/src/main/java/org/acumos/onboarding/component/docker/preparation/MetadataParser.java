@@ -103,6 +103,8 @@ public class MetadataParser {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 						"Invalid Model Name - " + modelName);
 			}
+			
+			logger.debug(EELFLoggerDelegate.debugLogger,"Model name [Metadata Parsing]:"+modelName);
 
 			metadata.setModelName(modelName);
 
