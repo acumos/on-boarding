@@ -1,15 +1,16 @@
 FROM python:3.6.3
-#MAINTAINER trianta@research.att.com
+MAINTAINER trianta@research.att.com
 
-RUN mkdir /app
-WORKDIR /app
-
+RUN mkdir /app 
+WORKDIR /app   
+   
 ADD . /app
 
-RUN pip install -r requirements.txt --extra-index-url {1} --trusted-host {2}
-
+RUN pip install -r /app/requirements.txt --find-links /app && \
+    pip install acumos_dcae_model_runner --find-links /app --process-dependency-links
 
 ENV DCAEPORT=10000
 EXPOSE $DCAEPORT
 
-CMD ["python", "runner.py"]
+ENTRYPOINT ["acumos_dcae_model_runner"]
+CMD ["/app"]

@@ -34,6 +34,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.domain.MLPSolution;
+import org.acumos.cds.domain.MLPUser;
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
@@ -139,7 +142,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,@RequestParam(required=false)String modName,String solutioId, String revisionId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
-			@RequestHeader(value = "provider", required = false) String provider) throws AcumosServiceException 
+			@RequestHeader(value = "provider", required = false) String provider,
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName) throws AcumosServiceException 
 	{
 		logger.debug(EELFLoggerDelegate.debugLogger,"Started DCAE Onboarding");
 
@@ -216,7 +220,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				FileInputStream fisProto = new FileInputStream(protoFile);
 				proto = new MockMultipartFile("Proto",protoFile.getName(), "", fisProto);
 
-				return dockerizePayload(request, model, meta, proto, authorization,trackingID, provider);
+				return dockerizePayload(request, model, meta, proto, authorization,trackingID, provider,shareUserName);
 
 			}
 			else
@@ -261,9 +265,11 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
-			@RequestHeader(value = "provider", required = false) String provider) throws AcumosServiceException {
+			@RequestHeader(value = "provider", required = false) String provider,
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName) throws AcumosServiceException {
 
 		logger.debug(EELFLoggerDelegate.debugLogger,"Started JWT token validation");
+		MLPUser shareUser = null;
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -272,6 +278,25 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Token Not Available...!");
 			}
+			
+			
+			if(shareUserName != null)
+            {
+                RestPageResponse<MLPUser> user = cdmsClient.findUsersBySearchTerm(shareUserName, new RestPageRequest(0, 9));
+                
+                List<MLPUser> uList = user.getContent();
+                
+                if(uList.isEmpty())
+                {                        
+                    logger.error(EELFLoggerDelegate.errorLogger, "User "+shareUserName+" not found: cannot share model; onboarding aborted");
+                    throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+                            "User "+shareUserName+" not found: cannot share model; onboarding aborted");                        
+                }    
+                else
+                {
+                    shareUser = uList.get(0);
+                }
+            }
 
 			// If trackingID is provided in the header create a
 			// OnboardingNotification object that will be used to update status
@@ -436,6 +461,22 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					}
 
 					isSuccess = true;
+					
+					// Model Sharing 
+                    if(isSuccess && (shareUserName != null))
+                    {
+                        try
+                            {
+                                cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(),shareUser.getUserId());
+                                logger.debug("Model Shared Successfully with "+shareUserName);                                                                
+                            }
+                            catch(Exception e)
+                            {
+                                logger.error(EELFLoggerDelegate.errorLogger," Failed to share Model");
+                                logger.error(EELFLoggerDelegate.errorLogger,"  " +e);
+                                throw e;
+                            }                                                        
+                    }
 
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
 							HttpStatus.CREATED);
