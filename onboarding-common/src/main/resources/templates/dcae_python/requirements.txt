@@ -1,3 +1,2 @@
 dill==0.2.7.1
-acumos==0.5.2
 dcaeapplib==0.0.4
