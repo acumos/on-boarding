@@ -18,11 +18,11 @@ RUN apt-get -y install libgtk2.0-dev
 
 RUN pip install -r requirements.txt --extra-index-url {1} --trusted-host {2}
 
-#Make port 80 available to the world outside this container
-EXPOSE 3330
-
 ENV http_proxy=""
 RUN echo $http_proxy
+
+#Make port 80 available to the world outside this container
+EXPOSE 3330
 
 # Run runner.py when the container launches
 CMD ["python", "runner.py"]
