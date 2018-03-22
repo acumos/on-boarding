@@ -213,7 +213,7 @@ public class CommonOnboarding {
 			}
 
 			PythonDockerPreprator dockerPreprator = new PythonDockerPreprator(metadataParser, extraIndexURL,
-					trustedHost);
+					trustedHost,http_proxy);
 			
 			for (Resource resource : resources) {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));

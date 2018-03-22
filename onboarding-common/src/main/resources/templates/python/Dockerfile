@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 ADD . /app
 
-ENV http_proxy {0}
+ENV http_proxy {3}
 RUN echo $http_proxy
 RUN echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
 

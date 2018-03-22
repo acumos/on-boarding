@@ -1,0 +1,23 @@
+{
+  "dataformatversion": "1.0.0",
+  "self": {
+    "name": "field_picker_output",
+    "version": "0.1.0",
+    "description": "Output to be fed into TCA ML"
+  },
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      "receivedTotalPacketsDelta": {
+        "type": "number",
+        "description": "See VES spec"
+      },
+      "startEpochMicrosec": {
+        "type": "number",
+        "description": "See VES spec"
+      }
+    },
+    "required": ["receivedTotalPacketsDelta", "startEpochMicrosec"],
+    "type": "object"
+  }
+}

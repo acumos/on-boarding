@@ -1,0 +1,19 @@
+{
+  "dataformatversion": "1.0.0",
+  "self": {
+    "name": "Classification",
+    "version": "0.1.0",
+    "description": "Anomaly classification output"
+  },
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      
+      "anomaly": {
+        "type": "integer"
+      }
+    },
+    "required": ["anomaly"],
+    "type": "object"
+  }
+}

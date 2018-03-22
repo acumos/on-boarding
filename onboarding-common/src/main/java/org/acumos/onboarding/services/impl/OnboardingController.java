@@ -45,6 +45,7 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.UtilityFunction;
+import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
@@ -447,6 +448,11 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI);
 
 					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
+					
+					if(dcaeflag)
+                    {
+                        addDCAEArrtifacts(mData,outputFolder);
+                    }
 
 					// Notify TOSCA generation started
 					if (onboardingStatus != null) {
@@ -533,6 +539,32 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 		}
 
 	}
+	
+	private void addDCAEArrtifacts(Metadata mData,File outputFolder)
+    {
+        
+        File filePathoutputF = new File(outputFolder,"app");
+        
+        File anoIn =  new File(filePathoutputF,"anomaly-in.json");
+        File anoOut =  new File(filePathoutputF,"anomaly-out.json");
+        File compo =  new File(filePathoutputF,"component.json");
+        File ons =  new File(filePathoutputF,"onsdemo1.yaml");
+        
+        try 
+        {
+            addArtifact(mData, anoIn,ArtifactTypeCode.MD);
+            addArtifact(mData, anoOut,ArtifactTypeCode.MD);
+            addArtifact(mData, compo,ArtifactTypeCode.MD);
+            addArtifact(mData, ons ,ArtifactTypeCode.MD);
+        } 
+        
+        catch (AcumosServiceException e) 
+        {            
+            e.printStackTrace();
+        }    
+    }
+	
+	
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;
 	}

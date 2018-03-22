@@ -51,12 +51,14 @@ public class PythonDockerPreprator {
 	private JsonNode metadataJson;
 
 	private String pythonVersion;
+	private String pythonhttpProxy;
+	
 	String extraIndexURL;
 	String trustedHost;
 
-	public PythonDockerPreprator(MetadataParser metadataParser, String extraIndexURL, String trustedHost)
+	public PythonDockerPreprator(MetadataParser metadataParser, String extraIndexURL, String trustedHost, String httpProxy)
 			throws AcumosServiceException {
-
+		this.pythonhttpProxy = httpProxy;
 		this.extraIndexURL = extraIndexURL;
 		this.trustedHost = trustedHost;
 
@@ -188,7 +190,7 @@ public class PythonDockerPreprator {
 		try {
 			String dockerFileAsString = new String(UtilityFunction.toBytes(inDockerFile));
 			dockerFileAsString = MessageFormat.format(dockerFileAsString,
-					new Object[] { this.pythonVersion, extraIndexURL, trustedHost });
+					new Object[] { this.pythonVersion, extraIndexURL, trustedHost,this.pythonhttpProxy});
 			FileWriter writer = new FileWriter(outDockerFile);
 			try {
 				writer.write(dockerFileAsString.trim());

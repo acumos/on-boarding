@@ -1,0 +1,43 @@
+{
+  "self": {
+    "version": "0.1.3",
+    "name": "acumos_TCA_demo1",
+    "description": "ACUMOS TCA demo 1",
+    "component_type": "docker"
+  },
+  "streams": {
+    "publishes":[
+      {
+       "config_key":"classify_sample_publisher",
+       "format":"Classification",
+       "type":"message_router",
+       "version":"0.1.0"
+      }
+    ],
+    "subscribes": [
+      {
+       "config_key":"classify_sample_subscriber",
+       "format":"field_picker_output",
+       "type":"message_router",
+       "version":"0.1.0"
+      }
+    ]
+  },
+  "services": {
+    "calls": [],
+    "provides": []
+  },
+  "parameters": [],
+  "auxilary": {
+    "healthcheck": {
+        "type": "http",
+        "endpoint": "/healthcheck"
+    }
+  },
+  "artifacts": [
+    {
+      "uri" : "onapdcae/tca_ml_demo1:0.1.3",
+      "type": "docker image"
+    }
+  ]
+}

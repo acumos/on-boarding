@@ -39,7 +39,8 @@ public class PythonDockerPrepratorTest {
 	File outFile = new File(filePath+"Dockerfile");
 	File outFolder = new File(filePath+"inFile.csv");
 	MetadataParser metadataParser = new MetadataParser(jsonFile);
-	PythonDockerPreprator pythonDockerPreprator = new PythonDockerPreprator(metadataParser, "localhost", "localhost");
+	private String httpProxy= "http://10.1.0.6:3128";
+	PythonDockerPreprator pythonDockerPreprator = new PythonDockerPreprator(metadataParser, "localhost", "localhost",httpProxy);
 
 	public PythonDockerPrepratorTest() throws AcumosServiceException {
 		new MetadataParser(jsonFile);
