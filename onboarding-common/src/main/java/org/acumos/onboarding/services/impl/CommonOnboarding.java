@@ -226,7 +226,6 @@ public class CommonOnboarding {
 				logger.error(EELFLoggerDelegate.errorLogger,"Python templatization failed: {}", e);
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
-			dcaeflag = false;
 		} else if (metadata.getRuntimeName().equals("r")) {
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
