@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4ba89bb_a7ae1ae3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 14
+      },
+      "writtenOn": "2018-03-26T11:56:36Z",
+      "side": 1,
+      "message": "Acumos-548",
+      "revId": "bca2f3b16974e0f96d3a9f67df7d9fc3916358cb",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
