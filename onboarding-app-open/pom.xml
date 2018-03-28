@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>1.17.0-SNAPSHOT</version>
+	<version>1.17.1-SNAPSHOT</version>
 	<name>onboarding-app-open</name>
 	<description>Cognita Onboarding Application for Open Source</description>
 	
@@ -43,7 +43,7 @@
 		<dependency> 
             <groupId>org.acumos.on-boarding</groupId> 
             <artifactId>onboarding-common</artifactId>
-            <version>1.17.0</version> 
+            <version>1.17.1-SNAPSHOT</version> 
         </dependency> 
         <!-- 
 		<dependency>
@@ -247,7 +247,8 @@
 								</assembly>
 								<cmd>
 									<!--CDATA prevents Eclipse formatter from breaking line-->
-									<shell><![CDATA[cd /maven; java -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
+									<!-- <shell><![CDATA[cd /maven; java -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell> -->
+									<shell><![CDATA[cd /maven; java -Xms128m -Xmx512m -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
 								</cmd>
 							</build>
 						</image>
