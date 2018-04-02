@@ -153,6 +153,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 		String artifactName = null;
 		File files  = null;
 		dcaeflag = true;
+		Metadata mData = null; 
 		try
 		{
 
@@ -271,6 +272,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 		logger.debug(EELFLoggerDelegate.debugLogger,"Started JWT token validation");
 		MLPUser shareUser = null;
+		Metadata mData = null; 
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -375,16 +377,11 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					}
 					
 					
-					if(mData == null)
-                    {
-                        metadataParser = new MetadataParser(localMetadataFile);
-                        mData = metadataParser.getMetadata();                                                             
-                    }
-
-					 mData.setOwnerId(ownerId);  
-					/*metadataParser = new MetadataParser(localMetadataFile);
-					Metadata mData = metadataParser.getMetadata();
-					mData.setOwnerId(ownerId);*/
+					
+                     metadataParser = new MetadataParser(localMetadataFile);
+                     mData = metadataParser.getMetadata();                                                   
+                    
+                    mData.setOwnerId(ownerId);  
 
 					MLPSolution mlpSolution = null;
 
@@ -422,7 +419,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					}
 
 					try {
-						imageUri = dockerizeFile(metadataParser, localmodelFile);
+						imageUri = dockerizeFile(metadataParser, localmodelFile,mlpSolution.getSolutionId());
 					} catch (Exception e) {
 						// Notify Create docker image failed
 						if (onboardingStatus != null) {
