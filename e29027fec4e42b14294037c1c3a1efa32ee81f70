@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4c0f7df6_0fb119ba",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "Field should be private",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0d7e45b_7eb4a808",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "In my opinion, autowired fields should be private.  Are they \"protected\" for subclass use?  But if subclasses need them, they can autowire them again, right?",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e9f49521_6efc088d",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "Please remove code, don\u0027t comment out",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4df2ccb1_4c31dbb9",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "Can you move string constant to a variable to avoid hardcoding of well-known constants?",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47d4ef8a_c9c8ac0b",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "Remove code, don\u0027t comment out",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9be206da_a0f18726",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "It\u0027s better practice to use File.separator, instead of hardcoded forward slashes",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "248373fd_ea08fcbb",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-02T13:43:08Z",
+      "side": 1,
+      "message": "Suggest removing dead code, not commenting out",
+      "revId": "e29027fec4e42b14294037c1c3a1efa32ee81f70",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
