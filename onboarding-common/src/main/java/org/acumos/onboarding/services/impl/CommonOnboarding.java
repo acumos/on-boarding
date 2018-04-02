@@ -130,10 +130,9 @@ public class CommonOnboarding {
 	protected DockerConfiguration dockerConfiguration;
 	
 	protected MetadataParser metadataParser = null;
-    protected Metadata mData = null;
-
-    
-    protected String modelName = null;
+	
+    /*protected Metadata mData = null;    
+    protected String modelName = null;*/
 
 
 	protected CommonDataServiceRestClientImpl cdmsClient;
@@ -193,7 +192,7 @@ public class CommonOnboarding {
 	/*
 	 * @Method Name : dockerizeFile Performs complete dockerization process.
 	 */
-	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile) throws AcumosServiceException {
+	public String dockerizeFile(MetadataParser metadataParser, File localmodelFile, String solutionID) throws AcumosServiceException {
 		File outputFolder = localmodelFile.getParentFile();
 		Metadata metadata = metadataParser.getMetadata();
 		logger.debug(EELFLoggerDelegate.debugLogger,"Preparing app in: {}", outputFolder);
@@ -338,7 +337,7 @@ public class CommonOnboarding {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
 		try {
 			logger.debug("Docker image creation started");
-			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName(),
+			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName()+"_"+solutionID,
 					metadata.getVersion(), null, false, true);
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
@@ -352,9 +351,9 @@ public class CommonOnboarding {
 			// TODO: remove local image
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"Starting docker image tagging");
-			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+			String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName()+"_"+solutionID;
 
-			TagImageCommand tagImageCommand = new TagImageCommand(metadata.getModelName() + ":" + metadata.getVersion(),
+			TagImageCommand tagImageCommand = new TagImageCommand(metadata.getModelName()+"_"+solutionID+ ":" + metadata.getVersion(),
 					imageTagName, metadata.getVersion(), true, false);
 			tagImageCommand.setClient(dockerClient);
 			tagImageCommand.execute();
