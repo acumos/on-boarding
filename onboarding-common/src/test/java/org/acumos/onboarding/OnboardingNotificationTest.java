@@ -25,6 +25,7 @@ import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnboardingNotificationTest {
@@ -64,7 +65,7 @@ public class OnboardingNotificationTest {
 			onboardingNotify.getStepCode();
 			onboardingNotify.getResult();
 			onboardingNotify.getStepResultId();
-			assert(true);
+			Assert.notNull(onboardingNotify, " ");
 		}
 
 	}

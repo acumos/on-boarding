@@ -24,6 +24,7 @@ import org.acumos.onboarding.common.utils.Crediantials;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CrediantialsTest {
@@ -35,7 +36,7 @@ public class CrediantialsTest {
 		crediantials.setPassword("password");
 		crediantials.getUsername();
 		crediantials.getPassword();
-
+		Assert.notNull(crediantials, " ");
 	}
 
 }
