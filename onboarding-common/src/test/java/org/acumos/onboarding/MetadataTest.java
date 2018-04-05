@@ -22,12 +22,15 @@ package org.acumos.onboarding;
 
 import java.util.List;
 
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.Requirement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataTest  extends Requirement{
@@ -66,13 +69,9 @@ public class MetadataTest  extends Requirement{
 		metaData.getSolutionId();
 		metaData.getSolutionName();
 		metaData.getToolkit();
-		metaData.getVersion();
-		
-		assert(true);
-		
-		
-		
-		
+		metaData.getVersion();	
+		Assert.notNull(metaData, " ");
+	
 	}
 
 }
