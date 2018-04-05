@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7681ec3e_4ff4061e",
+        "filename": "onboarding-app-open/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "remove, don\u0027t comment out - the similar jar is referenced below",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bfff7c9b_6e346a4e",
+        "filename": "onboarding-app-open/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "You may wish to use ${project.version} here so you get exactly the same value as you entered up top without repeating it.\n\nAlso please fix formatting.",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "40b14ab3_e7faced2",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/AbstractResponseObjectTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "Should be private",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1b2a904_a6514d72",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/CrediantialsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "Please fix typos: Credentials",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9b8055a_74e82317",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/CrediantialsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "This is a meaningless assertion.  It will ALWAYS be non-null.  Instead check that the set/get do mirror actions.  Please improve!",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7fbe09ba_d220fcde",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/JsonResponseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "Remove @author",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "944df5f5_8e8db547",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/JsonResponseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "This is another meaningless test.  Instead check the set/get pairs and their values.",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15c3b6c3_1473d565",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/MetadataTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "This is a meaningless test.  Please improve to check get/set method pairs.",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b9a5eb47_3a3bb7dc",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingNotificationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-05T12:39:40Z",
+      "side": 1,
+      "message": "Please improve to check getter/setter methods",
+      "revId": "ebd6c0f500b83c9947c7febc8eecc3652f61f4e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
