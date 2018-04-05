@@ -121,7 +121,7 @@ public class CommonOnboarding {
 
 	protected String dockerImageURI = null;
 	
-	protected volatile OnboardingNotification onboardingStatus;
+	protected OnboardingNotification onboardingStatus;
 	
 	@Autowired
 	protected ResourceLoader resourceLoader;
