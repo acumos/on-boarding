@@ -121,7 +121,7 @@ public class CommonOnboarding {
 
 	protected String dockerImageURI = null;
 	
-	protected volatile OnboardingNotification onboardingStatus;
+	protected OnboardingNotification onboardingStatus;
 	
 	@Autowired
 	protected ResourceLoader resourceLoader;
@@ -163,7 +163,6 @@ public class CommonOnboarding {
 
 		return valid;
 	}
-
 	/*
 	 * @Method Name : getExistingSolution Gives existing solution against
 	 * ownerId and Model name if any. *
