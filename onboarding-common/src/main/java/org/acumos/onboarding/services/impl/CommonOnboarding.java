@@ -118,8 +118,6 @@ public class CommonOnboarding {
 	protected String modelOriginalName = null;
 	
 	protected boolean dcaeflag = false;
-
-	protected String dockerImageURI = null;
 	
 	protected OnboardingNotification onboardingStatus;
 	
@@ -325,8 +323,8 @@ public class CommonOnboarding {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
 		try {
 			logger.debug("Docker image creation started");
-			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, metadata.getModelName()+"_"+solutionID,
-					metadata.getVersion(), null, false, true);
+			String actualModelName = getActualModelName(metadata, solutionID);  
+			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, actualModelName,metadata.getVersion(), null, false, true);
 			createCMD.setClient(dockerClient);
 			createCMD.execute();
 			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image creation done");
@@ -338,9 +336,11 @@ public class CommonOnboarding {
 			// TODO: remove local image
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"Starting docker image tagging");
-			String imageTagName = dockerConfiguration.getImagetagPrefix() + File.separator + metadata.getModelName()+"_"+solutionID;
-
-			TagImageCommand tagImageCommand = new TagImageCommand(metadata.getModelName()+"_"+solutionID+ ":" + metadata.getVersion(),
+			String imageTagName = dockerConfiguration.getImagetagPrefix() + File.separator + actualModelName;
+			
+			String dockerImageURI = imageTagName + ":" + metadata.getVersion();
+			
+			TagImageCommand tagImageCommand = new TagImageCommand(actualModelName+ ":" + metadata.getVersion(),
 					imageTagName, metadata.getVersion(), true, false);
 			tagImageCommand.setClient(dockerClient);
 			tagImageCommand.execute();
@@ -351,8 +351,6 @@ public class CommonOnboarding {
 			PushImageCommand pushImageCmd = new PushImageCommand(imageTagName, metadata.getVersion(), "");
 			pushImageCmd.setClient(dockerClient);
 			pushImageCmd.execute();
-
-			dockerImageURI = imageTagName + ":" + metadata.getVersion();
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"Docker image URI : " + dockerImageURI);
 
@@ -477,7 +475,7 @@ public class CommonOnboarding {
 		return "" + count;
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode)
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode,String actualModelName)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -495,7 +493,7 @@ public class CommonOnboarding {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = fileInputStream.available();
-			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
+			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,actualModelName, metadata.getVersion(), ext, size,fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
@@ -645,7 +643,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	public void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+	public void revertbackOnboarding(Metadata metadata, String imageUri,String solutionID) throws AcumosServiceException {
 
 		try {
 
@@ -665,7 +663,8 @@ public class CommonOnboarding {
 			logger.debug(EELFLoggerDelegate.debugLogger,"Image Name from dockerize file method: " + imageUri);
 
 			if (StringUtils.isNotBlank(imageUri)) {
-				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + getActualModelName(metadata, solutionID);
+				
 				logger.debug(EELFLoggerDelegate.debugLogger,"Image Name: " + imageTagName);
 				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
 				deleteImageCommand.setClient(dockerClient);
@@ -738,7 +737,12 @@ public class CommonOnboarding {
 			}
 		}
 	}
+	
+	//Method for getting model name used for Image
+	protected String getActualModelName(Metadata metadata, String solutionID) {
 
+		return metadata.getModelName() + "_" + solutionID;
+	}
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;
 	}

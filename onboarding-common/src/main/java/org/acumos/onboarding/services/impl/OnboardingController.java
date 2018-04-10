@@ -76,7 +76,7 @@ import io.swagger.annotations.ApiResponses;
  * @author *****
  *
  */
-public class OnboardingController extends CommonOnboarding  implements DockerService {
+public class OnboardingController extends CommonOnboarding implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 
 	public OnboardingController() {
@@ -93,7 +93,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 	@RequestMapping(value = "/auth", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(@RequestBody JsonRequest<Crediantials> cred,
 			HttpServletResponse response) throws AcumosServiceException {
-		logger.debug(EELFLoggerDelegate.debugLogger,"Started User Authentication");
+		logger.debug(EELFLoggerDelegate.debugLogger, "Started User Authentication");
 		try {
 			Crediantials obj = cred.getBody();
 
@@ -112,16 +112,16 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			if (token != null) {
 				// Setting JWT token in header
 				response.setHeader("jwtToken", token);
-				logger.debug(EELFLoggerDelegate.debugLogger,"User Authentication Succesful");
+				logger.debug(EELFLoggerDelegate.debugLogger, "User Authentication Succesful");
 				return new ResponseEntity<ServiceResponse>(ServiceResponse.successJWTResponse(token), HttpStatus.OK);
 			} else {
-				logger.debug(EELFLoggerDelegate.debugLogger,"Either Username/Password is invalid.");
+				logger.debug(EELFLoggerDelegate.debugLogger, "Either Username/Password is invalid.");
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Either Username/Password is invalid.");
 			}
 
 		} catch (AcumosServiceException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(), e);
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					HttpStatus.UNAUTHORIZED);
 		}
@@ -130,8 +130,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 	/************************************************
 	 * End of Authentication
 	 *****************************************************/
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -140,40 +139,34 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
 	@RequestMapping(value = "/dcae_models", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,@RequestParam(required=false)String modName,String solutioId, String revisionId,
+	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,
+			@RequestParam(required = false) String modName, String solutioId, String revisionId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
-			@RequestHeader(value = "shareUserName", required = false) String shareUserName) throws AcumosServiceException 
-	{
-		logger.debug(EELFLoggerDelegate.debugLogger,"Started DCAE Onboarding");
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
+			throws AcumosServiceException {
+		logger.debug(EELFLoggerDelegate.debugLogger, "Started DCAE Onboarding");
 
 		logger.info("Fetching model from Nexus...!");
 
 		String artifactName = null;
-		File files  = null;
+		File files = null;
 		dcaeflag = true;
-		Metadata mData = null; 
-		try
-		{
+		Metadata mData = null;
+		try {
 
-			if (trackingID != null) 
-			{
-				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL,cmnDataSvcUser,cmnDataSvcPwd);
+			if (trackingID != null) {
+				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 				onboardingStatus.setTrackingId(trackingID);
+			} else {
+				onboardingStatus = null;
 			}
-			else
-			{			
-				onboardingStatus=null;
-			}
-			/*	Nexus Integration....!	*/
-
+			/* Nexus Integration....! */
 
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
-			artifactName = download.getModelArtifacts(solutioId,revisionId,cmnDataSvcUser,cmnDataSvcPwd,
-					nexusEndPointURL,
-					nexusUserName, nexusPassword,cmnDataSvcEndPoinURL);
-
+			artifactName = download.getModelArtifacts(solutioId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
+					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
 
 			if (artifactName.indexOf(".") > 0)
 				artifactName = artifactName.substring(0, artifactName.lastIndexOf("."));
@@ -184,76 +177,62 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 			MultipartFile model = null, meta = null, proto = null;
 
-			File modelFile = new File(files,artifactName+".zip");		
-			File MetaFile = new File(files,artifactName+".json");
-			File protoFile = new File(files,artifactName+".proto");	
-			
-			if(modName != null)
-            {
-                Object obj = new JSONParser().parse(new FileReader(MetaFile));            
-                JSONObject jo = (JSONObject) obj;            
-                jo.put("name",modName);                    
-                String jsonFile = jo.toString();            
-                FileOutputStream fout = new FileOutputStream(MetaFile);
-                fout.write(jsonFile.getBytes());
-                fout.close();    
-            }
+			File modelFile = new File(files, artifactName + ".zip");
+			File MetaFile = new File(files, artifactName + ".json");
+			File protoFile = new File(files, artifactName + ".proto");
 
+			if (modName != null) {
+				Object obj = new JSONParser().parse(new FileReader(MetaFile));
+				JSONObject jo = (JSONObject) obj;
+				jo.put("name", modName);
+				String jsonFile = jo.toString();
+				FileOutputStream fout = new FileOutputStream(MetaFile);
+				fout.write(jsonFile.getBytes());
+				fout.close();
+			}
 
-			if((modelFile.exists()) && (MetaFile.exists()) && (protoFile.exists()))			
-			{
+			if ((modelFile.exists()) && (MetaFile.exists()) && (protoFile.exists())) {
 				metadataParser = new MetadataParser(MetaFile);
 				mData = metadataParser.getMetadata();
 
 				String runTime = mData.getRuntimeName();
 
-				if(!runTime.equals("python"))
-				{
+				if (!runTime.equals("python")) {
 					logger.error(EELFLoggerDelegate.errorLogger, "Invalid Runtime [Only 'python' runtime allowed..!]");
 					throw new AcumosServiceException("Invalid Runtime [Only 'python' runtime allowed..!]");
 				}
 
 				FileInputStream fisModel = new FileInputStream(modelFile);
-				model = new MockMultipartFile("Model",modelFile.getName(), "", fisModel);					
+				model = new MockMultipartFile("Model", modelFile.getName(), "", fisModel);
 
 				FileInputStream fisMeta = new FileInputStream(MetaFile);
-				meta = new MockMultipartFile("Metadata",MetaFile.getName(), "", fisMeta);					
+				meta = new MockMultipartFile("Metadata", MetaFile.getName(), "", fisMeta);
 
 				FileInputStream fisProto = new FileInputStream(protoFile);
-				proto = new MockMultipartFile("Proto",protoFile.getName(), "", fisProto);
+				proto = new MockMultipartFile("Proto", protoFile.getName(), "", fisProto);
 
-				return dockerizePayload(request, model, meta, proto, authorization,trackingID, provider,shareUserName);
+				return dockerizePayload(request, model, meta, proto, authorization, trackingID, provider,
+						shareUserName);
 
-			}
-			else
-			{		
+			} else {
 				logger.error(EELFLoggerDelegate.errorLogger, "Model artifacts not available..!");
-				throw new AcumosServiceException("Model artifacts not available..!");				
+				throw new AcumosServiceException("Model artifacts not available..!");
 			}
-		}
-		catch (IOException e)
-		{
-			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");	
-			throw new AcumosServiceException("Unable to read Model artifacts..!");				
-		}	
-		catch (AcumosServiceException e) {
+		} catch (IOException e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
+			throw new AcumosServiceException("Unable to read Model artifacts..!");
+		} catch (AcumosServiceException e) {
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error(EELFLoggerDelegate.errorLogger,e.getErrorCode() + "  " + e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					httpCode);
-		}	
-		catch (Exception e)
-		{	
+		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
-			throw new AcumosServiceException("Unable to read Model artifacts..!");				
-		}	
-		finally
-		{
+			throw new AcumosServiceException("Unable to read Model artifacts..!");
+		} finally {
 			UtilityFunction.deleteDirectory(files);
 		}
 	}
-	
-	
 
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -268,11 +247,12 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
-			@RequestHeader(value = "shareUserName", required = false) String shareUserName) throws AcumosServiceException {
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
+			throws AcumosServiceException {
 
-		logger.debug(EELFLoggerDelegate.debugLogger,"Started JWT token validation");
+		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
-		Metadata mData = null; 
+		Metadata mData = null;
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -281,36 +261,32 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 						"Token Not Available...!");
 			}
-			
-			
-			if(shareUserName != null)
-            {
-                RestPageResponse<MLPUser> user = cdmsClient.findUsersBySearchTerm(shareUserName, new RestPageRequest(0, 9));
-                
-                List<MLPUser> uList = user.getContent();
-                
-                if(uList.isEmpty())
-                {                        
-                    logger.error(EELFLoggerDelegate.errorLogger, "User "+shareUserName+" not found: cannot share model; onboarding aborted");
-                    throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
-                            "User "+shareUserName+" not found: cannot share model; onboarding aborted");                        
-                }    
-                else
-                {
-                    shareUser = uList.get(0);
-                }
-            }
+
+			if (shareUserName != null) {
+				RestPageResponse<MLPUser> user = cdmsClient.findUsersBySearchTerm(shareUserName,
+						new RestPageRequest(0, 9));
+
+				List<MLPUser> uList = user.getContent();
+
+				if (uList.isEmpty()) {
+					logger.error(EELFLoggerDelegate.errorLogger,
+							"User " + shareUserName + " not found: cannot share model; onboarding aborted");
+					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+							"User " + shareUserName + " not found: cannot share model; onboarding aborted");
+				} else {
+					shareUser = uList.get(0);
+				}
+			}
 
 			// If trackingID is provided in the header create a
 			// OnboardingNotification object that will be used to update status
 			// against that trackingID
 			if (trackingID != null) {
-				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL,cmnDataSvcUser,cmnDataSvcPwd);
+				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 				onboardingStatus.setTrackingId(trackingID);
-			}
-			else{
-				
-				onboardingStatus=null;
+			} else {
+
+				onboardingStatus = null;
 			}
 
 			// Call to validate JWT Token.....!
@@ -322,10 +298,10 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 			String imageUri = null;
 
 			if (isValidToken) {
-				logger.debug(EELFLoggerDelegate.debugLogger,"Token validation successful");
+				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
 				ownerId = valid.getResponseBody().toString();
 
-				if (ownerId == null){
+				if (ownerId == null) {
 					logger.error(EELFLoggerDelegate.errorLogger, "Either  username/password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
 							"Either  username/password is invalid.");
@@ -335,8 +311,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
 
-				logger.debug(EELFLoggerDelegate.debugLogger,"Dockerization request recieved with " + model.getOriginalFilename() + " and metadata :"
-						+ metadata);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Dockerization request recieved with "
+						+ model.getOriginalFilename() + " and metadata :" + metadata);
 
 				// Notify Create solution or get existing solution ID has
 				// started
@@ -347,15 +323,16 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
-				outputFolder.mkdirs();				
+				outputFolder.mkdirs();
 				boolean isSuccess = false;
-
+				MLPSolution mlpSolution = null;
 				try {
 					File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 					try {
 						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
 					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download model file {}", localmodelFile.getName());
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download model file {}",
+								localmodelFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download model file " + localmodelFile.getName());
 					}
@@ -363,7 +340,8 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					try {
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
 					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download metadata file {}", localMetadataFile.getName());
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download metadata file {}",
+								localMetadataFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download metadata file " + localMetadataFile.getName());
 					}
@@ -371,19 +349,16 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					try {
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
 					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download protobuf file {}", localProtobufFile.getName());
+						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download protobuf file {}",
+								localProtobufFile.getName());
 						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 								"Fail to download protobuf file " + localProtobufFile.getName());
 					}
-					
-					
-					
-                     metadataParser = new MetadataParser(localMetadataFile);
-                     mData = metadataParser.getMetadata();                                                   
-                    
-                    mData.setOwnerId(ownerId);  
 
-					MLPSolution mlpSolution = null;
+					metadataParser = new MetadataParser(localMetadataFile);
+					mData = metadataParser.getMetadata();
+
+					mData.setOwnerId(ownerId);
 
 					List<MLPSolution> solList = getExistingSolution(mData);
 
@@ -410,46 +385,44 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 							onboardingStatus.setRevisionId(mData.getRevisionId());
 						}
 						// notify
-						onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "SU", "CreateSolution Successful");
+						onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "SU",
+								"CreateSolution Successful");
 					}
 
 					// Notify Create docker image has started
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST","Create Docker Image Started");
+						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST", "Create Docker Image Started");
 					}
 
 					try {
-						imageUri = dockerizeFile(metadataParser, localmodelFile,mlpSolution.getSolutionId());
+						imageUri = dockerizeFile(metadataParser, localmodelFile, mlpSolution.getSolutionId());
 					} catch (Exception e) {
 						// Notify Create docker image failed
 						if (onboardingStatus != null) {
-							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA",
-									"Create Docker Image Failed");
+							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", "Create Docker Image Failed");
 						}
-						logger.error(EELFLoggerDelegate.errorLogger,"Error {}", e);
+						logger.error(EELFLoggerDelegate.errorLogger, "Error {}", e);
 						throw e;
 					}
 
 					// Notify Create docker image is successful
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU",
-								"Created Docker Image Succesful");
+						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Succesful");
 					}
-
+					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
 					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
 
-					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI);
+					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI, actualModelName);
 
-					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI);
+					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI, actualModelName);
 
-					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
-					
-					if(dcaeflag)
-                    {
-                        addDCAEArrtifacts(mData,outputFolder);
-                    }
+					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD, actualModelName);
+
+					if (dcaeflag) {
+						addDCAEArrtifacts(mData, outputFolder, mlpSolution.getSolutionId());
+					}
 
 					// Notify TOSCA generation started
 					if (onboardingStatus != null) {
@@ -460,33 +433,30 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 					// Notify TOSCA generation successful
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful"); 
+						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
 
 					isSuccess = true;
-					
-					// Model Sharing 
-                    if(isSuccess && (shareUserName != null))
-                    {
-                        try
-                            {
-                                cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(),shareUser.getUserId());
-                                logger.debug("Model Shared Successfully with "+shareUserName);                                                                
-                            }
-                            catch(Exception e)
-                            {
-                                logger.error(EELFLoggerDelegate.errorLogger," Failed to share Model");
-                                logger.error(EELFLoggerDelegate.errorLogger,"  " +e);
-                                throw e;
-                            }                                                        
-                    }
+
+					// Model Sharing
+					if (isSuccess && (shareUserName != null)) {
+						try {
+							cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(), shareUser.getUserId());
+							logger.debug("Model Shared Successfully with " + shareUserName);
+						} catch (Exception e) {
+							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model");
+							logger.error(EELFLoggerDelegate.errorLogger, "  " + e);
+							throw e;
+						}
+					}
 
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
 							HttpStatus.CREATED);
 				} finally {
 					if (isSuccess == false) {
-						logger.debug(EELFLoggerDelegate.debugLogger,"Onboarding Failed, Reverting failed solutions and artifacts.");
-						revertbackOnboarding(metadataParser.getMetadata(), imageUri);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Onboarding Failed, Reverting failed solutions and artifacts.");
+						revertbackOnboarding(metadataParser.getMetadata(), imageUri, mlpSolution.getSolutionId());
 					}
 					UtilityFunction.deleteDirectory(outputFolder);
 					mData = null;
@@ -505,24 +475,25 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 		} catch (AcumosServiceException e) {
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error(EELFLoggerDelegate.errorLogger,e.getErrorCode() + "  " + e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					httpCode);
 		} catch (HttpClientErrorException e) {
 			// Handling #401
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
-				logger.debug(EELFLoggerDelegate.debugLogger,"Unauthorized User - Either Username/Password is invalid.");
+				logger.debug(EELFLoggerDelegate.debugLogger,
+						"Unauthorized User - Either Username/Password is invalid.");
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User"),
 						HttpStatus.UNAUTHORIZED);
 			} else {
-				logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
+				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 				e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
 			}
 		} catch (Exception e) {
-			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
@@ -536,32 +507,28 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 		}
 
 	}
-	
-	private void addDCAEArrtifacts(Metadata mData,File outputFolder)
-    {
-        
-        File filePathoutputF = new File(outputFolder,"app");
-        
-        File anoIn =  new File(filePathoutputF,"anomaly-in.json");
-        File anoOut =  new File(filePathoutputF,"anomaly-out.json");
-        File compo =  new File(filePathoutputF,"component.json");
-        File ons =  new File(filePathoutputF,"onsdemo1.yaml");
-        
-        try 
-        {
-            addArtifact(mData, anoIn,ArtifactTypeCode.MD);
-            addArtifact(mData, anoOut,ArtifactTypeCode.MD);
-            addArtifact(mData, compo,ArtifactTypeCode.MD);
-            addArtifact(mData, ons ,ArtifactTypeCode.MD);
-        } 
-        
-        catch (AcumosServiceException e) 
-        {            
-            e.printStackTrace();
-        }    
-    }
-	
-	
+
+	private void addDCAEArrtifacts(Metadata mData, File outputFolder, String solutionID) {
+
+		File filePathoutputF = new File(outputFolder, "app");
+
+		File anoIn = new File(filePathoutputF, "anomaly-in.json");
+		File anoOut = new File(filePathoutputF, "anomaly-out.json");
+		File compo = new File(filePathoutputF, "component.json");
+		File ons = new File(filePathoutputF, "onsdemo1.yaml");
+
+		try {
+			addArtifact(mData, anoIn, ArtifactTypeCode.MD, solutionID);
+			addArtifact(mData, anoOut, ArtifactTypeCode.MD, solutionID);
+			addArtifact(mData, compo, ArtifactTypeCode.MD, solutionID);
+			addArtifact(mData, ons, ArtifactTypeCode.MD, solutionID);
+		}
+
+		catch (AcumosServiceException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;
 	}
