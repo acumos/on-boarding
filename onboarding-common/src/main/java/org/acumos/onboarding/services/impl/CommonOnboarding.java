@@ -477,7 +477,7 @@ public class CommonOnboarding {
 		return "" + count;
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode)
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode,String solutionID)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -495,7 +495,7 @@ public class CommonOnboarding {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = fileInputStream.available();
-			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName(), metadata.getVersion(), ext, size,fileInputStream);
+			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,metadata.getModelName()+"_"+solutionID, metadata.getVersion(), ext, size,fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
@@ -645,7 +645,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	public void revertbackOnboarding(Metadata metadata, String imageUri) throws AcumosServiceException {
+	public void revertbackOnboarding(Metadata metadata, String imageUri,String solutionID) throws AcumosServiceException {
 
 		try {
 
@@ -665,7 +665,7 @@ public class CommonOnboarding {
 			logger.debug(EELFLoggerDelegate.debugLogger,"Image Name from dockerize file method: " + imageUri);
 
 			if (StringUtils.isNotBlank(imageUri)) {
-				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName();
+				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + metadata.getModelName()+"_"+solutionID;
 				logger.debug(EELFLoggerDelegate.debugLogger,"Image Name: " + imageTagName);
 				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
 				deleteImageCommand.setClient(dockerClient);

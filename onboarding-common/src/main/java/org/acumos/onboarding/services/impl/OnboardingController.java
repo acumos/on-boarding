@@ -349,7 +349,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				File outputFolder = new File("tmp", modelId);
 				outputFolder.mkdirs();				
 				boolean isSuccess = false;
-
+				MLPSolution mlpSolution = null;
 				try {
 					File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 					try {
@@ -383,7 +383,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
                     
                     mData.setOwnerId(ownerId);  
 
-					MLPSolution mlpSolution = null;
+					
 
 					List<MLPSolution> solList = getExistingSolution(mData);
 
@@ -440,15 +440,15 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 					// addArtifact method itself for started/success/failure
 					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
 
-					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI);
+					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI,mlpSolution.getSolutionId());
 
-					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI);
+					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI,mlpSolution.getSolutionId());
 
-					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD);
+					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD,mlpSolution.getSolutionId());
 					
 					if(dcaeflag)
                     {
-                        addDCAEArrtifacts(mData,outputFolder);
+                        addDCAEArrtifacts(mData,outputFolder,mlpSolution.getSolutionId());
                     }
 
 					// Notify TOSCA generation started
@@ -486,7 +486,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 				} finally {
 					if (isSuccess == false) {
 						logger.debug(EELFLoggerDelegate.debugLogger,"Onboarding Failed, Reverting failed solutions and artifacts.");
-						revertbackOnboarding(metadataParser.getMetadata(), imageUri);
+						revertbackOnboarding(metadataParser.getMetadata(), imageUri,mlpSolution.getSolutionId());
 					}
 					UtilityFunction.deleteDirectory(outputFolder);
 					mData = null;
@@ -537,7 +537,7 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
 
 	}
 	
-	private void addDCAEArrtifacts(Metadata mData,File outputFolder)
+	private void addDCAEArrtifacts(Metadata mData,File outputFolder,String solutionID)
     {
         
         File filePathoutputF = new File(outputFolder,"app");
@@ -549,10 +549,10 @@ public class OnboardingController extends CommonOnboarding  implements DockerSer
         
         try 
         {
-            addArtifact(mData, anoIn,ArtifactTypeCode.MD);
-            addArtifact(mData, anoOut,ArtifactTypeCode.MD);
-            addArtifact(mData, compo,ArtifactTypeCode.MD);
-            addArtifact(mData, ons ,ArtifactTypeCode.MD);
+            addArtifact(mData, anoIn,ArtifactTypeCode.MD,solutionID);
+            addArtifact(mData, anoOut,ArtifactTypeCode.MD,solutionID);
+            addArtifact(mData, compo,ArtifactTypeCode.MD,solutionID);
+            addArtifact(mData, ons ,ArtifactTypeCode.MD,solutionID);
         } 
         
         catch (AcumosServiceException e) 
