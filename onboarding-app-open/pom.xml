@@ -43,7 +43,7 @@
 		<dependency> 
             <groupId>org.acumos.on-boarding</groupId> 
             <artifactId>onboarding-common</artifactId>
-            <version>1.19.0-SNAPSHOT</version> 
+            <version>1.19.0</version> 
         </dependency> 
         <!-- 
 		<dependency>
