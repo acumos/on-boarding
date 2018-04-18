@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34ffb89c_d3e44a3d",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-18T15:24:17Z",
+      "side": 1,
+      "message": "This MUST remain at -SNAPSHOT",
+      "revId": "f1586f104549ea9722ff060d6a325791144079b5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
