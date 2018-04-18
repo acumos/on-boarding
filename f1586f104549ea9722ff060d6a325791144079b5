@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "73922daa_83e10311",
+        "filename": "onboarding-app-open/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-18T15:24:48Z",
+      "side": 1,
+      "message": "This is appropriate",
+      "revId": "f1586f104549ea9722ff060d6a325791144079b5",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34ffb89c_d3e44a3d",
         "filename": "onboarding-common/pom.xml",
         "patchSetId": 1
