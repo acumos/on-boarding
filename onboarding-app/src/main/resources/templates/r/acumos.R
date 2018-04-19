@@ -1,1 +1,0 @@
-install.packages("acumos_0.2-3.tar.gz",repos=NULL,type="source")
