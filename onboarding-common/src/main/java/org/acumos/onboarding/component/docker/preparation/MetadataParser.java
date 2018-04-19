@@ -110,11 +110,11 @@ public class MetadataParser {
 			if (modelNameLength <= 100) {
 				metadata.setModelName(modelName);
 			} else {
-				String newModelName = metadata.getModelName().substring(0,
-						Math.min(metadata.getModelName().length(), 100));
+				String newModelName = modelName.substring(0,
+						Math.min(modelNameLength, 100));
 				metadata.setModelName(newModelName);
-				logger.debug(EELFLoggerDelegate.debugLogger,
-						"Modified Model name as length more than 100 char [Metadata Parsing]:" + newModelName);
+				logger.warn(EELFLoggerDelegate.debugLogger,
+                        "[Metadata Parsing] Modified Model name {} due to length more than 100 char : {}",newModelName ,modelNameLength);
 			}
 			
 
