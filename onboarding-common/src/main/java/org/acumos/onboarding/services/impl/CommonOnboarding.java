@@ -562,14 +562,7 @@ public class CommonOnboarding {
 							"Add Artifact for" + uri + " Started");
 				}
 				MLPArtifact modelArtifact = new MLPArtifact();
-				int modelNameLength = metadata.getModelName().length();
-				if (modelNameLength <= 100) {
-					modelArtifact.setName(metadata.getModelName());
-				} else {
-					String newModelName = metadata.getModelName().substring(0,
-							Math.min(metadata.getModelName().length(), 100));
-					modelArtifact.setName(newModelName);
-				}
+				modelArtifact.setName(metadata.getModelName());
 				modelArtifact.setDescription(uri);
 				modelArtifact.setVersion(metadata.getVersion());
 				modelArtifact.setArtifactTypeCode(typeCode.name());
