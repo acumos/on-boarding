@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "840c29cb_32ba6e6d",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/preparation/MetadataParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-19T13:22:26Z",
+      "side": 1,
+      "message": "This invocation will not work.  Use this instead:\n\n...debugLogger, \"Modified model name {} due to length {}\", modelName, modelNameLength);\n\nAnd in my opinion the destination should be the ERROR logger at warning level.",
+      "revId": "2dbef460febf14c43cf9f69b0f010e775a8820b9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
