@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c9f3f8d_90c41afa",
+        "filename": "base-image/.gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "This .gitignore file is not needed - it\u0027s not an eclipse project here",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ef7dc340_810cc68b",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "Probably need to pin this to ubuntu 16.04, not \"latest\", because latest is probably 18.04 at this point.",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f2bc3ea_a81ce649",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "what in heavens is this HARDCODED IP address?  If you need a proxy it should be an environment variable",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e01968c_9bc0e79e",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "you MUST instead do a big apt-get -y \u0026 apt-get -y and so on -- all on one line -- avoid multiple invocations.  Because of how docker works.  It will cache the result of apt-get as a layer!!!!",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72b9bda3_954961c6",
+        "filename": "base-image/r/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "perhaps you would like to call it onboarding-base-r ?",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72bdac26_194bb0fd",
+        "filename": "base-image/r/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:03:47Z",
+      "side": 1,
+      "message": "No, latest is confusing.  Use 1.0 or something.",
+      "revId": "3b10ad02d6f508abc3024cef4a6f9e2f3e4e3fd6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
