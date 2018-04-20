@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0f54af93_94ee1117",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T14:47:24Z",
+      "side": 1,
+      "message": "you must put all the apt-get on a single line, otherwise docker does the wrong thing",
+      "revId": "d8e1c9ca7c4a5068fc33cd0edec91da5062290e6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
