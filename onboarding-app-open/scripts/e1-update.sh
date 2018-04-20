@@ -21,13 +21,13 @@ rm /home
 ln -s /e1/home /home
 chmod og-rx /e1/bin
 
-useradd -s /bin/bash -M -p c0Gn1t4 cognita # 52401
+useradd -s /bin/bash -M -p c0Gn1t4 acumos # 52401
 
 # install specific software dependencies
 apt-get -y install maven
 
 # TODO: something special to build?
-cd /home/cognita/on-boarding/onboarding-sample-services
+cd /home/acumos/on-boarding/onboarding-sample-services
 git update
 mvn clean install
 
