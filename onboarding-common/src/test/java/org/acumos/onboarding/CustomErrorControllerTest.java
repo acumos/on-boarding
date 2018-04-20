@@ -39,7 +39,7 @@ public class CustomErrorControllerTest {
 	CustomErrorController customErrorController;
 
 	@Test
-	public void cognitaServiceExceptionHandlerTest() {
+	public void acumosServiceExceptionHandlerTest() {
 
 		HttpServletRequest request = null;
 
@@ -55,7 +55,7 @@ public class CustomErrorControllerTest {
 	}
 
 	@Test
-	public void cognitaServiceExceptionHandlerTest1() {
+	public void acumosServiceExceptionHandlerTest1() {
 
 		HttpServletRequest request = null;
 

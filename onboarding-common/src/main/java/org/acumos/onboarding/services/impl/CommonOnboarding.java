@@ -611,7 +611,6 @@ public class CommonOnboarding {
 		try {
 
 			// TODO : Include toscaOutputFolder =/tmp/ and
-			// toscaGeneratorEndPointURL=http://cognita-demo-core:8080/model_create
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
 			logger.debug(EELFLoggerDelegate.debugLogger,"toscaOutputFolder : " + toscaOutputFolder);

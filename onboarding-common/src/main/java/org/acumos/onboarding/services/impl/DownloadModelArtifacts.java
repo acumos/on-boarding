@@ -51,7 +51,7 @@ public class DownloadModelArtifacts {
 		logger.debug("-------nexusPassword-----------" + nexusPassword);
 		List<MLPArtifact> mlpArtifactList;
 		String nexusURI = "";
-		//String dataSource = "http://cognita-dev1-vm01-core.eastus.cloudapp.azure.com:8001/ccds";
+		
 		ByteArrayOutputStream byteArrayOutputStream = null;
 		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password);
 		
