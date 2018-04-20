@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "581bd03a_cf014bdf",
+        "filename": "base-image/.gitignore",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T15:51:41Z",
+      "side": 1,
+      "message": "I suggest deleting this file, it does no harm but it\u0027s not needed.",
+      "revId": "7a37d95c5d7736fd8d482f3c6e6aa2d6519aeaed",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e39c3a4_3cbc2b35",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T15:51:41Z",
+      "side": 1,
+      "message": "Why ADD the current directory?  It\u0027s empty.  Can this be dropped?",
+      "revId": "7a37d95c5d7736fd8d482f3c6e6aa2d6519aeaed",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "11644e87_a419067b",
+        "filename": "base-image/r/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-20T15:51:41Z",
+      "side": 1,
+      "message": "I think it is probably best to list all the packages you want on a single apt-get line, instead of invoking apt-get multiple times.",
+      "revId": "7a37d95c5d7736fd8d482f3c6e6aa2d6519aeaed",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
