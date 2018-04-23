@@ -6,21 +6,18 @@
 	<artifactId>onboarding-common</artifactId>
 	<version>1.20.1</version>
 	<packaging>jar</packaging>
-	<name>onboarding-common</name>
-	<description>Onboarding common project</description>
-
-
+	<name>Onboarding common jar</name>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.4.RELEASE</version>
 		<relativePath />
 	</parent>
-
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- <start-class>org.acumos.onboarding.Application</start-class> -->
+                <!-- For distributionManagement section -->
+                <acumos.nexus.url>https://nexus.acumos.org</acumos.nexus.url>
 		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
 		<build.number>0</build.number>
 		<eelf.version>1.0.0</eelf.version>
@@ -33,12 +30,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-
 		</dependency>
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
@@ -48,26 +43,22 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
-
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
 			<version>2.0.8</version>
-			 <exclusions>
-              <exclusion>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-              </exclusion>
-            </exclusions>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
@@ -87,7 +78,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -98,7 +88,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -119,66 +108,50 @@
 			<artifactId>eelf-core</artifactId>
 			<version>${eelf.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-commons</artifactId>
 			<version>1.13.7.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
 			<version>1.14.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.acumos.acumos-nexus-client</groupId>
 			<artifactId>acumos-nexus-client</artifactId>
-			<version>2.0.0</version>
+			<version>2.1.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.maven.wagon</groupId>
 			<artifactId>wagon-provider-api</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>1.9</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.acumos.design-studio</groupId>
 			<artifactId>TOSCAModelGeneratorClient</artifactId>
 			<version>0.0.23</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<!-- Spring sets the <version>4.11</version> -->
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-	<!-- <repositories> <repository> <id>acumos-snapshots</id> <name>mlp-repository-snapshots</name> 
-		<url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url> </repository> 
-		<repository> <id>acumos-releases</id> <name>mlp-repository-releases</name> 
-		<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url> </repository> 
-		</repositories> -->
 	<build>
-
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<!-- <finalName>onboarding-app</finalName> -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -188,12 +161,10 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-
 					<archive>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -209,15 +180,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
-			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
-				<executions> <execution> <goals> <goal>repackage</goal> </goals> <configuration> 
-				<classifier>exec</classifier> </configuration> </execution> </executions> 
-				<configuration> <includeSystemScope>true</includeSystemScope> </configuration> 
-				</plugin> -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.6.201602180812</version>
+				<version>0.7.9</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -234,35 +200,18 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<!-- Spring sets the <version>2.8</version> -->
-				<configuration>
-					<skip>false</skip>
-				</configuration>
-			</plugin>
-
-			<!-- <plugin> <groupId>io.fabric8</groupId> <artifactId>docker-maven-plugin</artifactId> 
-				<version>0.21.0</version> <configuration> <verbose>true</verbose> <dockerHost>${docker.host.url}</dockerHost> 
-				<registry>${docker.registry.url}</registry> <authConfig> <username>${docker.registry.login}</username> 
-				<password>${docker.registry.password}</password> </authConfig> <images> <image> 
-				<name>onboarding-app:${project.version}</name> <build> This is the same FROM 
-				used in a Dockerfile <from>openjdk:8-jdk</from> <assembly> <inline> <files> 
-				<file> <source>application.properties.template</source> <outputDirectory 
-				/> <destName>application.properties</destName> </file> <file> <source>target/${project.artifactId}-${project.version}.${project.packaging}</source> 
-				<outputDirectory /> </file> </files> </inline> </assembly> This is the same 
-				CMD used in a Dockerfile <cmd> <shell>cd /maven; java -Djava.security.egd=file:/dev/./urandom 
-				-jar ${project.artifactId}-${project.version}.${project.packaging}</shell> 
-				</cmd> </build> </image> </images> </configuration> </plugin> -->
 		</plugins>
 	</build>
-
-
-	<!-- <distributionManagement> <snapshotRepository> <id>acumos-nexus</id> 
-		<name>acumos-repository-snapshots</name> <url>${acumos.nexus.url}/${acumos.nexus.snapshot.path}</url> 
-		</snapshotRepository> <repository> <id>acumos-nexus</id> <name>acumos-repository-releases</name> 
-		<url>${acumos.nexus.url}/${acumos.nexus.release.path}</url> </repository> 
-		</distributionManagement> -->
+	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins 
+		settings for credentials. -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>${acumos.nexus.url}/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>${acumos.nexus.url}/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

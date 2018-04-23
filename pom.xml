@@ -5,7 +5,7 @@
 	<artifactId>acumos-onboarding-project</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Acumos Onboarding Project</name>
+	<name>Onboarding parent project</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -18,14 +18,21 @@
 	</modules>
 	<build>
 		<plugins>
+			<!-- Skip the pom deployment step -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 			<!-- support sonar in multi-module project -->
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.4.0.905</version>
 			</plugin>
-			<!-- No "skip" configuration for maven-deploy-plugin. Let the pom be deployed 
-			to LF Nexus repo, so that the final deploy step finds a file and succeeds. -->
 		</plugins>
 	</build>
 </project>
