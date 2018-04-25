@@ -68,13 +68,10 @@ public class OnboardingNotification {
 			stepResult.setName(currentstep);
 			stepResult.setStartDate(new Date());
 			stepResult.setEndDate(new Date());
-			stepResult.setStepCode("OB");
-			if(currentstep.equals("CreateTOSCA") && currentStatus.equals("SU")) {
+			stepResult.setStepCode("OB");	
 			stepResult.setSolutionId(this.solutionId);
-			stepResult.setRevisionId(this.revisionId);
-			}
+			stepResult.setRevisionId(this.revisionId);		
 			cdmsClient.createStepResult(stepResult);
-
 		}
 
 	}
