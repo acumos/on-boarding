@@ -1,12 +1,6 @@
 # Creates base image suitable for running models with R
 
 FROM ubuntu:16.04
-
-WORKDIR /app
-ADD . /app
-
-ENV http_proxy $acumos_docker_proxy
-RUN echo $http_proxy
 RUN echo "nameserver 8.8.8.8" | tee /etc/resolv.conf > /dev/null
 
 # put update and install on same RUN cmd to avoid Docker layer caching
