@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c5bd365_9761c71f",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-25T14:00:44Z",
+      "side": 1,
+      "message": "I know this isn\u0027t changed in this review.  But would you please combine these two logger invocations?  All you need is:\n\nlogger.error(EELFLogDel, \"Onboarding failed\", e);",
+      "range": {
+        "startLine": 710,
+        "startChar": 12,
+        "endLine": 710,
+        "endChar": 68
+      },
+      "revId": "1016ada2302c9ad8fad7d195c005059e6289ffce",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
