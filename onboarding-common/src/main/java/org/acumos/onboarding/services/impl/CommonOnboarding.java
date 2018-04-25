@@ -705,16 +705,6 @@ public class CommonOnboarding {
 				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
 				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Solution Revision");
 
-				// get other revision under the solution, if they exist
-				List<MLPSolutionRevision> solRev = cdmsClient.getSolutionRevisions(metadata.getSolutionId());
-
-				// Delete the solution ID if no other revision is associated
-				// with it
-				if (solRev.isEmpty()) {
-					cdmsClient.deleteSolution(metadata.getSolutionId());
-					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Solution: " + metadata.getSolutionId());
-				}
-
 			}
 		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger,"Onboarding failed");
