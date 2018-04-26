@@ -33,7 +33,7 @@
 		<dependency> 
 			<groupId>org.acumos.on-boarding</groupId> 
 			<artifactId>onboarding-common</artifactId>
-			<version>1.21.0</version> 
+			<version>${project.version}</version> 
 		</dependency> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -219,7 +219,7 @@
 								</assembly>
 								<cmd>
 									<!--CDATA prevents Eclipse formatter from breaking line-->
-									<shell><![CDATA[cd /maven; java -Xms1024m -Xmx2048m -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
+									<shell><![CDATA[cd /maven; java -Xms256m -Xmx2048m -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
 								</cmd>
 							</build>
 						</image>
