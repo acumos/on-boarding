@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a41a6655_b57c1e51",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-04-26T13:33:10Z",
+      "side": 1,
+      "message": "NO please put back the -SNAPSHOT suffix!!!\n\nThe build system strips this AUTOMATICALLY when you issue the command \"build release\"",
+      "revId": "13257668bd4e305ce4805cf1283a530dea9a14e9",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
