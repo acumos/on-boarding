@@ -37,6 +37,8 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -61,8 +63,6 @@ import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.acumos.cds.transport.RestPageRequest;
-import org.acumos.cds.transport.RestPageResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -475,7 +475,21 @@ public class CommonOnboarding {
 		return "" + count;
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode,String actualModelName)
+	/**
+	 * 
+	 * @param metadata
+	 * Metadata about the artifact
+	 * @param file
+	 * Content for artifact
+	 * @param typeCode
+	 * Two-letter artifact type code
+	 * @param nexusArtifactId
+	 * ID to use in Nexus
+	 * @return
+	 * MLPArtifact object
+	 * @throws AcumosServiceException
+	 */
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode, String nexusArtifactId)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -492,8 +506,8 @@ public class CommonOnboarding {
 		}
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
-			int size = fileInputStream.available();
-			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,actualModelName, metadata.getVersion(), ext, size,fileInputStream);
+			int size = (int) file.length();
+			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
