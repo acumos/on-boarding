@@ -37,6 +37,8 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
@@ -61,8 +63,6 @@ import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.acumos.onboarding.component.docker.preparation.RDockerPreparator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.acumos.cds.transport.RestPageRequest;
-import org.acumos.cds.transport.RestPageResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,7 +74,7 @@ import com.github.dockerjava.api.DockerClient;
 
 public class CommonOnboarding {
 	
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(CommonOnboarding.class);
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(CommonOnboarding.class);
 	
 	@Value("${nexus.nexusEndPointURL}")
 	protected String nexusEndPointURL;
@@ -98,19 +98,19 @@ public class CommonOnboarding {
 	protected String cmnDataSvcPwd;
 
 	@Value("${tosca.OutputFolder}")
-	String toscaOutputFolder;
+	protected String toscaOutputFolder;
 
 	@Value("${tosca.GeneratorEndPointURL}")
-	String toscaGeneratorEndPointURL;
+	protected String toscaGeneratorEndPointURL;
 
 	@Value("${http_proxy}")
-	String http_proxy;
+	protected String http_proxy;
 
 	@Value("${requirements.extraIndexURL}")
-	String extraIndexURL;
+	protected String extraIndexURL;
 
 	@Value("${requirements.trustedHost}")
-	String trustedHost;
+	protected String trustedHost;
 
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	protected String portalURL;
@@ -137,7 +137,6 @@ public class CommonOnboarding {
 	
 	@PostConstruct
 	public void init() {
-		
 		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
 		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		this.portalClient = new PortalRestClientImpl(portalURL);
@@ -211,7 +210,6 @@ public class CommonOnboarding {
 				UtilityFunction.copyFile(resource, new File(outputFolder, resource.getFilename()));
 			}
 			try {
-				// TODO: why is this modelFolder variable ignored?
 				File modelFolder = new File(outputFolder, "model");
 				UtilityFunction.unzip(localmodelFile, modelFolder.getAbsolutePath());
 			} catch (IOException e) {
@@ -235,7 +233,6 @@ public class CommonOnboarding {
 				logger.error(EELFLoggerDelegate.errorLogger,"Java Argus templatization failed: {}", e);
 			}
 		} else if (metadata.getRuntimeName().equals("h2o")) {
-
 			File plugin_root = new File(outputFolder, "plugin_root");
 			plugin_root.mkdirs();
 			File plugin_src = new File(plugin_root, "src");
@@ -475,7 +472,23 @@ public class CommonOnboarding {
 		return "" + count;
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode,String actualModelName)
+	/**
+	 * Uploads the specified artifact to Nexus using group ID read from
+	 * configuration and specified artifact ID.
+	 * 
+	 * @param metadata
+	 *            Metadata about the artifact
+	 * @param file
+	 *            Content for artifact
+	 * @param typeCode
+	 *            Two-letter artifact type code
+	 * @param nexusArtifactId
+	 *            ID to use in Nexus
+	 * @return MLPArtifact object
+	 * @throws AcumosServiceException
+	 *             On failure
+	 */
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode, String nexusArtifactId)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -492,8 +505,8 @@ public class CommonOnboarding {
 		}
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
-			int size = fileInputStream.available();
-			 UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId,actualModelName, metadata.getVersion(), ext, size,fileInputStream);
+			int size = (int) file.length();
+			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
@@ -532,7 +545,7 @@ public class CommonOnboarding {
 			} catch (HttpStatusCodeException e) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for {}", file.getName() + " - {}", e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-						"Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
+						"Fail to create artificat for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
 			logger.error(EELFLoggerDelegate.errorLogger,"Error: {}", e);
@@ -543,9 +556,9 @@ public class CommonOnboarding {
 				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA",
 						"Add Artifact for" + file.getName() + " Failed");
 			}
-			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", file.getName() + " - {}", e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificat for {}", file.getName() + " - {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-					"Fail to upload artificate for " + file.getName() + " - " + e.getMessage(), e);
+					"Fail to upload artificat for " + file.getName() + " - " + e.getMessage(), e);
 		}
 
 	}
