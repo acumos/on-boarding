@@ -173,6 +173,7 @@ public class CommonOnboarding {
 
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
+		queryParameters.put("active", true);
 
 		/* TRUE - OR , FALSE - AND */
 		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
