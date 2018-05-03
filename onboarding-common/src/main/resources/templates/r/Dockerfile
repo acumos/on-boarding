@@ -1,4 +1,4 @@
-FROM base-r:latest
+FROM onboarding-base-r:1.0
 
 WORKDIR /app
 ADD . /app

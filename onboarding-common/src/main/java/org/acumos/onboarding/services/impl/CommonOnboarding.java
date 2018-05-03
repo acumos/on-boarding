@@ -174,6 +174,7 @@ public class CommonOnboarding {
 
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
+		queryParameters.put("active", true);
 
 		/* TRUE - OR , FALSE - AND */
 		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
@@ -405,7 +406,7 @@ public class CommonOnboarding {
 			// Create Solution failed. Notify
 			if (onboardingStatus != null) {
 				// notify
-				onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "FA", "Create Solution Failed");
+				onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger, "Creation of solution failed - {}", e.getResponseBodyAsString(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -540,8 +541,7 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			// Notify add artifacts failed
 			if (onboardingStatus != null) {
-				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA",
-						"Add Artifact for" + file.getName() + " Failed");
+				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", file.getName() + " - {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -597,7 +597,7 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			// Notify model artifact upload failed
 			if (onboardingStatus != null) {
-				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", "Upload Artifact for" + uri + "Failed");
+				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -634,7 +634,7 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			// Notify TOSCA generation failed
 			if (onboardingStatus != null) {
-				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", "TOSCA Generation Failed");
+				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - {}", e);
 			// Storage of artifact location references in Common Data
