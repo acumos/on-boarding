@@ -366,6 +366,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					if (isListEmpty) {
 						mlpSolution = createSolution(mData);
+						mData.setSolutionId(mlpSolution.getSolutionId());
+						logger.debug("New solution created Successfully " + mlpSolution.getSolutionId());
 					} else {
 						mlpSolution = solList.get(0);
 						mData.setSolutionId(mlpSolution.getSolutionId());
@@ -399,7 +401,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					} catch (Exception e) {
 						// Notify Create docker image failed
 						if (onboardingStatus != null) {
-							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", "Create Docker Image Failed");
+							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
 						}
 						logger.error(EELFLoggerDelegate.errorLogger, "Error {}", e);
 						throw e;

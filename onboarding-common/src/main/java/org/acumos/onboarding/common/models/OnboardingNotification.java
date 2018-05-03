@@ -58,6 +58,7 @@ public class OnboardingNotification {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Notify" + currentDescription);
 		if (trackingId != null) {
 
+			String desc;
 			MLPStepResult stepResult = new MLPStepResult();
 
 			
@@ -68,7 +69,11 @@ public class OnboardingNotification {
 			stepResult.setName(currentstep);
 			stepResult.setStartDate(new Date());
 			stepResult.setEndDate(new Date());
-			stepResult.setStepCode("OB");	
+			stepResult.setStepCode("OB");
+			if (currentDescription != null && !currentDescription.isEmpty()) {
+				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
+				stepResult.setResult(desc);
+			}
 			if (this.solutionId != null && !this.solutionId.isEmpty()) {
 				stepResult.setSolutionId(this.solutionId);
 			}
