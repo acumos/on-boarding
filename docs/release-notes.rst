@@ -24,6 +24,12 @@ These release notes cover the on-boarding common library and the on-boarding app
 for public use, which are released together.
 
 
+Version 1.22.0, 4 May 2018
+---------------------------
+
+* Build for IST
+* Fixes for ACUMOS-753, ACUMOS-780, ACUMOS-782, ACUMOS-667
+
 Version 1.21.0, 26 Apr 2018
 ---------------------------
 
