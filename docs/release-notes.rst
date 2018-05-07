@@ -23,7 +23,6 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-
 Version 1.22.0, 4 May 2018
 ---------------------------
 
