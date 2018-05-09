@@ -154,6 +154,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		File files = null;
 		dcaeflag = true;
 		Metadata mData = null;
+		OnboardingNotification onboardingStatus = null;
 		try {
 
 			if (trackingID != null) {
@@ -253,6 +254,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
 		Metadata mData = null;
+		OnboardingNotification onboardingStatus = null;
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -365,7 +367,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					boolean isListEmpty = solList.isEmpty();
 
 					if (isListEmpty) {
-						mlpSolution = createSolution(mData);
+						mlpSolution = createSolution(mData, onboardingStatus);
 						mData.setSolutionId(mlpSolution.getSolutionId());
 						logger.debug("New solution created Successfully " + mlpSolution.getSolutionId());
 					} else {
@@ -414,16 +416,16 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
-					addArtifact(mData, imageUri, ArtifactTypeCode.DI);
+					addArtifact(mData, imageUri, ArtifactTypeCode.DI, onboardingStatus);
 
-					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI, actualModelName);
+					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI, actualModelName, onboardingStatus);
 
-					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI, actualModelName);
+					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI, actualModelName, onboardingStatus);
 
-					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD, actualModelName);
+					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD, actualModelName, onboardingStatus);
 
 					if (dcaeflag) {
-						addDCAEArrtifacts(mData, outputFolder, mlpSolution.getSolutionId());
+						addDCAEArrtifacts(mData, outputFolder, mlpSolution.getSolutionId(), onboardingStatus);
 					}
 
 					// Notify TOSCA generation started
@@ -431,7 +433,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
 					}
 
-					generateTOSCA(localProtobufFile, localMetadataFile, mData);
+					generateTOSCA(localProtobufFile, localMetadataFile, mData, onboardingStatus);
 
 					// Notify TOSCA generation successful
 					if (onboardingStatus != null) {
@@ -510,7 +512,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 	}
 
-	private void addDCAEArrtifacts(Metadata mData, File outputFolder, String solutionID) {
+	private void addDCAEArrtifacts(Metadata mData, File outputFolder, String solutionID, OnboardingNotification onboardingStatus) {
 
 		File filePathoutputF = new File(outputFolder, "app");
 
@@ -520,10 +522,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		File ons = new File(filePathoutputF, "onsdemo1.yaml");
 
 		try {
-			addArtifact(mData, anoIn, ArtifactTypeCode.MD, solutionID);
-			addArtifact(mData, anoOut, ArtifactTypeCode.MD, solutionID);
-			addArtifact(mData, compo, ArtifactTypeCode.MD, solutionID);
-			addArtifact(mData, ons, ArtifactTypeCode.MD, solutionID);
+			addArtifact(mData, anoIn, ArtifactTypeCode.MD, solutionID, onboardingStatus);
+			addArtifact(mData, anoOut, ArtifactTypeCode.MD, solutionID, onboardingStatus);
+			addArtifact(mData, compo, ArtifactTypeCode.MD, solutionID, onboardingStatus);
+			addArtifact(mData, ons, ArtifactTypeCode.MD, solutionID, onboardingStatus);
 		}
 
 		catch (AcumosServiceException e) {

@@ -119,8 +119,6 @@ public class CommonOnboarding {
 	
 	protected boolean dcaeflag = false;
 	
-	protected OnboardingNotification onboardingStatus;
-	
 	@Autowired
 	protected ResourceLoader resourceLoader;
 
@@ -367,7 +365,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	public MLPSolution createSolution(Metadata metadata) throws AcumosServiceException {
+	public MLPSolution createSolution(Metadata metadata, OnboardingNotification onboardingStatus) throws AcumosServiceException {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
@@ -489,7 +487,7 @@ public class CommonOnboarding {
 	 * @throws AcumosServiceException
 	 *             On failure
 	 */
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode, String nexusArtifactId)
+	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode, String nexusArtifactId, OnboardingNotification onboardingStatus)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -563,7 +561,7 @@ public class CommonOnboarding {
 
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode)
+	public MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode, OnboardingNotification onboardingStatus)
 			throws AcumosServiceException {
 
 		try {
@@ -619,7 +617,7 @@ public class CommonOnboarding {
 
 	}
 
-	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata) {
+	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata, OnboardingNotification onboardingStatus) {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA started");
 		try {
 
