@@ -293,7 +293,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 				onboardingStatus.setTrackingId(trackingID);
 			} else {
-				trackingID = "OB_" + UUID.randomUUID().toString();
+				trackingID = UUID.randomUUID().toString();
 				onboardingStatus.setTrackingId(trackingID);
 				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 			}
