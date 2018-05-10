@@ -157,13 +157,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		Metadata mData = null;
 		OnboardingNotification onboardingStatus = null;
 		try {
-
-			onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+			
 			if (trackingID != null) {
+				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 				onboardingStatus.setTrackingId(trackingID);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 			} else {
-				trackingID = "OB_" + UUID.randomUUID().toString();
-				onboardingStatus.setTrackingId(trackingID);
+
+				onboardingStatus = null;
 			}
             
 			/* Nexus Integration....! */
@@ -286,12 +287,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			// If trackingID is provided in the header create a
 			// OnboardingNotification object that will be used to update status
 			// against that trackingID
+			
+			onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 			if (trackingID != null) {
-				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 				onboardingStatus.setTrackingId(trackingID);
 			} else {
-
-				onboardingStatus = null;
+				trackingID = "OB_" + UUID.randomUUID().toString();
+				onboardingStatus.setTrackingId(trackingID);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 			}
 
 			// Call to validate JWT Token.....!
@@ -460,14 +464,24 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
 							HttpStatus.CREATED);
 				} finally {
-					if (isSuccess == false) {
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Onboarding Failed, Reverting failed solutions and artifacts.");
-						revertbackOnboarding(metadataParser.getMetadata(), imageUri, mlpSolution.getSolutionId());
+
+					try {
+						UtilityFunction.deleteDirectory(outputFolder);
+						if (isSuccess == false) {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Onboarding Failed, Reverting failed solutions and artifacts.");
+							revertbackOnboarding(metadataParser.getMetadata(), imageUri, mlpSolution.getSolutionId());
+						}
+						mData = null;
+						dcaeflag = false;
+					} catch (AcumosServiceException e) {
+						mData = null;
+						dcaeflag = false;
+						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
+						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
+								httpCode);
 					}
-					UtilityFunction.deleteDirectory(outputFolder);
-					mData = null;
-					dcaeflag = false;
 				}
 			} else {
 				try {
