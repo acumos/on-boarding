@@ -658,7 +658,6 @@ public class CommonOnboarding {
 		try {
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"In RevertbackOnboarding method");
-
 			RepositoryLocation repositoryLocation = new RepositoryLocation();
 			repositoryLocation.setId("1");
 			repositoryLocation.setUrl(nexusEndPointURL);
