@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.23.0, 10 May 2018
+---------------------------
+
+* Build for IST
+* Fixes for ACUMOS-398, ACUMOS-737
+* CDS pointing to 1.14.4
+
 Version 1.22.0, 4 May 2018
 ---------------------------
 
