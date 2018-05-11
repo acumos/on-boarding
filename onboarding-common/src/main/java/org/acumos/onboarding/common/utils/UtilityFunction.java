@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -248,36 +249,35 @@ public class UtilityFunction {
 		}
 	}
 	
-	public static void createLogFile(String fileName){
+	public static void createLogFile(String fileName) {
 		File file = new java.io.File("logs");
-		file.mkdirs(); 
+		file.mkdirs();
 		if (!file.isFile()) {
 			try {
 				File f1 = new File(file.getPath() + fileName);
 				if (!f1.exists()) {
 					f1.createNewFile();
 				}
-
+				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName);
 			} catch (IOException e) {
-
-				e.printStackTrace();
+				logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + fileName);
 			}
 		}
 
 	}
 	
-	public static void addLogs(String msg,String logType) {
-		try{
-			
-			
+	public static void addLogs(String msg, String logType) {
+		try {
 			File file = new java.io.File("logs");
-			if(file.isDirectory()){
-			FileWriter fout = new FileWriter(file.getPath()+OnboardingController.FILE_NAME, true);
-			fout.write("timestamp "+logType +msg);
-			
-			fout.close();
+			if (file.isDirectory()) {
+				FileWriter fout = new FileWriter(file.getPath() + OnboardingController.FILE_NAME, true);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				fout.write(timestamp+" "+logType+": " +msg);
+				fout.close();
 			}
-		}catch(IOException e){e.printStackTrace();}
+		} catch (IOException e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " +e.getMessage());
+		}
 
 	}
 }

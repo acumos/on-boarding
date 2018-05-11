@@ -260,7 +260,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
 			throws AcumosServiceException {
-		
+
+		// If trackingID is provided in the header create a
+		// OnboardingNotification object that will be used to update status
+		// against that trackingID
 		OnboardingNotification onboardingStatus = null;
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		if (trackingID != null) {
@@ -302,21 +305,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					shareUser = uList.get(0);
 				}
 			}
-
-			// If trackingID is provided in the header create a
-			// OnboardingNotification object that will be used to update status
-			// against that trackingID
 			
-			/*onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
-			if (trackingID != null) {
-				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
-				onboardingStatus.setTrackingId(trackingID);
-			} else {
-				trackingID = UUID.randomUUID().toString();
-				onboardingStatus.setTrackingId(trackingID);
-				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
-			}*/
-
 			// Call to validate JWT Token.....!
 			JsonResponse<Object> valid = validate(authorization, provider);
 
@@ -497,10 +486,18 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						dcaeflag = false;
 						
 						//push docker build log into nexus	
-						File file = new java.io.File("logs/"+OnboardingController.FILE_NAME);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Adding of log artifacts into nexus started"+FILE_NAME);
+						File file = new java.io.File("logs/"+FILE_NAME);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Log file space "+file.getTotalSpace());
 						addArtifact(mData, file, getArtifactTypeCode("Log File"), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Artifacts log pushed to nexus successfully");
 						//delete log file
 						UtilityFunction.deleteDirectory(file);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Artifacts log file deleted successfully");
 					} catch (AcumosServiceException e) {
 						mData = null;
 						dcaeflag = false;
