@@ -187,6 +187,8 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 			MDC.put(MDC_CLASS_NAME, className);
 			logger.debug(msg, arguments);
 			MDC.remove(MDC_CLASS_NAME);
+			
+			UtilityFunction.addLogs(msg,"debug");	
 		}
 	}
 
@@ -312,6 +314,8 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 		MDC.put(MDC_CLASS_NAME, className);
 		logger.error(msg);
 		MDC.remove(MDC_CLASS_NAME);
+		
+		UtilityFunction.addLogs(msg,"error");
 	}
 
 	/**

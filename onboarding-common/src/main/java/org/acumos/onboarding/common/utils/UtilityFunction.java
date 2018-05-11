@@ -23,6 +23,7 @@ package org.acumos.onboarding.common.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,6 +37,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.services.impl.OnboardingController;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
@@ -244,5 +246,38 @@ public class UtilityFunction {
 		} finally {
 			in.close();
 		}
+	}
+	
+	public static void createLogFile(String fileName){
+		File file = new java.io.File("logs");
+		file.mkdirs(); 
+		if (!file.isFile()) {
+			try {
+				File f1 = new File(file.getPath() + fileName);
+				if (!f1.exists()) {
+					f1.createNewFile();
+				}
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	public static void addLogs(String msg,String logType) {
+		try{
+			
+			
+			File file = new java.io.File("logs");
+			if(file.isDirectory()){
+			FileWriter fout = new FileWriter(file.getPath()+OnboardingController.FILE_NAME, true);
+			fout.write("timestamp "+logType +msg);
+			
+			fout.close();
+			}
+		}catch(IOException e){e.printStackTrace();}
+
 	}
 }

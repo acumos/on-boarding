@@ -128,17 +128,19 @@ public class CreateImageCommand extends DockerCommand {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null) {
-						logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
+						//logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
+						logger.info("\t" + item.getStream());
 					}
 					else {
-						logger.debug(EELFLoggerDelegate.debugLogger, " " + item);
+						logger.info("\t" + item);
 					}
 					super.onNext(item);
 				}
 
 				@Override
 				public void onError(Throwable throwable) {
-					logger.error(EELFLoggerDelegate.errorLogger,"Failed to creating docker image", throwable);
+					//logger.error(EELFLoggerDelegate.errorLogger,"Failed to creating docker image", throwable);
+					logger.error("Failed to creating docker image", throwable);
 					super.onError(throwable);
 				}
 			};
