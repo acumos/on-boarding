@@ -1,0 +1,163 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8afb9797_7bf8bb53",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "sql Timestamp??  Are you querying a database?",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9e0eb434_f60b14af",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "don\u0027t hardcode, use a constant",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a06fee32_e4ce390f",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Log the exception",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dceffc5b_c2e89ab8",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Use a constant",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "82b12f85_dc75c75a",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "This is really strange code.  What if it\u0027s not a directory?",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "50ac45d2_109d79dc",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/common/utils/UtilityFunction.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Log the exception, not the message:\n\n    logger.error(EELFld.errLgr, \"methodName failed\", e);",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "703f157a_b3a606fc",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/CreateImageCommand.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Why log twice?  why log a tab character??",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9fb3fdc5_f61f9353",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Don\u0027t hardcode forward slash.  Use File.separator constant.",
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c949ca77_5ed6891b",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-11T17:54:31Z",
+      "side": 1,
+      "message": "Log the exception",
+      "range": {
+        "startLine": 504,
+        "startChar": 29,
+        "endLine": 504,
+        "endChar": 30
+      },
+      "revId": "3280d48c442ce02402beb7087ba9e806da1160db",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
