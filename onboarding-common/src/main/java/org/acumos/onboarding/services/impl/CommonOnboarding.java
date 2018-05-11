@@ -487,7 +487,7 @@ public class CommonOnboarding {
 	 * @throws AcumosServiceException
 	 *             On failure
 	 */
-	public MLPArtifact addArtifact(Metadata metadata, File file, ArtifactTypeCode typeCode, String nexusArtifactId, OnboardingNotification onboardingStatus)
+	public MLPArtifact addArtifact(Metadata metadata, File file, String typeCode, String nexusArtifactId, OnboardingNotification onboardingStatus)
 			throws AcumosServiceException {
 		String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		RepositoryLocation repositoryLocation = new RepositoryLocation();
@@ -515,7 +515,7 @@ public class CommonOnboarding {
 				modelArtifact.setName(file.getName());
 				modelArtifact.setDescription(file.getName());
 				modelArtifact.setVersion(metadata.getVersion());
-				modelArtifact.setArtifactTypeCode(typeCode.name());
+				modelArtifact.setArtifactTypeCode(typeCode);
 				modelArtifact.setOwnerId(metadata.getOwnerId());
 				modelArtifact.setUri(artifactInfo.getArtifactMvnPath());
 				modelArtifact.setSize(size);
@@ -561,7 +561,7 @@ public class CommonOnboarding {
 
 	}
 
-	public MLPArtifact addArtifact(Metadata metadata, String uri, ArtifactTypeCode typeCode, OnboardingNotification onboardingStatus)
+	public MLPArtifact addArtifact(Metadata metadata, String uri, String typeCode, OnboardingNotification onboardingStatus)
 			throws AcumosServiceException {
 
 		try {
@@ -576,7 +576,7 @@ public class CommonOnboarding {
 				modelArtifact.setName(metadata.getModelName());
 				modelArtifact.setDescription(uri);
 				modelArtifact.setVersion(metadata.getVersion());
-				modelArtifact.setArtifactTypeCode(typeCode.name());
+				modelArtifact.setArtifactTypeCode(typeCode);
 				modelArtifact.setOwnerId(metadata.getOwnerId());
 				modelArtifact.setUri(uri);
 				modelArtifact.setSize(uri.length());

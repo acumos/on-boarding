@@ -25,7 +25,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +36,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 
 import org.acumos.cds.ArtifactTypeCode;
+import org.acumos.cds.CodeNameType;
+import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
@@ -79,7 +83,9 @@ import io.swagger.annotations.ApiResponses;
  */
 public class OnboardingController extends CommonOnboarding implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
-
+	Map<String, String> artifactsDetails = new HashMap<>();
+	public static String FILE_NAME = null;
+	
 	public OnboardingController() {
 		// Property values are injected after the constructor finishes
 	}
@@ -254,11 +260,24 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
 			throws AcumosServiceException {
-
+		
+		OnboardingNotification onboardingStatus = null;
+		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+		if (trackingID != null) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+			onboardingStatus.setTrackingId(trackingID);
+		} else {
+			trackingID = UUID.randomUUID().toString();
+			onboardingStatus.setTrackingId(trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+		}
+		FILE_NAME=trackingID+".log";
+		UtilityFunction.createLogFile(FILE_NAME);
+		
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
 		Metadata mData = null;
-		OnboardingNotification onboardingStatus = null;
+		
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -288,7 +307,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			// OnboardingNotification object that will be used to update status
 			// against that trackingID
 			
-			onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+			/*onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 			if (trackingID != null) {
 				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 				onboardingStatus.setTrackingId(trackingID);
@@ -296,7 +315,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				trackingID = UUID.randomUUID().toString();
 				onboardingStatus.setTrackingId(trackingID);
 				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
-			}
+			}*/
 
 			// Call to validate JWT Token.....!
 			JsonResponse<Object> valid = validate(authorization, provider);
@@ -423,13 +442,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
-					addArtifact(mData, imageUri, ArtifactTypeCode.DI, onboardingStatus);
+					artifactsDetails =  getArtifactsDetails();
+					
+					addArtifact(mData, imageUri, getArtifactTypeCode("Docker Image"), onboardingStatus);
 
-					addArtifact(mData, localmodelFile, ArtifactTypeCode.MI, actualModelName, onboardingStatus);
+					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
 
-					addArtifact(mData, localProtobufFile, ArtifactTypeCode.MI, actualModelName, onboardingStatus);
+					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
 
-					addArtifact(mData, localMetadataFile, ArtifactTypeCode.MD, actualModelName, onboardingStatus);
+					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), actualModelName, onboardingStatus);
 
 					if (dcaeflag) {
 						addDCAEArrtifacts(mData, outputFolder, mlpSolution.getSolutionId(), onboardingStatus);
@@ -474,6 +495,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 						mData = null;
 						dcaeflag = false;
+						
+						//push docker build log into nexus	
+						File file = new java.io.File("logs/"+OnboardingController.FILE_NAME);
+						addArtifact(mData, file, getArtifactTypeCode("Log File"), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
+						//delete log file
+						UtilityFunction.deleteDirectory(file);
 					} catch (AcumosServiceException e) {
 						mData = null;
 						dcaeflag = false;
@@ -528,6 +555,22 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		}
 
 	}
+	
+	private Map<String, String> getArtifactsDetails() {
+		List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
+		Map<String, String> artifactsDetails = new HashMap<>();
+		if (!typeCodeList.isEmpty()) {
+			for (MLPCodeNamePair codeNamePair : typeCodeList) {
+				artifactsDetails.put(codeNamePair.getName(), codeNamePair.getCode());
+			}
+		}
+		return artifactsDetails;
+	}
+
+	private String getArtifactTypeCode(String artifactTypeName) {
+		String typeCode = artifactsDetails.get(artifactTypeName);
+		return typeCode;
+	}
 
 	private void addDCAEArrtifacts(Metadata mData, File outputFolder, String solutionID, OnboardingNotification onboardingStatus) {
 
@@ -539,10 +582,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		File ons = new File(filePathoutputF, "onsdemo1.yaml");
 
 		try {
-			addArtifact(mData, anoIn, ArtifactTypeCode.MD, solutionID, onboardingStatus);
-			addArtifact(mData, anoOut, ArtifactTypeCode.MD, solutionID, onboardingStatus);
-			addArtifact(mData, compo, ArtifactTypeCode.MD, solutionID, onboardingStatus);
-			addArtifact(mData, ons, ArtifactTypeCode.MD, solutionID, onboardingStatus);
+			addArtifact(mData, anoIn, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
+			addArtifact(mData, anoOut, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
+			addArtifact(mData, compo, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
+			addArtifact(mData, ons, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
 		}
 
 		catch (AcumosServiceException e) {
