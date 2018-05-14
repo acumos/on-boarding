@@ -30,9 +30,12 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -257,8 +260,14 @@ public class UtilityFunction {
 				File f1 = new File(file.getPath() + fileName);
 				if (!f1.exists()) {
 					f1.createNewFile();
+					//set permission
+					Set<PosixFilePermission> perms = new HashSet<>();
+					perms.add(PosixFilePermission.OWNER_READ);
+					perms.add(PosixFilePermission.OWNER_WRITE);
+
+					Files.setPosixFilePermissions(f1.toPath(), perms);
 				}
-				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName +" "+f1.getPath());
 			} catch (IOException e) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + fileName);
 			}
