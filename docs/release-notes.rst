@@ -23,6 +23,12 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.21.2, 14 May 2018
+---------------------------
+
+* Capture Onboarding log as a new artifact (ACUMOS-751)
+
+
 Version 1.23.0, 10 May 2018
 ---------------------------
 
