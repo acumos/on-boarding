@@ -33,7 +33,8 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
@@ -253,7 +254,7 @@ public class UtilityFunction {
 	}
 	
 	public static void createLogFile(String fileName) {
-		File file = new java.io.File("logs");
+		File file = new java.io.File(OnboardingConstants.lOG_DIR);
 		file.mkdirs();
 		if (!file.isFile()) {
 			try {
@@ -276,17 +277,24 @@ public class UtilityFunction {
 	}
 	
 	public static void addLogs(String msg, String logType) {
+		FileWriter fout = null;
 		try {
-			File file = new java.io.File("logs");
+
+			File file = new java.io.File(OnboardingConstants.lOG_DIR);
 			if (file.isDirectory()) {
-				FileWriter fout = new FileWriter(file.getPath() + OnboardingController.FILE_NAME, true);
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				fout.write(timestamp+" "+logType+": " +msg);
-				fout.close();
+				fout = new FileWriter(file.getPath() + OnboardingController.FILE_NAME, true);
+
+				fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + logType + ": " + msg);
 			}
 		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " +e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+		} finally {
+			try {
+				if (fout != null)
+					fout.close();
+			} catch (IOException e) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Close the file " + e.getMessage());
+			}
 		}
-
 	}
 }

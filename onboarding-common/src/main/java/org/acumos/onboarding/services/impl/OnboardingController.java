@@ -34,8 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
-
-import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
@@ -49,6 +47,7 @@ import org.acumos.onboarding.common.utils.Crediantials;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
@@ -274,7 +273,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			onboardingStatus.setTrackingId(trackingID);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
-		FILE_NAME=trackingID+".log";
+		FILE_NAME=trackingID+OnboardingConstants.LOG_FILE_EXT;
 		UtilityFunction.createLogFile(FILE_NAME);
 		
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
@@ -490,7 +489,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								"Adding of log artifacts into nexus started"+FILE_NAME);
 						File file = new java.io.File("logs/"+FILE_NAME);
 						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Log file space "+file.getTotalSpace());
+								"Log file space "+file.length());
 						addArtifact(mData, file, getArtifactTypeCode("Log File"), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
 						logger.debug(EELFLoggerDelegate.debugLogger,
 								"Artifacts log pushed to nexus successfully");
