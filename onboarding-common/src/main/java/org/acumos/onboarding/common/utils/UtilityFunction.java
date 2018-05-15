@@ -250,15 +250,15 @@ public class UtilityFunction {
 	}
 	
 	public static void createLogFile(String fileName) {
-		File file = new java.io.File("logs");
+		File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 		file.mkdirs();
 		if (!file.isFile()) {
 			try {
-				File f1 = new File(file.getPath() + fileName);
+				File f1 = new File(file.getPath() +File.separator+ fileName);
 				if (!f1.exists()) {
 					f1.createNewFile();
 				}
-				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName + " "+f1.getPath());
 			} catch (IOException e) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + fileName);
 			}
@@ -268,9 +268,9 @@ public class UtilityFunction {
 	
 	public static void addLogs(String msg, String logType) {
 		try {
-			File file = new java.io.File("logs");
+			File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 			if (file.isDirectory()) {
-				FileWriter fout = new FileWriter(file.getPath() + OnboardingController.FILE_NAME, true);
+				FileWriter fout = new FileWriter(file.getPath() +File.separator+ OnboardingController.FILE_NAME, true);
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				fout.write(timestamp+" "+logType+": " +msg);
 				fout.close();

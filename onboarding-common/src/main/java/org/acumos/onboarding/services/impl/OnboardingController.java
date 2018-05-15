@@ -49,6 +49,7 @@ import org.acumos.onboarding.common.utils.Crediantials;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
@@ -274,7 +275,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			onboardingStatus.setTrackingId(trackingID);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
-		FILE_NAME=trackingID+".log";
+		
+		FILE_NAME = trackingID+OnboardingConstants.LOG_FILE_EXT;
 		UtilityFunction.createLogFile(FILE_NAME);
 		
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
@@ -487,11 +489,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						
 						//push docker build log into nexus	
 						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Adding of log artifacts into nexus started"+FILE_NAME);
-						File file = new java.io.File("logs/"+FILE_NAME);
+								"Adding of log artifacts into nexus started "+FILE_NAME);
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC +File.separator+ FILE_NAME);
 						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Log file space "+file.getTotalSpace());
-						addArtifact(mData, file, getArtifactTypeCode("Log File"), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
+								"Log file length "+file.length());
+						addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
 						logger.debug(EELFLoggerDelegate.debugLogger,
 								"Artifacts log pushed to nexus successfully");
 						//delete log file
