@@ -485,19 +485,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						mData = null;
 						dcaeflag = false;
 						
-						//push docker build log into nexus	
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Adding of log artifacts into nexus started"+FILE_NAME);
-						File file = new java.io.File("logs/"+FILE_NAME);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Log file space "+file.getTotalSpace());
-						addArtifact(mData, file, getArtifactTypeCode("Log File"), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Artifacts log pushed to nexus successfully");
-						//delete log file
-						UtilityFunction.deleteDirectory(file);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Artifacts log file deleted successfully");
 					} catch (AcumosServiceException e) {
 						mData = null;
 						dcaeflag = false;

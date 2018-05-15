@@ -16,7 +16,7 @@ RUN pip install  pytest-runner
 RUN apt-get clean && apt-get update 
 RUN apt-get -y install libgtk2.0-dev
 
-RUN pip install -r requirements.txt --extra-index-url {1} --trusted-host {2}
+RUN pip install -r requirements.txt
 
 ENV http_proxy=""
 RUN echo $http_proxy

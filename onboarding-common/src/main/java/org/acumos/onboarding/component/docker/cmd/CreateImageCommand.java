@@ -130,11 +130,9 @@ public class CreateImageCommand extends DockerCommand {
 					if (item.getStream() != null) {
 						//logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
 						logger.info("\t" + item.getStream());
-						logger.debug("\t" + item.getStream());
 					}
 					else {
 						logger.info("\t" + item);
-						logger.debug("\t" + item);
 					}
 					super.onNext(item);
 				}
