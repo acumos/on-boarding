@@ -19,7 +19,7 @@
  */
 package org.acumos.onboarding.common.utils;
 
-public class LogBean {
+public class LogBean { 
 
 	private String fileName;
 
