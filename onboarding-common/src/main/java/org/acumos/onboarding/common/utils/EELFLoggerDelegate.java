@@ -170,7 +170,7 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 			logger.debug(msg);
 			MDC.remove(MDC_CLASS_NAME);
 			
-			UtilityFunction.addLogs(msg,"debug");	
+			UtilityFunction.addLogs(msg,OnboardingConstants.lOG_TYPE_DEBUG);	
 		}
 	}
 
@@ -190,7 +190,7 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 			logger.debug(msg, arguments);
 			MDC.remove(MDC_CLASS_NAME);
 			
-			UtilityFunction.addLogs(msg,"debug");	
+			UtilityFunction.addLogs(msg,OnboardingConstants.lOG_TYPE_DEBUG);	
 		}
 	}
 
@@ -317,7 +317,7 @@ public class EELFLoggerDelegate extends SLF4jWrapper implements EELFLogger {
 		logger.error(msg);
 		MDC.remove(MDC_CLASS_NAME);
 		
-		UtilityFunction.addLogs(msg,"error");
+		UtilityFunction.addLogs(msg,OnboardingConstants.lOG_TYPE_ERROR);
 	}
 
 	/**

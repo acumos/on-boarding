@@ -33,6 +33,8 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -249,34 +251,43 @@ public class UtilityFunction {
 		}
 	}
 	
-	public static void createLogFile(String fileName) {
-		File file = new java.io.File("logs");
+	public static void createLogFile() {
+
+		LogBean logBean = LogThreadLocal.get();
+		String fileName = logBean.getFileName();
+
+		File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 		file.mkdirs();
-		if (!file.isFile()) {
+		
 			try {
-				File f1 = new File(file.getPath() + fileName);
+				File f1 = new File(file.getPath() + File.separator + fileName);
 				if (!f1.exists()) {
 					f1.createNewFile();
 				}
-				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + fileName);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + f1.getAbsolutePath()+fileName);
 			} catch (IOException e) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + fileName);
 			}
-		}
+		
 
 	}
 	
 	public static void addLogs(String msg, String logType) {
 		try {
-			File file = new java.io.File("logs");
-			if (file.isDirectory()) {
-				FileWriter fout = new FileWriter(file.getPath() + OnboardingController.FILE_NAME, true);
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				fout.write(timestamp+" "+logType+": " +msg);
-				fout.close();
+			LogBean logBean = LogThreadLocal.get();
+
+			if (logBean != null) {
+				String fileName = logBean.getFileName();
+				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+				if (file.isDirectory()) {
+					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + logType + ": "
+							+ msg);
+					fout.close();
+				}
 			}
 		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " +e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
 		}
 
 	}
