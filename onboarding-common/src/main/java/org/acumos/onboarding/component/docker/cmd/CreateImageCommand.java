@@ -130,13 +130,15 @@ public class CreateImageCommand extends DockerCommand {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null) {
-						//logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
-						logger.info("\t" + item.getStream());
-						UtilityFunction.addLogs("\t" +item.getStream(), OnboardingConstants.lOG_TYPE_INFO);
-					}
-					else {
-						logger.info("\t" + item);
-						UtilityFunction.addLogs("\t" +item, OnboardingConstants.lOG_TYPE_INFO);
+						String strStep = item.getStream();
+						logger.info("Docker step= \t" + strStep);
+						System.out.print("Docker step=" + strStep);
+						UtilityFunction.addLogs(strStep, OnboardingConstants.lOG_TYPE_INFO); 
+					} else {
+						logger.info("Docker stepelse \t" + item);
+						String strStepElse = "" + item;
+						System.out.print("Docker stepElse=" + strStepElse);
+						UtilityFunction.addLogs(strStepElse, OnboardingConstants.lOG_TYPE_INFO);
 					}
 					super.onNext(item);
 				}
