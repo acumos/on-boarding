@@ -274,6 +274,8 @@ public class UtilityFunction {
 	
 	public static void addLogs(String msg, String logType) {
 		try {
+			System.out.print("Inside addlogs===>"+msg);
+			logger.debug(EELFLoggerDelegate.debugLogger,"inside addlogs-->"+msg);
 			LogBean logBean = LogThreadLocal.get();
 
 			if (logBean != null) {
@@ -281,8 +283,10 @@ public class UtilityFunction {
 				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 				if (file.isDirectory()) {
 					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+					System.out.print("Before print log ===>"+msg);
 					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
 							+ msg + "\n");
+					System.out.print("After print log ===>"+msg);
 					fout.close();
 				}
 			}
