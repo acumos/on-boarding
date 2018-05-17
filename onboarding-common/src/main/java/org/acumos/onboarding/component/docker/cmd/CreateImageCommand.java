@@ -28,6 +28,8 @@ import java.util.Map;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.OnboardingConstants;
+import org.acumos.onboarding.common.utils.UtilityFunction;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.BuildImageCmd;
@@ -130,9 +132,11 @@ public class CreateImageCommand extends DockerCommand {
 					if (item.getStream() != null) {
 						//logger.debug(EELFLoggerDelegate.debugLogger + item.getStream());
 						logger.info("\t" + item.getStream());
+						UtilityFunction.addLogs(item.getStream(), OnboardingConstants.lOG_TYPE_INFO);
 					}
 					else {
 						logger.info("\t" + item);
+						UtilityFunction.addLogs(item.toString(), OnboardingConstants.lOG_TYPE_INFO);
 					}
 					super.onNext(item);
 				}

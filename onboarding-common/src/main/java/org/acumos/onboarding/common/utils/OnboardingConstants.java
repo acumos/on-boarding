@@ -24,7 +24,8 @@ public class OnboardingConstants {
 	public static final String LOG_FILE_EXT = ".log";
 	public static final String lOG_DIR = "applog";
 	public static final String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
-	public static final String lOG_TYPE_DEBUG = "debug";
-	public static final String lOG_TYPE_ERROR = "error";
+	public static final String lOG_TYPE_DEBUG = "DEBUG";
+	public static final String lOG_TYPE_ERROR = "ERROR";
+	public static final String lOG_TYPE_INFO = "INFO";
 	public static final String ARTIFACT_TYPE_LOG= "Log File";
 }

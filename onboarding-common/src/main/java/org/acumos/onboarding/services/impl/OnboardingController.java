@@ -490,7 +490,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									"Onboarding Failed, Reverting failed solutions and artifacts.");
 							revertbackOnboarding(metadataParser.getMetadata(), imageUri, mlpSolution.getSolutionId());
 						}
-						mData = null;
+						
 						dcaeflag = false;
 						
 						//push docker build log into nexus	
@@ -506,7 +506,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						UtilityFunction.deleteDirectory(file);
 						logger.debug(EELFLoggerDelegate.debugLogger,
 								"Artifacts log file deleted successfully",fileName);
-						
+						mData = null;
 					} catch (AcumosServiceException e) {
 						mData = null;
 						dcaeflag = false;

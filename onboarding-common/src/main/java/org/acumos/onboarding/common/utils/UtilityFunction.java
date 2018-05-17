@@ -281,8 +281,8 @@ public class UtilityFunction {
 				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 				if (file.isDirectory()) {
 					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
-					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + logType + ": "
-							+ msg);
+					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
+							+ msg + "\n");
 					fout.close();
 				}
 			}
