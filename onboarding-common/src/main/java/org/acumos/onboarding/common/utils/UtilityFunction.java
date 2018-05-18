@@ -252,23 +252,21 @@ public class UtilityFunction {
 	}
 	
 	public static void createLogFile() {
-
 		LogBean logBean = LogThreadLocal.get();
 		String fileName = logBean.getFileName();
 
 		File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 		file.mkdirs();
-		
-			try {
-				File f1 = new File(file.getPath() + File.separator + fileName);
-				if (!f1.exists()) {
-					f1.createNewFile();
-				}
-				logger.debug(EELFLoggerDelegate.debugLogger, "Log file created successfully " + f1.getAbsolutePath()+fileName);
-			} catch (IOException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + fileName);
+		try {
+			File f1 = new File(file.getPath() + File.separator + fileName);
+			if (!f1.exists()) {
+				f1.createNewFile();
 			}
-		
+			logger.debug(EELFLoggerDelegate.debugLogger,
+					"Log file created successfully " + f1.getAbsolutePath() + fileName);
+		} catch (IOException e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+		}
 
 	}
 	
@@ -280,21 +278,15 @@ public class UtilityFunction {
 				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 				if (file.isDirectory()) {
 					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
-
 					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
 							+ msg + "\n");
 					fout.close();
 				}
-			}else{
-			     logger.info("LOGBEAN is null" );
-                             //logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj from ThreadLocal is null ");
+			} else {
+				logger.warn("LogBean obj not found while adding logs in log file");
 			}
 		} catch (IOException e) {
-                        logger.info("In addLogs exception" );
-                        e.printStackTrace();
-			//logger.(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+			logger.warn("Exception occured while adding logs in log file" + e.getMessage());
 		}
-
-	}
-  
+	} 
 }
