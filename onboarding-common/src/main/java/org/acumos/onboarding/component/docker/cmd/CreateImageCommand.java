@@ -143,21 +143,27 @@ public class CreateImageCommand extends DockerCommand {
 						//UtilityFunction.addLogs(strStep, OnboardingConstants.lOG_TYPE_INFO);
 						LogBean logBean = LogThreadLocal.get();
 						if (logBean != null) {
+							logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj is not null");
+							logger.debug(EELFLoggerDelegate.debugLogger,strStep);
 							String fileName = logBean.getFileName();
 							File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
-							if (file.isDirectory()) {
+							//if (file.isDirectory()) {
 								try {
 									FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
 									fout.write("Goinig tp print log ===>");
+									System.out.println("Goinig tp print log ===>");
 									fout.write("Before print log ===>" + strStep);
 									System.out.print("Docker step2=" + strStep);
 									fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "INFO"
 											+ strStep + "\n");
 									fout.close();
-								} catch (IOException e) {
+								} catch (IOException e) {   
 									e.printStackTrace();
 								}
-							}
+							//}
+						}else{
+							logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj is null");
+	
 						}
 					} else {
 						logger.info("Docker step else \t" + item);

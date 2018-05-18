@@ -281,10 +281,8 @@ public class UtilityFunction {
 				if (file.isDirectory()) {
 					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
 
-					fout.write("Before print log ===>" + msg);
 					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
 							+ msg + "\n");
-					//fout.write("After print log ===>" + msg);
 					fout.close();
 				}
 			}
