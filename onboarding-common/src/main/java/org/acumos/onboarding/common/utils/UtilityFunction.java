@@ -285,10 +285,14 @@ public class UtilityFunction {
 							+ msg + "\n");
 					fout.close();
 				}
+			}else{
+				logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj from ThreadLocal is null ");
 			}
 		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+                        e.printStackTrace();
+			//logger.(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
 		}
 
 	}
+  
 }
