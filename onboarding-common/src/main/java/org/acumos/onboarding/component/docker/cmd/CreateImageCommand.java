@@ -21,13 +21,19 @@
 package org.acumos.onboarding.component.docker.cmd;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LogBean;
+import org.acumos.onboarding.common.utils.LogThreadLocal;
 import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 
@@ -130,10 +136,29 @@ public class CreateImageCommand extends DockerCommand {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null) {
-						String strStep = new String(item.getStream()+" CreateImage");
+						String strStep = new String(item.getStream());
 						logger.info("Docker step= \t" + strStep);
-						System.out.print("Docker step=" + strStep);
-						UtilityFunction.addLogs(strStep, OnboardingConstants.lOG_TYPE_INFO); 
+						logger.debug(EELFLoggerDelegate.debugLogger,strStep);
+						System.out.print("Docker step1=" + strStep);
+						//UtilityFunction.addLogs(strStep, OnboardingConstants.lOG_TYPE_INFO);
+						LogBean logBean = LogThreadLocal.get();
+						if (logBean != null) {
+							String fileName = logBean.getFileName();
+							File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+							if (file.isDirectory()) {
+								try {
+									FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+									fout.write("Goinig tp print log ===>");
+									fout.write("Before print log ===>" + strStep);
+									System.out.print("Docker step2=" + strStep);
+									fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "INFO"
+											+ strStep + "\n");
+									fout.close();
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+						}
 					} else {
 						logger.info("Docker step else \t" + item);
 						String strStepElse = "" + item;
