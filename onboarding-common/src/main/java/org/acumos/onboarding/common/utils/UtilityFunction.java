@@ -274,12 +274,7 @@ public class UtilityFunction {
 	
 	public static void addLogs(String msg, String logType) {
 		try {
-			if (msg.contains("CreateImage")) {
-				System.out.print("Inside addlogs===>" + msg);
-				logger.debug(EELFLoggerDelegate.debugLogger, "inside addlogs-->" + msg);
-			}
 			LogBean logBean = LogThreadLocal.get();
-
 			if (logBean != null) {
 				String fileName = logBean.getFileName();
 				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
@@ -289,7 +284,7 @@ public class UtilityFunction {
 					fout.write("Before print log ===>" + msg);
 					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
 							+ msg + "\n");
-					fout.write("After print log ===>" + msg);
+					//fout.write("After print log ===>" + msg);
 					fout.close();
 				}
 			}
