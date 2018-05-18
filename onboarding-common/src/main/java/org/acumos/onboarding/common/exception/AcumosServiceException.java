@@ -69,4 +69,5 @@ public class AcumosServiceException extends Exception {
 	public String getErrorCode() {
 		return errorCode;
 	}
+	
 }
