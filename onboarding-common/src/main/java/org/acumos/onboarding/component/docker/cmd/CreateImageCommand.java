@@ -131,21 +131,25 @@ public class CreateImageCommand extends DockerCommand {
 		}
 		DockerClient client = getClient();
 		try {
-
+			LogBean logBean = LogThreadLocal.get();
+			String fileName = logBean.getFileName();
+			StringBuffer dockerBuildLogs = new StringBuffer();
+			logger.debug(EELFLoggerDelegate.debugLogger,"FileNmae : "+fileName);
 			BuildImageResultCallback callback = new BuildImageResultCallback() {
 				@Override
 				public void onNext(BuildResponseItem item) {
 					if (item.getStream() != null) {
 						String strStep = new String(item.getStream());
+						dockerBuildLogs.append(strStep);
 						logger.info("Docker step= \t" + strStep);
 						logger.debug(EELFLoggerDelegate.debugLogger,strStep);
 						System.out.print("Docker step1=" + strStep);
 						//UtilityFunction.addLogs(strStep, OnboardingConstants.lOG_TYPE_INFO);
-						LogBean logBean = LogThreadLocal.get();
-						if (logBean != null) {
+						//LogBean logBean = LogThreadLocal.get();
+						if (fileName != null) {
 							logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj is not null");
 							logger.debug(EELFLoggerDelegate.debugLogger,strStep);
-							String fileName = logBean.getFileName();
+							//String fileName = logBean.getFileName();
 							File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 							//if (file.isDirectory()) {
 								try {
@@ -181,6 +185,19 @@ public class CreateImageCommand extends DockerCommand {
 					super.onError(throwable);
 				}
 			};
+			
+			File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+			//if (file.isDirectory()) {
+				try {
+					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+					fout.write("outside inner class  ===>");
+					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "INFO"
+							+ dockerBuildLogs.toString() + "\n");
+					fout.close();
+				} catch (IOException e) {   
+					e.printStackTrace();
+				}
+			
 			BuildImageCmd buildImageCmd = client.buildImageCmd(docker)
 					.withTags(new HashSet<>(Arrays.asList(imageName + ":" + imageTag))).withNoCache(noCache)
 					.withRemove(rm);// .withTag(imageName + ":" + imageTag)
