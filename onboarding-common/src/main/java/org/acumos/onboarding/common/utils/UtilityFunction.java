@@ -283,10 +283,7 @@ public class UtilityFunction {
 							+ msg + "\n");
 					fout.close();
 				}
-			} else {
-				//info to avoid infinite loop.logger.debug call again calls addlog method
-				logger.info("LogBean obj not found while adding logs in log file");
-			}
+			} 
 		} catch (IOException e) {
 			//info to avoid infinite loop.logger.debug call again calls addlog method
 			logger.info("Exception occured while adding logs in log file" + e.getMessage());
