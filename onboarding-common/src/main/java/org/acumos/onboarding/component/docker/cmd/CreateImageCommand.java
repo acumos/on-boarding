@@ -153,7 +153,6 @@ public class CreateImageCommand extends DockerCommand {
                 * @param strStep
                 */
 				private void addLogs(String strStep) {
-					logger.debug(EELFLoggerDelegate.debugLogger, "Log FileName in createImgCmd : " + fileName);
 					if (fileName != null) {
 						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
 						try {
