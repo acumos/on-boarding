@@ -263,9 +263,10 @@ public class UtilityFunction {
 				f1.createNewFile();
 			}
 			logger.debug(EELFLoggerDelegate.debugLogger,
-					"Log file created successfully " + f1.getAbsolutePath() + fileName);
-		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+					"Log file created successfully " + f1.getAbsolutePath());
+		} catch (Exception e) {
+			//info to avoid infinite loop.logger.debug call again calls addlog method
+			logger.warn("Failed while creating log file " + e.getMessage());
 		}
 
 	}

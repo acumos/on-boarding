@@ -141,27 +141,39 @@ public class CreateImageCommand extends DockerCommand {
 						String strStep = new String(item.getStream());
 						logger.info("\t" + strStep);
 						logger.debug(EELFLoggerDelegate.debugLogger,strStep);
-						
-						if (fileName != null) {
-							logger.debug(EELFLoggerDelegate.debugLogger,"Logbean obj is not null");
-							File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
-								try {
-									FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
-									fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date())+ "  " + OnboardingConstants.lOG_TYPE_DEBUG
-										+ "  "	+ strStep + "\n");
-									fout.close();
-								} catch (IOException e) {   
-									logger.warn("Exception occured while adding logs in log file: CreateImageCmd " + e.getMessage());
-								}
-						}else{
-							logger.debug(EELFLoggerDelegate.debugLogger,"FileName is null for adding logs : CreateImgCmd");
-	
-						}
+						addLogs(strStep);
 					} else {
 						logger.info("\t" + item);
 					}
 					super.onNext(item);
 				}
+				
+                /**
+                * Add logs into file specific to model
+                * @param strStep
+                */
+				private void addLogs(String strStep) {
+					LogBean logBean = LogThreadLocal.get();
+					String fileName = logBean.getFileName();
+					logger.debug(EELFLoggerDelegate.debugLogger, "Log FileName in createImgCmd : " + fileName);
+					if (fileName != null) {
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+						try {
+							FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+							fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  "
+									+ OnboardingConstants.lOG_TYPE_DEBUG + "  " + strStep + "\n");
+							fout.close();
+						} catch (IOException e) {
+							//warn to avoid infinite loop.logger.debug call again calls addlog method
+							logger.warn("Exception occured while adding logs in log file: CreateImageCmd "
+									+ e.getMessage());
+						}
+					} else {
+						//info to avoid infinite loop.logger.debug call again calls addlog method
+						logger.info("FileName is null for adding logs : CreateImgCmd");
+					}
+				}
+
 
 				@Override
 				public void onError(Throwable throwable) {

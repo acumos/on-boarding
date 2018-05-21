@@ -283,6 +283,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logBean.setFileName(fileName);
 		LogThreadLocal logThread = new LogThreadLocal();
 		logThread.set(logBean);
+		//create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
 					
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
