@@ -263,9 +263,10 @@ public class UtilityFunction {
 				f1.createNewFile();
 			}
 			logger.debug(EELFLoggerDelegate.debugLogger,
-					"Log file created successfully " + f1.getAbsolutePath() + fileName);
-		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed while creating log file " + e.getMessage());
+					"Log file created successfully " + f1.getAbsolutePath());
+		} catch (Exception e) {
+			//info to avoid infinite loop.logger.debug call again calls addlog method
+			logger.info("Failed while creating log file " + e.getMessage());
 		}
 
 	}
@@ -283,10 +284,12 @@ public class UtilityFunction {
 					fout.close();
 				}
 			} else {
-				logger.warn("LogBean obj not found while adding logs in log file");
+				//info to avoid infinite loop.logger.debug call again calls addlog method
+				logger.info("LogBean obj not found while adding logs in log file");
 			}
 		} catch (IOException e) {
-			logger.warn("Exception occured while adding logs in log file" + e.getMessage());
+			//info to avoid infinite loop.logger.debug call again calls addlog method
+			logger.info("Exception occured while adding logs in log file" + e.getMessage());
 		}
 	} 
 }
