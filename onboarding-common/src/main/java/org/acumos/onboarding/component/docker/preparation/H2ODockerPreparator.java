@@ -108,7 +108,7 @@ public class H2ODockerPreparator {
 			String modelname = this.metadata.getSolutionName();
 
 			dockerFileAsString = MessageFormat.format(dockerFileAsString,
-					new Object[] { serverPort, modelname + "Service.jar", modelname + ".zip" });
+					new Object[] { serverPort, "H2OModelService.jar", modelname + ".zip" });
 
 			FileWriter writer = new FileWriter(outDockerFile);
 			try {
