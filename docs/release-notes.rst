@@ -23,10 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-Version 1.24.0, 18 May 2018
+Version 1.24.0, 22 May 2018
 ---------------------------
 
 * Capture Onboarding log as a new artifact (ACUMOS-751)
+* Clean windows-specific code that constructs file paths (ACUMOS-818)
 * TOSCA version updated to 0.0.27
 
 Version 1.23.2, 14 May 2018
