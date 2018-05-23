@@ -505,8 +505,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								"Artifacts log pushed to nexus successfully",fileName);
 						//delete log file
 						UtilityFunction.deleteDirectory(file);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Artifacts log file deleted successfully",fileName);
+						//info as log file not available to write
+						logger.info("Artifacts log file deleted successfully",fileName);
+						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
 						mData = null;
