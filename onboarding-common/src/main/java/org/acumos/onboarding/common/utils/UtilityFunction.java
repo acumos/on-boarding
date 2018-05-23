@@ -120,7 +120,8 @@ public class UtilityFunction {
 				}
 			}
 			boolean deleteFlag = fileStreamPath.delete();
-			logger.debug(EELFLoggerDelegate.debugLogger,"File Deleted Status = {}", deleteFlag);
+			//info as log file is deleted, in debug we are calling addLog()
+			logger.info("File Deleted Status = {}", deleteFlag);
 		}
 	}
 
