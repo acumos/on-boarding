@@ -24,6 +24,7 @@ import org.acumos.onboarding.common.utils.JsonResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 /**
  * 
@@ -42,17 +43,14 @@ public class JsonResponseTest {
 		jsonResponse.setErrorCode("Success");
 		jsonResponse.setResponseCode("success");
 		jsonResponse.setStatusCode(200);
+		jsonResponse.setResponseBody(null);
 		jsonResponse.getErrorCode();
 		jsonResponse.getResponseBody();
 		jsonResponse.getResponseCode();
 		jsonResponse.getResponseDetail();
 		jsonResponse.getStatus();
 		jsonResponse.getStatusCode();
-		if(jsonResponse.getErrorCode().equals("Success")){
-		assert(true);
-		
-		}
-
+		Assert.notNull(jsonResponse);
 	}
 
 }

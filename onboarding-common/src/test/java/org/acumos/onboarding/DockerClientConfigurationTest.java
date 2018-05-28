@@ -21,20 +21,34 @@
 package org.acumos.onboarding;
 
 
+import static org.mockito.Mockito.when;
+
 import org.acumos.onboarding.common.config.DockerClientConfiguration;
+import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DockerClientConfigurationTest {
 	
-
-	DockerClientConfiguration dockerCConfig = new DockerClientConfiguration();
+    @InjectMocks
+	DockerClientConfiguration dockerCConfig;
+    @Mock
+    Environment environment;
+    @Mock
+    DockerConfiguration config;
 
 	@Test
 	 public void dockerConfigurationTest() {
 		
-		 
+		when(environment.getProperty("key","defaultVal")).thenReturn("2375");
+		when(config.getPort()).thenReturn(2375);
+		when(environment.getProperty("docker.port")).thenReturn("2375");
+		
+		//dockerCConfig.dockerConfiguration();
 	 }
 }

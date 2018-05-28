@@ -41,6 +41,12 @@ public class JsonRequestTest {
 		jsonReq.setRequestFrom(requestFrom);		
 		jsonReq.setRequestId(requestId);
 		
+		String reqId = jsonReq.getRequestId();
+		Assert.assertNotNull(reqId);
+		
+		jsonReq.getBody();
+		String reqForm = jsonReq.getRequestFrom();
+		Assert.assertNotNull(reqForm);
 		Assert.assertNotNull(jsonReq);
 	}
 	

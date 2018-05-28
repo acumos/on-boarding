@@ -17,26 +17,21 @@
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
-
 package org.acumos.onboarding;
 
-import org.acumos.onboarding.common.utils.Crediantials;
+import org.acumos.onboarding.common.utils.LogBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
 @RunWith(MockitoJUnitRunner.class)
-public class CrediantialsTest {
-
+public class LogBeanTest {
+	
 	@Test
-	public void crediantialsTest() {
-		Crediantials crediantials = new Crediantials();
-		crediantials.setUsername("testUser");
-		crediantials.setPassword("password");
-		crediantials.getUsername();
-		crediantials.getPassword();
-        Assert.assertNotNull(crediantials);
+	public void LogBeanTest() {
+		LogBean bean = new LogBean();
+		bean.setFileName("test.log");
+		String logFileName = bean.getFileName();			
+		Assert.assertNotNull(logFileName);	
 	}
-
 }

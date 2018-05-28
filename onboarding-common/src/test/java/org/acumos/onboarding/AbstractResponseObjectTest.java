@@ -24,6 +24,7 @@ import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractResponseObjectTest {
@@ -35,6 +36,7 @@ public class AbstractResponseObjectTest {
 		abstractResponseObject.isLoginPassExpire();
 		abstractResponseObject.setJwtToken("34sd34-3434");
 		abstractResponseObject.getJwtToken();
+		Assert.notNull(abstractResponseObject);
 	}
 
 }
