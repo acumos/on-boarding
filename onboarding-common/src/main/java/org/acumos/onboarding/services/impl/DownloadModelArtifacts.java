@@ -44,11 +44,7 @@ public class DownloadModelArtifacts {
 		logger.debug("------ Start getBluePrintNexus-----------------");
 		logger.debug("-------solutionId-----------" + solutionId);
 		logger.debug("-------revisionId-----------" + revisionId);
-		logger.debug("-------userName-----------" + userName);
-		logger.debug("-------password-----------" + password);
-		logger.debug("-------nexusUrl-----------" + nexusUrl);
-		logger.debug("-------nexusUserName-----------" + nexusUserName);
-		logger.debug("-------nexusPassword-----------" + nexusPassword);
+		
 		List<MLPArtifact> mlpArtifactList;
 		String nexusURI = "";
 		

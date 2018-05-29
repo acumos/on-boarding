@@ -624,16 +624,7 @@ public class CommonOnboarding {
 			// TODO : Include toscaOutputFolder =/tmp/ and
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
-			logger.debug(EELFLoggerDelegate.debugLogger,"toscaOutputFolder : " + toscaOutputFolder);
-			logger.debug(EELFLoggerDelegate.debugLogger,"toscaGeneratorEndPointURL : {}", toscaGeneratorEndPointURL);
-			logger.debug(EELFLoggerDelegate.debugLogger,"nexusEndPointURL : " + nexusEndPointURL);
-			logger.debug(EELFLoggerDelegate.debugLogger,"nexusUserName : " + nexusUserName);
-			logger.debug(EELFLoggerDelegate.debugLogger,"nexusPassword : " + nexusPassword);
-			logger.debug(EELFLoggerDelegate.debugLogger,"nexusGroupId : " + nexusGroupId);
-			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcEndPoinURL : " + cmnDataSvcEndPoinURL);
-			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcUser : " + cmnDataSvcUser);
-			logger.debug(EELFLoggerDelegate.debugLogger,"cmnDataSvcPwd : " + cmnDataSvcPwd);
-
+			
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
 					cmnDataSvcPwd);

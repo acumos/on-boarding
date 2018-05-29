@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.25.0, 29 May 2018
+---------------------------
+
+* Remove sensitive information from the onboarding log that is pushed to nexus (ACUMOS-948)
+
 Version 1.24.0, 22 May 2018
 ---------------------------
 
