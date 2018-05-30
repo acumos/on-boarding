@@ -23,10 +23,15 @@
  */
 package org.acumos.onboarding;
 
-import java.io.File;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
-import org.acumos.onboarding.common.models.OnboardingNotification;
-import org.acumos.onboarding.component.docker.preparation.Metadata;
+import javax.servlet.http.HttpServletResponse;
+
+import org.acumos.onboarding.common.models.ServiceResponse;
+import org.acumos.onboarding.common.utils.AbstractResponseObject;
+import org.acumos.onboarding.common.utils.Crediantials;
+import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
@@ -35,41 +40,57 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnboardingControllerTest {
 
 	@Mock
-	RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
-	OnboardingController on = new OnboardingController();
+    @InjectMocks
+    OnboardingController onboardingController;
 
-	@InjectMocks
-	PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
+    @Mock
+    protected PortalRestClientImpl portalClient;
+    private HttpServletResponse response;
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void OnboardingWithAuthentication() throws Exception {
+    public void testOnboardingWithAuthentication() throws Exception {
 
-		try {
-			String user = " ";
-			String pass = " ";
+        Crediantials credential = new Crediantials();
+        String user = " ";
+        String pass = " ";
+        String token = "SampleToken";
+        AbstractResponseObject absObj = new AbstractResponseObject();
 
-			JSONObject crediantials = new JSONObject();
-			crediantials.put("username", user);
-			crediantials.put("password", pass);
+        JSONObject crediantials = new JSONObject();
+        crediantials.put("username", user);
+        crediantials.put("password", pass);
 
-			JSONObject reqObj = new JSONObject();
-			reqObj.put("request_body", crediantials);
+        JSONObject reqObj = new JSONObject();
+        reqObj.put("request_body", crediantials); 
+        
+        
+        JsonRequest<Crediantials> cred = new JsonRequest<>();
+        cred.setBody(credential);
 
-			System.out.println("testing....");
+        System.out.println("testing1....");
+        
+        String url = "http://cognita-dev1-vm01-core:8083/auth/jwtToken";
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+            
+        when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
+        ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
+        assertNotNull(result);
+    }
 
-			String token = portalclient.loginToAcumos(reqObj);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private JSONObject any(Class<JSONObject> class1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*@Test
@@ -87,22 +108,22 @@ public class OnboardingControllerTest {
 	@Test
 	public void getToolTypeCodeTest() {
 		String toolkit = "Scikit-Learn";
-		on.getToolTypeCode(toolkit);
+		onboardingController.getToolTypeCode(toolkit);
 		assert (true);
 	}
 
 	@Test
 	public void getCmnDataSvcEndPoinURLTest() {
-		on.getCmnDataSvcEndPoinURL();
+		onboardingController.getCmnDataSvcEndPoinURL();
 	}
 
 	@Test
 	public void getCmnDataSvcUserTest() {
-		on.getCmnDataSvcUser();
+		onboardingController.getCmnDataSvcUser();
 	}
 
 	@Test
 	public void getCmnDataSvcPwdTest() {
-		on.getCmnDataSvcPwd();
+		onboardingController.getCmnDataSvcPwd();
 	}
 }

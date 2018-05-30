@@ -27,15 +27,19 @@ import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
 public class H2ODockerPreparatorTest {
 
-	
+	 
 	String filePath = FilePathTest.filePath(); 
+	File outFolder = new File(filePath);
 	File jsonFile = new File(filePath+"modelDetails.json");
-	
+	File reqtxt = new File(filePath+"requirements.txt");
+	File srcFile = new File(filePath+"Dockerfile");
 	
 	public H2ODockerPreparatorTest() throws AcumosServiceException {
 		new MetadataParser(jsonFile);
@@ -52,52 +56,32 @@ public class H2ODockerPreparatorTest {
 		int[] baseVersion = { 1, 2, 3 };
 		int[] currentVersion = { 4, 5, 6 };
 		int result = H2ODockerPreparator.compareVersion(baseVersion, currentVersion);
-		if (result != 0) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
+		Assert.notNull(result, "");
 	}
 
 	@Test
 	public void versionAsArrayTest() {
 
 		int[] baseVersion = H2ODockerPreparator.versionAsArray("1234");
-		if (baseVersion != null) {
-			assert (true);
-		} else {
-			assert (true);
-		}
+		Assert.notNull(baseVersion, "");
+	}
+	
+	@Test
+	public void prepareDockerAppTest() throws AcumosServiceException {
+
+		h2ODockerPreparator.prepareDockerApp(outFolder);
+	}
+	
+	@Test
+	public void createDockerFileTest() throws AcumosServiceException {
+		
+		h2ODockerPreparator.createDockerFile(srcFile, srcFile);
 
 	}
 	
 	@Test
-	public void prepareDockerAppTest(){
+	public void createRequirementsTest() throws AcumosServiceException {
+		h2ODockerPreparator.createRequirements(reqtxt, reqtxt);
 		
-		try {
-			h2ODockerPreparator.prepareDockerApp(new File("dFile"));
-			assert(true);
-		} catch (AcumosServiceException e) {
-			assert(true);
-		}
-
-  }
-	
-	@Test
-	public void createDockerFileTest() {
-		
-		try {
-			h2ODockerPreparator.createDockerFile(new File("dFile"), new File("dFile1"));
-			assert(true);
-		} catch (AcumosServiceException e) {
-			assert(true);
-		}
 	}
 }
-
-
-
-
-
-

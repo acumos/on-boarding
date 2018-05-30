@@ -27,7 +27,11 @@ import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.component.docker.preparation.PythonDockerPreprator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PythonDockerPrepratorTest {
@@ -37,14 +41,24 @@ public class PythonDockerPrepratorTest {
 	File jsonFile = new File(filePath+"metadata.json");
 	File srcFile = new File(filePath+"Dockerfile");
 	File outFile = new File(filePath+"Dockerfile");
-	File outFolder = new File(filePath+"inFile.csv");
+	File outFolder = new File(filePath);
+	File reqtxt = new File(filePath+"requirements.txt");
 	MetadataParser metadataParser = new MetadataParser(jsonFile);
+	private JsonNode metadataJson = metadataParser.getMetadataJson();
+	
 	private String httpProxy= "http://10.1.0.6:3128";
+	
+	//@InjectMocks
 	PythonDockerPreprator pythonDockerPreprator = new PythonDockerPreprator(metadataParser, "localhost", "localhost",httpProxy);
+	PythonDockerPreprator pythonDockerPrepratorSpy = Mockito.spy(pythonDockerPreprator);
+	
+	private static final String METHOD1 = "findPredictMethod";
+	private static final String METHOD2 = "prepareYaml";
+	private static final String METHOD3 = "createRequirementTxt";
 
 	public PythonDockerPrepratorTest() throws AcumosServiceException {
 		new MetadataParser(jsonFile);
-	}
+	} 
 
 	@Test
 	public void compareVersionTest() {
@@ -52,46 +66,28 @@ public class PythonDockerPrepratorTest {
 		int[] baseVersion = { 1, 2, 3 };
 		int[] currentVersion = { 4, 5, 6 };
 		int result = PythonDockerPreprator.compareVersion(baseVersion, currentVersion);
-		if (result != 0) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
+		Assert.notNull(result, "");
 	}
 
 	@Test
 	public void versionAsArrayTest() {
 
 		int[] baseVersion = PythonDockerPreprator.versionAsArray("1234");
-		if (baseVersion != null) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
-	}
-
-	@Test
-	public void prepareDockerAppTest() {
-
-		try {
-			pythonDockerPreprator.prepareDockerApp(new File("outFolder"));
-			assert (true);
-		} catch (AcumosServiceException e) {
-			assert (true);
-		}
-
-	}
-	@Test
-	public void createDockerFile() {
-		try {
-			pythonDockerPreprator.createDockerFile(srcFile, outFile);
-			assert(true);
-		} catch (AcumosServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Assert.notNull(baseVersion, "");
 		
 	}
+
+	@Test
+	public void prepareDockerAppTest() throws AcumosServiceException {
+		
+		pythonDockerPreprator.prepareDockerAppV2(outFolder);
+	}
+		
+	@Test
+	public void createRequirementTxtTest() throws Exception {
+		
+		pythonDockerPreprator.createRequirementTxt(reqtxt, reqtxt);
+		
+	}
+	
 }

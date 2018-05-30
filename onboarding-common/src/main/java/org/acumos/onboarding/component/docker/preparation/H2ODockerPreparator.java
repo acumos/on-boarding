@@ -44,7 +44,7 @@ public class H2ODockerPreparator {
 		this.metadata = metadataParser.getMetadata();
 
 		int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
-		if (runtimeVersion[0] == 0) {
+		if (runtimeVersion[0] == 0) { 
 			int[] baseVersion = new int[] { 0, 0, 1 };
 			if (compareVersion(baseVersion, runtimeVersion) >= 0) {
 				this.rVersion = "3.3.2";
@@ -77,7 +77,7 @@ public class H2ODockerPreparator {
 		this.createRequirements(new File(outputFolder, "requirements.txt"), new File(outputFolder, "requirements.txt"));
 	}
 
-	private void createRequirements(File inPackageRFile, File outPackageRFile) throws AcumosServiceException {
+	public void createRequirements(File inPackageRFile, File outPackageRFile) throws AcumosServiceException {
 		try {
 			List<Requirement> requirements = this.metadata.getRequirements();
 			StringBuilder reqBuilder = new StringBuilder();

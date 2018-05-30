@@ -66,40 +66,6 @@ public class PythonDockerPreprator {
 		this.metadataJson = metadataParser.getMetadataJson();
 		this.pythonVersion=metadata.getRuntimeVersion()+"-slim";
 		
-	    /*commenting out fixed version of python docker base image*/
-		
-		/*int[] runtimeVersion = versionAsArray(metadata.getRuntimeVersion());
-		this.pythonVersion = Arrays.toString(runtimeVersion);
-		
-		if (runtimeVersion[0] == 2) {
-			int[] baseVersion = new int[] { 2, 7, 13 };
-			if (compareVersion(baseVersion, runtimeVersion) >= 0) {
-
-				this.pythonVersion = "2.7-slim";
-			} else {
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"Unspported python version " + metadata.getRuntimeVersion());
-			}
-		} else if (runtimeVersion[0] == 3) {
-			int[] baseVersion = new int[] { 3, 6, 2 };
-			if (compareVersion(baseVersion, runtimeVersion) >= 0) {
-
-				this.pythonVersion = "3.6.2-slim";
-			} else {
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"Unspported python version " + metadata.getRuntimeVersion());
-			}
-		} else {
-			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-					"Unspported python version " + metadata.getRuntimeVersion());
-		}*/
-	}
-
-	public void prepareDockerApp(File outputFolder) throws AcumosServiceException {
-		this.prepareYaml(new File(outputFolder, "swagger.yaml"), new File(outputFolder, "swagger.yaml"));
-		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
-		this.createRequirementTxt(new File(outputFolder, "requirements.txt"),
-				new File(outputFolder, "requirements.txt"));
 	}
 
 	public void prepareDockerAppV2(File outputFolder) throws AcumosServiceException {
@@ -109,81 +75,6 @@ public class PythonDockerPreprator {
 		this.createDockerFile(new File(outputFolder, "Dockerfile"), new File(outputFolder, "Dockerfile"));
 		this.createRequirementTxt(new File(outputFolder, "requirements.txt"),
 				new File(outputFolder, "requirements.txt"));
-	}
-
-	private JsonNode findPredictMethod() throws AcumosServiceException {
-		JsonNode nodes = this.metadataJson.get("methods");
-		for (JsonNode node : nodes) {
-			String name = node.get("name").asText();
-			if (name.equals("predict")) {
-				return node;
-			}
-		}
-		throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-				"Method signature for 'predict' not found");
-	}
-
-	@SuppressWarnings("deprecation")
-	private void prepareYaml(File yamlFileIn, File yamlFileOut) throws AcumosServiceException {
-
-		try {
-			YAMLFactory yf = new YAMLFactory();
-			ObjectMapper mapper = new ObjectMapper(yf);
-			ObjectNode root = (ObjectNode) mapper.readTree(yamlFileIn);
-			HashMap<String, JsonNode> infoNode = new HashMap<>();
-			infoNode.put("title", JsonNodeFactory.instance.textNode(metadata.getSolutionName()));
-			infoNode.put("version", JsonNodeFactory.instance.textNode(metadata.getVersion()));
-			((ObjectNode) root.get("info")).putAll(infoNode);
-
-			JsonNode signatureNode = findPredictMethod().get("signature");
-			JsonNode parametersNode = signatureNode.get("parameters");
-			if (parametersNode.size() < 0 || parametersNode.size() > 1) {
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"'predict' method can only have one aragument and provide argument :" + parametersNode.size());
-			}
-			JsonNode typeNode = parametersNode.get(0).get("type");
-			String mediaType = typeNode.get("media").asText();
-
-			if (mediaType.equals("application/json")) {
-				JsonNode formatNode = typeNode.get("format");
-				JsonNode namesNodes = formatNode.get("names");
-				JsonNode typesNodes = formatNode.get("types");
-				int counter = 0;
-				ObjectNode definitionsNode = (ObjectNode) root.get("definitions").get("FeatureVector");
-
-				ObjectNode itemsNode = JsonNodeFactory.instance.objectNode();
-				for (JsonNode pamamTypeNode : typesNodes) {
-					String name = namesNodes.has(counter) ? namesNodes.get(counter).asText() : "x" + counter;
-					ObjectNode node = JsonNodeFactory.instance.objectNode(); // initializing
-					String typeName = pamamTypeNode.asText();
-					if (typeName.equals("integer") || typeName.equals("long") || typeName.equals("byte")
-							|| typeName.equals("int")) {
-						typeName = "integer";
-					} else if (typeName.equals("float") || typeName.equals("double")) {
-						typeName = "number";
-					} else {
-						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-								"Unsupported data type " + typeName + " for predict");
-					}
-					node.put("type", typeName);
-					itemsNode.put(name, node);
-					counter++;
-
-				}
-				definitionsNode.put("properties", itemsNode);
-			} else {
-
-				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"Unsupported media type " + mediaType + " for predict");
-			}
-
-			FileOutputStream fos = new FileOutputStream(yamlFileOut);
-			SequenceWriter sw = mapper.writerWithDefaultPrettyPrinter().writeValues(fos);
-			sw.write(root);
-		} catch (IOException e) {
-			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-					"Fail to create yamal for input model", e);
-		}
 	}
 
 	public void createDockerFile(File inDockerFile, File outDockerFile) throws AcumosServiceException {
@@ -205,7 +96,7 @@ public class PythonDockerPreprator {
 
 	}
 
-	private void createRequirementTxt(File inRequirementFile, File outRequirementFile) throws AcumosServiceException {
+	public void createRequirementTxt(File inRequirementFile, File outRequirementFile) throws AcumosServiceException {
 		try {
 			List<Requirement> requirements1 = getPipRequirements(inRequirementFile);
 			Collection<Requirement> finalRequirements = mergePipRequirements(requirements1,
@@ -231,7 +122,7 @@ public class PythonDockerPreprator {
 
 	}
 
-	private static Collection<Requirement> mergePipRequirements(List<Requirement> requirements1,
+	public static Collection<Requirement> mergePipRequirements(List<Requirement> requirements1,
 			List<Requirement> requirements2) {
 		Map<String, Requirement> requirements = new LinkedHashMap<>();
 
@@ -262,7 +153,7 @@ public class PythonDockerPreprator {
 		return requirements.values();
 	}
 
-	private static List<Requirement> getPipRequirements(File file) throws IOException {
+	public static List<Requirement> getPipRequirements(File file) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new FileReader(file));
 		try {
 			String line = null;
