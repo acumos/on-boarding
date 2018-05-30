@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6591a75c_bfb04024",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/H2ODockerPreparatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "why an empty string on the assert?  This isn\u0027t helpful",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12bacd86_f1afc3d9",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/H2ODockerPreparatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "See above",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7320b94f_646cc963",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/H2ODockerPreparatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Need to check the result via assert",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c785ff10_2cb7c4ad",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/H2ODockerPreparatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Need to check the result via assert",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70449497_d6ab15c3",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/H2ODockerPreparatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6896d52_67e2245b",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "remove don\u0027t comment out",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c1fae23_05726226",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Remove, this is quite wrong to assert true, it reflects poorly on us :(",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bfa954e1_3f9b497b",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Need to check the result via assert",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15b84750_07801134",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c13459f_018a191b",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/OnboardingControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "319e006f_aabd7b23",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/PythonDockerPrepratorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Do not hardcode special IP addresses, they must be in config",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "35eb9767_144e9fad",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/PythonDockerPrepratorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Empty string is not helpful",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "754d4701_b80a1d43",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/PythonDockerPrepratorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Need to check the result via assert",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9d88c6ca_ca26bf15",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/PythonDockerPrepratorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "Need to check the result via assert",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f841cd95_0ca7e9c1",
+        "filename": "onboarding-common/src/test/resources/requirements.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:49:52Z",
+      "side": 1,
+      "message": "probably want to pin all these to known version, this avoids failures when they release new stuff",
+      "revId": "dbc7715eee0ca54ce994ec6cc5a627aefa3477e1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
