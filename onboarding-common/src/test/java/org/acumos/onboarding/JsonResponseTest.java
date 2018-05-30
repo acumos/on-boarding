@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -48,10 +49,7 @@ public class JsonResponseTest {
 		jsonResponse.getResponseDetail();
 		jsonResponse.getStatus();
 		jsonResponse.getStatusCode();
-		if(jsonResponse.getErrorCode().equals("Success")){
-		assert(true);
-		
-		}
+		Assert.assertNotNull(jsonResponse);
 
 	}
 
