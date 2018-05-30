@@ -21,41 +21,42 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class AcumosServiceExceptionTest {
 	
-	@Mock
+	@InjectMocks
 	AcumosServiceException acumosServiceException;
 	
-	
 	@Test
-	public void AcumosServiceExceptionTest() {
-		
-		AcumosServiceException acumosServiceException = new AcumosServiceException("Service is not available");
-		
-	}
-	
-	
-	@Test
-	public void AcumosServiceExceptionTest1() {
-		
-		AcumosServiceException acumosServiceException = new AcumosServiceException("Service is not available",new Throwable());
-		
-	}
-	
-
-	@Test
-	public void AcumosServiceExceptionTest2() {
-		AcumosServiceException acumosServiceException = new AcumosServiceException(AcumosServiceException.ErrorCode.CONNECTION_ISSUE,"Service is not available");
+	public void AcumosServiceExceptionTest(){
+		acumosServiceException=new AcumosServiceException("message");
+		acumosServiceException.setErrorCode("errorCode");
+		Assert.assertNotNull(acumosServiceException.getErrorCode());
+		Assert.assertNotNull(acumosServiceException);
 	}
 	
 	@Test
-	public void AcumosServiceExceptionTest3() {
-		acumosServiceException.setErrorCode("OBJECT_NOT_FOUND");
+	public void AcumosServiceExTest(){
+		acumosServiceException=new AcumosServiceException("errorCode", "message");
+		Assert.assertNotNull(acumosServiceException);
+	}
+	
+	@Test
+	public void AcumosExceptionTest(){
+		acumosServiceException=new AcumosServiceException("errorCode", "message", new Throwable());
+		Assert.assertNotNull(acumosServiceException);
+	}
+	
+	@Test
+	public void AcumosExceptTest(){
+		acumosServiceException=new AcumosServiceException("message", new Throwable());
+		Assert.assertNotNull(acumosServiceException);
 	}
 }
