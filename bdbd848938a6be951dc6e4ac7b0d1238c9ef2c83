@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "846bb9e1_981e683f",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-05-30T12:51:16Z",
+      "side": 1,
+      "message": "It\u0027s ok to log the URLs",
+      "revId": "bdbd848938a6be951dc6e4ac7b0d1238c9ef2c83",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
