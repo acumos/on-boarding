@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.utils.Crediantials;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -35,7 +36,7 @@ public class CrediantialsTest {
 		crediantials.setPassword("password");
 		crediantials.getUsername();
 		crediantials.getPassword();
-
+		Assert.assertNotNull(crediantials);
 	}
 
 }

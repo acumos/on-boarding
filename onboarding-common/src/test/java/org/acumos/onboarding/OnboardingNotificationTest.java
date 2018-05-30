@@ -21,22 +21,28 @@ package org.acumos.onboarding;
 
 import java.util.Date;
 
+import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.cds.domain.MLPStepResult;
 import org.acumos.onboarding.common.models.OnboardingNotification;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnboardingNotificationTest {
 
-	private String trackingId = "43234";
+	@Mock
+    CommonDataServiceRestClientImpl cdmsClient;
 
+	@InjectMocks
 	OnboardingNotification onboardingNotify = new OnboardingNotification("http://localhost:8080/ccds", "xyz","Test@123");
 
 	@Test
 	public void notifyOnboardingStatusTest() {
-
-		if (trackingId != null) {
 
 			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 			onboardingNotify.setSolutionId("4215454");
@@ -64,8 +70,16 @@ public class OnboardingNotificationTest {
 			onboardingNotify.getStepCode();
 			onboardingNotify.getResult();
 			onboardingNotify.getStepResultId();
-			assert(true);
-		}
+			Assert.assertNotNull(onboardingNotify);
 
-	}
+			MLPStepResult stepResult = new MLPStepResult();
+			stepResult.setArtifactId("615243");
+			stepResult.setUserId("512436");
+			stepResult.setStatusCode("ST");
+			stepResult.setTrackingId("8237465");
+			stepResult.setUserId("293686");
+
+			Mockito.when(cdmsClient.createStepResult(stepResult)).thenReturn(stepResult);
+			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+		}
 }
