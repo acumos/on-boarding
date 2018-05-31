@@ -11,6 +11,8 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -sf /bin/true /sbin/initctl
 #Dev
 ENV http_proxy http://10.1.0.6:3128
+#Dev
+ENV https_proxy http://10.1.0.6:3128
 #IST
 #ENV http_proxy http://10.2.0.4:3128
 #IST2
@@ -34,6 +36,11 @@ ADD ./model_runner.py /app/model_runner.py
 RUN chmod 755 /opt/bootstrap.sh
 RUN chmod 755 /app/model_runner.py
 #ADD ./model.tar.gz /app/model.tar.gz
+
+ENV http_proxy=""
+RUN echo $http_proxy
+ENV https_proxy=""
+RUN echo $https_proxy
 
 EXPOSE 3306
 

@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.25.4, 31 May 2018
+---------------------------
+
+* Set https_proxy ENV variable as well as http_proxy in Dockerfile (ACUMOS-965)
+
 Version 1.25.3, 31 May 2018
 ---------------------------
 
