@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.26.0, 31 May 2018
+---------------------------
+* Onboarding server gives mysterious error when using "/" character in model name (ACUMOS-952)
+* Set https_proxy ENV variable as well as http_proxy in Dockerfile (ACUMOS-965)
+
 Version 1.25.4, 31 May 2018
 ---------------------------
 
