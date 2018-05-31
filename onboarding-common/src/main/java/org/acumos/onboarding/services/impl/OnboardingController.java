@@ -496,7 +496,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 
 						dcaeflag = false;
-
 						// push docker build log into nexus
 						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
