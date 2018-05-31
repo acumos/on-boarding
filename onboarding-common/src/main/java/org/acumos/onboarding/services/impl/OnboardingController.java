@@ -489,24 +489,32 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						if (isSuccess == false) {
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Onboarding Failed, Reverting failed solutions and artifacts.");
-							revertbackOnboarding(metadataParser.getMetadata(), imageUri, mlpSolution.getSolutionId());
+							if (metadataParser != null) {
+								revertbackOnboarding(metadataParser.getMetadata(), imageUri,
+										mlpSolution.getSolutionId());
+							}
+						}
+
+						dcaeflag = false;
+
+						// push docker build log into nexus
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + fileName);
+						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
+								fileName);
+						if (metadataParser != null && mData != null) {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Adding of log artifacts into nexus started " + fileName);
+
+							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+									getActualModelName(mData, mlpSolution.getSolutionId()), onboardingStatus);
+							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
+									fileName);
+							// info as log file not available to write
+							logger.info("Artifacts log file deleted successfully", fileName);
 						}
 						
-						dcaeflag = false;
-						
-						//push docker build log into nexus	
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Adding of log artifacts into nexus started "+fileName);
-						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC +File.separator+ fileName);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Log file length "+file.length(),file.getPath(),fileName);
-						addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG), getActualModelName(mData, mlpSolution.getSolutionId()),onboardingStatus);
-						logger.debug(EELFLoggerDelegate.debugLogger,
-								"Artifacts log pushed to nexus successfully",fileName);
-						//delete log file
+						// delete log file
 						UtilityFunction.deleteDirectory(file);
-						//info as log file not available to write
-						logger.info("Artifacts log file deleted successfully",fileName);
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {

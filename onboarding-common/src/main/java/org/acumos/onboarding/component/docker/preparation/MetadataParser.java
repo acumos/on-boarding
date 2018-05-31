@@ -100,6 +100,7 @@ public class MetadataParser {
 
 			// validating Model-Name
 			if (!modelName.matches("^[a-zA-Z0-9_-]*$")) {
+				logger.debug(EELFLoggerDelegate.debugLogger,"Invalid Model name [Metadata Parsing]:"+modelName);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 						"Invalid Model Name - " + modelName);
 			}
