@@ -93,37 +93,4 @@ public class OnboardingControllerTest {
 		return null;
 	}
 
-	/*@Test
-	public void generateTOSCATest() {
-		String filePath = FilePathTest.filePath();
-		File localProtobufFile = new File(filePath + "model.proto");
-		File localMetadataFile = new File(filePath + "metadata.json");
-		Metadata m = new Metadata();
-		OnboardingNotification onboardingStatus = new OnboardingNotification("", "", "");
-		on.generateTOSCA(localProtobufFile, localMetadataFile, m, onboardingStatus);
-		assert (true);
-
-	}*/
-
-	@Test
-	public void getToolTypeCodeTest() {
-		String toolkit = "Scikit-Learn";
-		onboardingController.getToolTypeCode(toolkit);
-		assert (true);
-	}
-
-	@Test
-	public void getCmnDataSvcEndPoinURLTest() {
-		onboardingController.getCmnDataSvcEndPoinURL();
-	}
-
-	@Test
-	public void getCmnDataSvcUserTest() {
-		onboardingController.getCmnDataSvcUser();
-	}
-
-	@Test
-	public void getCmnDataSvcPwdTest() {
-		onboardingController.getCmnDataSvcPwd();
-	}
 }

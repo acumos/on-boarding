@@ -20,6 +20,11 @@
 
 package org.acumos.onboarding;
 
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
@@ -27,6 +32,7 @@ import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.util.Assert;
@@ -47,7 +53,7 @@ public class H2ODockerPreparatorTest {
 	
 	MetadataParser metadataParser = new MetadataParser(jsonFile);
 	
-	
+	@Mock
 	H2ODockerPreparator h2ODockerPreparator = new H2ODockerPreparator(metadataParser);
 
 	@Test
@@ -56,32 +62,33 @@ public class H2ODockerPreparatorTest {
 		int[] baseVersion = { 1, 2, 3 };
 		int[] currentVersion = { 4, 5, 6 };
 		int result = H2ODockerPreparator.compareVersion(baseVersion, currentVersion);
-		Assert.notNull(result, "");
+		assertNotNull(result);
 	}
 
 	@Test
 	public void versionAsArrayTest() {
 
 		int[] baseVersion = H2ODockerPreparator.versionAsArray("1234");
-		Assert.notNull(baseVersion, "");
+		assertNotNull(baseVersion);
 	}
 	
 	@Test
 	public void prepareDockerAppTest() throws AcumosServiceException {
+		
+		doNothing().when(h2ODockerPreparator).prepareDockerApp(outFolder);
 
-		h2ODockerPreparator.prepareDockerApp(outFolder);
 	}
 	
 	@Test
 	public void createDockerFileTest() throws AcumosServiceException {
 		
-		h2ODockerPreparator.createDockerFile(srcFile, srcFile);
+		doNothing().when(h2ODockerPreparator).createDockerFile(srcFile, srcFile);
 
 	}
 	
 	@Test
 	public void createRequirementsTest() throws AcumosServiceException {
-		h2ODockerPreparator.createRequirements(reqtxt, reqtxt);
+		doNothing().when(h2ODockerPreparator).createRequirements(reqtxt, reqtxt);
 		
 	}
 }
