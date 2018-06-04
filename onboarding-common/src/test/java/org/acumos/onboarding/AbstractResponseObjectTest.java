@@ -20,6 +20,8 @@
 
 package org.acumos.onboarding;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +36,7 @@ public class AbstractResponseObjectTest {
 		abstractResponseObject.setLoginPassExpire(false);
 		abstractResponseObject.isLoginPassExpire();
 		abstractResponseObject.setJwtToken("34sd34-3434");
-		abstractResponseObject.getJwtToken();
+		assertNotNull(abstractResponseObject.getJwtToken());
 	}
 
 }

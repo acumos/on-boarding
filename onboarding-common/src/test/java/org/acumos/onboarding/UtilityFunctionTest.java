@@ -29,15 +29,32 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LogBean;
+import org.acumos.onboarding.common.utils.LogThreadLocal;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.Resource;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class UtilityFunctionTest {
 
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunctionTest.class);
 	UtilityFunction utilityFunction = new UtilityFunction();
+	
+	@Mock
+	LogThreadLocal localThread;
+	
+	@Mock
+	Resource resource;
 
 	String filePath = FilePathTest.filePath();
 
@@ -67,22 +84,13 @@ public class UtilityFunctionTest {
 	public void copyFileTest() {
 
 		try {
-
 			InputStream in;
 			in = new FileInputStream(srcFile);
 
 			UtilityFunction.copyFile(in, destFile);
-			assert (true);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+			logger.info("Exception occured while copyFileTest()" + e.getMessage());
 		}
-
 	}
 
 	@Test
@@ -91,8 +99,7 @@ public class UtilityFunctionTest {
 		try {
 			utilityFunction.toBytes(srcFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Exception occured while toBytesTest()" + e.getMessage());
 		}
 
 	}
@@ -102,10 +109,8 @@ public class UtilityFunctionTest {
 
 		try {
 			utilityFunction.toBytes(srcFile);
-			assert (true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Exception occured while toBytes()" + e.getMessage());
 		}
 
 	}
@@ -118,20 +123,17 @@ public class UtilityFunctionTest {
 	}
 
 	@Test
-	public void toMD5() {
+	public void toMD5Test() {
 		String data = "VM Predictor";
 		try {
 			utilityFunction.toMD5(data);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Exception occured while toMD5Test()" + e.getMessage());
 		}
-		assert (true);
-
 	}
 
 	@Test
-	public void unzip() {
+	public void unzipTest() {
 		try {
 			File fos = new File(filePath + "atest.zip");
 			ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fos));
@@ -145,21 +147,70 @@ public class UtilityFunctionTest {
 
 			utilityFunction.unzip(fos, outputFolder);
 			zos.close();
-			assert (true);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Exception occured while unzipTest()" + e.getMessage());
 		}
-
 	}
 
 	@Test
 	public void getGUID() {
 		utilityFunction.getGUID();
-
+	}
+	
+	@Test
+	public void deleteDirectoryTest(){
+		File file=new File("onboarding-app/src/test/java/org/acumos/onboarding/testDir");
+		file.mkdirs();
+		File f1 = new File(file.getPath() + File.separator + "testFile");
+		try {
+			f1.createNewFile();
+		} catch (IOException e) {
+			logger.info("Exception occured while deleteDirectoryTest()" + e.getMessage());
+		}
+		utilityFunction.deleteDirectory(f1);
+	}
+	
+	@Test
+	public void copyFileTest1(){
+		
+		try {
+			utilityFunction.copyFile(srcFile, destFile);
+		} catch (AcumosServiceException e) {
+			logger.info("Exception occured while copyFileTest1()" + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void copyFileTest2(){
+		try {
+			InputStream in;
+			in = new FileInputStream(srcFile);
+			Mockito.when(resource.getInputStream()).thenReturn(in);
+			utilityFunction.copyFile( resource, destFile);
+		} catch (Exception e) {
+			logger.info("Exception occured while copyFileTest2()" + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void toBytesTest1(){
+		try {
+			InputStream in;
+			in = new FileInputStream(srcFile);
+			Mockito.when(resource.getInputStream()).thenReturn(in);
+			utilityFunction.toBytes( resource);
+		} catch (Exception e) {
+			logger.info("Exception occured while toBytesTest1()" + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void logLocalThreadTest() {
+		LogBean logbean = new LogBean();
+		logbean.setFileName("TestFile");
+		LogThreadLocal.set(logbean);
+		assertNotNull(LogThreadLocal.get());
+		LogThreadLocal.unset();
+		assertNull(LogThreadLocal.get());
 	}
 }

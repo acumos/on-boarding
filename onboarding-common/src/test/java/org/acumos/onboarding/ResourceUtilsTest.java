@@ -23,7 +23,9 @@ package org.acumos.onboarding;
 import java.io.IOException;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.ResourceUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -33,7 +35,7 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceUtilsTest {
 
-	
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ResourceUtilsTest.class);	
 	private ResourceLoader resourceLoader;
 	ResourceUtils resourceUtils = new ResourceUtils(resourceLoader);
 
@@ -45,34 +47,30 @@ public class ResourceUtilsTest {
 
 		try {
 			resourceUtils.getResource(path);
-			assert (true);
+			Assert.assertNotNull(resourceUtils);
 
-		} catch (AcumosServiceException ae) {
-			assert (false);
+		} catch (AcumosServiceException e) {
+			logger.info("Exception occured while getResourceTest()" + e.getMessage());
 		}
 	}
 
 	@Test
-	public void loadResourcesTest() throws AcumosServiceException {
+	public void loadResourcesTest() {
 		try {
 			resourceUtils.loadResources(path);
 			ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(pattern);
-			assert (true);
-		} catch (AcumosServiceException ae) {
-			assert (false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			Assert.assertNotNull(resourceUtils);
+		}  catch (Exception e) {
+			logger.info("Exception occured while loadResourcesTest()" + e.getMessage());
+		} 
 	}
 	
 	@Test
 	public void isResourceExistsTest() {
 		try {
 			resourceUtils.isResourceExists(path);
-			assert (true);
-		} catch (AcumosServiceException ae) {
-			assert (false);
+		} catch (AcumosServiceException e) {
+			logger.info("Exception occured while isResourceExistsTest()" + e.getMessage());
 		}
 	}
 
