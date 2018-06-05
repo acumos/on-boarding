@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.acumos.onboarding.component.docker.cmd.CreateImageCommand;
 import org.acumos.onboarding.component.docker.cmd.DockerCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 
@@ -35,54 +36,18 @@ public class CreateImageCommandTest {
 	
 	CreateImageCommand createImageCommand = new CreateImageCommand(srcFile,"H2O","1.0.0","H20",true,true);
 	
-	@Test
-	public void execute() {
-		
-	 try {	
-		//dockerCommand = new  CreateImageCommand("tmp", "genericjava",String imageTag, String dockerFile, boolean noCache, boolean rm); 
-		dockerCommand = new  CreateImageCommand(new File("tmp"), "genericjava","latest", "Dockerfile", true, true);
-		assert(true);
-	 }catch(Exception e){
-		 assert(false);
-		 e.printStackTrace();
-	 }
-	}
-	
-	
-	/* @Test
-	 public void  getDisplayNameTest()
-		{
-			dockerCommand = new  CreateImageCommand(new File("tmp"), "genericjava","latest", "Dockerfile", true, true);
-		 dockerCommand.getDisplayName();
-		 // when(dockerCommand.getDisplayName()).thenReturn("Create/build image");
-		  assert(true);
-
-		}*/
-
      @Test
 	public void testCommon() {
 		CreateImageCommand createImageCommand = new CreateImageCommand(new File("tmp"), "genericjava","latest", "Dockerfile", true, true);
 		createImageCommand.setBuildArgs("run");
 		createImageCommand.getBuildArgs();
 		String str = createImageCommand.getImageId();
-		if(str != null){
-			assert(true);
-		}
-		
+		Assert.assertNotNull(createImageCommand.getBuildArgs());	
 	}
+     
     @Test
  	public void getDisplayName() {
-    	createImageCommand.getDisplayName();
-    	assert(true);
+    	Assert.assertNotNull(createImageCommand.getDisplayName());
      }
-    @Test
-	public void executeTest() {
-		try {
-			createImageCommand.execute();
-			assert (true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
 	

@@ -21,13 +21,13 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.component.docker.cmd.CommandUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandUtilsTest {
-
 	
 	CommandUtils commandUtilsTest =new CommandUtils();
 
@@ -35,31 +35,21 @@ public class CommandUtilsTest {
 	public void addLatestTagIfNeededTest() {
 
 		String str = CommandUtils.addLatestTagIfNeeded("genericmodel");
-		assert (true);
-
+		Assert.assertNotNull(str);
 	}
 
 	@Test
 	public void sizeInBytesTest() {
 		String str = "Dockerimages";
 		long bytes = CommandUtils.sizeInBytes(str);
-		if (bytes != 0) {
-			assert (true);
-		} else {
-			assert (true);
-		}
+		Assert.assertNotNull(bytes);
 	}
 
 	@Test
 	public void imageFullNameFromTest() {
 
 		String imageName = CommandUtils.imageFullNameFrom("docker", "nexus", "latst");
-		if (imageName != null) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
+		Assert.assertNotNull(imageName);
 	}
 
 }

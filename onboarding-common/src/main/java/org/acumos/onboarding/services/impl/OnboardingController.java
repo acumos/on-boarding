@@ -539,6 +539,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		} catch (AcumosServiceException e) {
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
+			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+                httpCode =  HttpStatus.BAD_REQUEST;
+            }
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
 					httpCode);
 		} catch (HttpClientErrorException e) {
