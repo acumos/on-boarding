@@ -22,6 +22,7 @@ package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -68,6 +69,7 @@ public class DockerConfigurationTest {
 		dockerConfiguration.getConfig();
 		dockerConfiguration.getApiVersion();
 		dockerConfiguration.isSocket();
+		Assert.assertNotNull(dockerConfiguration);
 	}
 	
 	@Test
@@ -76,7 +78,7 @@ public class DockerConfigurationTest {
 			dockerConfiguration.toUrl();
 			dockerConfiguration.setHost("localhost");
 			dockerConfiguration.setPort(8080);	
-			
+			Assert.assertNotNull(dockerConfiguration);
 	}	
 
 }

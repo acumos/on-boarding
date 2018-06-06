@@ -24,73 +24,163 @@
 package org.acumos.onboarding;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.acumos.onboarding.common.utils.Crediantials;
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
+import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
-
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(OnboardingController.class)
 public class OnboardingControllerTest {
 
 	@Mock
-    RestTemplate restTemplate;
+	RestTemplate restTemplate;
 
-    @InjectMocks
-    OnboardingController onboardingController;
+	@InjectMocks
+	OnboardingController onboardingController;
 
-    @Mock
-    protected PortalRestClientImpl portalClient;
-    private HttpServletResponse response;
+	@Mock
+	protected PortalRestClientImpl portalClient;
+	
+	@Mock
+	protected CommonDataServiceRestClientImpl cdmsClient;
+	///PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
+	
+	@Mock
+	OnboardingNotification onboardingNotification;
+	
 
-	@SuppressWarnings("unchecked")
+	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
+	
+	
+	final HttpServletResponse response = mock(HttpServletResponse.class);
+   
+	 @Before
+	  public void setUp() throws Exception {
+	        MockitoAnnotations.initMocks(this);
+	 }
+	
 	@Test
-    public void testOnboardingWithAuthentication() throws Exception {
+	public void testOnboardingWithAuthentication() throws Exception {
 
-        Crediantials credential = new Crediantials();
-        String user = " ";
-        String pass = " ";
-        String token = "SampleToken";
-        AbstractResponseObject absObj = new AbstractResponseObject();
+		Crediantials credential = new Crediantials();
+		String user = " ";
+		String pass = " ";
+		String token = "SampleToken";
+		AbstractResponseObject absObj = new AbstractResponseObject();
 
-        JSONObject crediantials = new JSONObject();
-        crediantials.put("username", user);
-        crediantials.put("password", pass);
+		JSONObject crediantials = new JSONObject();
+		crediantials.put("username", user);
+		crediantials.put("password", pass);
 
-        JSONObject reqObj = new JSONObject();
-        reqObj.put("request_body", crediantials); 
-        
-        
-        JsonRequest<Crediantials> cred = new JsonRequest<>();
-        cred.setBody(credential);
+		JSONObject reqObj = new JSONObject();
+		reqObj.put("request_body", crediantials); 
+		
+		
+		JsonRequest<Crediantials> cred = new JsonRequest<>();
+		cred.setBody(credential);
 
-        System.out.println("testing1....");
-        
-        String url = "http://cognita-dev1-vm01-core:8083/auth/jwtToken";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
-            
-        when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
-        ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
-        assertNotNull(result);
-    }
+		String url = "http://cognita-dev1-vm01-core:8083/auth/jwtToken";
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+			
+		when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
+		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
+		assertNotNull(result);
+	}
 
-	private JSONObject any(Class<JSONObject> class1) {
-		// TODO Auto-generated method stub
-		return null;
+    /**
+     * Testcase to check invalid metadata json which should recieve failure or exception 
+     * @throws Exception
+     */
+	@Test
+	public void testdockerizePayloadWtihInavliadMetadata() throws Exception {
+
+		try {
+			MultipartFile multipart = mock(MultipartFile.class);
+
+			ClassLoader classLoader = getClass().getClassLoader();
+			File file = new File(classLoader.getResource("meta.json").getFile());
+
+			FileInputStream modelIS = new FileInputStream(file.getAbsolutePath());
+			MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",
+					modelIS);
+
+			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
+			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",
+					metataprotoIS);
+
+			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
+			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",
+					metaDataIS);
+
+			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
+			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
+
+			JsonResponse<Object> jsonResp = new JsonResponse<Object>();
+			jsonResp.setStatus(true);
+			jsonResp.setResponseBody("ownerid");
+			
+			PowerMockito.whenNew(CommonDataServiceRestClientImpl.class)
+					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+					.thenReturn(cmdDataSvc);
+			
+			PowerMockito.whenNew(OnboardingNotification.class)
+					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+					.thenReturn(onboardingStatus);
+			
+			PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn(jsonResp);
+			
+			ResponseEntity<ServiceResponse> resp = onboardingController.dockerizePayload(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null);
+			logger.debug("HttpStatus code:" + resp.getStatusCode() +" \nBody:"+ resp.getBody());
+			logger.info("HttpStatus code:" + resp.getStatusCode() +" \nBody:"+ resp.getBody());
+
+		} catch (AcumosServiceException e) {
+			logger.debug(EELFLoggerDelegate.debugLogger,
+					"In excpetion Errormessage" + e.getMessage() + " HTTP Code:" + e.getErrorCode());
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test
+	public void getArtifactsDetailsTest() {
+		
+		//when(onboardingController.get)
+		
 	}
 
 }
