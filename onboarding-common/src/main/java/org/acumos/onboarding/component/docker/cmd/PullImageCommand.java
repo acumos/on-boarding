@@ -5,6 +5,7 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.PullImageCmd;
 import com.github.dockerjava.api.exception.DockerException;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
@@ -23,11 +24,16 @@ public class PullImageCommand extends DockerCommand{
 
 	@Override
 	public void execute() throws DockerException {
-		String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
+		AuthConfig authConfig = new AuthConfig()
+			       .withUsername("docker")
+			       .withPassword("docker")
+			       .withEmail("ben@me.com")
+			       .withRegistryAddress("nexus3.acumos.org");
+		String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r";
 		logger.debug("Full Image Name: " + imageFullName);
 		final DockerClient client = getClient();
-		PullImageCmd pullImageCmd = client.pullImageCmd(imageFullName);
-		PullImageResultCallback callback = new PullImageResultCallback() {
+		//PullImageCmd pullImageCmd = client.pullImageCmd(imageFullName).withTag("1.0").withAuthConfig(authConfig);
+		/*PullImageResultCallback callback = new PullImageResultCallback() {
 			@Override
 			public void onNext(PullResponseItem item) {
 				super.onNext(item);
@@ -39,7 +45,16 @@ public class PullImageCommand extends DockerCommand{
 				super.onError(throwable);
 			}
 		};
-		pullImageCmd.exec(callback).awaitSuccess();
+		pullImageCmd.exec(callback).awaitSuccess();*/
+		logger.debug("Auth Config started: " + authConfig.toString());
+		client.authCmd().withAuthConfig(authConfig).exec(); // WORKS
+
+		logger.debug("Pull Command started");
+		client.pullImageCmd(imageFullName) // FAILS
+		        .withTag("1.0")
+		        .withAuthConfig(authConfig)
+		        .exec(new PullImageResultCallback()).awaitSuccess();
+		logger.debug("Pull Command end");
 		
 	}
 
