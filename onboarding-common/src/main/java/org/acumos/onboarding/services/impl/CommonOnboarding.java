@@ -53,6 +53,7 @@ import org.acumos.onboarding.component.docker.DockerClientFactory;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.acumos.onboarding.component.docker.cmd.CreateImageCommand;
 import org.acumos.onboarding.component.docker.cmd.DeleteImageCommand;
+import org.acumos.onboarding.component.docker.cmd.PullImageCommand;
 import org.acumos.onboarding.component.docker.cmd.PushImageCommand;
 import org.acumos.onboarding.component.docker.cmd.TagImageCommand;
 import org.acumos.onboarding.component.docker.preparation.H2ODockerPreparator;
@@ -216,6 +217,14 @@ public class CommonOnboarding {
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
+			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
+			logger.debug("Pull onboarding-base-r image from Nexus call started");
+			String repo = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
+			PullImageCommand pullImageCommand = new PullImageCommand(repo);
+			pullImageCommand.setClient(dockerClient);
+			pullImageCommand.execute();
+			logger.debug("Pull onboarding-base-r image from Nexus call ended");			
+			
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
 			for (Resource resource : resources) {
@@ -317,7 +326,7 @@ public class CommonOnboarding {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Started docker client");
 		DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 		logger.debug(EELFLoggerDelegate.debugLogger,"Docker client created successfully");
-		try {
+		try {			
 			logger.debug("Docker image creation started");
 			String actualModelName = getActualModelName(metadata, solutionID);  
 			CreateImageCommand createCMD = new CreateImageCommand(outputFolder, actualModelName,metadata.getVersion(), null, false, true);
