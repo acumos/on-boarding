@@ -218,12 +218,12 @@ public class CommonOnboarding {
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
 			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
-			logger.debug("Pull onboarding-base-r image from Nexus call started");
+			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call started");
 			String repo = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
 			PullImageCommand pullImageCommand = new PullImageCommand(repo);
 			pullImageCommand.setClient(dockerClient);
 			pullImageCommand.execute();
-			logger.debug("Pull onboarding-base-r image from Nexus call ended");			
+			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call ended");			
 			
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
