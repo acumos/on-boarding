@@ -23,6 +23,7 @@
  */
 package org.acumos.onboarding;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -87,11 +88,38 @@ public class OnboardingControllerTest {
 	
 	
 	final HttpServletResponse response = mock(HttpServletResponse.class);
-   
+    //private HttpServletRequest request = new MockHttpServletRequest();
+
+/*	@SuppressWarnings("unchecked")
+	@Test
+	public void OnboardingWithAuthentication() throws Exception {
+
+		try {
+			String user = " ";
+			String pass = " ";
+
+			JSONObject crediantials = new JSONObject();
+			crediantials.put("username", user);
+			crediantials.put("password", pass);
+
+			JSONObject reqObj = new JSONObject();
+			reqObj.put("request_body", crediantials);
+
+			System.out.println("testing....");
+
+			String token = portalclient.loginToAcumos(reqObj);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
+	
 	 @Before
 	  public void setUp() throws Exception {
 	        MockitoAnnotations.initMocks(this);
 	 }
+	 
+	 
 	
 	@Test
 	public void testOnboardingWithAuthentication() throws Exception {
@@ -165,8 +193,8 @@ public class OnboardingControllerTest {
 			
 			ResponseEntity<ServiceResponse> resp = onboardingController.dockerizePayload(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null);
-			logger.debug("HttpStatus code:" + resp.getStatusCode() +" \nBody:"+ resp.getBody());
-			logger.info("HttpStatus code:" + resp.getStatusCode() +" \nBody:"+ resp.getBody());
+			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
+			assertEquals(400,resp.getStatusCodeValue());
 
 		} catch (AcumosServiceException e) {
 			logger.debug(EELFLoggerDelegate.debugLogger,
@@ -182,5 +210,9 @@ public class OnboardingControllerTest {
 		//when(onboardingController.get)
 		
 	}
+	
+	
+	
+	
 
 }
