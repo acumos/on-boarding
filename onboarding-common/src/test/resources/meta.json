@@ -1,5 +1,5 @@
 {
-  "schema": "cognita.schema.model:0.3.0",
+  "schema": "acumos.schema.model:0.4.0",
   "runtime": {
     "name": "python",
     "encoding": "protobuf",
@@ -17,7 +17,7 @@
             "version": "0.2.2"
           },
           {
-            "name": "cognita-client",
+            "name": "acumos-client",
             "version": "0.3.9"
           },
           {

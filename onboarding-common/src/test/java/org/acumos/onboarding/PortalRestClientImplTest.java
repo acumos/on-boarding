@@ -48,8 +48,8 @@ public class PortalRestClientImplTest {
 	
 	
 	public PortalRestClientImplTest() throws AcumosServiceException {
-		new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
-		new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083","techmdev","Root1234");
+		new PortalRestClientImpl("http://acumos-dev1-vm01-core:8083");
+		new PortalRestClientImpl("http://acumos-dev1-vm01-core:8083","techmdev","Root1234");
 	}
 	
 	@Test
@@ -64,11 +64,9 @@ public class PortalRestClientImplTest {
 		try {
 
 			portalRestClient.tokenValidation(obj2, null);
-			assert (true);
 			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation success");
 
 		} catch (Exception e) {
-			assert (false);
 			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
 		}
 	}
@@ -88,16 +86,9 @@ public class PortalRestClientImplTest {
 		try {
 			String token = objRestClient.loginToAcumos(reqObj);
 
-			if (token != null) {
-				assert (true);
-				logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation success");
-			} else {
-				assert (true);
-				logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
-			}
+			
 		} catch (Exception e) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
-			assert (true);
 		}
 	}
 }

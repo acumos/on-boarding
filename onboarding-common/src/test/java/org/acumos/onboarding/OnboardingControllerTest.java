@@ -23,8 +23,7 @@
  */
 package org.acumos.onboarding;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -61,7 +60,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
+
 //@RunWith(MockitoJUnitRunner.class)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(OnboardingController.class)
@@ -78,7 +77,6 @@ public class OnboardingControllerTest {
 	
 	@Mock
 	protected CommonDataServiceRestClientImpl cdmsClient;
-	///PortalRestClientImpl portalclient = new PortalRestClientImpl("http://cognita-dev1-vm01-core:8083");
 	
 	@Mock
 	OnboardingNotification onboardingNotification;
@@ -88,38 +86,11 @@ public class OnboardingControllerTest {
 	
 	
 	final HttpServletResponse response = mock(HttpServletResponse.class);
-    //private HttpServletRequest request = new MockHttpServletRequest();
-
-/*	@SuppressWarnings("unchecked")
-	@Test
-	public void OnboardingWithAuthentication() throws Exception {
-
-		try {
-			String user = " ";
-			String pass = " ";
-
-			JSONObject crediantials = new JSONObject();
-			crediantials.put("username", user);
-			crediantials.put("password", pass);
-
-			JSONObject reqObj = new JSONObject();
-			reqObj.put("request_body", crediantials);
-
-			System.out.println("testing....");
-
-			String token = portalclient.loginToAcumos(reqObj);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-	
+   
 	 @Before
 	  public void setUp() throws Exception {
 	        MockitoAnnotations.initMocks(this);
 	 }
-	 
-	 
 	
 	@Test
 	public void testOnboardingWithAuthentication() throws Exception {
@@ -140,9 +111,6 @@ public class OnboardingControllerTest {
 		
 		JsonRequest<Crediantials> cred = new JsonRequest<>();
 		cred.setBody(credential);
-
-		String url = "http://cognita-dev1-vm01-core:8083/auth/jwtToken";
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 			
 		when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
 		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
@@ -194,8 +162,7 @@ public class OnboardingControllerTest {
 			ResponseEntity<ServiceResponse> resp = onboardingController.dockerizePayload(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null);
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
-			assertEquals(400,resp.getStatusCodeValue());
-
+            assertEquals(400,resp.getStatusCodeValue());
 		} catch (AcumosServiceException e) {
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"In excpetion Errormessage" + e.getMessage() + " HTTP Code:" + e.getErrorCode());
@@ -210,9 +177,5 @@ public class OnboardingControllerTest {
 		//when(onboardingController.get)
 		
 	}
-	
-	
-	
-	
 
 }

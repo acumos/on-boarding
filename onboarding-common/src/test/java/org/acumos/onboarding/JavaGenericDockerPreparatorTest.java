@@ -28,6 +28,7 @@ import org.acumos.onboarding.component.docker.preparation.JavaGenericDockerPrepa
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,6 +42,8 @@ public class JavaGenericDockerPreparatorTest {
 	File outFile = new File(filePath+"Dockerfile");
 	File outFolder = new File(filePath+"inFile.csv");
 	MetadataParser metadataParser = new MetadataParser(jsonFile);
+	
+	@InjectMocks
 	JavaGenericDockerPreparator javaGenericDockerPreparator = new JavaGenericDockerPreparator(metadataParser);
 
 	public JavaGenericDockerPreparatorTest() throws AcumosServiceException {
@@ -53,50 +56,29 @@ public class JavaGenericDockerPreparatorTest {
 		int[] baseVersion = { 1, 2, 3 };
 		int[] currentVersion = { 4, 5, 6 };
 		int result = JavaGenericDockerPreparator.compareVersion(baseVersion, currentVersion);
-		if (result != 0) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
 	}
 
 	@Test
 	public void versionAsArrayTest() {
 
 		int[] baseVersion = JavaGenericDockerPreparator.versionAsArray("1234");
-		if (baseVersion != null) {
-			assert (true);
-		} else {
-			assert (true);
-		}
-
 	}
 
 	@Test
 	public void prepareDockerAppTest() {
-
 		try {
 			javaGenericDockerPreparator.prepareDockerApp(new File("dFile"));
-			assert (true);
 		} catch (AcumosServiceException e) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
-			assert (true);
 		}
-
 	}
 
 	@Test
 	public void createDockerFile() {
 		try {
 			javaGenericDockerPreparator.createDockerFile(srcFile, outFile);
-			assert (true);
 		} catch (AcumosServiceException e) {
-			// TODO Auto-generated catch block
 			logger.debug(EELFLoggerDelegate.debugLogger, "createDockerFile failure");
-
 		}
-
 	}
-
 }
