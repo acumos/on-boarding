@@ -116,6 +116,21 @@ public class CommonOnboarding {
 
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	protected String portalURL;
+	
+	@Value("${docker.host}")
+	protected String host;
+	
+	@Value("${docker.port}")
+	protected String port;
+	
+	@Value("${base_image.rimage}")
+	protected String rimageName;
+	
+	@Value("${base_image.dockerusername}")
+	protected String dockerusername;
+	
+	@Value("${base_image.dockerpassword}")
+	protected String dockerpassword;
 
 	protected String modelOriginalName = null;
 	
@@ -225,15 +240,16 @@ public class CommonOnboarding {
 			pullImageCommand.setClient(dockerClient);
 			pullImageCommand.execute();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call ended");	*/	
-			
+			String hostname = host+":"+port;
+			logger.debug(EELFLoggerDelegate.debugLogger, "hostname: " + hostname);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Inside R runtime");
-			DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://cognita-dev1-vm01-core:4243", "nexus3.acumos.org", "jabeen", "M0ntec@rl0@1");
+			DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://"+hostname);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Docker client created");
 			AuthConfig authConfig = new AuthConfig()
-                    .withUsername("docker")
-                    .withPassword("docker");
-			String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
-			dockerClient.pullImageCmd(imageFullName).withAuthConfig(authConfig).exec(new PullImageResultCallback()).awaitSuccess();
+                    .withUsername(dockerusername)
+                    .withPassword(dockerpassword); 
+			//String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
+			dockerClient.pullImageCmd(rimageName).withAuthConfig(authConfig).exec(new PullImageResultCallback()).awaitSuccess();
 			logger.debug(EELFLoggerDelegate.debugLogger, "After pull image");
 			
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
