@@ -295,8 +295,7 @@ public class UtilityFunction {
 		}
 	} 
 	
-	public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username,
-			String password) {
+	public static DockerClientConfig createDockerClientConfig(String host) {
 		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClientConfig");
 		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false).build();
 		
@@ -305,10 +304,9 @@ public class UtilityFunction {
 				.build();*/
 	}
 	
-	public static DockerClient createDockerClient (String host, String registryServerUrl, String username,
-			String password) {
+	public static DockerClient createDockerClient (String host) {
 		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClient");
-		DockerClientConfig dockerClientConfig = createDockerClientConfig(host, registryServerUrl, username, password);
+		DockerClientConfig dockerClientConfig = createDockerClientConfig(host);
 		DockerClient dockerClient = DockerClientBuilder.getInstance(dockerClientConfig).build();
 		logger.debug(EELFLoggerDelegate.debugLogger, "createDockerClient ended");
 		return dockerClient;
