@@ -25,20 +25,32 @@ import static org.mockito.Mockito.mock;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acumos.cds.client.ICommonDataServiceRestClient;
+import org.acumos.cds.transport.SuccessTransport;
 import org.acumos.onboarding.services.impl.HealthcheckController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HealthcheckControllerTest{
 	
+	@InjectMocks
 	HealthcheckController healthcheckController = new HealthcheckController();
+	
+	@Mock
+	ICommonDataServiceRestClient cdmsClient;
 	
 	@Test
 	public void getHealthTest(){
+		SuccessTransport cdmsHealth =new SuccessTransport();
+		cdmsHealth.setStatus(1);
 		HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 		HttpServletResponse mockReponse= mock(HttpServletResponse.class);	  
+		when(cdmsClient.getHealth()).thenReturn(cdmsHealth);
 		healthcheckController.getHealth(mockRequest, mockReponse);
 	}
 }

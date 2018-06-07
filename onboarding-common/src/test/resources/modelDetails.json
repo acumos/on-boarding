@@ -1,5 +1,5 @@
 {
- "schema": "cognita.schema.model:0.3.0",
+ "schema": "acumos.schema.model:0.3.0",
  "name": "H2OModel",
  "runtime": {
    "encoding": "protobuf",
