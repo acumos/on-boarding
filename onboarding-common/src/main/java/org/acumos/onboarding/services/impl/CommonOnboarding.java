@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.acumos.cds.AccessTypeCode;
-import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.ToolkitTypeCode;
 import org.acumos.cds.ValidationStatusCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
@@ -72,6 +71,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.AuthConfig;
+import com.github.dockerjava.core.command.PullImageResultCallback;
 
 public class CommonOnboarding {
 	
@@ -217,13 +218,23 @@ public class CommonOnboarding {
 			}
 			dockerPreprator.prepareDockerAppV2(outputFolder);
 		} else if (metadata.getRuntimeName().equals("r")) {
-			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
+			/*DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call started");
 			String repo = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
 			PullImageCommand pullImageCommand = new PullImageCommand(repo);
 			pullImageCommand.setClient(dockerClient);
 			pullImageCommand.execute();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call ended");			
+			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call ended");	*/	
+			
+			logger.debug(EELFLoggerDelegate.debugLogger, "Inside R runtime");
+			DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://cognita-dev1-vm01-core:4243", "nexus3.acumos.org", "jabeen", "M0ntec@rl0@1");
+			logger.debug(EELFLoggerDelegate.debugLogger, "Docker client created");
+			AuthConfig authConfig = new AuthConfig()
+                    .withUsername("docker")
+                    .withPassword("docker");
+			String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
+			dockerClient.pullImageCmd(imageFullName).withAuthConfig(authConfig).exec(new PullImageResultCallback()).awaitSuccess();
+			logger.debug(EELFLoggerDelegate.debugLogger, "After pull image");
 			
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
@@ -242,7 +253,7 @@ public class CommonOnboarding {
 			}
 		} else if (metadata.getRuntimeName().equals("h2o")) {
 			File plugin_root = new File(outputFolder, "plugin_root");
-			plugin_root.mkdirs();
+			plugin_root.mkdirs(); 
 			File plugin_src = new File(plugin_root, "src");
 			plugin_src.mkdirs();
 			File plugin_classes = new File(plugin_root, "classes");

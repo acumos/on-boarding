@@ -32,19 +32,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.services.impl.OnboardingController;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.core.io.Resource;
+
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
 
 public class UtilityFunction {
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
@@ -290,4 +294,22 @@ public class UtilityFunction {
 			logger.info("Exception occured while adding logs in log file" + e.getMessage());
 		}
 	} 
+	
+	public static DockerClientConfig createDockerClientConfig(String host, String registryServerUrl, String username,
+			String password) {
+		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClientConfig");
+		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false)
+				.withRegistryUrl(registryServerUrl).withRegistryUsername(username).withRegistryPassword(password)
+				.build();
+	}
+	
+	public static DockerClient createDockerClient (String host, String registryServerUrl, String username,
+			String password) {
+		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClient");
+		DockerClientConfig dockerClientConfig = createDockerClientConfig(host, registryServerUrl, username, password);
+		DockerClient dockerClient = DockerClientBuilder.getInstance(dockerClientConfig).build();
+		logger.debug(EELFLoggerDelegate.debugLogger, "createDockerClient ended");
+		return dockerClient;
+		
+	}
 }
