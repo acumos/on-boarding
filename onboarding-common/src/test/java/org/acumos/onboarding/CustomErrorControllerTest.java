@@ -20,53 +20,41 @@
 
 package org.acumos.onboarding;
 
+import static org.mockito.Mockito.when;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.services.impl.CustomErrorController;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomErrorControllerTest {
 
-	@Mock
+	@InjectMocks
 	CustomErrorController customErrorController;
 
 	@Test
-	public void acumosServiceExceptionHandlerTest() {
-
-		HttpServletRequest request = null;
-
-		AcumosServiceException acumosServiceException = new AcumosServiceException("service not available");
-		acumosServiceException.setErrorCode(null);
-
-		ResponseEntity<ServiceResponse> response = customErrorController.acumosServiceExceptionHandler(request,
-				acumosServiceException);
-		customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
-		when(customErrorController.acumosServiceExceptionHandler(request, acumosServiceException)).thenReturn(response);
-		assert (true);
-
+	public void getErrorPathTest() {	
+		Assert.assertNotNull(customErrorController.getErrorPath());
 	}
 
 	@Test
 	public void acumosServiceExceptionHandlerTest1() {
 
 		HttpServletRequest request = null;
-
 		AcumosServiceException acumosServiceException = new AcumosServiceException("service not available");
 		acumosServiceException.setErrorCode(AcumosServiceException.ErrorCode.INVALID_PARAMETER.name());
-
 		ResponseEntity<ServiceResponse> response = customErrorController.acumosServiceExceptionHandler(request,
 				acumosServiceException);
-		customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
-		when(customErrorController.acumosServiceExceptionHandler(request, acumosServiceException)).thenReturn(response);
-		assert (true);
+		ResponseEntity<ServiceResponse> resp =customErrorController.acumosServiceExceptionHandler(request, acumosServiceException);
+		//when(customErrorController.acumosServiceExceptionHandler(request, acumosServiceException)).thenReturn(response);
+		Assert.assertNotNull(resp);
 	}
-
 }

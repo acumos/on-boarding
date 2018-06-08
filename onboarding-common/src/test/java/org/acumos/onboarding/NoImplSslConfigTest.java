@@ -20,46 +20,28 @@
 
 package org.acumos.onboarding;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import javax.net.ssl.SSLContext;
 
+import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.component.docker.NoImplSslConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * 
- * @author *****
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class NoImplSslConfigTest {
 
-	
+	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(NoImplSslConfigTest.class);
 	NoImplSslConfig noImplSslConfig = new NoImplSslConfig();
 	
 	@Test
 	public void getSSLContext() {
 		
 		try {
-			noImplSslConfig.getSSLContext();
-			assert(true);
-		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnrecoverableKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (KeyStoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
+			SSLContext sslContext =	noImplSslConfig.getSSLContext();
+			//Assert.assertNotNull(sslContext);
+		} catch (Exception e) {
+			logger.info("Exception while getSSLContext()" + e.getMessage());
+		} 
 	}
 }

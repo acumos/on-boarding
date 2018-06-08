@@ -20,26 +20,21 @@
 
 package org.acumos.onboarding;
 
-import java.util.List;
-
 import java.util.ArrayList;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.Requirement;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MetadataTest  extends Requirement{
+public class MetadataTest{
 	
 	@Test
 	public void metaDataTest() {
 		
 		Requirement requirement = new Requirement();
-		/*name = "test";
-		operator = "+";
-		version = "v1.0";*/
-		
 		System.out.println(requirement.toString());
 		Metadata  metaData = new Metadata();
 		metaData.setModelName("javageneric");
@@ -58,7 +53,6 @@ public class MetadataTest  extends Requirement{
 		
 		metaData.getModelName();
 		metaData.getOwnerId();
-		//list.add(requirement);
 		metaData.getRequirements();
 		metaData.getRevisionId();
 		metaData.getRuntimeName();
@@ -67,12 +61,7 @@ public class MetadataTest  extends Requirement{
 		metaData.getSolutionName();
 		metaData.getToolkit();
 		metaData.getVersion();
-		
-		assert(true);
-		
-		
-		
-		
+		Assert.assertNotNull(metaData);
 	}
 
 }

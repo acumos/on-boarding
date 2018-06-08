@@ -146,15 +146,5 @@ public class EELFLoggerDelegateTest {
 		eelfLoggerDelegate.getLogger("Logger");	
 		
 	}
-	@Test
-	public void getLoggerTest1(){
-		
-		try {
-			eelfLoggerDelegate.getLogger(Class.forName("EELFLoggerDelegateTest"));
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		
-	}
+	
 }

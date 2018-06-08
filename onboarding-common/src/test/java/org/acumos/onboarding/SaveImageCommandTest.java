@@ -39,7 +39,6 @@ public class SaveImageCommandTest {
 	public void getDisplayName() {
 		try {
 			saveImageCommand.getDisplayName();
-			assert (true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,33 +46,27 @@ public class SaveImageCommandTest {
 	@Test
 	public void getImageName(){
 		saveImageCommand.getImageName();
-		assert (true);
 	}
 	@Test
 	public void getImageTag(){
 		saveImageCommand.getImageTag();
-		assert (true);
 	}
 	@Test
 	public void getDestination(){
 		saveImageCommand.getDestination();
-		assert (true);
 	}
 	@Test
 	public void getFilename(){
 		saveImageCommand.getFilename();
-		assert (true);
 	}
 	@Test
 	public void getIgnoreIfNotFound(){
 		saveImageCommand.getIgnoreIfNotFound();
-		assert (true);
 	}
 	@Test
 	public void executeTest() {
 		try {
 			saveImageCommand.execute();
-			assert (true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
