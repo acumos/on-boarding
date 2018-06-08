@@ -46,12 +46,10 @@ public class MetadataParserTest {
 			assertNotNull(mparser);
 		} catch (AcumosServiceException ae) {
 			if ((ae.getMessage().equalsIgnoreCase("Invalid input JSON")) || (ae.getMessage().contains("Invalid Model Name"))) {
-				logger.info("Exception " + ae.getMessage());
-				assert (true);
+				logger.info("Exception while metadataParserInvalidJsonTest()" + ae.getMessage());
 			} else {
 				throw ae;
 			}
-
 		}
 	}
 

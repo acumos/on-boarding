@@ -22,6 +22,7 @@ package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.component.docker.cmd.TagImageCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -37,7 +38,7 @@ public class TagImageCommandTest {
 	public void getDisplayName() {
 		try {
 			tagImageCommand.getImage();
-			assert (true);
+			Assert.assertNotNull(tagImageCommand);
 		} catch (Exception e) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "tagImageCommand failure");
 
@@ -53,13 +54,14 @@ public class TagImageCommandTest {
 		tagImageCommand.getRepository();
 		tagImageCommand.getTag();
 		tagImageCommand.getWithForce();
-		assert (true);
+		Assert.assertNotNull(tagImageCommand);
 	}
 	@Test
 	public void executeTest() {
 		try {
 			tagImageCommand.execute();
 		} catch (Exception e) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "executeTest() failure");
 		}
 	}
 }

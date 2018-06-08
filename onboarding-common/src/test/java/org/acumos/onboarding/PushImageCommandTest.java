@@ -39,7 +39,6 @@ public class PushImageCommandTest {
 	public void getDisplayName() {
 		try {
 			pushImageCommand.getDisplayName();
-			assert (true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,25 +47,21 @@ public class PushImageCommandTest {
 	@Test
 	public void getImage() {
 		pushImageCommand.getImage();
-		assert (true);
 	}
 
 	@Test
 	public void getTag() {
 		pushImageCommand.getTag();
-		assert (true);
 	}
 
 	@Test
 	public void getRegistry() {
 		pushImageCommand.getRegistry();
-		assert (true);
 	}
 	@Test
 	public void executeTest() {
 		try {
 			pushImageCommand.execute();
-			assert (true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
