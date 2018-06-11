@@ -57,18 +57,21 @@ public class ApplicationStartupPullImage
 	 */
 	@Override
 	public void onApplicationEvent(final ApplicationReadyEvent event) {
+		try {
+			//Download the rbase image at the start of the container. if there is an issue it will go ahead with starting springboot container.
+			String hostname = host + ":" + port;
+			logger.debug(EELFLoggerDelegate.debugLogger, rimageName + " Pull Started hostname: " + hostname);
+			DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://" + hostname);
+			logger.debug(EELFLoggerDelegate.debugLogger, "ApplicationStartupPullImage -> Docker client created");
+			AuthConfig authConfig = new AuthConfig().withUsername(dockerusername).withPassword(dockerpassword);
+			dockerClient.pullImageCmd(rimageName).withAuthConfig(authConfig).exec(new PullImageResultCallback())
+					.awaitSuccess();
+			logger.debug(EELFLoggerDelegate.debugLogger, rimageName + " Image pulled Successfully");
 
-		String hostname = host + ":" + port;
-
-		logger.debug(EELFLoggerDelegate.debugLogger, rimageName + " Pull Started hostname: " + hostname);
-		DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://" + hostname);
-		logger.debug(EELFLoggerDelegate.debugLogger, "ApplicationStartupPullImage -> Docker client created");
-		AuthConfig authConfig = new AuthConfig().withUsername(dockerusername).withPassword(dockerpassword);
-		dockerClient.pullImageCmd(rimageName).withAuthConfig(authConfig).exec(new PullImageResultCallback())
-				.awaitSuccess();
-		logger.debug(EELFLoggerDelegate.debugLogger, rimageName + " Image pulled Successfully");
-
-		return;
+		} catch (Exception e) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "Failed to pull image " + e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed to pull image " + e.getMessage());
+		}
 	}
 
 }
