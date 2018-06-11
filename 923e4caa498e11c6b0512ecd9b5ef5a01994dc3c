@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02aa66f5_de5a4f32",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/component/docker/cmd/ApplicationStartupPullImage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-06-11T13:22:25Z",
+      "side": 1,
+      "message": "Don\u0027t repeat log messages - just put this in the error log.  Don\u0027t convert the exception to string, give it to the logger",
+      "revId": "923e4caa498e11c6b0512ecd9b5ef5a01994dc3c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
