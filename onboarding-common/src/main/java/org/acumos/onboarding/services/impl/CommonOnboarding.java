@@ -117,7 +117,7 @@ public class CommonOnboarding {
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	protected String portalURL;
 	
-	@Value("${docker.host}")
+	/*@Value("${docker.host}")
 	protected String host;
 	
 	@Value("${docker.port}")
@@ -131,7 +131,7 @@ public class CommonOnboarding {
 	
 	@Value("${base_image.dockerpassword}")
 	protected String dockerpassword;
-
+*/
 	protected String modelOriginalName = null;
 	
 	protected boolean dcaeflag = false;
@@ -240,17 +240,6 @@ public class CommonOnboarding {
 			pullImageCommand.setClient(dockerClient);
 			pullImageCommand.execute();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Pull onboarding-base-r image from Nexus call ended");	*/	
-			String hostname = host+":"+port;
-			logger.debug(EELFLoggerDelegate.debugLogger, "hostname: " + hostname);
-			logger.debug(EELFLoggerDelegate.debugLogger, "Inside R runtime");
-			DockerClient dockerClient = UtilityFunction.createDockerClient("tcp://"+hostname);
-			logger.debug(EELFLoggerDelegate.debugLogger, "Docker client created");
-			AuthConfig authConfig = new AuthConfig()
-                    .withUsername(dockerusername)
-                    .withPassword(dockerpassword); 
-			//String imageFullName = "nexus3.acumos.org:10004/onboarding-base-r:1.0";
-			dockerClient.pullImageCmd(rimageName).withAuthConfig(authConfig).exec(new PullImageResultCallback()).awaitSuccess();
-			logger.debug(EELFLoggerDelegate.debugLogger, "After pull image");
 			
 			RDockerPreparator dockerPreprator = new RDockerPreparator(metadataParser, http_proxy);
 			Resource[] resources = this.resourceUtils.loadResources("classpath*:templates/r/*");
