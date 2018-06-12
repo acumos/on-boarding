@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af2521e2_ec5feb13",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-06-12T12:28:26Z",
+      "side": 1,
+      "message": "Please fix trailing space",
+      "revId": "c876fd4a75650d4ed90bd2dd62a5be87a1c7f899",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}

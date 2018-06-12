@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30c488f0_8beb2ded",
+        "filename": "onboarding-common/src/test/java/org/acumos/onboarding/EELFLoggerDelegateTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-06-12T12:28:26Z",
+      "side": 0,
+      "message": "too many ; please remove it and fix trailing space",
+      "revId": "923e4caa498e11c6b0512ecd9b5ef5a01994dc3c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
