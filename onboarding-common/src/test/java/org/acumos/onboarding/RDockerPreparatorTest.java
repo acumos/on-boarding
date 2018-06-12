@@ -76,7 +76,8 @@ public class RDockerPreparatorTest {
 	public void prepareDockerAppTest(){
 		
 		try {
-			rDockerPreparator.prepareDockerApp(new File("dFile"));
+			File f1 = new File(FilePathTest.filePath());
+			rDockerPreparator.prepareDockerApp(f1);
 			assert(true);
 		} catch (AcumosServiceException e) {
 			e.printStackTrace();

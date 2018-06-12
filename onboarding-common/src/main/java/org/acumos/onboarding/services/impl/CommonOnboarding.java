@@ -525,7 +525,7 @@ public class CommonOnboarding {
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
 			onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
-					"Add Artifact for" + file.getName() + " Started");
+					"Add Artifact for" + file.getName() + " started");
 		}
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
@@ -556,7 +556,7 @@ public class CommonOnboarding {
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 						onboardingStatus.notifyOnboardingStatus("AddToRepository", "SU",
-								"Add Artifact for" + file.getName() + " Succesful");
+								"Add Artifact for" + file.getName() + " Successful");
 					}
 					return modelArtifact;
 				} catch (HttpStatusCodeException e) {
@@ -595,7 +595,7 @@ public class CommonOnboarding {
 				// Notify add artifacts started
 				if (onboardingStatus != null) {
 					onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
-							"Add Artifact for" + uri + " Started");
+							"Add Artifact for" + uri + " started");
 				}
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(metadata.getModelName());
@@ -746,7 +746,7 @@ public class CommonOnboarding {
 
 		for (File file : fList) {
 			if (file.isFile()) {
-				System.out.println(file.getPath());
+				logger.debug(EELFLoggerDelegate.debugLogger,file.getName());
 			} else if (file.isDirectory()) {
 				listFilesAndFilesSubDirectories(file);
 			}
