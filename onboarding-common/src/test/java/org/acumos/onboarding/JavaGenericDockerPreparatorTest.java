@@ -65,15 +65,6 @@ public class JavaGenericDockerPreparatorTest {
 	}
 
 	@Test
-	public void prepareDockerAppTest() {
-		try {
-			javaGenericDockerPreparator.prepareDockerApp(new File("dFile"));
-		} catch (AcumosServiceException e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
-		}
-	}
-
-	@Test
 	public void createDockerFile() {
 		try {
 			javaGenericDockerPreparator.createDockerFile(srcFile, outFile);

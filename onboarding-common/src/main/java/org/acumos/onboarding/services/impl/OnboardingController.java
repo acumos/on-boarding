@@ -121,7 +121,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			if (token != null) {
 				// Setting JWT token in header
 				response.setHeader("jwtToken", token);
-				logger.debug(EELFLoggerDelegate.debugLogger, "User Authentication Succesful");
+				logger.debug(EELFLoggerDelegate.debugLogger, "User Authentication Successful");
 				return new ResponseEntity<ServiceResponse>(ServiceResponse.successJWTResponse(token), HttpStatus.OK);
 			} else {
 				logger.debug(EELFLoggerDelegate.debugLogger, "Either Username/Password is invalid.");
@@ -435,7 +435,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					// Notify Create docker image is successful
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Succesful");
+						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Successfully");
 					}
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by

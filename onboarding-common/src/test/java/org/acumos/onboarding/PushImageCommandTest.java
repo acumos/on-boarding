@@ -58,13 +58,5 @@ public class PushImageCommandTest {
 	public void getRegistry() {
 		pushImageCommand.getRegistry();
 	}
-	@Test
-	public void executeTest() {
-		try {
-			pushImageCommand.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 }
