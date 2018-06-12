@@ -20,6 +20,7 @@
 
 package org.acumos.onboarding;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -193,15 +194,11 @@ public class CommonOnboardingTest {
 	
 	@Test
 	public void listFilesAndFilesSubDirectories(){
-		File file=new File("onboarding-app/src/test/java/org/acumos/onboarding");
-		file.mkdirs();
-		File f1 = new File(file.getPath() + File.separator + "testFile");
-		Path path=FileSystems.getDefault().getPath(f1.getPath()+"/testFile");
+
+		File f1 = new File(FilePathTest.filePath());
      	try {
-			f1.createNewFile();
-			commonOnboarding.listFilesAndFilesSubDirectories(file);
-	     	Files.deleteIfExists(path);
-		} catch (IOException e) {
+			doNothing().when(commonOnboarding).listFilesAndFilesSubDirectories(f1);
+		} catch (Exception e) {
 			logger.info("Exception occured while listFilesAndFilesSubDirectories()" + e.getMessage());
 		}
      	

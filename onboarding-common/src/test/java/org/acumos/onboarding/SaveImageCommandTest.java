@@ -63,12 +63,4 @@ public class SaveImageCommandTest {
 	public void getIgnoreIfNotFound(){
 		saveImageCommand.getIgnoreIfNotFound();
 	}
-	@Test
-	public void executeTest() {
-		try {
-			saveImageCommand.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
