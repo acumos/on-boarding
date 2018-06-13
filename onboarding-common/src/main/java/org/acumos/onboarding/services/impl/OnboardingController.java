@@ -338,7 +338,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					onboardingStatus.setUserId(ownerId);
 
 				logger.debug(EELFLoggerDelegate.debugLogger, "Dockerization request recieved with "
-						+ model.getOriginalFilename() + " and metadata :" + metadata);
+						+ model.getOriginalFilename());
 
 				// Notify Create solution or get existing solution ID has
 				// started
@@ -419,7 +419,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					// Notify Create docker image has started
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST", "Create Docker Image Started");
+						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST", "Create Docker Image Started for solution "+mData.getSolutionId());
 					}
 
 					try {
@@ -435,7 +435,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					// Notify Create docker image is successful
 					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Successfully");
+						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Successfully for solution "+mData.getSolutionId());
 					}
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by

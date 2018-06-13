@@ -180,9 +180,9 @@ public class CommonOnboardingTest {
 		data.setVersion("3.6.1");
 		data.setOwnerId("361de562-2e4d-49d7-b6a2-b551c35050e6");
 
-		File localProtobufFile = new File("pathname");
-		File localMetadataFile = new File("path");
-
+		File localProtobufFile = new File(FilePathTest.filePath()+"model.proto");
+		File localMetadataFile =new File(FilePathTest.filePath()+"modelDetails.json");
+		
 		try {
 			when(toscaClient.generateTOSCA(data.getOwnerId(), data.getSolutionId(), data.getVersion(),
 					data.getRevisionId(), localProtobufFile, localMetadataFile)).thenReturn("result");

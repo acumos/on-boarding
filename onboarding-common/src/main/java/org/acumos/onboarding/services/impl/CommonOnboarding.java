@@ -591,7 +591,7 @@ public class CommonOnboarding {
 
 		try {
 			try {
-				logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + uri + " started");
+				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " started");
 				// Notify add artifacts started
 				if (onboardingStatus != null) {
 					onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
@@ -606,24 +606,25 @@ public class CommonOnboarding {
 				modelArtifact.setUri(uri);
 				modelArtifact.setSize(uri.length());
 				modelArtifact = cdmsClient.createArtifact(modelArtifact);
+				logger.debug(EELFLoggerDelegate.debugLogger,"create Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
 				try {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
-					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact for " + uri + " successful");
+					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact - "+uri+" for solution - " +metadata.getSolutionId( )+" Successful");
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
-						onboardingStatus.notifyOnboardingStatus("AddToRepository","SU", "Upload Artifact for" + modelArtifact.getName() +" Successful");
+						onboardingStatus.notifyOnboardingStatus("AddToRepository","SU", "Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
 					}
 					return modelArtifact;
 
 				} catch (HttpStatusCodeException e) {
 					
-					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for {}", e.getResponseBodyAsString(), e);
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for solutoin "+metadata.getSolutionId()+ "{}", e.getResponseBodyAsString(), e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
 				}
 			} catch (HttpStatusCodeException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for {}", e.getResponseBodyAsString(), e);
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for solutoin " +metadata.getSolutionId()+"{}", e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + e.getResponseBodyAsString(), e);
 			}

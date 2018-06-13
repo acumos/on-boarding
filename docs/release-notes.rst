@@ -23,6 +23,15 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.27.0, 13 June 2018
+---------------------------
+ * R-model initial configuration missing (ACUMOS-667)
+ * Several onboarding unit tests do not appear to be testing correctly (ACUMOS-562)
+ * <IST><Onboarding> "Successful" miss-spelled in onboarding logs (ACUMOS-1100)
+ * This build has yml changes, needs to provide rbase image name and nexus user name and password for current environment as below. "base_image": {  "rimage": "nexus3.acumos.org:10004/onboarding-base-r:1.0","dockerusername": "*****","dockerpassword": "*****"}
+
+ping me once you are back
+
 Version 1.26.0, 31 May 2018
 ---------------------------
 * Onboarding server gives mysterious error when using "/" character in model name (ACUMOS-952)
