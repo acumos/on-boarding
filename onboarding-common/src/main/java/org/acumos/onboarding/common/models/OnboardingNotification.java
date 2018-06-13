@@ -82,7 +82,7 @@ public class OnboardingNotification {
 			}
 			cdmsClient.createStepResult(stepResult);
 		}
-
+		logger.debug(EELFLoggerDelegate.debugLogger,"Send Notification to DB Ended");
 	}
 	// Get/Set methods ------
 
