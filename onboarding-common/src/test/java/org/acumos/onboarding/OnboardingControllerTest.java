@@ -46,6 +46,7 @@ import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,11 +108,11 @@ public class OnboardingControllerTest {
 
 		JSONObject reqObj = new JSONObject();
 		reqObj.put("request_body", crediantials); 
-		
-		
+
+
 		JsonRequest<Crediantials> cred = new JsonRequest<>();
 		cred.setBody(credential);
-			
+
 		when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
 		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
 		assertNotNull(result);
@@ -148,15 +149,15 @@ public class OnboardingControllerTest {
 			JsonResponse<Object> jsonResp = new JsonResponse<Object>();
 			jsonResp.setStatus(true);
 			jsonResp.setResponseBody("ownerid");
-			
+
 			PowerMockito.whenNew(CommonDataServiceRestClientImpl.class)
 					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
 					.thenReturn(cmdDataSvc);
-			
+
 			PowerMockito.whenNew(OnboardingNotification.class)
 					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
 					.thenReturn(onboardingStatus);
-			
+
 			PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn(jsonResp);
 			
 			ResponseEntity<ServiceResponse> resp = onboardingController.dockerizePayload(mock(HttpServletRequest.class),
@@ -164,18 +165,10 @@ public class OnboardingControllerTest {
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(400,resp.getStatusCodeValue());
 		} catch (AcumosServiceException e) {
-			logger.debug(EELFLoggerDelegate.debugLogger,
-					"In excpetion Errormessage" + e.getMessage() + " HTTP Code:" + e.getErrorCode());
-			e.printStackTrace();
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
 		}
 
 	}
-	
-	@Test
-	public void getArtifactsDetailsTest() {
-		
-		//when(onboardingController.get)
-		
-	}
+
 
 }

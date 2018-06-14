@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.component.docker.cmd.SaveImageCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -32,15 +33,15 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SaveImageCommandTest {
-	
+
 	SaveImageCommand saveImageCommand = new SaveImageCommand("H2O", "1.0.0", "SOHIL", "h20", true);
 
 	@Test
 	public void getDisplayName() {
 		try {
-			saveImageCommand.getDisplayName();
+			Assert.assertNotNull(saveImageCommand.getDisplayName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail("getDisplayName failed : " + e.getMessage());
 		}
 	}
 	@Test

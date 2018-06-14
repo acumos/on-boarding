@@ -37,15 +37,14 @@ public class RDockerPreparatorTest {
 
 	String filePath = FilePathTest.filePath(); 
 	File jsonFile = new File(filePath+"modelDetails.json");
-	
-	
+
 	public RDockerPreparatorTest() throws AcumosServiceException {
 		new MetadataParser(jsonFile);
 	}
-	
+
 	MetadataParser metadataParser = new MetadataParser(jsonFile);
 	private String httpProxy= "http://10.1.0.6:3128";
-	
+
 	@Mock
 	RDockerPreparator rDockerPreparator = new RDockerPreparator(metadataParser, httpProxy);
 
@@ -64,19 +63,18 @@ public class RDockerPreparatorTest {
 		int[] baseVersion = RDockerPreparator.versionAsArray("1234");
 		Assert.assertNotNull(baseVersion);
 	}
-	
-	
+
 	@Test
 	public void prepareDockerAppTest(){
-		
+
 		try {
 			File f1 = new File(FilePathTest.filePath());
 			doNothing().when(rDockerPreparator).prepareDockerApp(f1);
 		} catch (AcumosServiceException e) {
-			e.printStackTrace();
+			Assert.fail("prepareDockerAppTest failed : " + e.getMessage());
 		}
 
   }
-	
+
 }
 

@@ -37,14 +37,14 @@ public class TagImageCommandTest {
 	@Test
 	public void getDisplayName() {
 		try {
-			tagImageCommand.getImage();
-			Assert.assertNotNull(tagImageCommand);
+
+			Assert.assertNotNull(tagImageCommand.getImage());
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "tagImageCommand failure");
+			Assert.fail("tagImageCommand failed : " + e.getMessage());
 
 		}
 	}
-	
+
 	@Test
 	public void getImage() {
 
@@ -55,13 +55,5 @@ public class TagImageCommandTest {
 		tagImageCommand.getTag();
 		tagImageCommand.getWithForce();
 		Assert.assertNotNull(tagImageCommand);
-	}
-	@Test
-	public void executeTest() {
-		try {
-			tagImageCommand.execute();
-		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "executeTest() failure");
-		}
 	}
 }

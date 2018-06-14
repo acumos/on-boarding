@@ -41,7 +41,8 @@ public class ServiceResponseTest {
 			serviceResponse.setStatus("ERROR");
 			Assert.assertNotNull(serviceResponse);
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "failed");
+			Assert.fail("errorResponse failed : " + e.getMessage());
+
 		}
 	}
 
@@ -52,7 +53,7 @@ public class ServiceResponseTest {
 			serviceResponse.setStatus("SUCCESS");
 			Assert.assertNotNull(serviceResponse);
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "failed");
+			Assert.fail("successResponse failed : " + e.getMessage());
 		}
 	}
 
@@ -67,7 +68,7 @@ public class ServiceResponseTest {
 					"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJEaWxpcCIsImNyZWF0ZWQiOjE1MDUyOTU0MTA2MDEsImV4cCI6MTUwNTI5NTQyMCwibWxwdXNlciI6eyJ1c2VySWQiOiI2ZDU0NjAxZS0wNWE4LTQ1MTQtODFiYS0xYjFmM2JkODhlMWUiLCJmaXJzdE5hbWUiOiJEaWxpcCIsIm1pZGRsZU5hbWUiOm51bGwsImxhc3ROYW1lIjoiS3VtYXIiLCJvcmdOYW1lIjpudWxsLCJlbWFpbCI6IkRpbGlwQGdtYWlsLmNvbSIsImxvZ2luTmFtZSI6IkRpbGlwIiwibG9naW5QYXNzIjpudWxsLCJsb2dpblBhc3NFeHBpcmUiOm51bGwsImF1dGhUb2tlbiI6bnVsbCwiYWN0aXZlIjp0cnVlLCJsYXN0TG9naW4iOm51bGwsInBpY3R1cmUiOm51bGwsImNyZWF0ZWQiOjE1MDUyOTU0MDIwMDAsIm1vZGlmaWVkIjoxNTA1Mjk1NDAyMDAwfX0.n3IXoP-GDGUEmowxiesttqFDXH1NCK4sICYFfsr9L6LmLAnb2BslWomB6EjJY-MsTh4u4gOyOrguEYvJhY6b-w");
 			Assert.assertNotNull(serviceResponse);
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "failed");
+			Assert.fail("successJWTResponse failed : " + e.getMessage());
 		}
 	}
 
@@ -78,7 +79,7 @@ public class ServiceResponseTest {
 			serviceResponse.setStatus("SUCCESS");
 			Assert.assertNotNull(serviceResponse);
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "failed");
+			Assert.fail("successResponse1 failed : " + e.getMessage());
 		}
 	}
 

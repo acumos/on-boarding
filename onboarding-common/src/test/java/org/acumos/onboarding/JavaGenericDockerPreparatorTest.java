@@ -26,6 +26,7 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.component.docker.preparation.JavaGenericDockerPreparator;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,9 +34,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JavaGenericDockerPreparatorTest {
-	
+
 	 String filePath = FilePathTest.filePath();
-	
+
 	public static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(JavaGenericDockerPreparatorTest.class);
 	File jsonFile = new File(filePath+"java_genric.json");
 	File srcFile = new File(filePath+"Dockerfile");
@@ -69,7 +70,7 @@ public class JavaGenericDockerPreparatorTest {
 		try {
 			javaGenericDockerPreparator.createDockerFile(srcFile, outFile);
 		} catch (AcumosServiceException e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "createDockerFile failure");
+			Assert.fail("createDockerFile failed : " + e.getMessage());
 		}
 	}
 }
