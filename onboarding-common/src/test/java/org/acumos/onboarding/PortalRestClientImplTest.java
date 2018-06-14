@@ -25,16 +25,13 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.services.PortalRestClient;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * 
- * @author *****
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class PortalRestClientImplTest {
 	
@@ -43,6 +40,7 @@ public class PortalRestClientImplTest {
 	@Mock
 	PortalRestClient portalRestClient;
 
+	@InjectMocks
 	PortalRestClientImpl objRestClient = new PortalRestClientImpl();
 
 	
@@ -67,28 +65,7 @@ public class PortalRestClientImplTest {
 			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation success");
 
 		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
-		}
-	}
-
-	@Test
-	public void loginToAcumos() throws Exception {
-
-		String user = "techmdev";
-		String pass = "Root1234";
-
-		JSONObject crediantials = new JSONObject();
-		crediantials.put("username", user);
-		crediantials.put("password", pass);
-
-		JSONObject reqObj = new JSONObject();
-		reqObj.put("request_body", crediantials);
-		try {
-			String token = objRestClient.loginToAcumos(reqObj);
-
-			
-		} catch (Exception e) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation failed");
+			Assert.fail("tokenValidation failed : " + e.getMessage());
 		}
 	}
 }

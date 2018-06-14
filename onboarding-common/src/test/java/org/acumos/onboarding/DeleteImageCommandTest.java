@@ -21,14 +21,11 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.component.docker.cmd.DeleteImageCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Test class for DeleteImageCommand.java
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteImageCommandTest {
 
@@ -36,37 +33,26 @@ public class DeleteImageCommandTest {
 
 	@Test
 	public void getDisplayName() {
-		try {
-			deleteImageCommand.getDisplayName();
+		try {	
+            Assert.assertNotNull(deleteImageCommand.getDisplayName());
 		} catch (Exception e) {
-
+			Assert.fail("Exception occured while createSolutionTest(): " + e.getMessage());
 		}
 	}
 
 	@Test
 	public void getImage() {
-		deleteImageCommand.getImageName();
+		Assert.assertNotNull(deleteImageCommand.getImageName());
 	}
 
 	@Test
 	public void getTag() {
-		deleteImageCommand.getTag();
-
+		Assert.assertNotNull(deleteImageCommand.getTag());
 	}
 
 	@Test
 	public void getRegistry() {
-		deleteImageCommand.getRegistry();
-
+		Assert.assertNotNull(deleteImageCommand.getRegistry());
 	}
 
-	@Test
-	public void executeTest() {
-		try {
-			deleteImageCommand.execute();
-
-		} catch (Exception e) {
-
-		}
-	}
 }

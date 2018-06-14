@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.component.docker.cmd.SaveImageCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -38,9 +39,9 @@ public class SaveImageCommandTest {
 	@Test
 	public void getDisplayName() {
 		try {
-			saveImageCommand.getDisplayName();
+			Assert.assertNotNull(saveImageCommand.getDisplayName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail("getDisplayName failed : " + e.getMessage());
 		}
 	}
 	@Test

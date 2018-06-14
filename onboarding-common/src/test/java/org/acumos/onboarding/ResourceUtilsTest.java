@@ -50,7 +50,8 @@ public class ResourceUtilsTest {
 			Assert.assertNotNull(resourceUtils);
 
 		} catch (AcumosServiceException e) {
-			logger.info("Exception occured while getResourceTest()" + e.getMessage());
+			Assert.fail("getResourceTest failed : " + e.getMessage());
+			
 		}
 	}
 
@@ -61,7 +62,8 @@ public class ResourceUtilsTest {
 			ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(pattern);
 			Assert.assertNotNull(resourceUtils);
 		}  catch (Exception e) {
-			logger.info("Exception occured while loadResourcesTest()" + e.getMessage());
+			Assert.fail("loadResourcesTest failed : " + e.getMessage());
+			
 		} 
 	}
 	
@@ -70,7 +72,8 @@ public class ResourceUtilsTest {
 		try {
 			resourceUtils.isResourceExists(path);
 		} catch (AcumosServiceException e) {
-			logger.info("Exception occured while isResourceExistsTest()" + e.getMessage());
+			Assert.fail("isResourceExistsTest failed : " + e.getMessage());
+			
 		}
 	}
 
