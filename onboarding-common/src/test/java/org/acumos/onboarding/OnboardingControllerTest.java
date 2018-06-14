@@ -46,6 +46,7 @@ import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -164,18 +165,11 @@ public class OnboardingControllerTest {
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(400,resp.getStatusCodeValue());
 		} catch (AcumosServiceException e) {
-			logger.debug(EELFLoggerDelegate.debugLogger,
-					"In excpetion Errormessage" + e.getMessage() + " HTTP Code:" + e.getErrorCode());
-			e.printStackTrace();
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
 		}
 
 	}
 	
-	@Test
-	public void getArtifactsDetailsTest() {
-		
-		//when(onboardingController.get)
-		
-	}
+	
 
 }

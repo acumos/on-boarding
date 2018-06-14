@@ -21,6 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.component.docker.cmd.PushImageCommand;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -40,7 +41,7 @@ public class PushImageCommandTest {
 		try {
 			pushImageCommand.getDisplayName();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail("getDisplayName failed : " + e.getMessage());
 		}
 	}
 
