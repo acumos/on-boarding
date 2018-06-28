@@ -393,8 +393,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (isListEmpty) {
 						mlpSolution = createSolution(mData, onboardingStatus);
 						mData.setSolutionId(mlpSolution.getSolutionId());
-						logger.debug("New solution created Successfully " + mlpSolution.getSolutionId());
+						logger.debug(EELFLoggerDelegate.debugLogger, "New solution created Successfully " + mlpSolution.getSolutionId());
 					} else {
+						logger.debug(EELFLoggerDelegate.debugLogger, "Existing solution found for model name " + solList.get(0).getName());
 						mlpSolution = solList.get(0);
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
@@ -478,9 +479,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							throw e;
 						}
 					}
-
-					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
-							HttpStatus.CREATED);
+					
+					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+					logger.debug("Onboarding is successful :  " + res);
+					return res;
 				} finally {
 
 					try {
