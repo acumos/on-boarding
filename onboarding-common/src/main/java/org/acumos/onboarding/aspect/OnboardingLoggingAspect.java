@@ -76,11 +76,6 @@ public class OnboardingLoggingAspect  {
 				MDC.put("contextName", "Onboarding");												
 			}
 		}		
-		/*if(result instanceof org.acumos.portal.be.transport.ResponseVO) {
-			log.info(EELFLoggerDelegate.securityLogger, ((org.acumos.portal.be.transport.ResponseVO)result).getMessage());
-		} else if(result instanceof org.acumos.portal.be.transport.AbstractResponseObject){
-			log.info(EELFLoggerDelegate.securityLogger, "User Logged Successfully");
-		}		*/
 		
 		MDC.remove("user");
 		MDC.remove("contextName");

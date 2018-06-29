@@ -481,7 +481,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 					
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
-					logger.debug("Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
+					logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
 					return res;
 				} finally {
 
@@ -601,10 +601,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		File ons = new File(filePathoutputF, "onsdemo1.yaml");
 
 		try {
-			addArtifact(mData, anoIn, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, anoOut, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, compo, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, ons, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
+			   addArtifact(mData, anoIn, getArtifactTypeCode("Metadata"), solutionID+"_anomaly-in", onboardingStatus);
+	           addArtifact(mData, anoOut, getArtifactTypeCode("Metadata"), solutionID+"_anomaly-out", onboardingStatus);
+	           addArtifact(mData, compo, getArtifactTypeCode("Metadata"), solutionID+"_component", onboardingStatus);
+	           addArtifact(mData, ons, getArtifactTypeCode("Metadata"), solutionID+"_onsdemo1", onboardingStatus);
 		}
 
 		catch (AcumosServiceException e) {

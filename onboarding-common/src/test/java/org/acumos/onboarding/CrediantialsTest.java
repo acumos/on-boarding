@@ -20,15 +20,39 @@
 
 package org.acumos.onboarding;
 
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.acumos.onboarding.common.models.ServiceResponse;
+import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.acumos.onboarding.common.utils.Crediantials;
+import org.acumos.onboarding.common.utils.JsonRequest;
+import org.acumos.onboarding.services.impl.OnboardingController;
+import org.acumos.onboarding.services.impl.PortalRestClientImpl;
+import org.json.simple.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CrediantialsTest {
 
+	@InjectMocks
+	OnboardingController onboardingController;
+
+	@Mock
+	protected PortalRestClientImpl portalClient;
+	
+	final HttpServletResponse response = mock(HttpServletResponse.class);
+	
 	@Test
 	public void crediantialsTest() {
 		Crediantials crediantials = new Crediantials();
@@ -37,6 +61,31 @@ public class CrediantialsTest {
 		crediantials.getUsername();
 		crediantials.getPassword();
 		Assert.assertNotNull(crediantials);
+	}
+	
+	@Test
+	public void testOnboardingWithAuthentication() throws Exception {
+
+		Crediantials credential = new Crediantials();
+		String user = " ";
+		String pass = " ";
+		String token = "SampleToken";
+		AbstractResponseObject absObj = new AbstractResponseObject();
+
+		JSONObject crediantials = new JSONObject();
+		crediantials.put("username", user);
+		crediantials.put("password", pass);
+
+		JSONObject reqObj = new JSONObject();
+		reqObj.put("request_body", crediantials); 
+
+
+		JsonRequest<Crediantials> cred = new JsonRequest<>();
+		cred.setBody(credential);
+
+		when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
+		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
+		assertNotNull(result);
 	}
 
 }
