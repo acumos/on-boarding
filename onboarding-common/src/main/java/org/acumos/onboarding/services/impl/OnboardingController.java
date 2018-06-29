@@ -481,7 +481,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 					
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
-					logger.debug("Onboarding is successful :  " + res);
+					logger.debug("Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
 					return res;
 				} finally {
 

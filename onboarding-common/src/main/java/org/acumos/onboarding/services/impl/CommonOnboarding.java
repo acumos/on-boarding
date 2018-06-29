@@ -189,7 +189,7 @@ public class CommonOnboarding {
 		queryParameters.put("ownerId", ownerId);
 		queryParameters.put("name", modelName);
 		queryParameters.put("active", true);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Seach Solution with criteria ownerId = " +ownerId + ", ModelName = " +modelName+ ", Active = true");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Search Solution with criteria ownerId = " +ownerId + ", ModelName = " +modelName+ ", Active = true");
 
 		/* TRUE - OR , FALSE - AND */
 		RestPageResponse<MLPSolution> pageResponse = cdmsClient.searchSolutions(queryParameters, false,
