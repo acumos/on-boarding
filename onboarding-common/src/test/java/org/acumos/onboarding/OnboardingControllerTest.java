@@ -160,7 +160,7 @@ public class OnboardingControllerTest {
 
 			PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn(jsonResp);
 			
-			ResponseEntity<ServiceResponse> resp = onboardingController.dockerizePayload(mock(HttpServletRequest.class),
+			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null);
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(400,resp.getStatusCodeValue());

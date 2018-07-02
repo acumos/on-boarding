@@ -30,7 +30,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceResponseTest {
 
-	public static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(TagImageCommandTest.class);
+	public static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ServiceResponseTest.class);
 
 	ServiceResponse serviceResponse = new ServiceResponse();
 

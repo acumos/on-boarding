@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 
-import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
@@ -224,7 +223,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				FileInputStream fisProto = new FileInputStream(protoFile);
 				proto = new MockMultipartFile("Proto", protoFile.getName(), "", fisProto);
 
-				return dockerizePayload(request, model, meta, proto, authorization, trackingID, provider,
+				return onboardModel(request, model, meta, proto, authorization, trackingID, provider,
 						shareUserName);
 
 			} else {
@@ -249,12 +248,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@ApiOperation(value = "Upload model file and its meta data as string to dockerize", response = ServiceResponse.class)
+	@ApiOperation(value = "Upload model file and its meta data into nexus", response = ServiceResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
 	@RequestMapping(value = "/models", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request,
+	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
@@ -393,8 +392,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (isListEmpty) {
 						mlpSolution = createSolution(mData, onboardingStatus);
 						mData.setSolutionId(mlpSolution.getSolutionId());
-						logger.debug("New solution created Successfully " + mlpSolution.getSolutionId());
+						logger.debug(EELFLoggerDelegate.debugLogger, "New solution created Successfully " + mlpSolution.getSolutionId());
 					} else {
+						logger.debug(EELFLoggerDelegate.debugLogger, "Existing solution found for model name " + solList.get(0).getName());
 						mlpSolution = solList.get(0);
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
@@ -416,33 +416,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "SU",
 								"CreateSolution Successful");
 					}
-
-					// Notify Create docker image has started
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST", "Create Docker Image Started for solution "+mData.getSolutionId());
-					}
-
-					try {
-						imageUri = dockerizeFile(metadataParser, localmodelFile, mlpSolution.getSolutionId());
-					} catch (Exception e) {
-						// Notify Create docker image failed
-						if (onboardingStatus != null) {
-							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
-						}
-						logger.error(EELFLoggerDelegate.errorLogger, "Error {}", e);
-						throw e;
-					}
-
-					// Notify Create docker image is successful
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Successfully for solution "+mData.getSolutionId());
-					}
+					
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
 					artifactsDetails =  getArtifactsDetails();
-					addArtifact(mData, imageUri, getArtifactTypeCode("Docker Image"), onboardingStatus);
-
+				
 					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
 
 					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
@@ -451,18 +430,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					if (dcaeflag) {
 						addDCAEArrtifacts(mData, outputFolder, mlpSolution.getSolutionId(), onboardingStatus);
-					}
-
-					// Notify TOSCA generation started
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
-					}
-
-					generateTOSCA(localProtobufFile, localMetadataFile, mData, onboardingStatus);
-
-					// Notify TOSCA generation successful
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
 
 					isSuccess = true;
@@ -478,9 +445,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							throw e;
 						}
 					}
-
-					return new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution),
-							HttpStatus.CREATED);
+					
+					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+					logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
+					return res;
 				} finally {
 
 					try {
@@ -599,10 +567,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		File ons = new File(filePathoutputF, "onsdemo1.yaml");
 
 		try {
-			addArtifact(mData, anoIn, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, anoOut, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, compo, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
-			addArtifact(mData, ons, getArtifactTypeCode("Metadata"), solutionID, onboardingStatus);
+			   addArtifact(mData, anoIn, getArtifactTypeCode("Metadata"), solutionID+"_anomaly-in", onboardingStatus);
+	           addArtifact(mData, anoOut, getArtifactTypeCode("Metadata"), solutionID+"_anomaly-out", onboardingStatus);
+	           addArtifact(mData, compo, getArtifactTypeCode("Metadata"), solutionID+"_component", onboardingStatus);
+	           addArtifact(mData, ons, getArtifactTypeCode("Metadata"), solutionID+"_onsdemo1", onboardingStatus);
 		}
 
 		catch (AcumosServiceException e) {
