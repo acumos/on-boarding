@@ -31,7 +31,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class AbstractResponseObjectTest {
 
 	@Test
-	public void AbstractResponseTest() {
+	public void AbstractResponseTest() { 
 		AbstractResponseObject abstractResponseObject = new AbstractResponseObject();
 		abstractResponseObject.setLoginPassExpire(false);
 		abstractResponseObject.isLoginPassExpire();
