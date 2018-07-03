@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "c4459806_7e5ffcc9",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2018-07-03T23:05:37Z",
+      "side": 1,
+      "message": "The agenda should be rather a link to a wiki where all the details are presented.",
+      "parentUuid": "a2aa6584_6bb0d765",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9fe906b1_3bac40d8",
         "filename": "INFO.yaml",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "PD: you are included here as committer via the magic macro *acumos_on-boarding_ptl from above, no need to repeat everything",
       "parentUuid": "9fe906b1_3bac40d8",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a02dda87_c5849e29",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2018-07-03T23:05:37Z",
+      "side": 1,
+      "message": "I can confirm that what Chis is saying is correct",
+      "parentUuid": "363edc38_99f07cb9",
       "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
