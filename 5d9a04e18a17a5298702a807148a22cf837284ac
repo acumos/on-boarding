@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f31595d_2c912a0e",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-07-03T15:33:49Z",
+      "side": 1,
+      "message": "could you add the following in the two agenda \n\"priorisation, anticipation and transversal coordination\"\n\nThanks you",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9fe906b1_3bac40d8",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-07-03T15:33:49Z",
+      "side": 1,
+      "message": "I\u0027am also comitter of the on-boarding component could you please add my name",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
