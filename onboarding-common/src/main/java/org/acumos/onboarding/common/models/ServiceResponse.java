@@ -41,6 +41,8 @@ public class ServiceResponse {
 
 	private Object result;
 
+	private String modelName;
+
 	public static final String sStatus = "SUCCESS";
 
 	public ServiceResponse() {
@@ -52,6 +54,15 @@ public class ServiceResponse {
 		error.setStatus("ERROR");
 		error.setErrorCode(errorCode);
 		error.setErrorMessage(errorMessage);
+		return error;
+	}
+
+	public static ServiceResponse errorResponse(String errorCode, String errorMessage, String modelName) {
+		ServiceResponse error = new ServiceResponse();
+		error.setStatus("ERROR");
+		error.setErrorCode(errorCode);
+		error.setErrorMessage(errorMessage);
+		error.setModelName(modelName);
 		return error;
 	}
 
@@ -114,12 +125,24 @@ public class ServiceResponse {
 	public void setResult(Object result) {
 		this.result = result;
 	}
+	
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{status=" + status);
 		if (this.errorCode != null) {
-			sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage);
+			if (this.modelName != null) {
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", modelName=" + modelName);
+			} else {
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage);
+			}
 		}
 		if (this.result != null) {
 			sb.append(", result=" + result);

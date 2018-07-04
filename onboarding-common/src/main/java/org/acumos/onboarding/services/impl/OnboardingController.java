@@ -235,9 +235,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
 			throw new AcumosServiceException("Unable to read Model artifacts..!");
 		} catch (AcumosServiceException e) {
+			String modname = mData.getModelName() + "_" + mData.getSolutionId();
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
-			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
+			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modname),
 					httpCode);
 		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
@@ -289,7 +290,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
 		Metadata mData = null;
-		
+		String modelName = null;
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -401,6 +402,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					createSolutionRevision(mData);
+					
+					modelName = mData.getModelName() + "_" + mData.getSolutionId();
 
 					// Solution id creation completed
 					// Notify Creation of solution ID is successful
@@ -518,11 +521,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
+						if(modelName == null){
+							modelName = "";
+						}
 						mData = null;
 						dcaeflag = false;
 						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName),
 								httpCode);
 					}
 				}
@@ -538,37 +544,46 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 
 		} catch (AcumosServiceException e) {
+			if(modelName == null){
+				modelName = "";
+			}
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
                 httpCode =  HttpStatus.BAD_REQUEST;
             }
-			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()),
+			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName),
 					httpCode);
 		} catch (HttpClientErrorException e) {
+			if(modelName == null){
+				modelName = "";
+			}
 			// Handling #401
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Unauthorized User - Either Username/Password is invalid.");
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User"),
+						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);
 			} else {
 				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 				e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage()), e.getStatusCode());
+						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(),modelName), e.getStatusCode());
 			}
 		} catch (Exception e) {
+			if(modelName == null){
+				modelName = "";
+			}
 			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage()),
+						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage()),
+						ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(),modelName),
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}

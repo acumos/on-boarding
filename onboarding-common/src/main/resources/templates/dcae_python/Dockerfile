@@ -18,8 +18,8 @@ RUN apt-get -y install libgtk2.0-dev
 RUN apt-get install -y git
 
 RUN pip install  pytest-runner
-RUN pip install -r /app/requirements.txt --find-links /app && \
-   pip install acumos_dcae_model_runner --find-links /app --process-dependency-links
+RUN pip install -r /app/requirements.txt /app && \
+   pip install acumos_dcae_model_runner /app
 
 ENV http_proxy=""
 RUN echo $http_proxy
