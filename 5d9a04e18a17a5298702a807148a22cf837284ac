@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "f647c326_82ac93a6",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-07-04T07:07:45Z",
+      "side": 1,
+      "message": "ok let\u0027s keep the common practices and leave the agenda blank",
+      "parentUuid": "c4459806_7e5ffcc9",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9fe906b1_3bac40d8",
         "filename": "INFO.yaml",
         "patchSetId": 1
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "I can confirm that what Chis is saying is correct",
       "parentUuid": "363edc38_99f07cb9",
+      "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ae2c775_d0254226",
+        "filename": "INFO.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-07-04T07:07:45Z",
+      "side": 1,
+      "message": "I\u0027m rather mentioned as a project leader than a committer but ok I trust you, you have more background than me on this king of things",
+      "parentUuid": "a02dda87_c5849e29",
       "revId": "5d9a04e18a17a5298702a807148a22cf837284ac",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
