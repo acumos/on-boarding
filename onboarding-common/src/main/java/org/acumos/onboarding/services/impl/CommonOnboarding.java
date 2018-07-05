@@ -486,7 +486,7 @@ public class CommonOnboarding {
 		if (!validationStatusList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
-					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
+					revision.setValidationStatusCode(mlpCodeNamePair.getCode());
 			}
 		}
 		
