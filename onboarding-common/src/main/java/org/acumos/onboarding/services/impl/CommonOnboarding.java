@@ -30,10 +30,12 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.acumos.cds.AccessTypeCode;
+import org.acumos.cds.CodeNameType;
 import org.acumos.cds.ToolkitTypeCode;
 import org.acumos.cds.ValidationStatusCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
+import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.cds.transport.RestPageRequest;
@@ -46,6 +48,7 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.DockerClientFactory;
@@ -409,8 +412,6 @@ public class CommonOnboarding {
 			solution.setToolkitTypeCode("ON");
 		}
 
-		solution.setAccessTypeCode(AccessTypeCode.PR.name());
-		solution.setValidationStatusCode(ValidationStatusCode.IP.name());
 		solution.setActive(true);
 		try {
 			solution = cdmsClient.createSolution(solution);
@@ -473,6 +474,22 @@ public class CommonOnboarding {
 
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
+		 List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
+		if (!typeCodeList.isEmpty()) {
+			for (MLPCodeNamePair mlpCodeNamePair : typeCodeList) {
+				if (mlpCodeNamePair.getName().equals(OnboardingConstants.ACCESS_TYPE_PRIVATE))
+					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
+			}
+		}
+			
+			List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
+		if (!validationStatusList.isEmpty()) {
+			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
+				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
+					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
+			}
+		}
+		
 		try {
 			revision = cdmsClient.createSolutionRevision(revision);
 			metadata.setRevisionId(revision.getRevisionId());

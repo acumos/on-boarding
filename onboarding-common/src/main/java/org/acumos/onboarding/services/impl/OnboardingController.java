@@ -521,9 +521,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
-						if(modelName == null){
-							modelName = "";
-						}
 						mData = null;
 						dcaeflag = false;
 						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
@@ -544,9 +541,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 
 		} catch (AcumosServiceException e) {
-			if(modelName == null){
-				modelName = "";
-			}
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
@@ -555,9 +549,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName),
 					httpCode);
 		} catch (HttpClientErrorException e) {
-			if(modelName == null){
-				modelName = "";
-			}
 			// Handling #401
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
 				logger.debug(EELFLoggerDelegate.debugLogger,
@@ -572,9 +563,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(),modelName), e.getStatusCode());
 			}
 		} catch (Exception e) {
-			if(modelName == null){
-				modelName = "";
-			}
 			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {
