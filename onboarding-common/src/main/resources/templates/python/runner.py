@@ -17,9 +17,7 @@
 # limitations under the License.
 # ===============LICENSE_END=========================================================
 # -*- coding: utf-8 -*-
-'''
-Provides a model runner application that subscribes to iris DataFrame messages and publishes Prediction messages
-'''
+
 import argparse
 import json
 from functools import partial
