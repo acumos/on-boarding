@@ -21,9 +21,9 @@
 package org.acumos.onboarding.component.docker.preparation;
 
 public class Requirement {
-	protected String name;
-	protected String version;
-	protected String operator;
+	public String name;
+	public String version;
+	public String operator;
 
 	@Override
 	public String toString() {

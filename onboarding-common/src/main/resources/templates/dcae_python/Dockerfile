@@ -1,5 +1,4 @@
 FROM python:{0}
-MAINTAINER trianta@research.att.com
 
 RUN mkdir /app 
 WORKDIR /app  
@@ -17,9 +16,8 @@ RUN apt-get clean && apt-get update
 RUN apt-get -y install libgtk2.0-dev
 RUN apt-get install -y git
 
-RUN pip install  pytest-runner
 RUN pip install -r /app/requirements.txt && \
-   pip install acumos_dcae_model_runner --process-dependency-links
+   pip install acumos_dcae_model_runner
 
 ENV http_proxy=""
 RUN echo $http_proxy
