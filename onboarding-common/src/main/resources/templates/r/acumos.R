@@ -1,1 +1,1 @@
-install.packages("acumos_0.2-3.tar.gz",repos=NULL,type="source")
+install.packages("acumos", repos=c("http://cloud.r-project.org","http://rforge.net"), dep=T)
