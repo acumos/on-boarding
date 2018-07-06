@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1049f710_2632ef2e",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-07-06T15:18:43Z",
+      "side": 1,
+      "message": "I think that it miss\n* \u003cONAP\u003e \u003cOnboarding\u003e Artifacts are not getting created properly for ONAP build(ACUMOS-709)\n\nas vinayak added for the master branch",
+      "revId": "14377cc70e4cdd34a343fd6111f042da46c12690",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
