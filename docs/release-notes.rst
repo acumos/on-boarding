@@ -29,6 +29,7 @@ Version 1.28.0, 6 July 2018
  * Dockerfile for Python DCAE model runner has outdated lines(ACUMOS-1263)
  * R models no longer run properly as microservices when downloading(ACUMOS-1279)
  * My Models: Failed model name is not displayed as it is given at the time of web onboarding(ACUMOS-1157)
+ * <ONAP> <Onboarding> Artifacts are not getting created properly for ONAP build(ACUMOS-709)
 
 
 Version 1.27.0, 13 June 2018
