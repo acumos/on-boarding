@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "210c69e8_b7d9402a",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-09T13:45:17Z",
+      "side": 1,
+      "message": "Would it be possible to add hyperlinks for the Jira entries?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 105
+      },
+      "revId": "14377cc70e4cdd34a343fd6111f042da46c12690",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1049f710_2632ef2e",
         "filename": "docs/release-notes.rst",
         "patchSetId": 2
