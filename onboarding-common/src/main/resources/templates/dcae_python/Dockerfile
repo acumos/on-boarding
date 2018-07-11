@@ -1,5 +1,4 @@
 FROM python:{0}
-MAINTAINER trianta@research.att.com
 
 RUN mkdir /app 
 WORKDIR /app  
