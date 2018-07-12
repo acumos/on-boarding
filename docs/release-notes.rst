@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.29.0, 12 July 2018
+---------------------------
+ * Dockerfile for Python DCAE model runner has outdated lines(ACUMOS-1263)
+ * R models no longer run properly as microservices when downloading(ACUMOS-1279)
+
 Version 1.28.0, 6 July 2018
 ---------------------------
  * CDS pointing to 1.15.3
