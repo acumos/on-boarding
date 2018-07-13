@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface DockerService {
 
-	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request, MultipartFile model,
+	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request, MultipartFile model,
 			MultipartFile metadata, MultipartFile schema, String authorization,String trackingID, String provider,String shareUserName)
 			throws AcumosServiceException;
 

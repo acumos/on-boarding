@@ -224,7 +224,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				FileInputStream fisProto = new FileInputStream(protoFile);
 				proto = new MockMultipartFile("Proto", protoFile.getName(), "", fisProto);
 
-				return dockerizePayload(request, model, meta, proto, authorization, trackingID, provider,
+				return onboardModel(request, model, meta, proto, authorization, trackingID, provider,
 						shareUserName);
 
 			} else {
@@ -255,7 +255,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
 	@RequestMapping(value = "/models", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<ServiceResponse> dockerizePayload(HttpServletRequest request,
+	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
@@ -421,32 +421,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								"CreateSolution Successful");
 					}
 
-					// Notify Create docker image has started
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "ST", "Create Docker Image Started for solution "+mData.getSolutionId());
-					}
-
-					try {
-						imageUri = dockerizeFile(metadataParser, localmodelFile, mlpSolution.getSolutionId());
-					} catch (Exception e) {
-						// Notify Create docker image failed
-						if (onboardingStatus != null) {
-							onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
-						}
-						logger.error(EELFLoggerDelegate.errorLogger, "Error {}", e);
-						throw e;
-					}
-
-					// Notify Create docker image is successful
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("Dockerize", "SU", "Created Docker Image Successfully for solution "+mData.getSolutionId());
-					}
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
 					artifactsDetails =  getArtifactsDetails();
-					addArtifact(mData, imageUri, getArtifactTypeCode("Docker Image"), onboardingStatus);
-
+					
 					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
 
 					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
