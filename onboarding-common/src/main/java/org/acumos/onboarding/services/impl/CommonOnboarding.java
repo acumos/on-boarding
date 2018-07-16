@@ -487,7 +487,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	public void revertbackOnboarding(Metadata metadata, String imageUri,String solutionID) throws AcumosServiceException {
+	public void revertbackOnboarding(Metadata metadata,String solutionID) throws AcumosServiceException {
 
 		try {
 
@@ -499,21 +499,6 @@ public class CommonOnboarding {
 			repositoryLocation.setPassword(nexusPassword);
 			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
 			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
-
-			// Remove the image from docker registry
-			// Check the value of imageUri, if it is null then do not delete the
-			// image
-			logger.debug(EELFLoggerDelegate.debugLogger,"Image Name from dockerize file method: " + imageUri);
-
-			if (StringUtils.isNotBlank(imageUri)) {
-				String imageTagName = dockerConfiguration.getImagetagPrefix() + "/" + getActualModelName(metadata, solutionID);
-				
-				logger.debug(EELFLoggerDelegate.debugLogger,"Image Name: " + imageTagName);
-				DeleteImageCommand deleteImageCommand = new DeleteImageCommand(imageTagName, metadata.getVersion(), "");
-				deleteImageCommand.setClient(dockerClient);
-				deleteImageCommand.execute();
-				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the image from Docker Registry");
-			}
 
 			if (metadata.getSolutionId() != null) {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
