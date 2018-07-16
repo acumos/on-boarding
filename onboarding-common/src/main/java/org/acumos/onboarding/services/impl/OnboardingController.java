@@ -320,10 +320,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			JsonResponse<Object> valid = validate(authorization, provider);
 
 			boolean isValidToken = valid.getStatus();
-
 			String ownerId = null;
-			String imageUri = null;
-
+		
 			if (isValidToken) {
 				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
 				ownerId = valid.getResponseBody().toString();
@@ -338,7 +336,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
 
-				logger.debug(EELFLoggerDelegate.debugLogger, "Dockerization request recieved with "
+				logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding request recieved with "
 						+ model.getOriginalFilename());
 
 				// Notify Create solution or get existing solution ID has
@@ -473,7 +471,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Onboarding Failed, Reverting failed solutions and artifacts.");
 							if (metadataParser != null && mData != null) {
-								revertbackOnboarding(metadataParser.getMetadata(), imageUri,
+								revertbackOnboarding(metadataParser.getMetadata(),
 										mlpSolution.getSolutionId());
 							}
 						}
