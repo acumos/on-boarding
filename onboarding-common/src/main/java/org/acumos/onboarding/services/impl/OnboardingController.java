@@ -21,9 +21,6 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 
-import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
@@ -57,15 +53,12 @@ import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -139,114 +132,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	/************************************************
 	 * End of Authentication
 	 *****************************************************/
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@ApiOperation(value = "Onboarding DCAE Models", response = ServiceResponse.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
-			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
-	@RequestMapping(value = "/dcae_models", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,
-			@RequestParam(required = false) String modName, String solutioId, String revisionId,
-			@RequestHeader(value = "Authorization", required = false) String authorization,
-			@RequestHeader(value = "tracking_id", required = false) String trackingID,
-			@RequestHeader(value = "provider", required = false) String provider,
-			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
-			throws AcumosServiceException {
-		logger.debug(EELFLoggerDelegate.debugLogger, "Started DCAE Onboarding");
-
-		logger.info("Fetching model from Nexus...!");
-
-		String artifactName = null;
-		File files = null;
-		dcaeflag = true;
-		Metadata mData = null;
-		OnboardingNotification onboardingStatus = null;
-		try {
-			
-			if (trackingID != null) {
-				onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
-				onboardingStatus.setTrackingId(trackingID);
-				logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
-			} else {
-
-				onboardingStatus = null;
-			}
-            
-			/* Nexus Integration....! */
-
-			DownloadModelArtifacts download = new DownloadModelArtifacts();
-			artifactName = download.getModelArtifacts(solutioId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
-					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
-
-			if (artifactName.indexOf(".") > 0)
-				artifactName = artifactName.substring(0, artifactName.lastIndexOf("."));
-
-			logger.info("Invoking Onboarding API");
-
-			files = new File("dcae_model");
-
-			MultipartFile model = null, meta = null, proto = null;
-
-			File modelFile = new File(files, artifactName + ".zip");
-			File MetaFile = new File(files, artifactName + ".json");
-			File protoFile = new File(files, artifactName + ".proto");
-
-			if (modName != null) {
-				Object obj = new JSONParser().parse(new FileReader(MetaFile));
-				JSONObject jo = (JSONObject) obj;
-				jo.put("name", modName);
-				String jsonFile = jo.toString();
-				FileOutputStream fout = new FileOutputStream(MetaFile);
-				fout.write(jsonFile.getBytes());
-				fout.close();
-			}
-
-			if ((modelFile.exists()) && (MetaFile.exists()) && (protoFile.exists())) {
-				metadataParser = new MetadataParser(MetaFile);
-				mData = metadataParser.getMetadata();
-
-				String runTime = mData.getRuntimeName();
-
-				if (!runTime.equals("python")) {
-					logger.error(EELFLoggerDelegate.errorLogger, "Invalid Runtime [Only 'python' runtime allowed..!]");
-					throw new AcumosServiceException("Invalid Runtime [Only 'python' runtime allowed..!]");
-				}
-
-				FileInputStream fisModel = new FileInputStream(modelFile);
-				model = new MockMultipartFile("Model", modelFile.getName(), "", fisModel);
-
-				FileInputStream fisMeta = new FileInputStream(MetaFile);
-				meta = new MockMultipartFile("Metadata", MetaFile.getName(), "", fisMeta);
-
-				FileInputStream fisProto = new FileInputStream(protoFile);
-				proto = new MockMultipartFile("Proto", protoFile.getName(), "", fisProto);
-
-				return onboardModel(request, model, meta, proto, authorization, trackingID, provider,
-						shareUserName);
-
-			} else {
-				logger.error(EELFLoggerDelegate.errorLogger, "Model artifacts not available..!");
-				throw new AcumosServiceException("Model artifacts not available..!");
-			}
-		} catch (IOException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
-			throw new AcumosServiceException("Unable to read Model artifacts..!");
-		} catch (AcumosServiceException e) {
-			String modname = mData.getModelName() + "_" + mData.getSolutionId();
-			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
-			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modname),
-					httpCode);
-		} catch (Exception e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Unable to read Model artifacts..!");
-			throw new AcumosServiceException("Unable to read Model artifacts..!");
-		} finally {
-			UtilityFunction.deleteDirectory(files);
-		}
-	}
 
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)

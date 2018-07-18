@@ -28,7 +28,6 @@ import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.Crediantials;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DockerService {
@@ -40,9 +39,4 @@ public interface DockerService {
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(JsonRequest<Crediantials> crediantials,
 			HttpServletResponse response) throws AcumosServiceException;
 	
-	public ResponseEntity<ServiceResponse> onboardingWithDCAE(HttpServletRequest request,String modName,String solutioId, String revisionId,
-			String authorization,
-			 String trackingID,
-			String provider,
-			String shareUserName) throws AcumosServiceException;
 }
