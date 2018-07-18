@@ -22,17 +22,14 @@ package org.acumos.onboarding.services.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.acumos.cds.AccessTypeCode;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.ToolkitTypeCode;
-import org.acumos.cds.ValidationStatusCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPCodeNamePair;
@@ -50,23 +47,17 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.ResourceUtils;
-import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.DockerClientFactory;
 import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.AuthConfig;
-import com.github.dockerjava.core.command.PullImageResultCallback;
 
 public class CommonOnboarding {
 	
