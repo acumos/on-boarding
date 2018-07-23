@@ -47,8 +47,6 @@ import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.ResourceUtils;
-import org.acumos.onboarding.component.docker.DockerClientFactory;
-import org.acumos.onboarding.component.docker.DockerConfiguration;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.json.simple.JSONObject;
@@ -56,8 +54,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
-
-import com.github.dockerjava.api.DockerClient;
 
 public class CommonOnboarding {
 	
@@ -124,9 +120,6 @@ public class CommonOnboarding {
 	@Autowired
 	protected ResourceLoader resourceLoader;
 
-	@Autowired
-	protected DockerConfiguration dockerConfiguration;
-	
 	protected MetadataParser metadataParser = null;
 	
 	protected CommonDataServiceRestClientImpl cdmsClient;
@@ -488,7 +481,6 @@ public class CommonOnboarding {
 			repositoryLocation.setUsername(nexusUserName);
 			repositoryLocation.setPassword(nexusPassword);
 			NexusArtifactClient nexusClient = new NexusArtifactClient(repositoryLocation);
-			DockerClient dockerClient = DockerClientFactory.getDockerClient(dockerConfiguration);
 
 			if (metadata.getSolutionId() != null) {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Solution id: " + metadata.getSolutionId() + "  Revision id: " + metadata.getRevisionId());
