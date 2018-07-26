@@ -163,7 +163,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
 		
-		String fileName =trackingID+".log";
+		String fileName ="onboardingLog_"+trackingID+".log";
 		//setting log filename in ThreadLocal	
 		LogBean logBean = new LogBean();
 		logBean.setFileName(fileName);
