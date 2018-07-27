@@ -39,7 +39,9 @@ import org.acumos.cds.ArtifactTypeCode;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
+import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.cds.domain.MLPUser;
+import org.acumos.cds.transport.AuthorTransport;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
@@ -401,7 +403,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
 
-					createSolutionRevision(mData);
+					MLPSolutionRevision revision = createSolutionRevision(mData);
 					
 					modelName = mData.getModelName() + "_" + mData.getSolutionId();
 
@@ -472,9 +474,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					isSuccess = true;
 
 					// Model Sharing
-					if (isSuccess && (shareUserName != null)) {
+					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {
 						try {
-							cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(), shareUser.getUserId());
+							//cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(), shareUser.getUserId());
+							AuthorTransport author = new AuthorTransport(shareUserName, null);
+							AuthorTransport authors[]= new AuthorTransport[10];
+							authors[0]=author;
+							revision.setAuthors(authors);
+							cdmsClient.updateSolutionRevision(revision);
 							logger.debug("Model Shared Successfully with " + shareUserName);
 						} catch (Exception e) {
 							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model");

@@ -88,7 +88,7 @@ public class CommonOnboardingTest {
 		List<MLPSolutionRevision> revList = new ArrayList<>();
 		MLPSolutionRevision rev = new MLPSolutionRevision();
 		rev.setRevisionId("361de562-2e4d-49d7-b6a2-b551c35050e6");
-		rev.setOwnerId("02a87750-7ba3-4ea7-8c20-c1286930f57c");
+		rev.setUserId("02a87750-7ba3-4ea7-8c20-c1286930f57c");
 		rev.setSolutionId("03a87750-9ba3-4ea7-8c20-c1286930f85c");
 		revList.add(rev);
 

@@ -153,10 +153,12 @@ public class CommonOnboarding {
 
 	protected ResourceUtils resourceUtils;
 	
+	protected String nexusGrpId;
+	
 	@PostConstruct
 	public void init() {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
-		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, null);
 		this.portalClient = new PortalRestClientImpl(portalURL);
 		this.resourceUtils = new ResourceUtils(resourceLoader);
 	}
@@ -189,7 +191,7 @@ public class CommonOnboarding {
 
 		Map<String, Object> queryParameters = new HashMap<String, Object>();
 
-		queryParameters.put("ownerId", ownerId);
+		queryParameters.put("userId", ownerId);
 		queryParameters.put("name", modelName);
 		queryParameters.put("active", true);
 		logger.debug(EELFLoggerDelegate.debugLogger,"Search Solution with criteria ownerId = " +ownerId + ", ModelName = " +modelName+ ", Active = true");
@@ -399,7 +401,7 @@ public class CommonOnboarding {
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
 		solution.setDescription(metadata.getSolutionName());
-		solution.setOwnerId(metadata.getOwnerId());
+		solution.setUserId(metadata.getOwnerId());
 		// String toolTypeCode = getToolTypeCode(metadata.getToolkit());
 		
 		logger.debug(EELFLoggerDelegate.debugLogger,"Model name[CreateSolutionMethod] :"+metadata.getSolutionName());
@@ -462,7 +464,7 @@ public class CommonOnboarding {
 	public MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
-		revision.setOwnerId(metadata.getOwnerId());
+		revision.setUserId(metadata.getOwnerId());
 
 		/******************* Version Management *********************/
 		String version = metadata.getVersion();
@@ -548,7 +550,8 @@ public class CommonOnboarding {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
-			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGroupId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
+			nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
+			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, metadata.getModelName(), metadata.getVersion(), ext, size, fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
@@ -559,7 +562,7 @@ public class CommonOnboarding {
 				modelArtifact.setDescription(file.getName());
 				modelArtifact.setVersion(metadata.getVersion());
 				modelArtifact.setArtifactTypeCode(typeCode);
-				modelArtifact.setOwnerId(metadata.getOwnerId());
+				modelArtifact.setUserId(metadata.getOwnerId());
 				modelArtifact.setUri(artifactInfo.getArtifactMvnPath());
 				modelArtifact.setSize(size);
 				modelArtifact = cdmsClient.createArtifact(modelArtifact);
@@ -620,7 +623,7 @@ public class CommonOnboarding {
 				modelArtifact.setDescription(uri);
 				modelArtifact.setVersion(metadata.getVersion());
 				modelArtifact.setArtifactTypeCode(typeCode);
-				modelArtifact.setOwnerId(metadata.getOwnerId());
+				modelArtifact.setUserId(metadata.getOwnerId());
 				modelArtifact.setUri(uri);
 				modelArtifact.setSize(uri.length());
 				modelArtifact = cdmsClient.createArtifact(modelArtifact);
@@ -670,7 +673,7 @@ public class CommonOnboarding {
 			// And define the variable for the same in the class.
 			
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
-					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
+					nexusEndPointURL, nexusUserName, nexusPassword, nexusGrpId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
 					cmnDataSvcPwd);
 
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),

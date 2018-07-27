@@ -49,7 +49,7 @@ public class DownloadModelArtifacts {
 		String nexusURI = "";
 		
 		ByteArrayOutputStream byteArrayOutputStream = null;
-		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password);
+		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
 		
 		File outputFolder = new File("dcae_model");
 		outputFolder.mkdirs();
