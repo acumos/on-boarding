@@ -478,12 +478,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						try {
 							logger.debug(EELFLoggerDelegate.debugLogger,"Before constructor Name " + shareUserName + " " + shareUser.getEmail());
 							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
-							AuthorTransport authors[]= new AuthorTransport[10];
+							AuthorTransport authors[]= new AuthorTransport[1];
 							logger.debug(EELFLoggerDelegate.debugLogger,"Author Name " + author.getName() + " " + author.getContact());
 							authors[0]=author;
 							
 							for (AuthorTransport a : authors) {
-								logger.debug(EELFLoggerDelegate.debugLogger,"Author added in AuthorTransport[] " + shareUserName +" "+shareUser.getEmail());
+								logger.debug(EELFLoggerDelegate.debugLogger,"Author added in AuthorTransport[] " + a.getName() + " " + a.getContact());
 							}
 							
 							revision.setAuthors(authors);
