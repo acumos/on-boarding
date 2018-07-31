@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "021eb795_e8ebedf2",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-07-31T12:18:48Z",
+      "side": 1,
+      "message": "Do you really want all this HTML/web metadata? \nI would just put the plain-text link",
+      "revId": "c784e868768d11d87087cf2c3d7b35d77b490f78",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "18a81cb2_ed0a98c8",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-07-31T12:18:48Z",
+      "side": 1,
+      "message": "Use one line here not two.  Log the exception like this:\n\n    logger.error(EELFLogDel.err, \"Method name failed\", ex);\n\nDo NOT do +e that calls .toString which omits the stack trace.",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 62
+      },
+      "revId": "c784e868768d11d87087cf2c3d7b35d77b490f78",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
