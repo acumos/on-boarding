@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fda41cf5_6d91784d",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2018-07-31T12:36:06Z",
+      "side": 1,
+      "message": "This format was suggested by Aimee",
+      "parentUuid": "021eb795_e8ebedf2",
+      "revId": "c784e868768d11d87087cf2c3d7b35d77b490f78",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18a81cb2_ed0a98c8",
         "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
         "patchSetId": 2
