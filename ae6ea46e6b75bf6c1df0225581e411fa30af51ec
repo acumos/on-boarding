@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "081b8fcb_17b8e6a4",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-31T13:02:46Z",
+      "side": 1,
+      "message": "Thanks for adding the link; however, it\u0027s in the wrong format. Example here:  https://wiki.acumos.org/display/DOCS/Style+Guide#StyleGuide-IncludingHyperlinks\n(when I try to include the example here, gerrit treats it as markdown)",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 109
+      },
+      "revId": "ae6ea46e6b75bf6c1df0225581e411fa30af51ec",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
