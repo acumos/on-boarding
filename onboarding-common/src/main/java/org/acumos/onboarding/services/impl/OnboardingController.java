@@ -476,16 +476,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					// Model Sharing
 					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {
 						try {
-							logger.debug(EELFLoggerDelegate.debugLogger,"Before constructor Name " + shareUserName + " " + shareUser.getEmail());
 							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
 							AuthorTransport authors[]= new AuthorTransport[1];
-							logger.debug(EELFLoggerDelegate.debugLogger,"Author Name " + author.getName() + " " + author.getContact());
+							logger.debug(EELFLoggerDelegate.debugLogger,"Author Name " + author.getName() + " and Email " + author.getContact());
 							authors[0]=author;
-							
-							for (AuthorTransport a : authors) {
-								logger.debug(EELFLoggerDelegate.debugLogger,"Author added in AuthorTransport[] " + a.getName() + " " + a.getContact());
-							}
-							
 							revision.setAuthors(authors);
 							cdmsClient.updateSolutionRevision(revision);
 							logger.debug(EELFLoggerDelegate.debugLogger, "Model Shared Successfully with " + shareUserName);
