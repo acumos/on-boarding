@@ -23,6 +23,10 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.31.0_R1280, 3 August 2018
+---------------------------
+* CDS pointing to 1.16.1
+
 Version 1.30.0_R1280, 1 August 2018
 ---------------------------
 * CDS pointing to 1.16.0
