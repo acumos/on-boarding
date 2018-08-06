@@ -66,7 +66,7 @@ public class HealthcheckController implements HealthcheckService {
 	@PostConstruct
 	public void init() {
 		logger.debug(EELFLoggerDelegate.debugLogger, "init: creating CDS client");
-		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 	}
 
 	/**
