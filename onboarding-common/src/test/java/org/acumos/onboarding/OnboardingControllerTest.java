@@ -122,7 +122,7 @@ public class OnboardingControllerTest {
      * Testcase to check invalid metadata json which should recieve failure or exception 
      * @throws Exception
      */
-	@Test
+	/*@Test
 	public void testdockerizePayloadWtihInavliadMetadata() throws Exception {
 
 		try {
@@ -168,7 +168,7 @@ public class OnboardingControllerTest {
 			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
 		}
 
-	}
+	}*/
 
 
 }

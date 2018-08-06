@@ -35,7 +35,9 @@ import javax.ws.rs.core.MediaType;
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
+import org.acumos.cds.domain.MLPSolutionRevision;
 import org.acumos.cds.domain.MLPUser;
+import org.acumos.cds.transport.AuthorTransport;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
@@ -284,7 +286,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						mData.setSolutionId(mlpSolution.getSolutionId());
 					}
 
-					createSolutionRevision(mData);
+					MLPSolutionRevision revision = createSolutionRevision(mData);
 					
 					modelName = mData.getModelName() + "_" + mData.getSolutionId();
 
@@ -330,13 +332,18 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					isSuccess = true;
 
 					// Model Sharing
-					if (isSuccess && (shareUserName != null)) {
+					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {
 						try {
-							cdmsClient.addSolutionUserAccess(mlpSolution.getSolutionId(), shareUser.getUserId());
-							logger.debug("Model Shared Successfully with " + shareUserName);
+							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
+							AuthorTransport authors[]= new AuthorTransport[1];
+							logger.debug(EELFLoggerDelegate.debugLogger,"Author Name " + author.getName() + " and Email " + author.getContact());
+							authors[0]=author;
+							revision.setAuthors(authors);
+							cdmsClient.updateSolutionRevision(revision);
+							logger.debug(EELFLoggerDelegate.debugLogger, "Model Shared Successfully with " + shareUserName);
 						} catch (Exception e) {
-							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model");
-							logger.error(EELFLoggerDelegate.errorLogger, "  " + e);
+							isSuccess = false;
+							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model", e);
 							throw e;
 						}
 					}
