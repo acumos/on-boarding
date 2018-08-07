@@ -166,7 +166,7 @@ public class CommonOnboarding {
 
 		Map<String, Object> queryParameters = new HashMap<String, Object>();
 
-		queryParameters.put("ownerId", ownerId);
+		queryParameters.put("userId", ownerId);
 		queryParameters.put("name", modelName);
 		queryParameters.put("active", true);
 		logger.debug(EELFLoggerDelegate.debugLogger,"Search Solution with criteria ownerId = " +ownerId + ", ModelName = " +modelName+ ", Active = true");
