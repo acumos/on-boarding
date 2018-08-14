@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ddc8826_b881837f",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/MicroserviceRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "Please document the requirements for this method with Javadoc.",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "55ff8d27_a822098c",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/MicroserviceRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "typo",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47aa398c_048860a2",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "final",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63ca5efa_4be7b883",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "drop empty javadoc",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7631c358_49a09be5",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "where are the credentials? this comment looks wrong",
+      "range": {
+        "startLine": 74,
+        "startChar": 28,
+        "endLine": 74,
+        "endChar": 39
+      },
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eed2be71_d5dd125f",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "typo",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e2cd9b9_3d3cde33",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "remove don\u0027t comment out",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "73b38b10_2580b88e",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "Use {} inside the argument instead of concatenating strings with +",
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "487b70fb_daa9db8c",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:09Z",
+      "side": 1,
+      "message": "Call service that creates a microservice .. confusing",
+      "range": {
+        "startLine": 332,
+        "startChar": 7,
+        "endLine": 332,
+        "endChar": 11
+      },
+      "revId": "2b203885c9a80cda2ea3217d2b9aed464178d561",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
