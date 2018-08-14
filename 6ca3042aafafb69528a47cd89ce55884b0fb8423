@@ -16,6 +16,24 @@
       "revId": "6ca3042aafafb69528a47cd89ce55884b0fb8423",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9152e4f4_94a7578b",
+        "filename": "onboarding-common/src/main/resources/templates/python/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 15
+      },
+      "writtenOn": "2018-08-14T12:37:27Z",
+      "side": 1,
+      "message": "its merged already, will take care in next check-in",
+      "parentUuid": "2e57e1ae_3a622c54",
+      "revId": "6ca3042aafafb69528a47cd89ce55884b0fb8423",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
     }
   ]
 }
