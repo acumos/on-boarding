@@ -150,7 +150,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
 			throws AcumosServiceException {
-
+		
 		// If trackingID is provided in the header create a
 		// OnboardingNotification object that will be used to update status
 		// against that trackingID
@@ -302,7 +302,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							onboardingStatus.setRevisionId(mData.getRevisionId());
 						}
 						// notify
-						onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "SU",
+						onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU",
 								"CreateSolution Successful");
 					}
 
@@ -328,8 +328,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (onboardingStatus != null) {
 						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
-
-					isSuccess = true;
+						
+					//call microservice
+					ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(mlpSolution.getSolutionId(),revision.getRevisionId(),provider,authorization,trackingID);
+					
+					if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
+						isSuccess = true;
+					}
 
 					// Model Sharing
 					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {

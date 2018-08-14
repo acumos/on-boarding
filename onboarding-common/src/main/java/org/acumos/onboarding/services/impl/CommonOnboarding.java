@@ -98,6 +98,9 @@ public class CommonOnboarding {
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	protected String portalURL;
 	
+	@Value("${microService.microServiceEndPoinURL}")
+	protected String microServiceURL;
+	
 	/*@Value("${docker.host}")
 	protected String host;
 	
@@ -125,6 +128,8 @@ public class CommonOnboarding {
 	protected CommonDataServiceRestClientImpl cdmsClient;
 
 	protected PortalRestClientImpl portalClient;
+	
+	protected MicroserviceRestClientImpl microserviceClient;
 
 	protected ResourceUtils resourceUtils;
 	
@@ -136,6 +141,7 @@ public class CommonOnboarding {
 		this.cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 		this.portalClient = new PortalRestClientImpl(portalURL);
 		this.resourceUtils = new ResourceUtils(resourceLoader);
+		this.microserviceClient = new MicroserviceRestClientImpl(microServiceURL);
 	}
 	
 	/*
