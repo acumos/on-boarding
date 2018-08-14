@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e57e1ae_3a622c54",
+        "filename": "onboarding-common/src/main/resources/templates/python/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-14T12:34:51Z",
+      "side": 1,
+      "message": "please document the -u flag here",
+      "revId": "6ca3042aafafb69528a47cd89ce55884b0fb8423",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
