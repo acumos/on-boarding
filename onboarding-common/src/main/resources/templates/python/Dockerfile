@@ -29,4 +29,4 @@ RUN echo $https_proxy
 EXPOSE 3330
 
 # Run runner.py when the container launches
-CMD ["python", "runner.py"]
+CMD ["python", "-u", "runner.py"]
