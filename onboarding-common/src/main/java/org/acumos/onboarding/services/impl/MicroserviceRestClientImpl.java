@@ -19,6 +19,7 @@
  */
 package org.acumos.onboarding.services.impl;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -32,7 +33,12 @@ import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.services.MicroserviceRestClient;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -126,8 +132,6 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		Map<String, Object> copy = new HashMap<>();
 		copy.put("solutioId", solutioId);
 		copy.put("revisionId", revisionId);
-		copy.put("modName", null);
-		copy.put("deployment_env", null);
 
 		HttpHeaders headers = new HttpHeaders();
 		// headers.set("Accept", "application/json");
@@ -156,5 +160,6 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+	
 	}
 }
