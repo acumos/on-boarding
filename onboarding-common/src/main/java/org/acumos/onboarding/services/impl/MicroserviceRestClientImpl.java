@@ -56,6 +56,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 	public MicroserviceRestClientImpl() {
 		baseUrl = "";
 		restTemplate = null;
+		logger.debug(EELFLoggerDelegate.debugLogger,"In MicroserviceRestClientImpl() ");
 	}
 		
 		public MicroserviceRestClientImpl(String webapiUrl) {
@@ -67,6 +68,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 			try {
 				url = new URL(webapiUrl);
 				baseUrl = url.toExternalForm();
+				logger.debug(EELFLoggerDelegate.debugLogger,"In MicroserviceRestClientImpl(String webapiUrl) "+baseUrl);
 			} catch (MalformedURLException ex) {
 				throw new RuntimeException("Failed to parse URL", ex);
 			}
@@ -83,7 +85,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 			// Put the factory in the template
 			restTemplate = new RestTemplate();
 			restTemplate.setRequestFactory(requestFactory);
-		
+			logger.debug(EELFLoggerDelegate.debugLogger,"In MicroserviceRestClientImpl(String webapiUrl) at end "+restTemplate.toString());
 	}
 		
 		private URI buildUri(final String[] path, final Map<String, Object> queryParams, RestPageRequest pageRequest) {
@@ -119,7 +121,8 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
 			String authorization, String trackingID) {
-
+		logger.debug(EELFLoggerDelegate.debugLogger,
+				"In MicroserviceRestClientImpl: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		Map<String, Object> copy = new HashMap<>();
 		copy.put("solutioId", solutioId);
 		copy.put("revisionId", revisionId);
@@ -135,7 +138,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		HttpEntity entity = new HttpEntity(headers);
 
 		URI uri = buildUri(new String[] { "v2", "generateMicroservice" }, copy, null);
-		logger.debug("Microservice: uri {}", uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Microservice: uri {}", uri);
 		logger.debug(EELFLoggerDelegate.debugLogger,
 				"Parameters for Microservice: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		ResponseEntity<ServiceResponse> response = restTemplate.exchange(uri, HttpMethod.POST, entity,

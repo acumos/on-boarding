@@ -330,11 +330,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 						
 					//call microservice
+					logger.debug(EELFLoggerDelegate.debugLogger,
+							"Before microservice call Parameters : SolutionId " + mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
+					try{
 					ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(mlpSolution.getSolutionId(),revision.getRevisionId(),provider,authorization,trackingID);
-					
 					if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 						isSuccess = true;
 					}
+					}catch(Exception e){
+						logger.debug(EELFLoggerDelegate.debugLogger,"Exception occured while microserviceClient.generateMicroservic() " +e);
+					}
+					
 
 					// Model Sharing
 					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {

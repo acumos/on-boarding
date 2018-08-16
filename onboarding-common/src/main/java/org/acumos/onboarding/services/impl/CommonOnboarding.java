@@ -332,7 +332,7 @@ public class CommonOnboarding {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for {}", file.getName() + " started");
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
-			onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
+			onboardingStatus.notifyOnboardingStatus("AddArtifact", "ST",
 					"Add Artifact for" + file.getName() + " started");
 		}
 		try {
@@ -364,7 +364,7 @@ public class CommonOnboarding {
 					// Notify add artifacts successful
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
-						onboardingStatus.notifyOnboardingStatus("AddToRepository", "SU",
+						onboardingStatus.notifyOnboardingStatus("AddArtifact", "SU",
 								"Add Artifact for" + file.getName() + " Successful");
 					}
 					return modelArtifact;
@@ -386,7 +386,7 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			// Notify add artifacts failed
 			if (onboardingStatus != null) {
-				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", e.getMessage());
+				onboardingStatus.notifyOnboardingStatus("AddArtifact", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificat for {}", file.getName() + " - {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
@@ -403,7 +403,7 @@ public class CommonOnboarding {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " started");
 				// Notify add artifacts started
 				if (onboardingStatus != null) {
-					onboardingStatus.notifyOnboardingStatus("AddToRepository", "ST",
+					onboardingStatus.notifyOnboardingStatus("AddDockerImage", "ST",
 							"Add Artifact for" + uri + " started");
 				}
 				MLPArtifact modelArtifact = new MLPArtifact();
@@ -422,7 +422,7 @@ public class CommonOnboarding {
 					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact - "+uri+" for solution - " +metadata.getSolutionId( )+" Successful");
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
-						onboardingStatus.notifyOnboardingStatus("AddToRepository","SU", "Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
+						onboardingStatus.notifyOnboardingStatus("AddDockerImage","SU", "Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
 					}
 					return modelArtifact;
 
@@ -443,7 +443,7 @@ public class CommonOnboarding {
 		} catch (Exception e) {
 			// Notify model artifact upload failed
 			if (onboardingStatus != null) {
-				onboardingStatus.notifyOnboardingStatus("AddToRepository", "FA", e.getMessage());
+				onboardingStatus.notifyOnboardingStatus("AddDockerImage", "FA", e.getMessage());
 			}
 			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
