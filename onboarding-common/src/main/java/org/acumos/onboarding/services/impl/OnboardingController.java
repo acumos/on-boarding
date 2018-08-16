@@ -148,7 +148,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
-			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
+	        @RequestHeader(value = "modName", required = false) String modName,
+            @RequestHeader(value = "deployment_env", required = false) Integer deployment_env)
 			throws AcumosServiceException {
 		
 		// If trackingID is provided in the header create a
@@ -333,7 +335,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					logger.debug(EELFLoggerDelegate.debugLogger,
 							"Before microservice call Parameters : SolutionId " + mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 					try{
-					ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(mlpSolution.getSolutionId(),revision.getRevisionId(),provider,authorization,trackingID);
+					ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(mlpSolution.getSolutionId(),revision.getRevisionId(),provider,authorization,trackingID,modName,deployment_env);
 					if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 						isSuccess = true;
 					}

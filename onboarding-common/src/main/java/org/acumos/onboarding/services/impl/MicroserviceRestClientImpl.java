@@ -120,14 +120,18 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
-			String authorization, String trackingID) {
+			String authorization, String trackingID, String modName, Integer deployment_env) {
 		logger.debug(EELFLoggerDelegate.debugLogger,
 				"In MicroserviceRestClientImpl: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		Map<String, Object> copy = new HashMap<>();
 		copy.put("solutioId", solutioId);
 		copy.put("revisionId", revisionId);
-		copy.put("modName", null);
-		copy.put("deployment_env", null);
+		if(modName != null && !modName.isEmpty()){
+			copy.put("modName", modName);
+		}
+		if(deployment_env != null){
+			copy.put("deployment_env", deployment_env);
+		}
 
 		HttpHeaders headers = new HttpHeaders();
 		// headers.set("Accept", "application/json");
@@ -156,5 +160,6 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+	
 	}
 }
