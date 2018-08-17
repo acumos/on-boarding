@@ -134,7 +134,6 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		}
 
 		HttpHeaders headers = new HttpHeaders();
-		// headers.set("Accept", "application/json");
 		headers.set("Authorization", authorization);
 		headers.set("tracking_id", trackingID);
 		headers.set("provider", provider);

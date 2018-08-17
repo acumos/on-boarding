@@ -339,7 +339,7 @@ public class CommonOnboarding {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
 			nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
-			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, metadata.getModelName(), metadata.getVersion(), ext, size, fileInputStream);
+			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());

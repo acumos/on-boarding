@@ -313,11 +313,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					// addArtifact method itself for started/success/failure
 					artifactsDetails =  getArtifactsDetails();
 					
-					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
+					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(), onboardingStatus);
 
-					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), actualModelName, onboardingStatus);
+					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(), onboardingStatus);
 
-					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), actualModelName, onboardingStatus);
+					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), mData.getModelName(), onboardingStatus);
 
 					// Notify TOSCA generation started
 					if (onboardingStatus != null) {
@@ -340,7 +340,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						isSuccess = true;
 					}
 					}catch(Exception e){
-						logger.debug(EELFLoggerDelegate.debugLogger,"Exception occured while microserviceClient.generateMicroservic() " +e);
+						logger.error(EELFLoggerDelegate.errorLogger,"Exception occured while invoking microservice API " +e);
+						throw e;
 					}
 					
 
@@ -378,19 +379,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 
 						// push docker build log into nexus
-						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + fileName);
+						
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + logThread.get().getFileName());
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
-								fileName);
+								logThread.get().getFileName());
 						if (metadataParser != null && mData != null) {
 							logger.debug(EELFLoggerDelegate.debugLogger,
-									"Adding of log artifacts into nexus started " + fileName);
+									"Adding of log artifacts into nexus started " + logThread.get().getFileName());
 
 							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-									getActualModelName(mData, mlpSolution.getSolutionId()), onboardingStatus);
+									logThread.get().getFileName(), onboardingStatus);
 							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
-									fileName);
+									logThread.get().getFileName());
 							// info as log file not available to write
-							logger.info("Artifacts log file deleted successfully", fileName);
+							logger.info("Artifacts log file deleted successfully", logThread.get().getFileName());
 						}
 						
 						// delete log file
