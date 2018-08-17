@@ -380,19 +380,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						// push docker build log into nexus
 						
-						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + logThread.get().getFileName());
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
-								logThread.get().getFileName());
+								fileName);
 						if (metadataParser != null && mData != null) {
 							logger.debug(EELFLoggerDelegate.debugLogger,
-									"Adding of log artifacts into nexus started " + logThread.get().getFileName());
+									"Adding of log artifacts into nexus started " + fileName);
 
 							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-									logThread.get().getFileName(), onboardingStatus);
+									fileName, onboardingStatus);
 							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
-									logThread.get().getFileName());
-							// info as log file not available to write
-							logger.info("Artifacts log file deleted successfully", logThread.get().getFileName());
+									fileName);
 						}
 						
 						// delete log file
