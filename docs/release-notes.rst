@@ -23,6 +23,18 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.30.0, 17 August 2018
+---------------------------
+ * Pointing to CDS-1.17.1
+ * `ACUMOS-1537 <https://jira.acumos.org/browse/ACUMOS-1537/>`_
+ * `ACUMOS-1416 <https://jira.acumos.org/browse/ACUMOS-1416/>`_
+ * `ACUMOS-1070 <https://jira.acumos.org/browse/ACUMOS-1070/>`_
+ * `ACUMOS-1300 <https://jira.acumos.org/browse/ACUMOS-1300/>`_
+ * `ACUMOS-1299 <https://jira.acumos.org/browse/ACUMOS-1299/>`_
+ * `ACUMOS-1250 <https://jira.acumos.org/browse/ACUMOS-1250/>`_
+ * `ACUMOS-1244 <https://jira.acumos.org/browse/ACUMOS-1244/>`_
+ * `ACUMOS-1243 <https://jira.acumos.org/browse/ACUMOS-1243/>`_
+
 Version 1.29.0, 12 July 2018
 ---------------------------
  * Dockerfile for Python DCAE model runner has outdated lines(ACUMOS-1263)
