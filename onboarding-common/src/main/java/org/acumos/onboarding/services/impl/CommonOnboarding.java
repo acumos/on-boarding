@@ -101,21 +101,6 @@ public class CommonOnboarding {
 	@Value("${microService.microServiceEndPoinURL}")
 	protected String microServiceURL;
 	
-	/*@Value("${docker.host}")
-	protected String host;
-	
-	@Value("${docker.port}")
-	protected String port;
-	
-	@Value("${base_image.rimage}")
-	protected String rimageName;
-	
-	@Value("${base_image.dockerusername}")
-	protected String dockerusername;
-	
-	@Value("${base_image.dockerpassword}")
-	protected String dockerpassword;
-*/
 	protected String modelOriginalName = null;
 	
 	protected boolean dcaeflag = false;
@@ -190,7 +175,6 @@ public class CommonOnboarding {
 		solution.setName(metadata.getSolutionName());
 		solution.setDescription(metadata.getSolutionName());
 		solution.setUserId(metadata.getOwnerId());
-		// String toolTypeCode = getToolTypeCode(metadata.getToolkit());
 		
 		logger.debug(EELFLoggerDelegate.debugLogger,"Model name[CreateSolutionMethod] :"+metadata.getSolutionName());
 
@@ -208,8 +192,6 @@ public class CommonOnboarding {
 			metadata.setSolutionId(solution.getSolutionId());
 			logger.debug(EELFLoggerDelegate.debugLogger,"Solution created: " + solution.getSolutionId());
 			// Creat solution id - success
-			// OnboardingNotification notify= new OnboardingNotification();
-			// notify.successResponse();
 
 			return solution;
 
@@ -360,7 +342,6 @@ public class CommonOnboarding {
 					cdmsClient.addSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
 							modelArtifact.getArtifactId());
 					logger.debug(EELFLoggerDelegate.debugLogger, "addSolutionRevisionArtifact for " + file.getName() + " successful");
-					//logger.info("addSolutionRevisionArtifact for " + file.getName() + " successful");
 					// Notify add artifacts successful
 					if (onboardingStatus != null) {
 						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());

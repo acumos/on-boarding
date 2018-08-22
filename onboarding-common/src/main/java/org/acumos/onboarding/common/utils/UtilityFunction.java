@@ -298,10 +298,6 @@ public class UtilityFunction {
 	public static DockerClientConfig createDockerClientConfig(String host) {
 		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClientConfig");
 		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false).build();
-		
-		/*return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false)
-				.withRegistryUrl(registryServerUrl).withRegistryUsername(username).withRegistryPassword(password)
-				.build();*/
 	}
 	
 	public static DockerClient createDockerClient (String host) {
