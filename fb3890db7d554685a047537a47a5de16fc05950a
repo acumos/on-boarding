@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f3b8f466_03f288c3",
+        "filename": "onboarding-app-open/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-08-24T13:05:13Z",
+      "side": 1,
+      "message": "This must be revised to pull in 1.32.0 of the common lib.",
+      "revId": "fb3890db7d554685a047537a47a5de16fc05950a",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
