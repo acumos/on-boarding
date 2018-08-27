@@ -23,9 +23,8 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-Version 1.32.0, 24 August 2018
+Version 1.32.0, 27 August 2018
 ------------------------------
-
  * Pointing to CDS-1.17.1
  * `ACUMOS-1537 <https://jira.acumos.org/browse/ACUMOS-1537/>`_
  * `ACUMOS-1416 <https://jira.acumos.org/browse/ACUMOS-1416/>`_
@@ -35,7 +34,14 @@ Version 1.32.0, 24 August 2018
  * `ACUMOS-1250 <https://jira.acumos.org/browse/ACUMOS-1250/>`_
  * `ACUMOS-1244 <https://jira.acumos.org/browse/ACUMOS-1244/>`_
  * `ACUMOS-1243 <https://jira.acumos.org/browse/ACUMOS-1243/>`_
-
+ * `ACUMOS-1237 <https://jira.acumos.org/browse/ACUMOS-1237/>`_
+ * `ACUMOS-1238 <https://jira.acumos.org/browse/ACUMOS-1238/>`_
+ * `ACUMOS-1239 <https://jira.acumos.org/browse/ACUMOS-1239/>`_
+ * `ACUMOS-1241 <https://jira.acumos.org/browse/ACUMOS-1241/>`_
+ * `ACUMOS-1242 <https://jira.acumos.org/browse/ACUMOS-1242/>`_
+ * `ACUMOS-1248 <https://jira.acumos.org/browse/ACUMOS-1248/>`_
+ * `ACUMOS-1394 <https://jira.acumos.org/browse/ACUMOS-1394/>`_
+ 
 Version 1.30.0, 17 August 2018
 ------------------------------
  * Pointing to CDS-1.17.1
