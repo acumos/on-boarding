@@ -82,6 +82,7 @@ import io.swagger.annotations.ApiResponses;
 public class OnboardingController extends CommonOnboarding implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 	Map<String, String> artifactsDetails = new HashMap<>();
+	public static final String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
 	
 	public OnboardingController() {
 		// Property values are injected after the constructor finishes
@@ -170,6 +171,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		String fileName ="onboardingLog_"+trackingID+".log";
 		//setting log filename in ThreadLocal	
 		LogBean logBean = new LogBean();
+		logBean.setLogPath(lOG_DIR_LOC);
 		logBean.setFileName(fileName);
 		LogThreadLocal logThread = new LogThreadLocal();
 		logThread.set(logBean);
