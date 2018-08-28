@@ -281,7 +281,8 @@ public class UtilityFunction {
 			LogBean logBean = LogThreadLocal.get();
 			if (logBean != null) {
 				String fileName = logBean.getFileName();
-				File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+				String logPath = logBean.getLogPath();
+				File file = new java.io.File(logPath);
 				if (file.isDirectory()) {
 					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
 					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "

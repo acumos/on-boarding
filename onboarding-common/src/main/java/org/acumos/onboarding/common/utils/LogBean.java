@@ -22,6 +22,16 @@ package org.acumos.onboarding.common.utils;
 public class LogBean { 
 
 	private String fileName;
+	
+	private String logPath;
+
+	public String getLogPath() {
+		return logPath;
+	}
+
+	public void setLogPath(String logPath) {
+		this.logPath = logPath;
+	}
 
 	public String getFileName() {
 		return fileName;
