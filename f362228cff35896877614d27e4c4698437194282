@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a64e979c_3fbb4374",
+        "filename": "onboarding-common/src/main/resources/templates/h2o/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2018-08-28T14:40:54Z",
+      "side": 1,
+      "message": "This looks weird to me. Are you really adding a file named \".proto\"?",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 22
+      },
+      "revId": "f362228cff35896877614d27e4c4698437194282",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "893de707_1ea18a51",
+        "filename": "onboarding-common/src/main/resources/templates/javaGeneric/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8
+      },
+      "writtenOn": "2018-08-28T14:40:54Z",
+      "side": 1,
+      "message": "See comment about the H20 Dockerfile",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 23
+      },
+      "revId": "f362228cff35896877614d27e4c4698437194282",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
