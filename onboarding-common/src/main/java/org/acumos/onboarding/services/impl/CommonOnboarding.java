@@ -98,7 +98,7 @@ public class CommonOnboarding {
 	@Value("${mktPlace.mktPlaceEndPoinURL}")
 	protected String portalURL;
 	
-	@Value("${microService.microServiceEndPoinURL}")
+	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 	
 	/*@Value("${docker.host}")
