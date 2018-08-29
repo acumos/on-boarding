@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "42750360_8cf29b08",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-08-29T12:38:07Z",
+      "side": 1,
+      "message": "miss a t at \"mktEndPointURL\" ?",
+      "revId": "917bdcf99badd28311e114910402e07da34c4aa1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
