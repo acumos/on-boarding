@@ -16,6 +16,24 @@
       "revId": "917bdcf99badd28311e114910402e07da34c4aa1",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "075f410a_ed0cb53b",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-08-29T13:27:39Z",
+      "side": 1,
+      "message": "\u003e miss a t at \"mktEndPoinURL\" ?",
+      "parentUuid": "42750360_8cf29b08",
+      "revId": "917bdcf99badd28311e114910402e07da34c4aa1",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
     }
   ]
 }
