@@ -95,10 +95,10 @@ public class CommonOnboarding {
 	@Value("${requirements.trustedHost}")
 	protected String trustedHost;
 
-	@Value("${mktPlace.mktPlaceEndPoinURL}")
+	@Value("${mktPlace.mktPlaceEndPointURL}")
 	protected String portalURL;
 	
-	@Value("${microService.microServiceEndPoinURL}")
+	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 	
 	/*@Value("${docker.host}")
