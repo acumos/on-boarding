@@ -34,6 +34,6 @@ ADD protoc /app/bin/protoc
 RUN chmod 777 /app/bin/protoc
 ADD {1} /app/app.jar
 ADD {2} /app/models/model.jar
-ADD .proto /app/models/
+ADD *.proto /app/models/
 ADD modelConfig.properties /app/models/modelConfig.properties
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.config.location=application.properties","-jar","/app/app.jar"]
