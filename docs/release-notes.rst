@@ -23,9 +23,10 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-Version 1.33.0, 29 August 2018
+Version 1.33.1, 30 August 2018
 ------------------------------
  * Pointing to CDS-1.17.1
+ * Pointing to acumos-nexus-client-2.2.1
  * `ACUMOS-1538 <https://jira.acumos.org/browse/ACUMOS-1538/>`_
  * `ACUMOS-1628 <https://jira.acumos.org/browse/ACUMOS-1628/>`_
  * `ACUMOS-1629 <https://jira.acumos.org/browse/ACUMOS-1629/>`_
