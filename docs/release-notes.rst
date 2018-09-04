@@ -24,7 +24,7 @@ These release notes cover the on-boarding common library and the on-boarding app
 for public use, which are released together.
 
 Version 1.33.1, 1 September 2018
-------------------------------
+--------------------------------
 * Patch release to update nexus client version to 2.2.1
 * `ACUMOS-1678 <https://jira.acumos.org/browse/ACUMOS-1678/>`_
 
@@ -52,6 +52,8 @@ Version 1.32.0, 27 August 2018
  * `ACUMOS-1242 <https://jira.acumos.org/browse/ACUMOS-1242/>`_
  * `ACUMOS-1248 <https://jira.acumos.org/browse/ACUMOS-1248/>`_
  * `ACUMOS-1394 <https://jira.acumos.org/browse/ACUMOS-1394/>`_
+ * `ACUMOS-1266 <https://jira.acumos.org/browse/ACUMOS-1266/>`_
+ * `ACUMOS-1317 <https://jira.acumos.org:browse/ACUMOS-1317/>`_
  
 Version 1.30.0, 17 August 2018
 ------------------------------
@@ -64,11 +66,13 @@ Version 1.30.0, 17 August 2018
  * `ACUMOS-1250 <https://jira.acumos.org/browse/ACUMOS-1250/>`_
  * `ACUMOS-1244 <https://jira.acumos.org/browse/ACUMOS-1244/>`_
  * `ACUMOS-1243 <https://jira.acumos.org/browse/ACUMOS-1243/>`_
+ * `ACUMOS-1337 <https://jira.acumos.org/browse:ACUMOS-1337/>`_
 
 Version 1.29.0, 12 July 2018
 ----------------------------
  * Dockerfile for Python DCAE model runner has outdated lines(ACUMOS-1263)
  * R models no longer run properly as microservices when downloading(ACUMOS-1279)
+ * test-models: Add licences to files(ACUMOS-766)
 
 Version 1.28.0, 6 July 2018
 ---------------------------
