@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5bcb03aa_1190d39b",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-09-11T15:49:24Z",
+      "side": 1,
+      "message": "Should be 0.0.31 if you want CDS 1.18 compatibility",
+      "range": {
+        "startLine": 141,
+        "startChar": 16,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "d29ccb9d28897ddf5755e62899c9f73c414c3f37",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
