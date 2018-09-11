@@ -138,7 +138,7 @@
 		<dependency>
 			<groupId>org.acumos.design-studio</groupId>
 			<artifactId>TOSCAModelGeneratorClient</artifactId>
-			<version>0.0.30</version>
+			<version>0.0.31</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
