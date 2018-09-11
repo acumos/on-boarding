@@ -1,1 +1,0 @@
-install.packages("acumos", repos=c("http://cloud.r-project.org","http://rforge.net"), dep=T)
