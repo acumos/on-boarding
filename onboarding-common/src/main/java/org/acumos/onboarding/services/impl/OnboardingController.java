@@ -147,6 +147,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@RequestHeader(value = "loginName", required = false) String loginName,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
@@ -208,7 +209,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 			
 			// Call to validate JWT Token.....!
-			JsonResponse<Object> valid = validate(authorization, provider);
+			JsonResponse<Object> valid = validate(authorization, loginName, provider);
 
 			boolean isValidToken = valid.getStatus();
 			String ownerId = null;
@@ -242,72 +243,98 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				outputFolder.mkdirs();
 				boolean isSuccess = false;
 				MLPSolution mlpSolution = null;
+				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
+				File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
+				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
+				MLPSolutionRevision revision;			
+				
 				try {
-					File localmodelFile = new File(outputFolder, model.getOriginalFilename());
+
 					try {
+						// Notify Create solution or get existing solution ID
+						// has
+						// started
+						if (onboardingStatus != null) {
+							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+						}
+
 						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
-					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download model file {}",
-								localmodelFile.getName());
-						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-								"Fail to download model file " + localmodelFile.getName());
-					}
-					File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
-					try {
+
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
-					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download metadata file {}",
-								localMetadataFile.getName());
-						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-								"Fail to download metadata file " + localMetadataFile.getName());
-					}
-					File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
-					try {
+
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
-					} catch (IOException e) {
-						logger.error(EELFLoggerDelegate.errorLogger, "Fail to download protobuf file {}",
-								localProtobufFile.getName());
-						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
-								"Fail to download protobuf file " + localProtobufFile.getName());
-					}
 
-					metadataParser = new MetadataParser(localMetadataFile);
-					mData = metadataParser.getMetadata();
+						metadataParser = new MetadataParser(localMetadataFile);
+						mData = metadataParser.getMetadata();
 
-					mData.setOwnerId(ownerId);
+						mData.setOwnerId(ownerId);
 
-					List<MLPSolution> solList = getExistingSolution(mData);
+						List<MLPSolution> solList = getExistingSolution(mData);
 
-					boolean isListEmpty = solList.isEmpty();
+						boolean isListEmpty = solList.isEmpty();
 
-					if (isListEmpty) {
-						mlpSolution = createSolution(mData, onboardingStatus);
-						mData.setSolutionId(mlpSolution.getSolutionId());
-						logger.debug(EELFLoggerDelegate.debugLogger, "New solution created Successfully " + mlpSolution.getSolutionId());
-					} else {
-						logger.debug(EELFLoggerDelegate.debugLogger, "Existing solution found for model name " + solList.get(0).getName());
-						mlpSolution = solList.get(0);
-						mData.setSolutionId(mlpSolution.getSolutionId());
-					}
-
-					MLPSolutionRevision revision = createSolutionRevision(mData);
-					
-					modelName = mData.getModelName() + "_" + mData.getSolutionId();
-
-					// Solution id creation completed
-					// Notify Creation of solution ID is successful
-					if (onboardingStatus != null) {
-						// set solution Id
-						if (mlpSolution.getSolutionId() != null) {
-							onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
+						if (isListEmpty) {
+							mlpSolution = createSolution(mData, onboardingStatus);
+							mData.setSolutionId(mlpSolution.getSolutionId());
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"New solution created Successfully " + mlpSolution.getSolutionId());
+						} else {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Existing solution found for model name " + solList.get(0).getName());
+							mlpSolution = solList.get(0);
+							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
-						// set revision id
-						if (mData.getRevisionId() != null) {
-							onboardingStatus.setRevisionId(mData.getRevisionId());
+
+						revision = createSolutionRevision(mData);
+
+						modelName = mData.getModelName() + "_" + mData.getSolutionId();
+
+						// Solution id creation completed
+						// Notify Creation of solution ID is successful
+						if (onboardingStatus != null) {
+							// set solution Id
+							if (mlpSolution.getSolutionId() != null) {
+								onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
+							}
+							// set revision id
+							if (mData.getRevisionId() != null) {
+								onboardingStatus.setRevisionId(mData.getRevisionId());
+							}
+							// notify
+							onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU",
+									"CreateSolution Successful");
 						}
-						// notify
-						onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU",
-								"CreateSolution Successful");
+					} catch (AcumosServiceException e) {
+						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+						logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
+						if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+							httpCode = HttpStatus.BAD_REQUEST;
+						}
+						// Create Solution failed. Notify
+						if (onboardingStatus != null) {
+							// notify
+							onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
+						}
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+					} catch (Exception e) {
+						logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
+						// Create Solution failed. Notify
+						if (onboardingStatus != null) {
+							// notify
+							onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
+						}
+						if (e instanceof AcumosServiceException) {
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(),
+											e.getMessage(), modelName),
+									HttpStatus.INTERNAL_SERVER_ERROR);
+						} else {
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
+											e.getMessage(), modelName),
+									HttpStatus.INTERNAL_SERVER_ERROR);
+						}
 					}
 
 					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  

@@ -39,6 +39,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
@@ -168,6 +169,20 @@ public class PortalRestClientImpl implements PortalRestClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("provider", provider);
 		HttpEntity<?> entity = new HttpEntity<Object>(token, headers);
+		JsonResponse<Object> result = restTemplate.postForObject(uri, entity, JsonResponse.class);
+		return result;
+	}
+
+	@Override
+	public JsonResponse<Object> apiTokenValidation(org.json.simple.JSONObject apitoken, String provider) {
+		
+		URI uri = buildUri(new String[] { "auth", "validateApiToken" }, null, null);
+		logger.debug(EELFLoggerDelegate.debugLogger,"ApiToken: uri {}", uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Validation URI : " + uri);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("provider", provider);
+		HttpEntity<?> entity = new HttpEntity<Object>(apitoken, headers);
 		JsonResponse<Object> result = restTemplate.postForObject(uri, entity, JsonResponse.class);
 		return result;
 	}
