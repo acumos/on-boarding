@@ -134,15 +134,34 @@ public class CommonOnboarding {
 	 * Validates it and returns validity status and ownerId.
 	 */
 	@SuppressWarnings("unchecked")
-	public JsonResponse<Object> validate(String jwtToken, String provider) throws AcumosServiceException {
+	public JsonResponse<Object> validate(String token, String loginName, String provider) throws AcumosServiceException {
 
-		JSONObject obj1 = new JSONObject();
-		obj1.put("jwtToken", jwtToken);
+		Boolean tokenVal = false;
+		JsonResponse<Object> valid = null;
+		
+		if (loginName != null && !loginName.isEmpty()) {
 
-		JSONObject obj2 = new JSONObject();
-		obj2.put("request_body", obj1);
+			JSONObject apiObj1 = new JSONObject();
+			apiObj1.put("loginName", loginName);
+			apiObj1.put("apiTokenHash", token);
 
-		JsonResponse<Object> valid = portalClient.tokenValidation(obj2, provider);
+			JSONObject apiObj2 = new JSONObject();
+			apiObj2.put("request_body", apiObj1);
+
+			valid = portalClient.apiTokenValidation(apiObj2, provider);
+			tokenVal = true;
+		}
+
+		if (tokenVal == false) {
+
+			JSONObject obj1 = new JSONObject();
+			obj1.put("jwtToken", token);
+
+			JSONObject obj2 = new JSONObject();
+			obj2.put("request_body", obj1);
+
+			valid = portalClient.tokenValidation(obj2, provider);
+		}
 
 		return valid;
 	}

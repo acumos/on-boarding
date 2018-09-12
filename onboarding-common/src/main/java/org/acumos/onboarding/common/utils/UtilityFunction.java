@@ -166,7 +166,7 @@ public class UtilityFunction {
 		}
 	}
 
-	public static void copyFile(InputStream in, File destFile) throws IOException {
+	public static void copyFile(InputStream in, File destFile) throws IOException, AcumosServiceException {
 
 		try {
 			OutputStream out = new FileOutputStream(destFile);
@@ -176,6 +176,10 @@ public class UtilityFunction {
 				while ((bytesRead = in.read(buffer)) > 0) {
 					out.write(buffer, 0, bytesRead);
 				}
+			} catch (IOException e) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to download {}", destFile.getName());
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+						"Fail to download " + destFile.getName());
 			} finally {
 				out.close();
 			}
