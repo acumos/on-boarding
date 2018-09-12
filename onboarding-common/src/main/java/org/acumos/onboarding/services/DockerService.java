@@ -36,7 +36,7 @@ public interface DockerService {
 			HttpServletResponse response) throws AcumosServiceException;
 
 	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request, MultipartFile model,
-			MultipartFile metadata, MultipartFile schema, String authorization, String trackingID, String provider,
+			MultipartFile metadata, MultipartFile schema, String authorization, String loginName, String trackingID, String provider,
 			String shareUserName, String modName, Integer deployment_env) throws AcumosServiceException;
 	
 }
