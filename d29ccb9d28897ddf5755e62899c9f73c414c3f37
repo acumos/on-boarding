@@ -22,6 +22,30 @@
       "revId": "d29ccb9d28897ddf5755e62899c9f73c414c3f37",
       "serverId": "655300a2-7a56-4504-9153-881edd907bea",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e733cc3_e428ab40",
+        "filename": "onboarding-common/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-09-12T11:30:11Z",
+      "side": 1,
+      "message": "But ver 0.0.31 is not yet released.  You can build with 0.0.30 but it might not work :(",
+      "parentUuid": "5bcb03aa_1190d39b",
+      "range": {
+        "startLine": 141,
+        "startChar": 16,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "d29ccb9d28897ddf5755e62899c9f73c414c3f37",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
     }
   ]
 }
