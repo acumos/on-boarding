@@ -31,7 +31,7 @@ Acumos is intended to enable the use of a wide range of tools and
 technologies in the development of machine learning models including
 support for both open sourced and proprietary toolkits. Models can be
 easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components.
+interoperable with many other components. 
 
 The goal of Onboarding is to provide an ingestion interface for various
 types of models to enter the  Acumos machine learning platform. Examples
@@ -87,7 +87,7 @@ use the  Acumos client library to upload model to platform. Acumos
 onboarding server exposes REST interface, which is used by client
 library for uploading the model to platform.
 
-|image1|
+.. |image1|
 
 **1.5 Onboarding Low Level Design**
 
@@ -254,10 +254,10 @@ This API is used for actual Onboarding the Models.
 
 It gets invoked after the successful authentication.
 
-.. |image0| image:: ./media/DesignArchitecture.png
+.. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
    :height: 5.55208in
-.. |image1| image:: ./media/HighLevelFlow.png
+.. |image1_old| image:: ./media/HighLevelFlow.png
    :width: 6.26806in
    :height: 1.51389in
 .. |image2| image:: ./media/LowLevelDesign.png
@@ -272,3 +272,8 @@ It gets invoked after the successful authentication.
 .. |image5| image:: ./media/DockerFileStructure.png
    :width: 3.90625in
    :height: 4.94792in
+.. |image0| image:: ./media/Architecture_Diagramm.png
+   :width: 7.55555in 
+   :height: 7.55555in
+	
+  
