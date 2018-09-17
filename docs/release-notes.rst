@@ -28,7 +28,6 @@ Version 1.35.0, 14 Septmember 2018
 * TOSCA poinitng to 0.0.31
 * `ACUMOS-1266 <https://jira.acumos.org/browse/ACUMOS-1266/>`_
 * `ACUMOS-1317 <https://jira.acumos.org/browse/ACUMOS-1317/>`_
-* `ACUMOS-1337 <https://jira.acumos.org/browse:ACUMOS-1337/>`_
 * `ACUMOS-1638 <https://jira.acumos.org/browse/ACUMOS-1638/>`_
 * `ACUMOS-1628 <https://jira.acumos.org/browse/ACUMOS-1628/>`_
 * `ACUMOS-1583 <https://jira.acumos.org/browse/ACUMOS-1583/>`_
