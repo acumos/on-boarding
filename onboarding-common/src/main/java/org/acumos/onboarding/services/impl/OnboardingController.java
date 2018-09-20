@@ -53,8 +53,10 @@ import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
+import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -392,6 +394,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 					
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 					logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
 					return res;
 				} finally {
@@ -427,6 +430,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
 						mData = null;
 						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -436,6 +441,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				}
 			} else {
 				try {
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
 					logger.error(EELFLoggerDelegate.errorLogger, "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
@@ -446,6 +453,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 
 		} catch (AcumosServiceException e) {
+			
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
@@ -468,6 +478,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(),modelName), e.getStatusCode());
 			}
 		} catch (Exception e) {
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
 			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {

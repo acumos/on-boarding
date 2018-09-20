@@ -39,6 +39,9 @@ public class OnboardingLogAdapter {
 
 	/** String constant for messages <tt>ENTERING</tt>, <tt>EXITING</tt>, etc. */
 	private static final String EMPTY_MESSAGE = "";
+	
+	private static final String instanceID = UUID.randomUUID().toString();
+	private static final String SUCCESS = "Success";
 
 	/** Logger delegate. */
 	private Logger mLogger;
@@ -152,6 +155,8 @@ public class OnboardingLogAdapter {
 		final String invocationID = defaultToUUID(request.getHeader(OnboardingLogConstants.Headers.INVOCATION_ID));
 		final String partnerName = defaultToEmpty(request.getHeader(OnboardingLogConstants.Headers.PARTNER_NAME));
 		
+		//final String instanceID = defaultToUUID(request.getHeader(OnboardingLogConstants.Headers.INSTANCE_ID));
+		
 		// Get the UserName
 		final String userName = defaultToEmpty(request.getUser());
 		MDC.put(OnboardingLogConstants.MDCs.USER,userName);
@@ -162,11 +167,18 @@ public class OnboardingLogAdapter {
 				ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, requestID);
 		MDC.put(OnboardingLogConstants.MDCs.INVOCATION_ID, invocationID);
-		if (!partnerName.isEmpty())
-			MDC.put(OnboardingLogConstants.MDCs.PARTNER_NAME, partnerName);
+		//if (!partnerName.isEmpty())
+		MDC.put(OnboardingLogConstants.MDCs.PARTNER_NAME, OnboardingLogConstants.PARTNER_NAME);
 		MDC.put(OnboardingLogConstants.MDCs.CLIENT_IP_ADDRESS, defaultToEmpty(request.getClientAddress()));
+		
 		MDC.put(OnboardingLogConstants.MDCs.SERVER_FQDN, defaultToEmpty(request.getServerAddress()));	
+		
 
+		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.INPROGRESS.name());
+		MDC.put(OnboardingLogConstants.MDCs.INSTANCE_UUID,instanceID);
+		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,SUCCESS);
+		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,SUCCESS);
+		
 		return this;
 	}
 
