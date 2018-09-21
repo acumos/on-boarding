@@ -87,8 +87,6 @@ use the  Acumos client library to upload model to platform. Acumos
 onboarding server exposes REST interface, which is used by client
 library for uploading the model to platform.
 
-.. |image1|
-
 **1.5 Onboarding Low Level Design**
 
 Modeler/Data scientist creates model using toolkit. Modeler uses
@@ -272,7 +270,7 @@ It gets invoked after the successful authentication.
 .. |image5| image:: ./media/DockerFileStructure.png
    :width: 3.90625in
    :height: 4.94792in
-.. |image0| image:: ./media/Architecture_Diagramm.png
+.. |image0| image:: ./media/Architecture_Diagram.png
    :width: 7.55555in 
    :height: 7.55555in
 	
