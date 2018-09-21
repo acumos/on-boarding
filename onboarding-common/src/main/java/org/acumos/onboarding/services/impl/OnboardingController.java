@@ -161,7 +161,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		// OnboardingNotification object that will be used to update status
 		// against that trackingID
 		OnboardingNotification onboardingStatus = null;
-		MDC.put(OnboardingLogConstants.MDCs.USER,authorization);
+		//MDC.put(OnboardingLogConstants.MDCs.USER,authorization);
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
