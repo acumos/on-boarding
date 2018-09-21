@@ -161,6 +161,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		// OnboardingNotification object that will be used to update status
 		// against that trackingID
 		OnboardingNotification onboardingStatus = null;
+		MDC.put(OnboardingLogConstants.MDCs.USER,authorization);
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
@@ -180,7 +181,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logThread.set(logBean);
 		//create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
-					
+		
 		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
 		Metadata mData = null;
@@ -394,7 +395,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 					
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 					logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
 					return res;
 				} finally {
@@ -421,6 +421,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 									fileName, onboardingStatus);
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
 									fileName);
 						}
@@ -442,7 +443,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			} else {
 				try {
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,"Either Username/Password is invalid.");
 					logger.error(EELFLoggerDelegate.errorLogger, "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
@@ -455,7 +456,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		} catch (AcumosServiceException e) {
 			
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,e.getMessage());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
 			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
@@ -479,7 +480,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 		} catch (Exception e) {
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,e.getMessage());
 			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
 			e.printStackTrace();
 			if (e instanceof AcumosServiceException) {

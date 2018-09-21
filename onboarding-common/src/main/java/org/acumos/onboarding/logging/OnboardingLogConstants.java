@@ -26,7 +26,8 @@ package org.acumos.onboarding.logging;
 public final class OnboardingLogConstants {
 
 	
-	public static final String PARTNER_NAME = "/onboarding-app/v2/models";
+	public static final String PARTNER_NAME = "Acumos Portal/CLI";
+	public static final String SERVICE_NAME = "/onboarding-app/v2/models";
 	
 	/**
 	 * Hide and forbid construction.
