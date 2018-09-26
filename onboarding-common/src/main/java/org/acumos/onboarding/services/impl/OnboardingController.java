@@ -149,7 +149,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
-			@RequestHeader(value = "loginName", required = false) String loginName,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
@@ -211,28 +210,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				}
 			}
 			
-			// Call to validate JWT Token.....!
-			JsonResponse<Object> valid = validate(authorization, loginName, provider);
+			
+			// Call to validate Token .....!
+			String ownerId = validate(authorization, provider);
 
-			boolean isValidToken = valid.getStatus();
-			String ownerId = null;
-		
-			if (isValidToken) {
+			if (ownerId!=null && !ownerId.isEmpty()) {
+				
 				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
-				ownerId = valid.getResponseBody().toString();
-
-				if (ownerId == null) {
-					logger.error(EELFLoggerDelegate.errorLogger, "Either  username/password is invalid.");
-					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
-							"Either  username/password is invalid.");
-				}
-
+			
 				// update userId in onboardingStatus
 				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
 
-				logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding request recieved with "
-						+ model.getOriginalFilename());
+				logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding request recieved with "+ model.getOriginalFilename());
 
 				// Notify Create solution or get existing solution ID has
 				// started

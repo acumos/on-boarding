@@ -173,18 +173,5 @@ public class PortalRestClientImpl implements PortalRestClient {
 		return result;
 	}
 
-	@Override
-	public JsonResponse<Object> apiTokenValidation(org.json.simple.JSONObject apitoken, String provider) {
-		
-		URI uri = buildUri(new String[] { "auth", "validateApiToken" }, null, null);
-		logger.debug(EELFLoggerDelegate.debugLogger,"ApiToken: uri {}", uri);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Validation URI : " + uri);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("provider", provider);
-		HttpEntity<?> entity = new HttpEntity<Object>(apitoken, headers);
-		JsonResponse<Object> result = restTemplate.postForObject(uri, entity, JsonResponse.class);
-		return result;
-	}
 
 }

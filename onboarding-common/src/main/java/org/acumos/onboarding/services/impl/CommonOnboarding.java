@@ -35,6 +35,7 @@ import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
@@ -134,26 +135,35 @@ public class CommonOnboarding {
 	 * Validates it and returns validity status and ownerId.
 	 */
 	@SuppressWarnings("unchecked")
-	public JsonResponse<Object> validate(String token, String loginName, String provider) throws AcumosServiceException {
-
+	public String validate(String authorization, String provider) throws AcumosServiceException {
+		
 		Boolean tokenVal = false;
 		JsonResponse<Object> valid = null;
+		String ownerID = null, loginName = null, token = null;
 		
+		logger.debug(EELFLoggerDelegate.debugLogger,"Authorization: " + authorization);
+
+		String[] values = splitAuthorization(authorization); 
+		
+		if(values[0].toString().equalsIgnoreCase(authorization)){
+			token = values[0];
+		} else {
+			loginName = values[0];
+			token = values[1];
+		}
+				
 		if (loginName != null && !loginName.isEmpty()) {
 
-			JSONObject apiObj1 = new JSONObject();
-			apiObj1.put("loginName", loginName);
-			apiObj1.put("apiTokenHash", token);
-
-			JSONObject apiObj2 = new JSONObject();
-			apiObj2.put("request_body", apiObj1);
-
-			valid = portalClient.apiTokenValidation(apiObj2, provider);
-			tokenVal = true;
+			logger.debug(EELFLoggerDelegate.debugLogger,"Api Token validation stated");
+			MLPUser mUser = cdmsClient.loginApiUser(loginName, token);
+			tokenVal = mUser.isActive();
+			ownerID = mUser.getUserId();
+			logger.debug(EELFLoggerDelegate.debugLogger,"OwnerID: " + ownerID);
 		}
 
 		if (tokenVal == false) {
 
+			logger.debug(EELFLoggerDelegate.debugLogger,"JWT Token validation stated");
 			JSONObject obj1 = new JSONObject();
 			obj1.put("jwtToken", token);
 
@@ -161,10 +171,19 @@ public class CommonOnboarding {
 			obj2.put("request_body", obj1);
 
 			valid = portalClient.tokenValidation(obj2, provider);
+			ownerID = valid.getResponseBody().toString();
+			logger.debug(EELFLoggerDelegate.debugLogger,"OwnerID: " + ownerID);
 		}
 
-		return valid;
+		return ownerID;
 	}
+	
+	private String[] splitAuthorization(String authorization) {
+		
+		String[] values = authorization.split(":");
+		return values;
+	}
+
 	/*
 	 * @Method Name : getExistingSolution Gives existing solution against
 	 * ownerId and Model name if any. *

@@ -29,6 +29,5 @@ public interface PortalRestClient {
 
 	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider);
 
-	JsonResponse<Object> apiTokenValidation(org.json.simple.JSONObject apitoken, String provider);
 
 }
