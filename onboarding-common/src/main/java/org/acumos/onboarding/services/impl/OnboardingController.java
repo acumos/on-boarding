@@ -181,7 +181,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		//create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
 		
-		logger.debug(EELFLoggerDelegate.debugLogger, "Started JWT token validation");
 		MLPUser shareUser = null;
 		Metadata mData = null;
 		String modelName = null;
