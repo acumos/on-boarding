@@ -50,7 +50,9 @@ import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
+import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.json.simple.JSONObject;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
@@ -141,8 +143,6 @@ public class CommonOnboarding {
 		JsonResponse<Object> valid = null;
 		String ownerID = null, loginName = null, token = null;
 		
-		logger.debug(EELFLoggerDelegate.debugLogger,"Authorization: " + authorization);
-
 		String[] values = splitAuthorization(authorization); 
 		
 		if(values[0].toString().equalsIgnoreCase(authorization)){
@@ -153,7 +153,8 @@ public class CommonOnboarding {
 		}
 				
 		if (loginName != null && !loginName.isEmpty()) {
-
+			
+			MDC.put(OnboardingLogConstants.MDCs.USER,loginName);
 			logger.debug(EELFLoggerDelegate.debugLogger,"Api Token validation stated");
 			MLPUser mUser = cdmsClient.loginApiUser(loginName, token);
 			tokenVal = mUser.isActive();
