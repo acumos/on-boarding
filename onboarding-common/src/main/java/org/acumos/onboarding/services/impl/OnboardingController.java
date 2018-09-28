@@ -171,7 +171,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
 		
-		String fileName ="onboardingLog_"+trackingID+".log";
+		//String fileName ="onboardingLog_"+trackingID+".log";
+		String fileName ="OnboardingLog.log";
 		//setting log filename in ThreadLocal	
 		LogBean logBean = new LogBean();
 		logBean.setLogPath(lOG_DIR_LOC);
@@ -408,7 +409,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Adding of log artifacts into nexus started " + fileName);
 							
-							String nexusArtifactID = "onboardingLog_"+trackingID;
+							//String nexusArtifactID = "onboardingLog_"+trackingID;
+							String nexusArtifactID = "OnboardingLog";
 
 							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),nexusArtifactID, onboardingStatus);
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.COMPLETED.name());
