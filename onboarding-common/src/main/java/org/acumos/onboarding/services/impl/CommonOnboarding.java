@@ -433,7 +433,7 @@ public class CommonOnboarding {
 				modelArtifact.setArtifactTypeCode(typeCode);
 				modelArtifact.setUserId(metadata.getOwnerId());
 				modelArtifact.setUri(uri);
-				modelArtifact.setSize(uri.length());
+				modelArtifact.setSize(-1);
 				modelArtifact = cdmsClient.createArtifact(modelArtifact);
 				logger.debug(EELFLoggerDelegate.debugLogger,"create Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
 				try {
