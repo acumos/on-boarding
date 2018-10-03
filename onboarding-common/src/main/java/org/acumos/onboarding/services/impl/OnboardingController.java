@@ -172,7 +172,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		}
 		
 		//String fileName ="onboardingLog_"+trackingID+".log";
-		String fileName ="OnboardingLog.log";
+		String fileName ="OnboardingLog.txt";
 		//setting log filename in ThreadLocal	
 		LogBean logBean = new LogBean();
 		logBean.setLogPath(lOG_DIR_LOC);

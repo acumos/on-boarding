@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>1.37.1-SNAPSHOT</version>
+	<version>1.37.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -118,7 +118,7 @@
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
-			<version>1.18.1</version>
+			<version>1.18.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.acumos.acumos-nexus-client</groupId>
@@ -138,7 +138,7 @@
 		<dependency>
 			<groupId>org.acumos.design-studio</groupId>
 			<artifactId>TOSCAModelGeneratorClient</artifactId>
-			<version>0.0.33</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
