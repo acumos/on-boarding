@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 1.38.0, 04 October 2018
+---------------------------------
+* Common Data Service client at version 1.18.2
+* TOSCA model generator client at version 1.33.1
+* `ACUMOS-1736 <https://jira.acumos.org/browse/ACUMOS-1736/>`_
+* `ACUMOS-1639 <https://jira.acumos.org/browse/ACUMOS-1639/>`_
+
 Version 1.37.0, 27 September 2018
 ---------------------------------
 * `ACUMOS-1771 <https://jira.acumos.org/browse/ACUMOS-1771/>`_
