@@ -7,6 +7,6 @@
 	<!-- docker image name -->
 	<artifactId>onboarding-base-r</artifactId>
 	<!-- docker tag -->
-	<version>1.0</version>
+	<version>1.0.0</version>
 </project>
 
