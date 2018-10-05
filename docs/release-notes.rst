@@ -29,6 +29,7 @@ Version 1.38.0, 04 October 2018
 * TOSCA model generator client at version 1.33.1
 * `ACUMOS-1736 <https://jira.acumos.org/browse/ACUMOS-1736/>`_
 * `ACUMOS-1639 <https://jira.acumos.org/browse/ACUMOS-1639/>`_
+* `ACUMOS-956 <https://jira.acumos.org/browse/ACUMOS-956/>`_
 
 Version 1.37.0, 27 September 2018
 ---------------------------------
