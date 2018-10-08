@@ -524,26 +524,31 @@ public class CommonOnboarding {
 				for (MLPArtifact mlpArtifact : artifactids) {
 					String artifactId = mlpArtifact.getArtifactId();
 
-					// Delete SolutionRevisionArtifact
-					logger.debug(EELFLoggerDelegate.debugLogger,"Deleting Artifact: " + artifactId);
-					cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
-							artifactId);
-					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the SolutionRevisionArtifact");
+					if (!(mlpArtifact.getArtifactTypeCode().equals("LG"))) {
 
-					// Delete Artifact
-					cdmsClient.deleteArtifact(artifactId);
-					logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact");
+						// Delete SolutionRevisionArtifact
+						logger.debug(EELFLoggerDelegate.debugLogger, "Deleting Artifact: " + artifactId);
+						cdmsClient.dropSolutionRevisionArtifact(metadata.getSolutionId(), metadata.getRevisionId(),
+								artifactId);
+						logger.debug(EELFLoggerDelegate.debugLogger,
+								"Successfully Deleted the SolutionRevisionArtifact");
 
-					// Delete the file from the Nexus
-					if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
-						nexusClient.deleteArtifact(mlpArtifact.getUri());
-						logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Artifact from Nexus");
+						// Delete Artifact
+						cdmsClient.deleteArtifact(artifactId);
+						logger.debug(EELFLoggerDelegate.debugLogger, "Successfully Deleted the Artifact");
+
+						// Delete the file from the Nexus
+						if (!(mlpArtifact.getArtifactTypeCode().equals("DI"))) {
+							nexusClient.deleteArtifact(mlpArtifact.getUri());
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Successfully Deleted the Artifact from Nexus");
+						}
 					}
 				}
 
 				// Delete current revision
-				cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
-				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Solution Revision");
+				/*cdmsClient.deleteSolutionRevision(metadata.getSolutionId(), metadata.getRevisionId());
+				logger.debug(EELFLoggerDelegate.debugLogger,"Successfully Deleted the Solution Revision");*/
 
 			}
 		} catch (Exception e) {
