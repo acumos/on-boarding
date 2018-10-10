@@ -153,15 +153,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
 	        @RequestHeader(value = "modName", required = false) String modName,
-            @RequestHeader(value = "deployment_env", required = false) Integer deployment_env)
+            @RequestHeader(value = "deployment_env", required = false) Integer deployment_env,
+            @RequestHeader(value = "Request-ID", required = false) String request_id)
 			throws AcumosServiceException {
 		
-		// If trackingID is provided in the header create a
+		// If trackingID is provided in the header
+		
 		// OnboardingNotification object that will be used to update status
 		// against that trackingID
 		OnboardingNotification onboardingStatus = null;
 		//MDC.put(OnboardingLogConstants.MDCs.USER,authorization);
-		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd);
+		
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 			onboardingStatus.setTrackingId(trackingID);
@@ -171,6 +173,16 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
 		
+		if (request_id != null) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
+			onboardingStatus.setTrackingId(trackingID);
+		} else {
+			request_id = UUID.randomUUID().toString();
+			onboardingStatus.setRequestId(request_id);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
+		}
+		
+		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		//String fileName ="onboardingLog_"+trackingID+".log";
 		String fileName ="OnboardingLog.txt";
 		//setting log filename in ThreadLocal	
@@ -402,7 +414,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						// push docker build log into nexus
 						
-						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + fileName);
+						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
 								fileName);
 						if (metadataParser != null && mData != null) {

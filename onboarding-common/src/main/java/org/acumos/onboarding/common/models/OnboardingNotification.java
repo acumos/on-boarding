@@ -44,6 +44,15 @@ public class OnboardingNotification {
 	private String result;
 	private Date startDate;
 	private Date endDate;
+	private String requestId;
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
 
 	private CommonDataServiceRestClientImpl cdmsClient;
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingNotification.class);
@@ -51,6 +60,12 @@ public class OnboardingNotification {
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
+	}
+	
+	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd, String requestId) {
+
+		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
+		cdmsClient.setRequestId(requestId);
 	}
 
 	// current step, status and description sent to be logged.
@@ -70,6 +85,8 @@ public class OnboardingNotification {
 			stepResult.setStartDate(new Date());
 			stepResult.setEndDate(new Date());
 			stepResult.setStepCode("OB");
+			
+
 			if (currentDescription != null && !currentDescription.isEmpty()) {
 				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
 				stepResult.setResult(desc);
