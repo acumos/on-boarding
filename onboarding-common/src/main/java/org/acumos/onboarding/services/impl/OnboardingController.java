@@ -157,19 +157,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
             @RequestHeader(value = "Request-ID", required = false) String request_id)
 			throws AcumosServiceException {
 		
-		// If trackingID is provided in the header
 		
-		// OnboardingNotification object that will be used to update status
-		// against that trackingID
 		OnboardingNotification onboardingStatus = null;
-		//MDC.put(OnboardingLogConstants.MDCs.USER,authorization);
 		
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 			onboardingStatus.setTrackingId(trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
-			onboardingStatus.setTrackingId(trackingID);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		}
 		
@@ -178,11 +173,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			onboardingStatus.setTrackingId(trackingID);
 		} else {
 			request_id = UUID.randomUUID().toString();
-			onboardingStatus.setRequestId(request_id);
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
 		}
 		
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
+		onboardingStatus.setTrackingId(trackingID);
+		onboardingStatus.setRequestId(request_id);
+		
+		
 		//String fileName ="onboardingLog_"+trackingID+".log";
 		String fileName ="OnboardingLog.txt";
 		//setting log filename in ThreadLocal	
