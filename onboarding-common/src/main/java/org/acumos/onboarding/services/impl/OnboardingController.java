@@ -179,7 +179,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
-		
+		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
 		
 		//String fileName ="onboardingLog_"+trackingID+".log";
 		String fileName ="OnboardingLog.txt";
@@ -191,6 +191,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logThread.set(logBean);
 		//create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
+		
 		
 		MLPUser shareUser = null;
 		Metadata mData = null;

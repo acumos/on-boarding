@@ -264,7 +264,7 @@ public class UtilityFunction {
 		LogBean logBean = LogThreadLocal.get();
 		String fileName = logBean.getFileName();
 
-		File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC);
+		File file = new java.io.File(logBean.getLogPath());
 		file.mkdirs();
 		try {
 			File f1 = new File(file.getPath() + File.separator + fileName);
