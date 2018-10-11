@@ -162,18 +162,16 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
-			onboardingStatus.setTrackingId(trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
 		}
 		
 		if (request_id != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
-			onboardingStatus.setTrackingId(trackingID);
 		} else {
 			request_id = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
 		}
 		
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
@@ -181,9 +179,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		onboardingStatus.setRequestId(request_id);
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
 		
-		//String fileName ="onboardingLog_"+trackingID+".log";
 		String fileName ="OnboardingLog.txt";
-		//setting log filename in ThreadLocal	
 		LogBean logBean = new LogBean();
 		logBean.setLogPath(lOG_DIR_LOC+File.separator+trackingID);
 		logBean.setFileName(fileName);

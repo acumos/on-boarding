@@ -155,7 +155,7 @@ public class CommonOnboarding {
 		if (loginName != null && !loginName.isEmpty()) {
 			
 			MDC.put(OnboardingLogConstants.MDCs.USER,loginName);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Api Token validation stated");
+			logger.debug(EELFLoggerDelegate.debugLogger,"Api Token validation started");
 			MLPUser mUser = cdmsClient.loginApiUser(loginName, token);
 			tokenVal = mUser.isActive();
 			ownerID = mUser.getUserId();
@@ -164,7 +164,7 @@ public class CommonOnboarding {
 
 		if (tokenVal == false) {
 
-			logger.debug(EELFLoggerDelegate.debugLogger,"JWT Token validation stated");
+			logger.debug(EELFLoggerDelegate.debugLogger,"JWT Token validation started");
 			JSONObject obj1 = new JSONObject();
 			obj1.put("jwtToken", token);
 
@@ -383,7 +383,7 @@ public class CommonOnboarding {
 					logger.debug(EELFLoggerDelegate.debugLogger, "addSolutionRevisionArtifact for " + file.getName() + " successful");
 					// Notify add artifacts successful
 					if (onboardingStatus != null) {
-						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
+						//onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 						onboardingStatus.notifyOnboardingStatus("AddArtifact", "SU",
 								"Add Artifact for" + file.getName() + " Successful");
 					}
@@ -441,7 +441,7 @@ public class CommonOnboarding {
 							modelArtifact.getArtifactId());
 					logger.debug(EELFLoggerDelegate.debugLogger,"addSolutionRevisionArtifact - "+uri+" for solution - " +metadata.getSolutionId( )+" Successful");
 					if (onboardingStatus != null) {
-						onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
+						//onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 						onboardingStatus.notifyOnboardingStatus("AddDockerImage","SU", "Add Artifact - "+uri + " for solution - "+metadata.getSolutionId()+ " Successful");
 					}
 					return modelArtifact;
