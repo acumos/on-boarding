@@ -1,0 +1,37 @@
+2018-10-11 10:34:39,166|| Model name :Predictor
+2018-10-11 10:34:39,228|| Create solution call started
+2018-10-11 10:34:39,228|| Model name[CreateSolutionMethod] :Predictor
+2018-10-11 10:34:39,232|| Solution created: 02a87750-7ba3-4ea7-8c20-c1286930f57c
+2018-10-11 10:34:39,236|| Dockerfile
+2018-10-11 10:34:39,236|| inFile.csv
+2018-10-11 10:34:39,236|| java_genric.json
+2018-10-11 10:34:39,236|| meta.json
+2018-10-11 10:34:39,236|| metadata.json
+2018-10-11 10:34:39,237|| model.pkl
+2018-10-11 10:34:39,238|| model.proto
+2018-10-11 10:34:39,239|| modelDetails.json
+2018-10-11 10:34:39,239|| model_pb2.py
+2018-10-11 10:34:39,240|| outFile.csv
+2018-10-11 10:34:39,240|| packages.R
+2018-10-11 10:34:39,240|| requirements.txt
+2018-10-11 10:34:39,241|| wrap.json
+2018-10-11 10:34:39,245|| Model name :Predictor
+2018-10-11 10:34:39,246|| Create solution revision call started
+2018-10-11 10:34:39,246|| Solution revision created: 361de562-2e4d-49d7-b6a2-b551c35050e6
+2018-10-11 10:34:39,282|| Started User Authentication
+2018-10-11 10:34:39,283|| User Authentication Successful
+2018-10-11 10:34:39,364|| getHealth
+2018-10-11 10:34:41,718|| Model name [Metadata Parsing]:vm_predictor
+2018-10-11 10:34:41,718|| Model name :vm_predictor
+2018-10-11 10:34:41,763|| Invalid Model name [Metadata Parsing]:vm/predictor
+2018-10-11 10:34:41,765|| Model name :javageneric
+2018-10-11 10:34:44,976|| Started User Authentication
+2018-10-11 10:34:44,988|| User Authentication Successful
+2018-10-11 10:34:46,528|| NotifyCreateSolution Started
+2018-10-11 10:34:46,528|| Send Notification to DB Ended
+2018-10-11 10:34:46,529|| NotifyCreateSolution Started
+2018-10-11 10:34:46,530|| Send Notification to DB Ended
+2018-10-11 10:34:46,555|| tokenValidation success
+2018-10-11 10:34:46,603|| Count is= 6
+2018-10-11 10:34:46,634|| Count is= 6
+2018-10-11 10:34:47,163|| Count is= 6

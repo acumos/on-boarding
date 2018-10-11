@@ -121,7 +121,6 @@ public class CommonOnboarding {
 
 	protected ResourceUtils resourceUtils;
 	
-	protected String nexusGrpId;
 	
 	@PostConstruct
 	public void init() {
@@ -359,7 +358,7 @@ public class CommonOnboarding {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
-			nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
+			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			 
 			logger.debug(EELFLoggerDelegate.debugLogger,
@@ -479,7 +478,8 @@ public class CommonOnboarding {
 			// TODO : Include toscaOutputFolder =/tmp/ and
 			// in external configuration SPRING_APPLICATION_JSON
 			// And define the variable for the same in the class.
-			
+			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
+			logger.debug(EELFLoggerDelegate.debugLogger,"nexusGrpId:" + nexusGrpId);
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGrpId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
 					cmnDataSvcPwd);
