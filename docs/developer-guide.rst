@@ -72,7 +72,7 @@ community:
 
 1. Provide the basic request response style of communication.
 
-2. Can be converted in Microservices
+2. Can be converted in Microservices.
 
 3. Are capable of communicating via Http REST mechanism.
 
@@ -92,7 +92,7 @@ library for uploading the model to platform.
 Modeler/Data scientist creates model using toolkit. Modeler uses
 Acumos-client-library to push the model to  Acumos platform. The client
 library uploads model and metadata file to  Acumos onboarding
-server.Onboarding server creates docker image of model and push to nexus
+server. Onboarding server creates docker image of model and push to nexus
 docker registry.It also creates solution, puts model and metadata
 artifact to repository.
 
@@ -101,8 +101,7 @@ artifact to repository.
 **1.6 Onboarding Use Case**
 
 Below, the data scientist’s model is wrapped to produce a standardized
-native model. Depending on the input model, only a subset of 
-standard model interfaces may be supported.  
+native model. Depending on the input model, only a subset of standard model interfaces may be supported.  
 
 Acumos can then generate a microservice however it wishes. The
 underlying generic server can only interface with the inner model via
@@ -113,10 +112,9 @@ wrapper independently of Acumos.
 
 **1.7 Onboarding Model Artifact**
 
-Model artifacts must provide sufficient metadata that enables  Acumos to 
-instantiate runtimes, generate microservices, and validate microservice 
-compositions. The proposed solution is to split the model artifact into
-public and private  components.
+Model artifacts must provide sufficient metadata that enables  Acumos to instantiate runtimes,
+generate microservices, and validate microservice compositions. The proposed solution is to split 
+the model artifact into public and private  components.
 
 - Public
 
@@ -154,7 +152,7 @@ Project and clone this project by using below clone command:
 
 git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
-2. **After cloning import this project in your recommended IDE like STS.**
+2. After cloning import this project in your recommended IDE like STS.
 
 3. Take the maven update so that you can download all the required
    dependencies for the Onboarding Project.
@@ -180,17 +178,16 @@ git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
 In Onboarding project we have template folder under resources where we
 are putting all the Docker file with some other dependencies for
-different Models like h20,java_argus,java_genric,,python,r ,etc.
+different Models like h20, java_generic, python, r, etc.
 
 For example:
 
 For Onboarding H20 model we have the h20 Docker file and requirement.txt
 file attached below inside h20 folder.
 
-Onboarding code understands this Docker file related to particular model
-line by line it reads the commands and performs the action accordingly
-.It will download all the required dependences accordingly. In this way
-we’ll Onboard Model by using this Onboarding Platform.
+Onboarding code understands this Docker file related to particular model line by line it reads the
+commands and performs the action accordingly. It will download all the required dependences
+accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
 
 Note: Make sure the Docker is installed in the local Machine before try
 to Onboard the model in by using our local machine Environment.
@@ -200,10 +197,10 @@ to Onboard the model in by using our local machine Environment.
 The onboarding server exposes REST API for model and metadata upload.
 
 The metadata JSON is validated for valid schema using JSON schema
-validator.The model metadata is used to get the runtime version
+validator. The model metadata is used to get the runtime version
 information, for example python 2.7. This information is used to fetch
 the runtime template. The runtime template contains template for
-following files
+following files.
 
 1.Dockerfile
 
@@ -218,9 +215,9 @@ Below is the structure:
 |image5|
 
 The above template files are populated based on metadata JSON uploaded
-by user.Onboarding server uses docker-java library for model docker
+by user. Onboarding server uses docker-java library for model docker
 image creation. Once the docker image is created, the image is tagged
-and pushed to nexus docker registry.The server uses common data
+and pushed to nexus docker registry. The server uses common data
 micro-services API to create solution and store model and metadata to
 artifact repository.
 
@@ -229,9 +226,9 @@ artifact repository.
 Following steps needs to be executed as part of model validation
 workflow:
 
--  Onboarding server will expose an REST API for validating the model.
+-  Onboarding server will expose a REST API for validating the model.
    The REST API will take solutionID and metadata JSON containing model
-   features as input parameters
+   features as input parameters.
 
 -  The server will fetch the docker image details for the corresponding
    solution and run the model image.
@@ -242,15 +239,44 @@ workflow:
 
 **1.13 Onboarding Backend API**
 
--OnboardingWithAuthentication:-
+Authentication API : This API provides the basic authentication prior to Onboard any model.
 
-This API provides the basic authentication prior to Onboard any model.
+- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
 
--dockerizePayload:
+- Method = GET.
 
-This API is used for actual Onboarding the Models.
+- input : User_Name, Password.
 
-It gets invoked after the successful authentication.
+- output : authentication token.
+
+- hostname : the hostname of the machine in which Acumos have been installed.
+
+- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
+
+- Description : Checks User Name & password to provide an authentication token.
+
+
+
+Push model API : This API is used for upload the model bundle in Acumos
+
+- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
+
+- Method = POST
+
+- data Params = model bundle, authentication token (provided by Authentication API)
+
+- hostname : the hostname of the machine in which Acumos have been installed.
+
+- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
+
+- Description : Upload the model bundle on the on-boarding server.
+
+
+The previous authentication method will be soon deprecated in favor of a more robuste authentication
+method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
+your API_token located in your profil settings and then used it in the Push model API by replace the
+authentication token by : username:API_token
+
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
