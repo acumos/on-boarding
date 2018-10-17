@@ -23,7 +23,5 @@ On-Boarding
 .. toctree::
        :maxdepth: 2
 
-       release-notes
        developer-guide
-
-
+       release-notes
