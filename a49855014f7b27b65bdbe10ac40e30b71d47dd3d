@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00b2574f_c2502441",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-10-18T17:29:54Z",
+      "side": 1,
+      "message": "if you add a line of dashes underneath this section title, the title will appear in the page\u0027s table of contents on the left side of the rendered HTML site",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 40
+      },
+      "revId": "a49855014f7b27b65bdbe10ac40e30b71d47dd3d",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
