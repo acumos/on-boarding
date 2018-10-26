@@ -27,14 +27,16 @@ This is the developers guide to Onboarding.
 
 Acumos is intended to enable the use of a wide range of tools and
 technologies in the development of machine learning models including
-support for both open sourced and proprietary toolkits. Models can be
-easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components.
+support for both open sourced and proprietary toolkits.
 
-The goal of Onboarding is to provide an ingestion interface for various
-types of models to enter the  Acumos machine learning platform. Examples
-of models include well-defined objects such as scikit-learn estimators,
-TensorFlow weights, and arbitrary R functions.
+The goal of Onboarding is : 
+
+- Provide an ingestion interface for various types of models to enter
+ the  Acumos machine learning platform. 
+- Create artifacts required by Acumos, like for example the TOSCA file
+ that is needed to use the model in the Acumos Design Studio.
+- Create adequate identifiers like for example solution_ID
+- Create the docker image
 
 The solution for accommodating a myriad of different model types is to
 provide a custom wrapping library for each runtime. The wrapper 
@@ -42,40 +44,39 @@ will encapsulate the complexity surrounding the serialization and
 deserialization of models. Additionally, the wrapper will provide a 
 common native interface for invoking the inner model.
 
-In order for  Acumos to be able to reason about models uniformly, there
-will also have to be a common model interface description. E.g.  
-what are the available model methods, and what do they look like? One
-goal of  Acumos is to instantiate ML models as microservices and safely
-compose them together. We must collect enough model metadata to enable
-this.
-
-In short, our goals are to:
-
-- Create wrapper libraries that can serialize/deserialize models and provide a standard native interface.
-
-- Represent model I/O such that  Acumos can generate microservices and validate connections between them.
-
-**2: Target Users**
--------------------
+**2: Target Users **
+--------------------
 This guide is targeted towards the open source user community that:
 
 1. Intends to understand the backend functionality of the Onboarding.
 
 2. Intends to contribute code to enhance the functionality of the Onboarding.
 
-**3: Assumptions**
-------------------
+**3: AI framework **
+--------------------
 
-It is assumed that the ML Models contributed by the open source
-community:
+Athena release of Acumos is able to onboard Machine Learning model coming 
+from the folowing AI framework
 
-1. Provide the basic request response style of communication.
+1. H20 (java language)
 
-2. Can be converted in Microservices.
+2. Native java
 
-3. Are capable of communicating via Http REST mechanism.
+3. R
 
-4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O, and RCloud.
+4. TensorFlow(python)
+
+5. Scikit Learn (python)
+
+Three differents on-boarding Acumos client have been developped to allow users to 
+onboard their models
+
+:doc: `Acumos R client developper guide <acumos-r-client>`
+:doc: `Acumos Java client developper guide <acumos-java-client>`
+:doc: `Acumos python client developper guide <acumos-python-client>`
+
+Each of these onboarding client create a model bundle that contains a Metadata file, a protobuf 
+file and the model itself and upload this model bundle in the Acumos onboarding server.
 
 **4: Onboarding Design Architecture**
 -------------------------------------
@@ -305,7 +306,7 @@ authentication token by : username:API_token
 .. |image5| image:: ./media/DockerFileStructure.png
    :width: 3.90625in
    :height: 4.94792in
-.. |image0| image:: ./media/Architecture_Diagram.png
+.. |image0| image:: ./media/Architecture_Diagram1.png
    :width: 7.55555in 
    :height: 7.55555in
 	
