@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.cds.domain.MLPUser;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
@@ -82,6 +83,9 @@ public class OnboardingControllerTest {
 	@Mock
 	OnboardingNotification onboardingNotification;
 	
+	@InjectMocks
+	MLPUser mUser;// = new MLPUser();
+	
 
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 	
@@ -112,8 +116,10 @@ public class OnboardingControllerTest {
 
 		JsonRequest<Crediantials> cred = new JsonRequest<>();
 		cred.setBody(credential);
+		
+		//Mockito.w
 
-		when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
+		PowerMockito.when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
 		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
 		assertNotNull(result);
 	}
@@ -122,7 +128,7 @@ public class OnboardingControllerTest {
      * Testcase to check invalid metadata json which should recieve failure or exception 
      * @throws Exception
      */
-	/*@Test
+	@Test
 	public void testdockerizePayloadWtihInavliadMetadata() throws Exception {
 
 		try {
@@ -145,30 +151,80 @@ public class OnboardingControllerTest {
 
 			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
 			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
+			MLPUser mUser = mock(MLPUser.class);
+			mUser.setUserId("test");
+			mUser.setActive(true);
 
 			JsonResponse<Object> jsonResp = new JsonResponse<Object>();
 			jsonResp.setStatus(true);
 			jsonResp.setResponseBody("ownerid");
 
 			PowerMockito.whenNew(CommonDataServiceRestClientImpl.class)
-					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),Mockito.anyString())
 					.thenReturn(cmdDataSvc);
 
 			PowerMockito.whenNew(OnboardingNotification.class)
 					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
 					.thenReturn(onboardingStatus);
 
-			PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn(jsonResp);
 			
+			PowerMockito.whenNew(MLPUser.class).withNoArguments().thenReturn(mUser);
+
+			
+			PowerMockito.when(cmdDataSvc.loginApiUser("loginName", "token123")).thenReturn(mUser);
+			PowerMockito.when(mUser.isActive()).thenReturn(true);
+			PowerMockito.when(mUser.getUserId()).thenReturn("test");
+			//PowerMockito.when(onboardingController.validate("user:password", "provider")).thenReturn(Mockito.anyString());
+			
+			//PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn("Pass");
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null);
+					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(400,resp.getStatusCodeValue());
 		} catch (AcumosServiceException e) {
 			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
 		}
 
-	}*/
+	}
+	
+	
+	//@Test
+	public void testValidate() {
+		
+		try {
+			
+			MLPUser mUser = new MLPUser();//mock(MLPUser.class);
+			mUser.setUserId("test");
+			mUser.setActive(true);
+			
+			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
+			
+			//PowerMockito.when(cmdDataSvc.loginApiUser("loginName", "token123")).thenReturn(mUser);
+			
+			//PowerMockito.whenNew(MLPUser.class).withNoArguments().thenReturn(mUser);
+			
+			JsonResponse<Object> jsonResp = new JsonResponse<Object>();
+			jsonResp.setStatus(true);
+			jsonResp.setResponseBody("ownerid");
+			
+			onboardingController.validate("loginNameApitoken", "token123");
+			
+			
+			PowerMockito.when(mUser.isActive()).thenReturn(true);
+			PowerMockito.when(mUser.getUserId()).thenReturn("test");
+			
+			
+			
+		} catch (AcumosServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 
 
 }
