@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "042d6553_802630a7",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-10-26T15:53:38Z",
+      "side": 1,
+      "message": "I had previously remove this title introdcution because it was the only one paragraph in this document so the entire document is just an introduction",
+      "revId": "b473c815990a7102b11aff387cf6c62d3115e981",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93abb19f_c666b03c",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-10-26T15:53:38Z",
+      "side": 1,
+      "message": "The title underlined must be kept, it doesn\u0027t appears on the html wiki page, it is just an instruction to create a summary of the document on the left panel, please have a look on the current on-boarding developper guide",
+      "revId": "b473c815990a7102b11aff387cf6c62d3115e981",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8feacec_ad0f0c49",
+        "filename": "docs/developer-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2018-10-26T15:53:38Z",
+      "side": 1,
+      "message": "Why remove all the information related to API it\u0027s very useful for developper no ?",
+      "revId": "b473c815990a7102b11aff387cf6c62d3115e981",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
