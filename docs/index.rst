@@ -21,7 +21,9 @@ On-Boarding
 ===========
 
 .. toctree::
-       :maxdepth: 1
+       :maxdepth: 2
 
+       release-notes 
        developer-guide
-       release-notes
+
+

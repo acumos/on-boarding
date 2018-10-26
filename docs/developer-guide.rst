@@ -20,16 +20,18 @@
 On-Boarding Developer Guide
 ===========================
 
+1. Introduction
+---------------
+
 This is the developers guide to Onboarding.
 
-**1: introduction, what is Onboarding ?**
------------------------------------------
+**1.1 What is Onboarding?**
 
 Acumos is intended to enable the use of a wide range of tools and
 technologies in the development of machine learning models including
 support for both open sourced and proprietary toolkits. Models can be
 easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components.
+interoperable with many other components. 
 
 The goal of Onboarding is to provide an ingestion interface for various
 types of models to enter the  Acumos machine learning platform. Examples
@@ -55,30 +57,28 @@ In short, our goals are to:
 
 - Represent model I/O such that  Acumos can generate microservices and validate connections between them.
 
-**2: Target Users**
--------------------
+**1.2 Target Users**
+
 This guide is targeted towards the open source user community that:
 
 1. Intends to understand the backend functionality of the Onboarding.
 
 2. Intends to contribute code to enhance the functionality of the Onboarding.
 
-**3: Assumptions**
-------------------
+**1.3 Assumptions**
 
 It is assumed that the ML Models contributed by the open source
 community:
 
 1. Provide the basic request response style of communication.
 
-2. Can be converted in Microservices.
+2. Can be converted in Microservices
 
 3. Are capable of communicating via Http REST mechanism.
 
 4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O, and RCloud.
 
-**4: Onboarding Design Architecture**
--------------------------------------
+**1.4 Onboarding Design Architecture**
 
 |image0|
 
@@ -87,23 +87,21 @@ use the  Acumos client library to upload model to platform. Acumos
 onboarding server exposes REST interface, which is used by client
 library for uploading the model to platform.
 
-**5: Onboarding Low Level Design**
-----------------------------------
+**1.5 Onboarding Low Level Design**
 
 Modeler/Data scientist creates model using toolkit. Modeler uses
 Acumos-client-library to push the model to  Acumos platform. The client
 library uploads model and metadata file to  Acumos onboarding
-server. Onboarding server creates docker image of model and push to nexus
-docker registry.It also creates solution, puts model and metadata
-artifact to repository.
+server.Onboarding server creates solution, puts model and metadata
+artifacts to repository.
 
 |image2|
 
-**6: Onboarding Use Case**
---------------------------
+**1.6 Onboarding Use Case**
 
 Below, the data scientist’s model is wrapped to produce a standardized
-native model. Depending on the input model, only a subset of standard model interfaces may be supported.
+native model. Depending on the input model, only a subset of 
+standard model interfaces may be supported.  
 
 Acumos can then generate a microservice however it wishes. The
 underlying generic server can only interface with the inner model via
@@ -112,12 +110,12 @@ wrapper independently of Acumos.
 
 |image3|
 
-**7: Onboarding Model Artifact**
---------------------------------
+**1.7 Onboarding Model Artifact**
 
-Model artifacts must provide sufficient metadata that enables  Acumos to instantiate runtimes,
-generate microservices, and validate microservice compositions. The proposed solution is to split
-the model artifact into public and private  components.
+Model artifacts must provide sufficient metadata that enables  Acumos to 
+instantiate runtimes, generate microservices, and validate microservice 
+compositions. The proposed solution is to split the model artifact into
+public and private  components.
 
 - Public
 
@@ -142,8 +140,7 @@ library has the freedom to independently iterate and improve.
 
 |image4|
 
-**8: Onboarding Setup**
------------------------
+**1.8 Onboarding Setup**
 
 Steps:
 
@@ -156,7 +153,7 @@ Project and clone this project by using below clone command:
 
 git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
-2. After cloning import this project in your recommended IDE like STS.
+2. **After cloning import this project in your recommended IDE like STS.**
 
 3. Take the maven update so that you can download all the required
    dependencies for the Onboarding Project.
@@ -168,8 +165,7 @@ git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
    IST server than you need to set all the environment variables in
    system-integration Project.
 
-**9: Onboarding Technology & Framework**
-----------------------------------------
+**1.9 Onboarding Technology & Framework**
 
 -  Java 1.8
 
@@ -179,64 +175,46 @@ git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
 -  Docker Java Library
 
-**10: Onboarding – Code Walkthrough & details**
------------------------------------------------
+**1.10 Onboarding – Code Walkthrough & details**
 
 In Onboarding project we have template folder under resources where we
 are putting all the Docker file with some other dependencies for
-different Models like h20, java_generic, python, r, etc.
+different Models like h20,java_argus,java_genric,,python,r ,etc.
 
 For example:
 
 For Onboarding H20 model we have the h20 Docker file and requirement.txt
 file attached below inside h20 folder.
 
-Onboarding code understands this Docker file related to particular model line by line it reads the
-commands and performs the action accordingly. It will download all the required dependences
-accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
+Onboarding code understands this Docker file related to particular model
+line by line it reads the commands and performs the action accordingly
+.It will download all the required dependences accordingly. In this way
+we’ll Onboard Model by using this Onboarding Platform.
 
 Note: Make sure the Docker is installed in the local Machine before try
 to Onboard the model in by using our local machine Environment.
 
-**11: Onboarding – Docker Image Creation and details**
-------------------------------------------------------
+**1.11 Onboarding – Docker Image Creation and details**
 
 The onboarding server exposes REST API for model and metadata upload.
+It creates a new solution for new model or fetches existing 
+solutionID and creates a new revision for the solution and updates database
+with new set of artifacts. It also uploads the model artifacts in Nexus repository.
 
-The metadata JSON is validated for valid schema using JSON schema
-validator. The model metadata is used to get the runtime version
-information, for example python 2.7. This information is used to fetch
-the runtime template. The runtime template contains template for
-following files.
+The onboarding server invokes TOSCA generator to generate TOSCA files for the model
+and uploads these to Nexus against the new revision.
 
-1.Dockerfile
+Onboarding server also invokes microservice generation API to generatedocker image for the model.
+Microservice generation component then creates docker image and uploads it in Nexus docker repository.
 
-2.requirements.txt
-
-3.app.py
-
-4.swagger.yaml
-
-Below is the structure:
-
-|image5|
-
-The above template files are populated based on metadata JSON uploaded
-by user. Onboarding server uses docker-java library for model docker
-image creation. Once the docker image is created, the image is tagged
-and pushed to nexus docker registry. The server uses common data
-micro-services API to create solution and store model and metadata to
-artifact repository.
-
-**12: Onboarding – Model Validation Workflow**
-----------------------------------------------
+**1.12 Onboarding – Model Validation Workflow**
 
 Following steps needs to be executed as part of model validation
 workflow:
 
--  Onboarding server will expose a REST API for validating the model.
+-  Onboarding server will expose an REST API for validating the model.
    The REST API will take solutionID and metadata JSON containing model
-   features as input parameters.
+   features as input parameters
 
 -  The server will fetch the docker image details for the corresponding
    solution and run the model image.
@@ -245,47 +223,17 @@ workflow:
    by model docker image and output of predict method will be returned
    as API output.
 
-**13: Onboarding Backend API**
-------------------------------
+**1.13 Onboarding Backend API**
 
-Authentication API : This API provides the basic authentication prior to Onboard any model.
+-OnboardingWithAuthentication:-
 
-- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
+This API provides the basic authentication prior to Onboard any model.
 
-- Method = GET.
+-dockerizePayload:
 
-- input : User_Name, Password.
+This API is used for actual Onboarding the Models.
 
-- output : authentication token.
-
-- hostname : the hostname of the machine in which Acumos have been installed.
-
-- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
-
-- Description : Checks User Name & password to provide an authentication token.
-
-
-
-Push model API : This API is used for upload the model bundle in Acumos
-
-- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
-
-- Method = POST
-
-- data Params = model bundle, authentication token (provided by Authentication API)
-
-- hostname : the hostname of the machine in which Acumos have been installed.
-
-- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
-
-- Description : Upload the model bundle on the on-boarding server.
-
-
-The previous authentication method will be soon deprecated in favor of a more robuste authentication
-method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
-your API_token located in your profil settings and then used it in the Push model API by replace the
-authentication token by : username:API_token
-
+It gets invoked after the successful authentication.
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
