@@ -22,14 +22,14 @@ On-Boarding Developer Guide
 
 This is the developers guide to Onboarding.
 
-**1: introduction, what is Onboarding ?**
+**1: introduction - What is Onboarding?**
 -----------------------------------------
 
 Acumos is intended to enable the use of a wide range of tools and
 technologies in the development of machine learning models including
 support for both open sourced and proprietary toolkits. Models can be
 easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components.
+interoperable with many other components. 
 
 The goal of Onboarding is to provide an ingestion interface for various
 types of models to enter the  Acumos machine learning platform. Examples
@@ -57,6 +57,7 @@ In short, our goals are to:
 
 **2: Target Users**
 -------------------
+
 This guide is targeted towards the open source user community that:
 
 1. Intends to understand the backend functionality of the Onboarding.
@@ -71,7 +72,7 @@ community:
 
 1. Provide the basic request response style of communication.
 
-2. Can be converted in Microservices.
+2. Can be converted in Microservices
 
 3. Are capable of communicating via Http REST mechanism.
 
@@ -87,15 +88,21 @@ use the  Acumos client library to upload model to platform. Acumos
 onboarding server exposes REST interface, which is used by client
 library for uploading the model to platform.
 
+Below is high-level flow of model onboarding
+
+|image1|
+
 **5: Onboarding Low Level Design**
 ----------------------------------
 
-Modeler/Data scientist creates model using toolkit. Modeler uses
-Acumos-client-library to push the model to  Acumos platform. The client
-library uploads model and metadata file to  Acumos onboarding
-server. Onboarding server creates docker image of model and push to nexus
-docker registry.It also creates solution, puts model and metadata
-artifact to repository.
+Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o, Keras or 
+Tensorflow or any other. Modeller uses Acumos-client-library specific to the toolkit type to push the model to  Acumos platform.
+The client library pushes model binary, metadata file and protobuf definition for model input, output and model method to  Acumos onboarding 
+server. Onboarding server authenticates incoming request and then pushes model artifacts to nexus docker registry. It creates new solution 
+in common database for a new model or updates existing solution with, a new revision. It updates the revision with artefact details and also 
+uploads those to nexus maven repository.
+
+Below diagram depicts next level details of onboarding component.
 
 |image2|
 
@@ -103,7 +110,8 @@ artifact to repository.
 --------------------------
 
 Below, the data scientist’s model is wrapped to produce a standardized
-native model. Depending on the input model, only a subset of standard model interfaces may be supported.
+native model. Depending on the input model, only a subset of 
+standard model interfaces may be supported.  
 
 Acumos can then generate a microservice however it wishes. The
 underlying generic server can only interface with the inner model via
@@ -112,12 +120,13 @@ wrapper independently of Acumos.
 
 |image3|
 
-**7: Onboarding Model Artifact**
---------------------------------
+**7 Onboarding Model Artifact**
+-------------------------------
 
-Model artifacts must provide sufficient metadata that enables  Acumos to instantiate runtimes,
-generate microservices, and validate microservice compositions. The proposed solution is to split
-the model artifact into public and private  components.
+Model artifacts must provide sufficient metadata that enables  Acumos to 
+instantiate runtimes, generate microservices, and validate microservice 
+compositions. The proposed solution is to split the model artifact into
+public and private  components.
 
 - Public
 
@@ -142,8 +151,8 @@ library has the freedom to independently iterate and improve.
 
 |image4|
 
-**8: Onboarding Setup**
------------------------
+**8 Onboarding Setup**
+----------------------
 
 Steps:
 
@@ -151,7 +160,7 @@ Steps:
 
 Repo URL: https://gerrit.acumos.org
 
-Under the dashboard page we have list of Projects,select Onboarding
+Under the dashboard page we have list of Projects, select Onboarding
 Project and clone this project by using below clone command:
 
 git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
@@ -184,16 +193,17 @@ git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
 In Onboarding project we have template folder under resources where we
 are putting all the Docker file with some other dependencies for
-different Models like h20, java_generic, python, r, etc.
+different Models like h20,java_argus,java_genric,,python,r ,etc.
 
 For example:
 
 For Onboarding H20 model we have the h20 Docker file and requirement.txt
 file attached below inside h20 folder.
 
-Onboarding code understands this Docker file related to particular model line by line it reads the
-commands and performs the action accordingly. It will download all the required dependences
-accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
+Onboarding code understands this Docker file related to particular model
+line by line it reads the commands and performs the action accordingly
+.It will download all the required dependences accordingly. In this way
+we’ll Onboard Model by using this Onboarding Platform.
 
 Note: Make sure the Docker is installed in the local Machine before try
 to Onboard the model in by using our local machine Environment.
@@ -203,30 +213,18 @@ to Onboard the model in by using our local machine Environment.
 
 The onboarding server exposes REST API for model and metadata upload.
 
-The metadata JSON is validated for valid schema using JSON schema
-validator. The model metadata is used to get the runtime version
-information, for example python 2.7. This information is used to fetch
-the runtime template. The runtime template contains template for
-following files.
+It creates a new solution for new model or fetches existing solutionID and creates 
+a new revision for the solution and updates database with new set of artifacts.
+It also uploads the model artifacts in Nexus repository.
 
-1.Dockerfile
+The onboarding server invokes TOSCA generator to generate TOSCA files for the model
+and uploads these to Nexus against the new revision.
 
-2.requirements.txt
+Onboarding server also invokes microservice generation API to generate docker image for the model.
+Microservice generation component then creates docker image and uploads it in Nexus docker repository.
 
-3.app.py
-
-4.swagger.yaml
-
-Below is the structure:
-
-|image5|
-
-The above template files are populated based on metadata JSON uploaded
-by user. Onboarding server uses docker-java library for model docker
-image creation. Once the docker image is created, the image is tagged
-and pushed to nexus docker registry. The server uses common data
-micro-services API to create solution and store model and metadata to
-artifact repository.
+The server uses common data APIs to create solution and store model and metadata links in 
+artifact repository to the database.
 
 **12: Onboarding – Model Validation Workflow**
 ----------------------------------------------
@@ -234,9 +232,9 @@ artifact repository.
 Following steps needs to be executed as part of model validation
 workflow:
 
--  Onboarding server will expose a REST API for validating the model.
+-  Onboarding server will expose an REST API for validating the model.
    The REST API will take solutionID and metadata JSON containing model
-   features as input parameters.
+   features as input parameters
 
 -  The server will fetch the docker image details for the corresponding
    solution and run the model image.
@@ -280,12 +278,10 @@ Push model API : This API is used for upload the model bundle in Acumos
 
 - Description : Upload the model bundle on the on-boarding server.
 
-
 The previous authentication method will be soon deprecated in favor of a more robuste authentication
 method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
 your API_token located in your profil settings and then used it in the Push model API by replace the
 authentication token by : username:API_token
-
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
