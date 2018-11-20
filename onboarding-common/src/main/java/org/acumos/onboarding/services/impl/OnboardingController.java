@@ -84,8 +84,8 @@ import io.swagger.annotations.ApiResponses;
 public class OnboardingController extends CommonOnboarding implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 	Map<String, String> artifactsDetails = new HashMap<>();
-	public static final String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
-	
+	public static String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
+
 	public OnboardingController() {
 		// Property values are injected after the constructor finishes
 	}
@@ -152,43 +152,40 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
-	        @RequestHeader(value = "modName", required = false) String modName,
-            @RequestHeader(value = "deployment_env", required = false) Integer deployment_env,
-            @RequestHeader(value = "Request-ID", required = false) String request_id)
-			throws AcumosServiceException {
-		
-		
+			@RequestHeader(value = "modName", required = false) String modName,
+			@RequestHeader(value = "deployment_env", required = false) Integer deployment_env,
+			@RequestHeader(value = "Request-ID", required = false) String request_id) throws AcumosServiceException {
+
 		OnboardingNotification onboardingStatus = null;
-		
+
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
 		}
-		
+
 		if (request_id != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
 		} else {
 			request_id = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
 		}
-		
+
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
-		
-		String fileName ="OnboardingLog.txt";
+
+		String fileName = "OnboardingLog.txt";
 		LogBean logBean = new LogBean();
-		logBean.setLogPath(lOG_DIR_LOC+File.separator+trackingID);
+		logBean.setLogPath(lOG_DIR_LOC + File.separator + trackingID);
 		logBean.setFileName(fileName);
 		LogThreadLocal logThread = new LogThreadLocal();
 		logThread.set(logBean);
-		//create log file to capture logs as artifact
+		// create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
-		
-		
+
 		MLPUser shareUser = null;
 		Metadata mData = null;
 		String modelName = null;
@@ -216,20 +213,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					shareUser = uList.get(0);
 				}
 			}
-			
-			
+
 			// Call to validate Token .....!
 			String ownerId = validate(authorization, provider);
 
-			if (ownerId!=null && !ownerId.isEmpty()) {
-				
+			if (ownerId != null && !ownerId.isEmpty()) {
+
 				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
-			
+
 				// update userId in onboardingStatus
 				if (onboardingStatus != null)
 					onboardingStatus.setUserId(ownerId);
 
-				logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding request recieved with "+ model.getOriginalFilename());
+				logger.debug(EELFLoggerDelegate.debugLogger,
+						"Onboarding request recieved with " + model.getOriginalFilename());
 
 				// Notify Create solution or get existing solution ID has
 				// started
@@ -246,8 +243,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 				File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
 				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
-				MLPSolutionRevision revision;			
-				
+				MLPSolutionRevision revision;
+
 				try {
 
 					try {
@@ -337,16 +334,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 					}
 
-					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());  
+					String actualModelName = getActualModelName(mData, mlpSolution.getSolutionId());
 					// Add artifacts started. Notification will be handed by
 					// addArtifact method itself for started/success/failure
-					artifactsDetails =  getArtifactsDetails();
-					
-					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(), onboardingStatus);
+					artifactsDetails = getArtifactsDetails();
 
-					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(), onboardingStatus);
+					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+							onboardingStatus);
 
-					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), mData.getModelName(), onboardingStatus);
+					addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+							onboardingStatus);
+
+					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), mData.getModelName(),
+							onboardingStatus);
 
 					// Notify TOSCA generation started
 					if (onboardingStatus != null) {
@@ -359,40 +359,47 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (onboardingStatus != null) {
 						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
-						
-					//call microservice
-					logger.debug(EELFLoggerDelegate.debugLogger,
-							"Before microservice call Parameters : SolutionId " + mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
-					try{
-					ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(mlpSolution.getSolutionId(),revision.getRevisionId(),provider,authorization,trackingID,modName,deployment_env);
-					if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
-						isSuccess = true;
-					}
-					}catch(Exception e){
-						logger.error(EELFLoggerDelegate.errorLogger,"Exception occured while invoking microservice API " +e);
+
+					// call microservice
+					logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
+							+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
+					try {
+						ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
+								mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
+								trackingID, modName, deployment_env);
+						if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
+							isSuccess = true;
+						}
+					} catch (Exception e) {
+						logger.error(EELFLoggerDelegate.errorLogger,
+								"Exception occured while invoking microservice API " + e);
 						throw e;
 					}
-					
 
 					// Model Sharing
-					if (isSuccess && (shareUserName != null) && revision.getRevisionId()!= null) {
+					if (isSuccess && (shareUserName != null) && revision.getRevisionId() != null) {
 						try {
 							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
-							AuthorTransport authors[]= new AuthorTransport[1];
-							logger.debug(EELFLoggerDelegate.debugLogger,"Author Name " + author.getName() + " and Email " + author.getContact());
-							authors[0]=author;
+							AuthorTransport authors[] = new AuthorTransport[1];
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Author Name " + author.getName() + " and Email " + author.getContact());
+							authors[0] = author;
 							revision.setAuthors(authors);
 							cdmsClient.updateSolutionRevision(revision);
-							logger.debug(EELFLoggerDelegate.debugLogger, "Model Shared Successfully with " + shareUserName);
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Model Shared Successfully with " + shareUserName);
 						} catch (Exception e) {
 							isSuccess = false;
 							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model", e);
 							throw e;
 						}
 					}
-					
-					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
-					logger.debug(EELFLoggerDelegate.debugLogger, "Onboarding is successful for model name: "+mlpSolution.getName()+", SolutionID: "+   mlpSolution.getSolutionId() +", Status Code: "+ res.getStatusCode());
+
+					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
+							ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+					logger.debug(EELFLoggerDelegate.debugLogger,
+							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
+									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
 					return res;
 				} finally {
 
@@ -402,47 +409,52 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Onboarding Failed, Reverting failed solutions and artifacts.");
 							if (metadataParser != null && mData != null) {
-								revertbackOnboarding(metadataParser.getMetadata(),
-										mlpSolution.getSolutionId());
+								revertbackOnboarding(metadataParser.getMetadata(), mlpSolution.getSolutionId());
 							}
 						}
 
 						// push docker build log into nexus
-						
-						File file = new java.io.File(OnboardingConstants.lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
+
+						File file = new java.io.File(lOG_DIR_LOC + File.separator + trackingID
+								+ File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
 								fileName);
 						if (metadataParser != null && mData != null) {
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Adding of log artifacts into nexus started " + fileName);
-							
-							//String nexusArtifactID = "onboardingLog_"+trackingID;
+
+							// String nexusArtifactID = "onboardingLog_"+trackingID;
 							String nexusArtifactID = "OnboardingLog";
 
-							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),nexusArtifactID, onboardingStatus);
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.COMPLETED.name());
+							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+									nexusArtifactID, onboardingStatus);
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+									OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
 									fileName);
 						}
-						
+
 						// delete log file
 						UtilityFunction.deleteDirectory(file);
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+								OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
+								OnboardingLogConstants.ResponseStatus.ERROR.name());
 						mData = null;
 						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName),
-								httpCode);
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 					}
 				}
 			} else {
 				try {
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,"Either Username/Password is invalid.");
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+							OnboardingLogConstants.ResponseStatus.ERROR.name());
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
 					logger.error(EELFLoggerDelegate.errorLogger, "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
@@ -453,16 +465,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 
 		} catch (AcumosServiceException e) {
-			
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,e.getMessage());
+
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
-			if(e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
-                httpCode =  HttpStatus.BAD_REQUEST;
-            }
-			return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName),
-					httpCode);
+			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+				httpCode = HttpStatus.BAD_REQUEST;
+			}
+			return new ResponseEntity<ServiceResponse>(
+					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
 			// Handling #401
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
@@ -472,29 +485,30 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);
 			} else {
-				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
-				e.printStackTrace();
+				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(), e);
+				// e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(),modelName), e.getStatusCode());
+						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
+						e.getStatusCode());
 			}
 		} catch (Exception e) {
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,e.getMessage());
-			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
-			e.printStackTrace();
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "onboardModel Failed Exception " + e.getMessage(), e);
 			if (e instanceof AcumosServiceException) {
-				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
+				return new ResponseEntity<ServiceResponse>(ServiceResponse
+						.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
-				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(),modelName),
+				return new ResponseEntity<ServiceResponse>(ServiceResponse
+						.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(), modelName),
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 
 	}
-	
+
 	private Map<String, String> getArtifactsDetails() {
 		List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
 		Map<String, String> artifactsDetails = new HashMap<>();

@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>1.39.0-SNAPSHOT</version>
+	<version>1.39.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -22,6 +22,12 @@
 		<!-- Jenkins invokes mvn with argument -Dbuild.number=${BUILD_NUMBER} -->
 		<build.number>0</build.number>
 		<eelf.version>1.0.0</eelf.version>
+		
+		<jacocoVersion>0.7.6.201602180812</jacocoVersion>
+		<sonar.exclusions>**/scripts/**/*,**.js</sonar.exclusions>
+		<sonar.test.exclusions>**/test/**/*,**/tests/**/*</sonar.test.exclusions>
+		<enforcer.skip>false</enforcer.skip>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -210,7 +216,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.9</version>
@@ -229,7 +235,72 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
+			<plugin>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<!-- Override OParent version -->
+			<version>${jacocoVersion}</version>
+			<configuration>
+				<excludes>
+					<exclude>*</exclude>
+				</excludes>
+			</configuration> 
+			<executions>
+				<!-- disable jacoco executions from oparent -->
+				<execution>
+					<id>pre-unit-test</id>
+					<phase>none</phase>
+				</execution>
+				<execution>
+					<id>post-unit-test</id>
+					<phase>none</phase>
+				</execution>
+				<execution>
+					<id>pre-integration-test</id>
+					<phase>none</phase>
+				</execution>
+				<execution>
+					<id>post-integration-test</id>
+					<phase>none</phase>
+				</execution>
+				<!-- Order matters -->
+				 <execution>
+					<id>portal-prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+					<configuration>
+						<destFile>${sonar.jacoco.reportPath}</destFile>
+					</configuration>
+				</execution>
+				<!-- offline instrumentation for PowerMock-->
+				<execution>
+				 	<id>portal-offline-instrument</id>
+					<goals>
+						<goal>instrument</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>portal-restore-instrumented-classes</id>
+					<phase>test</phase>
+					<goals>
+						<goal>restore-instrumented-classes</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>portal-post-unit-test</id>
+					<phase>test</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+					<configuration>
+						<dataFile>${sonar.jacoco.reportPath}</dataFile>
+						<outputDirectory>${project.basedir}/target/site/jacoco</outputDirectory>
+					</configuration>
+				</execution> 
+			</executions>
+		</plugin>
 		</plugins>
 	</build>
 	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins 
