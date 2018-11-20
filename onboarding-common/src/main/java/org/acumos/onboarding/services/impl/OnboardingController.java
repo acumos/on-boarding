@@ -472,16 +472,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);
 			} else {
-				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
-				e.printStackTrace();
+				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(),e);
+				//e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(),modelName), e.getStatusCode());
 			}
 		} catch (Exception e) {
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.ERROR.name());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,e.getMessage());
-			logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
-			e.printStackTrace();
+			logger.error(EELFLoggerDelegate.errorLogger,"onboardModel Failed Exception " + e.getMessage() , e);
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
