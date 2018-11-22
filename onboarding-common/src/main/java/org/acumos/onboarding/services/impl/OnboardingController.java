@@ -171,7 +171,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			request_id = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
 		}
-
+		
+		
+		UtilityFunction.getCurrentVersion();
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
@@ -477,8 +479,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
-			// Handling #401
-			if (HttpStatus.UNAUTHORIZED == e.getStatusCode()) {
+			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is invalid.
+			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Unauthorized User - Either Username/Password is invalid.");
 				return new ResponseEntity<ServiceResponse>(
@@ -486,7 +488,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						HttpStatus.UNAUTHORIZED);
 			} else {
 				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(), e);
-				// e.printStackTrace();
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
 						e.getStatusCode());

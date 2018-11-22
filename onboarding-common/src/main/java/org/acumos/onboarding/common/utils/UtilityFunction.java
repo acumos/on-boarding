@@ -22,7 +22,9 @@ package org.acumos.onboarding.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +45,9 @@ import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.core.io.Resource;
 
 import com.github.dockerjava.api.DockerClient;
@@ -52,6 +57,7 @@ import com.github.dockerjava.core.DockerClientConfig;
 
 public class UtilityFunction {
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
+	private static String version = null;
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();
@@ -262,7 +268,7 @@ public class UtilityFunction {
 	
 	public static void createLogFile() {
 		LogBean logBean = LogThreadLocal.get();
-		String fileName = logBean.getFileName();
+ 		String fileName = logBean.getFileName();
 
 		File file = new java.io.File(logBean.getLogPath());
 		file.mkdirs();
@@ -312,5 +318,26 @@ public class UtilityFunction {
 		logger.debug(EELFLoggerDelegate.debugLogger, "createDockerClient ended");
 		return dockerClient;
 		
+	}
+	
+	/**
+	 * This method retrieves the current project version from pom.xml. 
+	 * @return
+	 */
+	public static String getCurrentVersion() {
+
+		if (version == null) {
+			logger.info("Retrieving project version :::");
+			MavenXpp3Reader reader = new MavenXpp3Reader();
+			Model model;
+			try {
+				model = reader.read(new FileReader("pom.xml"));
+				version = model.getVersion();
+			} catch (Exception e) {
+				logger.error(EELFLoggerDelegate.errorLogger, "getCurrentVersion Failed Exception " + e.getMessage(), e);
+			}
+		}
+		logger.debug("Onboarding version:::" + version);
+	  return version;
 	}
 }
