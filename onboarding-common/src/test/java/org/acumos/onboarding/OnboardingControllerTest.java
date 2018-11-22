@@ -122,17 +122,9 @@ public class OnboardingControllerTest {
 	@Mock
 	ToscaGeneratorClient client; 
 	
-	//@Mock
-	//UploadArtifactInfo uploadArtifactInfo;
 	
 	@Mock
 	MicroserviceRestClientImpl microserviceClient;
-	
-	@Mock
-	MLPUser mUser;// = new MLPUser();
-	
-	//@Mock
-	//UtilityFunction utilityFunction;
 	
 	
 
@@ -166,8 +158,6 @@ public class OnboardingControllerTest {
 		JsonRequest<Crediantials> cred = new JsonRequest<>();
 		cred.setBody(credential);
 		
-		//Mockito.w
-
 		PowerMockito.when(portalClient.loginToAcumos(any(JSONObject.class))).thenReturn("jwttokena12bc");
 		ResponseEntity<ServiceResponse> result = onboardingController.OnboardingWithAuthentication(cred, response);
 		assertNotNull(result);
@@ -178,7 +168,7 @@ public class OnboardingControllerTest {
      * @throws Exception
      */
 	@Test
-	public void testdockerizePayloadWtihInavliadMetadata() throws Exception {
+	public void testOnboardModel() throws Exception {
 
 		try {
 			MultipartFile multipart = mock(MultipartFile.class);
@@ -192,10 +182,6 @@ public class OnboardingControllerTest {
 			
 			FileInputStream modelIS = new FileInputStream(file.getAbsolutePath());
 			
-			//mockStatic(UtilityFunction.class);
-			//PowerMockito.doNothing().when(UtilityFunction.class);
-			//UtilityFunction.createLogFile();
-			
 			MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",modelIS);
 			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",metataprotoIS);
@@ -203,24 +189,9 @@ public class OnboardingControllerTest {
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
 			
-			/*MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",
-					modelIS);
-
-			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
-			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",
-					metataprotoIS);
-
-			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
-			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",
-					metaDataIS);
-*/
-			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
+					CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
 			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
-			MLPUser mUser = mock(MLPUser.class);
 			NexusArtifactClient artifactClient = mock(NexusArtifactClient.class);
-			
-			mUser.setUserId("test");
-			mUser.setActive(true);
 			
 			MLPSolution mlLPSolution = new MLPSolution();
 			mlLPSolution.setSolutionId("solutiontest1");
@@ -240,22 +211,11 @@ public class OnboardingControllerTest {
 					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),Mockito.anyString())
 					.thenReturn(onboardingStatus);
 
-			
-			PowerMockito.whenNew(MLPUser.class).withNoArguments().thenReturn(mUser);
-
-			
-			PowerMockito.when(cmdDataSvc.loginApiUser("loginName", "token123")).thenReturn(mUser);
-			PowerMockito.when(mUser.isActive()).thenReturn(true);
-			PowerMockito.when(mUser.getUserId()).thenReturn("test");
-			//PowerMockito.when(onboardingController.validate("user:password", "provider")).thenReturn(Mockito.anyString());
-			
-			 
 			JsonResponse<Object> valid = new JsonResponse<>();
             JsonResponse<Object> responseBody = new JsonResponse<>();
             valid.setStatus(false);
             valid.setResponseBody(responseBody);
             
-          // JsonResponse<Object>
             PowerMockito.whenNew(JsonResponse.class).withNoArguments().thenReturn(valid);
             
             String authorization = "sampleToken";
@@ -271,8 +231,7 @@ public class OnboardingControllerTest {
             
             RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
             pageResponse.setNextPage(true);
-            //pageResponse.
-			 
+        	 
         	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
         	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);
         	
@@ -291,7 +250,6 @@ public class OnboardingControllerTest {
 			PowerMockito.when(artifactClient.getArtifact(Mockito.anyString())).thenReturn(byteArrayOutputStream);
 			
     		UploadArtifactInfo artifactInfo = new UploadArtifactInfo("org.acumos","org.artifcatid","1.0","jar","orgacumos",515);
-    		//PowerMockito.when(artifactClient.uploadArtifact(Mockito.anyObject(),Mockito.anyObject(),Mockito.anyObject(),Mockito.anyObject(),515,Mockito.anyObject())).thenReturn(artifactInfo);
     		PowerMockito.when(artifactClient.uploadArtifact(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyLong(),Mockito.anyObject())).thenReturn(artifactInfo);
     		
     		MLPArtifact modelArtifact = new MLPArtifact();
@@ -313,13 +271,9 @@ public class OnboardingControllerTest {
 		
 			PowerMockito.whenNew(MicroserviceRestClientImpl.class).withArguments(Mockito.anyString()).thenReturn(microserviceClient);
 
-			//HttpStatus httpStatus = new HttpStatus(); 
 			ResponseEntity<ServiceResponse> response = new ResponseEntity<ServiceResponse>(HttpStatus.OK);
-			response.status(200);
 			
 			PowerMockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt())).thenReturn(response);
-			
-			onboardingController.lOG_DIR_LOC = System.getProperty("user.dir");
 			
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
@@ -343,8 +297,8 @@ public class OnboardingControllerTest {
      * Testcase to check invalid metadata json which should recieve failure or exception 
      * @throws Exception
      */
-	//@Test
-	public void testAuthentication() throws Exception {
+	//@Test - will be done later
+	/**public void testAuthentication() throws Exception {
 
 		try {
 			MultipartFile multipart = mock(MultipartFile.class);
@@ -365,17 +319,7 @@ public class OnboardingControllerTest {
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
 			
-			/*MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",
-					modelIS);
-
-			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
-			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",
-					metataprotoIS);
-
-			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
-			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",
-					metaDataIS);
-*/
+			
 			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
 			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
 			MLPUser mUser = mock(MLPUser.class);
@@ -472,10 +416,7 @@ public class OnboardingControllerTest {
     		
     		//UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
     		
-    		/*public UploadArtifactInfo uploadArtifact(String groupId, String artifactId, String version, String packaging,
-    				long contentLength, InputStream inputStream) throws AuthenticationException, AuthorizationException,
-    				ConnectionException, TransferFailedException, ResourceDoesNotExistException {*/
-
+    		
         	
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
 				metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
@@ -488,7 +429,7 @@ public class OnboardingControllerTest {
 			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
 		}
 
-	}
+	}**/
 	
 	
 	/*@Test
