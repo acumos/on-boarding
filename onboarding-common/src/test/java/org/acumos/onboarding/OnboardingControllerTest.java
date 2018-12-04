@@ -292,6 +292,131 @@ public class OnboardingControllerTest {
 	}
 	
 	
+	@Test
+	public void testAuthenticationException() throws Exception {
+
+		try {
+			MultipartFile multipart = mock(MultipartFile.class);
+
+			ClassLoader classLoader = getClass().getClassLoader();
+			File file = new File(classLoader.getResource("metadata.json").getFile());
+
+
+			String filePath = FilePathTest.filePath();
+			String fileJson = filePath + "metadata.json";
+			
+			FileInputStream modelIS = new FileInputStream(file.getAbsolutePath());
+			
+			MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",modelIS);
+			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
+			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",metataprotoIS);
+
+			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
+			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
+			
+					CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
+			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
+			NexusArtifactClient artifactClient = mock(NexusArtifactClient.class);
+			
+			MLPSolution mlLPSolution = new MLPSolution();
+			mlLPSolution.setSolutionId("solutiontest1");
+			List<MLPSolution> mlpSoltuionList = new ArrayList<MLPSolution>();
+			mlpSoltuionList.add(mlLPSolution);
+			 
+
+			JsonResponse<Object> jsonResp = new JsonResponse<Object>();
+			jsonResp.setStatus(true);
+			jsonResp.setResponseBody("ownerid");
+
+			PowerMockito.whenNew(CommonDataServiceRestClientImpl.class)
+					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),Mockito.anyString())
+					.thenReturn(cmdDataSvc);
+
+			PowerMockito.whenNew(OnboardingNotification.class)
+					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),Mockito.anyString())
+					.thenReturn(onboardingStatus);
+
+			JsonResponse<Object> valid = new JsonResponse<>();
+            JsonResponse<Object> responseBody = new JsonResponse<>();
+            valid.setStatus(false);
+            valid.setResponseBody("");
+            
+            PowerMockito.whenNew(JsonResponse.class).withNoArguments().thenReturn(valid);
+            
+            String authorization = "sampleToken";
+            
+            JSONObject obj1 = new JSONObject();
+            obj1.put("jwtToken", authorization);
+            JSONObject obj2 = new JSONObject();
+            obj2.put("request_body", obj1);
+            
+            PowerMockito.when(commonOnboarding.validate("loginName", "token123")).thenReturn("");
+            
+            PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
+            
+            RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
+            pageResponse.setNextPage(true);
+        	 
+        	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
+        	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);
+        	
+        	MLPSolutionRevision mLPSolutionRevision = new MLPSolutionRevision();
+        	mLPSolutionRevision.setSolutionId("solution1");
+        	List<MLPSolutionRevision> listSolRev = new ArrayList<MLPSolutionRevision>();
+        	listSolRev.add(mLPSolutionRevision);
+        	PowerMockito.when(cdmsClient.getSolutionRevisions(Mockito.anyString())).thenReturn(listSolRev);
+        	PowerMockito.when(cdmsClient.createSolutionRevision(Mockito.anyObject())).thenReturn(mLPSolutionRevision);
+      	
+    		PowerMockito.whenNew(NexusArtifactClient.class).withArguments(Mockito.anyObject()).thenReturn(artifactClient);
+    		
+    		byte[] buffer = new byte[4000];
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(100);
+			byteArrayOutputStream.write(buffer);
+			PowerMockito.when(artifactClient.getArtifact(Mockito.anyString())).thenReturn(byteArrayOutputStream);
+			
+    		UploadArtifactInfo artifactInfo = new UploadArtifactInfo("org.acumos","org.artifcatid","1.0","jar","orgacumos",515);
+    		PowerMockito.when(artifactClient.uploadArtifact(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyLong(),Mockito.anyObject())).thenReturn(artifactInfo);
+    		
+    		MLPArtifact modelArtifact = new MLPArtifact();
+			modelArtifact.setName("fileName");
+			modelArtifact.setDescription("fileName");
+			modelArtifact.setVersion("1.0");
+			modelArtifact.setArtifactTypeCode("typeCode");
+			modelArtifact.setUserId("OwnerId");
+			modelArtifact.setUri("uri");
+			modelArtifact.setSize(515);
+			
+			PowerMockito.when(cdmsClient.createArtifact(Mockito.anyObject())).thenReturn(modelArtifact);
+			
+			
+			PowerMockito.whenNew(ToscaGeneratorClient.class).withArguments(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString()).thenReturn(client);
+	    	
+			PowerMockito.when(client.generateTOSCA(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyObject(),Mockito.anyObject())).thenReturn("done");
+			
+		        onboardingController.lOG_DIR_LOC = System.getProperty("user.dir");
+                  
+			PowerMockito.whenNew(MicroserviceRestClientImpl.class).withArguments(Mockito.anyString()).thenReturn(microserviceClient);
+
+			ResponseEntity<ServiceResponse> response = new ResponseEntity<ServiceResponse>(HttpStatus.OK);
+			
+			PowerMockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt())).thenReturn(response);
+			
+			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+
+			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
+            assertEquals(401,resp.getStatusCodeValue());
+		} catch (AcumosServiceException e) {
+			
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata  AcumosServiceException failed : " + e.getMessage());
+		} catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata  Exception failed : " + e.getMessage());
+		}
+
+	}
+	
+	
 	
 	
 	/**
