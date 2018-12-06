@@ -268,7 +268,7 @@ public class OnboardingControllerTest {
 	    	
 			PowerMockito.when(client.generateTOSCA(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyObject(),Mockito.anyObject())).thenReturn("done");
 			
-		        onboardingController.lOG_DIR_LOC = System.getProperty("user.dir");
+		    onboardingController.lOG_DIR_LOC = System.getProperty("user.dir");
                   
 			PowerMockito.whenNew(MicroserviceRestClientImpl.class).withArguments(Mockito.anyString()).thenReturn(microserviceClient);
 
@@ -292,14 +292,8 @@ public class OnboardingControllerTest {
 	}
 	
 	
-	
-	
-	/**
-     * Testcase to check invalid metadata json which should recieve failure or exception 
-     * @throws Exception
-     */
-	//@Test - will be done later
-	/**public void testAuthentication() throws Exception {
+	@Test
+	public void testAuthenticationException() throws Exception {
 
 		try {
 			MultipartFile multipart = mock(MultipartFile.class);
@@ -320,14 +314,9 @@ public class OnboardingControllerTest {
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
 			
-			
-			CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
+					CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
 			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
-			MLPUser mUser = mock(MLPUser.class);
 			NexusArtifactClient artifactClient = mock(NexusArtifactClient.class);
-			
-			mUser.setUserId("test");
-			mUser.setActive(true);
 			
 			MLPSolution mlLPSolution = new MLPSolution();
 			mlLPSolution.setSolutionId("solutiontest1");
@@ -347,22 +336,11 @@ public class OnboardingControllerTest {
 					.withArguments(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),Mockito.anyString())
 					.thenReturn(onboardingStatus);
 
-			
-			PowerMockito.whenNew(MLPUser.class).withNoArguments().thenReturn(mUser);
-
-			
-			PowerMockito.when(cmdDataSvc.loginApiUser("loginName", "token123")).thenReturn(mUser);
-			PowerMockito.when(mUser.isActive()).thenReturn(true);
-			PowerMockito.when(mUser.getUserId()).thenReturn("test");
-			//PowerMockito.when(onboardingController.validate("user:password", "provider")).thenReturn(Mockito.anyString());
-			
-			 
 			JsonResponse<Object> valid = new JsonResponse<>();
             JsonResponse<Object> responseBody = new JsonResponse<>();
             valid.setStatus(false);
-            valid.setResponseBody(responseBody);
+            valid.setResponseBody("");
             
-          // JsonResponse<Object>
             PowerMockito.whenNew(JsonResponse.class).withNoArguments().thenReturn(valid);
             
             String authorization = "sampleToken";
@@ -372,65 +350,34 @@ public class OnboardingControllerTest {
             JSONObject obj2 = new JSONObject();
             obj2.put("request_body", obj1);
             
-            PowerMockito.when(commonOnboarding.validate("loginName", "token123")).thenReturn("ownerId");
+            String loginName = "jabeen";
+			String jwtToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWJlZW4iLCJyb2xlIjpudWxsLCJjcmVhdGVkIjoxNTQ0MDAzNjg3NTQyLCJleHAiOjE1NDQwODM2ODcsIm1scHVzZXIiOnsiY3JlYXR"
+					+ "lZCI6MTUxODQzNzU2MDAwMCwibW9kaWZpZWQiOjE1NDQwMDM2ODczNTMsInVzZXJJZCI6IjE0YTliZGE3LTA4OTQtNDZkMi1hZDg2LWNmNDZjNzc2YTEyYiIsImZpcnN0TmFtZSI6IkphYmVlbiIsIm1pZGRsZU5hbWUiOm51bGwsImxhc3ROYW1lIjoiU2hhaWtoIiwib3JnTmFtZSI6bnVsbCwiZW1haWwiOiJqYWJlZW5AdGVjaG1haGluZHJhLmNvbSIsImxvZ2luTmFtZSI6ImphYmVlbiIsImxvZ2luSGFzaCI6bnVsbCwibG9naW5QYXNzRXhwaXJlIjpudWxsLCJhdXRoVG9rZW4iOm51bGwsImFjdGl2ZSI6dHJ1ZSwibGFzdExvZ2luIjoxNTQ0MDAzNjg3MzUxLCJsb2dpbkZhaWxDb3VudCI6bnVsbCwibG9naW5GYWls"
+					+ "RGF0ZSI6bnVsbCwicGljdHVyZSI6bnVsbCwiYXBpVG9rZW4iOiI5MGUzOTk5MjY1ZjI0OWMyOTlhNGQzNjYzMjQ4NDgzYiIsInZl"
+					+ "cmlmeVRva2VuSGFzaCI6bnVsbCwidmVyaWZ5RXhwaXJhdGlvbiI6bnVsbCwidGFncyI6W119fQ.56NXGH_FSnKA_z7Lpe8PIFawf2-b8yPrCoCB0YaMUI5n-1uxwJ9Nq5VnXcf_jruzjp7NArU4_3E3cQ0YbMc0MA";
+            
+            
+            PowerMockito.when(commonOnboarding.validate(loginName, jwtToken)).thenReturn("");
             
             PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
             
-           // doThrow(new Exception("Authrization failed")).when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString()));
-            
-            AcumosServiceException acumosServiceException = new AcumosServiceException("401");
-            //acumosServiceException.setErrorCode("401");
-            
-            when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenThrow(acumosServiceException);
-          //  doThrow(acumosServiceException).when(portalClient).tokenValidation(Mockito.anyObject(),Mockito.anyString());
-
-            
-            RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
-            pageResponse.setNextPage(true);
-            //pageResponse.
-			 
-        	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
-        	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);
-        	
-        	MLPSolutionRevision mLPSolutionRevision = new MLPSolutionRevision();
-        	mLPSolutionRevision.setSolutionId("solution1");
-        	List<MLPSolutionRevision> listSolRev = new ArrayList<MLPSolutionRevision>();
-        	listSolRev.add(mLPSolutionRevision);
-        	PowerMockito.when(cdmsClient.getSolutionRevisions(Mockito.anyString())).thenReturn(listSolRev);
-        	PowerMockito.when(cdmsClient.createSolutionRevision(Mockito.anyObject())).thenReturn(mLPSolutionRevision);
-        	
-        	//revision = cdmsClient.createSolutionRevision(revision);//
-        	
-        	//List<MLPSolutionRevision> revList      	cdmsClient.getSolutionRevisions 
-         //   CommonOnboarding commonOnboarding = mock(CommonOnboarding.class);
-            //PowerMockito.when(commonOnboarding.getExistingSolution(Mockito.anyObject())).thenReturn(mlpSoltuionList);
-			  
-          //  doReturn(mlpSoltuionList).when(commonOnboarding).getExistingSolution(Mockito.anyObject());
-            
-            
-            
-            //solution = cdmsClient.createSolution(solution);
-          
-			//PowerMockito.when(onboardingController.validate(any(String.class), any(String.class))).thenReturn("Pass");
-        	
-    		PowerMockito.whenNew(NexusArtifactClient.class).withArguments(Mockito.anyObject()).thenReturn(artifactClient);
-    		
-    		//UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
-    		
-    		
-        	
-			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-				metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
-    		
-    		//Exception exp = onboardingController.onboardModel(mock(HttpServletRequest.class),metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+        	ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
-            assertEquals(400,resp.getStatusCodeValue());
+            assertEquals(401,resp.getStatusCodeValue());
 		} catch (AcumosServiceException e) {
-			Assert.fail("testdockerizePayloadWtihInavliadMetadata failed : " + e.getMessage());
+			
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata  AcumosServiceException failed : " + e.getMessage());
+		} catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail("testdockerizePayloadWtihInavliadMetadata  Exception failed : " + e.getMessage());
 		}
 
-	}**/
+	}
+	
+	
+	
 	
 	
 	/*@Test

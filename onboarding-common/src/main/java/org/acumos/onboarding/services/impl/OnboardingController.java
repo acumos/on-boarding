@@ -173,7 +173,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		}
 		
 		
-		UtilityFunction.getCurrentVersion();
+		//code to retrieve the current pom version
+		//UtilityFunction.getCurrentVersion();
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
