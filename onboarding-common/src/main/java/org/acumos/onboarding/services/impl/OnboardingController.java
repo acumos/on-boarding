@@ -369,7 +369,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					try {
 						ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
 								mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-								trackingID, modName, deployment_env);
+								trackingID, modName, deployment_env, request_id);
 						if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 							isSuccess = true;
 						}
