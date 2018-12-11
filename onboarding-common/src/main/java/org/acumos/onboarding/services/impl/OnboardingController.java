@@ -485,7 +485,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Unauthorized User - Either Username/Password is invalid.");
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + e.getStatusCode(), "Unauthorized User", modelName),
+						ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);
 			} else {
 				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(), e);
