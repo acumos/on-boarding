@@ -96,7 +96,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@ApiOperation(value = "Check User authentication and returns JWT token", response = ServiceResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
-			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
+			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class)	})
 	@RequestMapping(value = "/auth", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(@RequestBody JsonRequest<Crediantials> cred,
 			HttpServletResponse response) throws AcumosServiceException {
@@ -143,7 +143,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@ApiOperation(value = "Upload model file and its meta data as string to dockerize", response = ServiceResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
-			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
+			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class),
+			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
 	@RequestMapping(value = "/models", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
