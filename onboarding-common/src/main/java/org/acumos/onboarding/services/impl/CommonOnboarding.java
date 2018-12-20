@@ -482,7 +482,7 @@ public class CommonOnboarding {
 
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 					metadata.getRevisionId(), localProtobufFile, localMetadataFile);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA completed result:" + result);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Generate TOSCA completed and result:" + result);
 
 		} catch (Exception e) {
 			// Notify TOSCA generation failed
