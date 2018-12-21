@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 2.1.0, 21 December 2018
+---------------------------------
+* `ACUMOS-2272 <https://jira.acumos.org/browse/ACUMOS-2272/>`_
+
+
 Version 2.0.0, 11 December 2018
 ---------------------------------
 * `ACUMOS-1801 <https://jira.acumos.org/browse/ACUMOS-1801/>`_
