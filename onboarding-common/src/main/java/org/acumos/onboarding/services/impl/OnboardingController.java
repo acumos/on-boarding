@@ -137,6 +137,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	/************************************************
 	 * End of Authentication
 	 *****************************************************/
+	
+	
 
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -158,6 +160,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Request-ID", required = false) String request_id) throws AcumosServiceException {
 
 		OnboardingNotification onboardingStatus = null;
+		
+		String version = UtilityFunction.getProjectVersion();
+		
+		  logger.info("On-boarding version {}", version);
+		
 
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
