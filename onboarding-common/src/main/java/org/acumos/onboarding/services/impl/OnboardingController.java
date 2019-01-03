@@ -160,11 +160,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Request-ID", required = false) String request_id) throws AcumosServiceException {
 
 		OnboardingNotification onboardingStatus = null;
-		
-		String version = UtilityFunction.getProjectVersion();
-		
-		  logger.info("On-boarding version {}", version);
-		
 
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
@@ -196,6 +191,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logThread.set(logBean);
 		// create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
+		
+		String version = UtilityFunction.getProjectVersion();	
+		logger.debug("On-boarding version {}", version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
