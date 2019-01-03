@@ -43,6 +43,8 @@ public class OnboardingApplication implements ApplicationContextAware
 	
 	public static void main(String[] args) throws Exception {
 		final String springApplicationJson = System.getenv(CONFIG_ENV_VAR_NAME);
+		
+		OnboardingApplication onboard = new OnboardingApplication();
 
 		if (springApplicationJson != null && springApplicationJson.contains("{")) {
 			final ObjectMapper mapper = new ObjectMapper();
@@ -54,6 +56,7 @@ public class OnboardingApplication implements ApplicationContextAware
 			logger.warn("No configuration found in environment {" + CONFIG_ENV_VAR_NAME + "}");
 		}
 		
+		onboard.logVersion();
 		SpringApplication.run(OnboardingApplication.class, args);
 	}
 
