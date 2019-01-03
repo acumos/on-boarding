@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>2.1.2-SNAPSHOT</version>
+	<version>2.1.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -249,7 +249,7 @@
 				<excludes>
 					<exclude>*</exclude>
 				</excludes>
-			</configuration> 
+			</configuration>
 			<executions>
 				<!-- disable jacoco executions from oparent -->
 				<execution>
@@ -302,12 +302,12 @@
 						<dataFile>${sonar.jacoco.reportPath}</dataFile>
 						<outputDirectory>${project.basedir}/target/site/jacoco</outputDirectory>
 					</configuration>
-				</execution> 
+				</execution>
 			</executions>
 		</plugin>
 		</plugins>
 	</build>
-	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins 
+	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins
 		settings for credentials. -->
 	<distributionManagement>
 		<repository>

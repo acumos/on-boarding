@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -77,7 +77,7 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(value = "/v2")
 @Api(value = "Operation to to onboard a ML model", tags = "Onboarding Service APIs")
 /**
- * 
+ *
  * @author *****
  *
  */
@@ -137,8 +137,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	/************************************************
 	 * End of Authentication
 	 *****************************************************/
-	
-	
 
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -160,11 +158,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Request-ID", required = false) String request_id) throws AcumosServiceException {
 
 		OnboardingNotification onboardingStatus = null;
-		
-		String version = UtilityFunction.getProjectVersion();
-		
-		  logger.info("On-boarding version {}", version);
-		
 
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
@@ -196,6 +189,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		logThread.set(logBean);
 		// create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
+
+		String version = UtilityFunction.getProjectVersion();
+		logger.debug("On-boarding version {}", version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
