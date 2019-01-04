@@ -172,8 +172,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			request_id = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
 		}
-		
-		
+
 		//code to retrieve the current pom version
 		//UtilityFunction.getCurrentVersion();
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
@@ -191,7 +190,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		UtilityFunction.createLogFile();
 
 		String version = UtilityFunction.getProjectVersion();
-		logger.debug("On-boarding version {}", version);
+		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
