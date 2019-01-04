@@ -72,7 +72,7 @@ public class OnboardingApplication implements ApplicationContextAware
          String version = classPath.startsWith("jar")
                                          ? OnboardingApplication.class.getPackage().getImplementationVersion()
                                          : "no version, classpath is not jar";
-         logger.info("On-boarding version {}", version);
+         logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
          UtilityFunction.setProjectVersion(version);
      }
 

@@ -191,7 +191,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		UtilityFunction.createLogFile();
 
 		String version = UtilityFunction.getProjectVersion();
-		logger.debug("On-boarding version {}", version);
+		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
