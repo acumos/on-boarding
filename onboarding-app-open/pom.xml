@@ -116,6 +116,17 @@
 			<!-- Spring sets the <version>4.11</version> -->
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency> 
 	</dependencies>
 	<build>
 		<plugins>
@@ -221,14 +232,14 @@
 					</images>
 				</configuration>
 				<!-- build Docker image in install phase, push in deploy phase -->
-			  	 <executions>
+			  	 <!-- <executions>
 					<execution>
 						<goals>
 							<goal>build</goal>
 							<goal>push</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions> -->
 			</plugin>
 		</plugins>
 	</build>
