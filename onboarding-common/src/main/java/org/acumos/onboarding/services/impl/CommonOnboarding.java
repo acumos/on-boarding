@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -59,9 +59,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
 
 public class CommonOnboarding {
-	
+
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(CommonOnboarding.class);
-	
+
 	@Value("${nexus.nexusEndPointURL}")
 	protected String nexusEndPointURL;
 
@@ -100,28 +100,30 @@ public class CommonOnboarding {
 
 	@Value("${mktPlace.mktPlaceEndPointURL}")
 	protected String portalURL;
-	
+
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
-	
+
+	@Value("${app.version}")
+	protected String appVersion;
+
 	protected String modelOriginalName = null;
-	
+
 	protected boolean dcaeflag = false;
-	
+
 	@Autowired
 	protected ResourceLoader resourceLoader;
 
 	protected MetadataParser metadataParser = null;
-	
+
 	protected CommonDataServiceRestClientImpl cdmsClient;
 
 	protected PortalRestClientImpl portalClient;
-	
+
 	protected MicroserviceRestClientImpl microserviceClient;
 
 	protected ResourceUtils resourceUtils;
-	
-	
+
 	@PostConstruct
 	public void init() {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Creating docker service instance");
@@ -130,29 +132,29 @@ public class CommonOnboarding {
 		this.resourceUtils = new ResourceUtils(resourceLoader);
 		this.microserviceClient = new MicroserviceRestClientImpl(microServiceURL);
 	}
-	
+
 	/*
 	 * @Method Name : validate Accepts JWT token in the form of String object.
 	 * Validates it and returns validity status and ownerId.
 	 */
 	@SuppressWarnings("unchecked")
 	public String validate(String authorization, String provider) throws AcumosServiceException {
-		
+
 		Boolean tokenVal = false;
 		JsonResponse<Object> valid = null;
 		String ownerID = null, loginName = null, token = null;
-		
+
 		String[] values = splitAuthorization(authorization); 
-		
+
 		if(values[0].toString().equalsIgnoreCase(authorization)){
 			token = values[0];
 		} else {
 			loginName = values[0];
 			token = values[1];
 		}
-				
+
 		if (loginName != null && !loginName.isEmpty()) {
-			
+
 			MDC.put(OnboardingLogConstants.MDCs.USER,loginName);
 			logger.debug(EELFLoggerDelegate.debugLogger,"Api Token validation started");
 			MLPUser mUser = cdmsClient.loginApiUser(loginName, token);
@@ -177,9 +179,9 @@ public class CommonOnboarding {
 
 		return ownerID;
 	}
-	
+
 	private String[] splitAuthorization(String authorization) {
-		
+
 		String[] values = authorization.split(":");
 		return values;
 	}
@@ -213,7 +215,7 @@ public class CommonOnboarding {
 		solution.setName(metadata.getSolutionName());
 		solution.setDescription(metadata.getSolutionName());
 		solution.setUserId(metadata.getOwnerId());
-		
+
 		logger.debug(EELFLoggerDelegate.debugLogger,"Model name[CreateSolutionMethod] :"+metadata.getSolutionName());
 
 		String toolKit = metadata.getToolkit();
@@ -291,7 +293,7 @@ public class CommonOnboarding {
 					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
 			}
 		}
-			
+
 			List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
 		if (!validationStatusList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
@@ -299,7 +301,7 @@ public class CommonOnboarding {
 					revision.setValidationStatusCode(mlpCodeNamePair.getCode());
 			}
 		}
-		
+
 		try {
 			revision = cdmsClient.createSolutionRevision(revision);
 			metadata.setRevisionId(revision.getRevisionId());
@@ -327,7 +329,7 @@ public class CommonOnboarding {
 	/**
 	 * Uploads the specified artifact to Nexus using group ID read from
 	 * configuration and specified artifact ID.
-	 * 
+	 *
 	 * @param metadata
 	 *            Metadata about the artifact
 	 * @param file
@@ -360,7 +362,7 @@ public class CommonOnboarding {
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
-			 
+
 			logger.debug(EELFLoggerDelegate.debugLogger,
 					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
 			try {
@@ -446,7 +448,7 @@ public class CommonOnboarding {
 					return modelArtifact;
 
 				} catch (HttpStatusCodeException e) {
-					
+
 					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for solutoin "+metadata.getSolutionId()+ "{}", e.getResponseBodyAsString(), e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
@@ -567,7 +569,7 @@ public class CommonOnboarding {
 			}
 		}
 	}
-	
+
 	//Method for getting model name used for Image
 	protected String getActualModelName(Metadata metadata, String solutionID) {
 
@@ -584,5 +586,5 @@ public class CommonOnboarding {
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
 	}
-	
+
 }

@@ -21,7 +21,6 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,6 @@ import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.Crediantials;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
-import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LogThreadLocal;
 import org.acumos.onboarding.common.utils.OnboardingConstants;
@@ -189,7 +187,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		// create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
 
-		String version = UtilityFunction.getProjectVersion();
+		String version = appVersion;
 		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
 
 		MLPUser shareUser = null;
