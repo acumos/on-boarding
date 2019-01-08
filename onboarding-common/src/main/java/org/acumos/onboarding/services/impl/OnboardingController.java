@@ -140,6 +140,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@ApiOperation(value = "Upload model file and its meta data as string to dockerize", response = ServiceResponse.class)
 	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Created", response = ServiceResponse.class),
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class),
 			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
