@@ -22,7 +22,6 @@ package org.acumos.onboarding.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -47,7 +46,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.core.io.Resource;
 
 import com.github.dockerjava.api.DockerClient;
@@ -58,18 +56,6 @@ import com.github.dockerjava.core.DockerClientConfig;
 public class UtilityFunction {
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
 	private static String version = null;
-	private static String projectVersion = null;
-	
-
-	
-
-	public static String getProjectVersion() {
-		return projectVersion;
-	}
-
-	public static void setProjectVersion(String projectVersion) {
-		UtilityFunction.projectVersion = projectVersion;
-	}
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();

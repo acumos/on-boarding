@@ -21,7 +21,6 @@
 package org.acumos.onboarding.open;
 
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
-import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,14 +37,10 @@ public class OnboardingApplication implements ApplicationContextAware
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingApplication.class);
 
 	public static final String CONFIG_ENV_VAR_NAME = "SPRING_APPLICATION_JSON";
-
-	
 	
 	public static void main(String[] args) throws Exception {
 		final String springApplicationJson = System.getenv(CONFIG_ENV_VAR_NAME);
 		
-		OnboardingApplication onboard = new OnboardingApplication();
-
 		if (springApplicationJson != null && springApplicationJson.contains("{")) {
 			final ObjectMapper mapper = new ObjectMapper();
 			// ensure it's valid
@@ -55,25 +50,12 @@ public class OnboardingApplication implements ApplicationContextAware
 
 			logger.warn("No configuration found in environment {" + CONFIG_ENV_VAR_NAME + "}");
 		}
-		
-		onboard.logVersion();
 		SpringApplication.run(OnboardingApplication.class, args);
 	}
-
 
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
 		((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("src");
 	}
-	
-	 public  void logVersion() {
-         String className = this.getClass().getSimpleName() + ".class";
-         String classPath = this.getClass().getResource(className).toString();
-         String version = classPath.startsWith("jar")
-                                         ? OnboardingApplication.class.getPackage().getImplementationVersion()
-                                         : "no version, classpath is not jar";
-         logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
-         UtilityFunction.setProjectVersion(version);
-     }
 
 }
