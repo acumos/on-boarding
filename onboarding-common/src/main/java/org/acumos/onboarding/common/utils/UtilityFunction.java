@@ -56,6 +56,15 @@ import com.github.dockerjava.core.DockerClientConfig;
 public class UtilityFunction {
 	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
 	private static String version = null;
+    private static String projectVersion = null;	
+
+	public static String getProjectVersion() {
+		return projectVersion;
+	}
+
+	public static void setProjectVersion(String projectVersion) {
+		UtilityFunction.projectVersion = projectVersion;
+	}
 
 	public static String getGUID() {
 		return java.util.UUID.randomUUID().toString();

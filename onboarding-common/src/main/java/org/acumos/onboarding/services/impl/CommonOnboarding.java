@@ -104,9 +104,6 @@ public class CommonOnboarding {
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 
-	@Value("${app.version}")
-	protected String appVersion;
-
 	protected String modelOriginalName = null;
 
 	protected boolean dcaeflag = false;
