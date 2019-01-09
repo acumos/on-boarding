@@ -188,8 +188,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		// create log file to capture logs as artifact
 		UtilityFunction.createLogFile();
 
-		String version = appVersion;
-		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version {}", version);
+		String version = UtilityFunction.getProjectVersion();
+		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version : "+version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
