@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.acumos.cds.CodeNameType;
-import org.acumos.cds.ToolkitTypeCode;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPCodeNamePair;
@@ -210,16 +209,17 @@ public class CommonOnboarding {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution call started");
 		MLPSolution solution = new MLPSolution();
 		solution.setName(metadata.getSolutionName());
-		solution.setDescription(metadata.getSolutionName());
+		//solution.setDescription(metadata.getSolutionName());
 		solution.setUserId(metadata.getOwnerId());
 
 		logger.debug(EELFLoggerDelegate.debugLogger,"Model name[CreateSolutionMethod] :"+metadata.getSolutionName());
 
-		String toolKit = metadata.getToolkit();
+		/*String toolKit = metadata.getToolkit();
 
 		if (toolKit != null) {
 			solution.setToolkitTypeCode(getToolTypeCode(toolKit));
-		} else if (dcaeflag) {
+		} else if (dcaeflag) {*/
+		if (dcaeflag) {
 			solution.setToolkitTypeCode("ON");
 		}
 
@@ -245,7 +245,7 @@ public class CommonOnboarding {
 		}
 	}
 
-	public String getToolTypeCode(String toolkit) {
+	/*public String getToolTypeCode(String toolkit) {
 		ToolkitTypeCode code = null;
 
 		if (toolkit.equals("Scikit-Learn".toLowerCase())) {
@@ -266,7 +266,7 @@ public class CommonOnboarding {
 			return code.name();
 		else
 			return null;
-	}
+	}*/
 
 	public MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
 		logger.debug(EELFLoggerDelegate.debugLogger,"Create solution revision call started");
@@ -291,13 +291,13 @@ public class CommonOnboarding {
 			}
 		}
 
-			List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
+			/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
 		if (!validationStatusList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
 					revision.setValidationStatusCode(mlpCodeNamePair.getCode());
 			}
-		}
+		}*/
 
 		try {
 			revision = cdmsClient.createSolutionRevision(revision);

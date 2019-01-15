@@ -65,22 +65,22 @@ public class CommonOnboardingTest {
 	@Mock
 	ToscaGeneratorClient toscaClient ;
 
-	@Test
-	public void getToolTypeCodeTest() {
-		String typeCode = null;
-		typeCode = commonOnboarding.getToolTypeCode("composite solution");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("scikit-learn");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("tensorflow");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("r");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("h2o");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("design studio");
-		Assert.assertNotNull(typeCode);
-	}
+//	@Test
+//	public void getToolTypeCodeTest() {
+//		String typeCode = null;
+//		typeCode = commonOnboarding.getToolTypeCode("composite solution");
+//		Assert.assertNotNull(typeCode);
+//		typeCode = commonOnboarding.getToolTypeCode("scikit-learn");
+//		Assert.assertNotNull(typeCode);
+//		typeCode = commonOnboarding.getToolTypeCode("tensorflow");
+//		Assert.assertNotNull(typeCode);
+//		typeCode = commonOnboarding.getToolTypeCode("r");
+//		Assert.assertNotNull(typeCode);
+//		typeCode = commonOnboarding.getToolTypeCode("h2o");
+//		Assert.assertNotNull(typeCode);
+//		typeCode = commonOnboarding.getToolTypeCode("design studio");
+//		Assert.assertNotNull(typeCode);
+//	}
 
 
 	@Test
