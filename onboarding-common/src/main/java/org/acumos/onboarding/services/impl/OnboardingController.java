@@ -513,6 +513,314 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 	}
 
+	@Override
+	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Onboard the interchange models", response = ServiceResponse.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
+			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class),
+			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
+	@RequestMapping(value = "/advancedModel", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<ServiceResponse> advancedModelOnboard(HttpServletRequest request,
+			@RequestPart(required = true) MultipartFile model, @RequestPart(required = false) MultipartFile license,
+			@RequestHeader(value = "modelname", required = true) String modName,
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
+			@RequestHeader(value = "dockerfileURL", required = false) String dockerfileURL,
+			@RequestHeader(value = "provider", required = false) String provider,
+			@RequestHeader(value = "tracking_id", required = false) String trackingID,
+			@RequestHeader(value = "Request-ID", required = false) String request_id,
+			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
+			throws AcumosServiceException {
+
+		if (trackingID != null) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+		} else {
+			trackingID = UUID.randomUUID().toString();
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
+		}
+
+		if (request_id != null) {
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
+		} else {
+			request_id = UUID.randomUUID().toString();
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
+		}
+
+		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
+
+		String fileName = "AdvancedModelOnboardLog.txt";
+		LogBean logBean = new LogBean();
+		logBean.setLogPath(lOG_DIR_LOC + File.separator + trackingID);
+		logBean.setFileName(fileName);
+		LogThreadLocal logThread = new LogThreadLocal();
+		logThread.set(logBean);
+		// create log file to capture logs as artifact
+		UtilityFunction.createLogFile();
+
+		String version = UtilityFunction.getProjectVersion();
+		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
+
+		MLPUser shareUser = null;
+		String modelName = null;
+		Metadata mData = new Metadata();
+		String modelId = UtilityFunction.getGUID();
+		File outputFolder = new File("tmp", modelId);
+		outputFolder.mkdirs();
+		boolean isSuccess = false;
+		MLPSolution mlpSolution = null;
+
+		try {
+
+			// 'authorization' represents JWT token here...!
+			if (authorization == null) {
+				logger.error(EELFLoggerDelegate.errorLogger, "Token Not Available...!");
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+						"Token Not Available...!");
+			}
+
+			if (shareUserName != null) {
+				RestPageResponse<MLPUser> user = cdmsClient.findUsersBySearchTerm(shareUserName,
+						new RestPageRequest(0, 9));
+
+				List<MLPUser> uList = user.getContent();
+
+				if (uList.isEmpty()) {
+					logger.error(EELFLoggerDelegate.errorLogger,
+							"User " + shareUserName + " not found: cannot share model; onboarding aborted");
+					throw new AcumosServiceException(AcumosServiceException.ErrorCode.OBJECT_NOT_FOUND,
+							"User " + shareUserName + " not found: cannot share model; onboarding aborted");
+				} else {
+					shareUser = uList.get(0);
+				}
+			}
+
+			// Call to validate Token .....!
+			String ownerId = validate(authorization, provider);
+
+			if (ownerId != null && !ownerId.isEmpty()) {
+
+				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
+
+				logger.debug(EELFLoggerDelegate.debugLogger,
+						"Onboarding request recieved with " + model.getOriginalFilename());
+
+				modelOriginalName = model.getOriginalFilename();
+				MLPSolutionRevision revision;
+				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
+				File licenseFile = null;
+
+				try {
+
+					try {
+
+						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
+						if (!license.isEmpty() && license != null) {
+							licenseFile = new File(outputFolder, license.getOriginalFilename());
+							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+						}
+
+						mData.setOwnerId(ownerId);
+						mData.setModelName(modName);
+
+						List<MLPSolution> solList = getExistingSolution(mData);
+						boolean isListEmpty = solList.isEmpty();
+
+						if (isListEmpty) {
+							mlpSolution = createSolution(mData, null);
+							mData.setSolutionId(mlpSolution.getSolutionId());
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"New solution created Successfully " + mlpSolution.getSolutionId());
+						} else {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Existing solution found for model name " + solList.get(0).getName());
+							mlpSolution = solList.get(0);
+							mData.setSolutionId(mlpSolution.getSolutionId());
+						}
+
+						revision = createSolutionRevision(mData);
+						modelName = mData.getModelName() + "_" + mData.getSolutionId();
+
+					} catch (AcumosServiceException e) {
+						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+						logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
+						if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+							httpCode = HttpStatus.BAD_REQUEST;
+						}
+
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+					} catch (Exception e) {
+						logger.error(EELFLoggerDelegate.errorLogger, e.getMessage());
+
+						if (e instanceof AcumosServiceException) {
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(),
+											e.getMessage(), modelName),
+									HttpStatus.INTERNAL_SERVER_ERROR);
+						} else {
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
+											e.getMessage(), modelName),
+									HttpStatus.INTERNAL_SERVER_ERROR);
+						}
+					}
+
+					artifactsDetails = getArtifactsDetails();
+					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(), null);
+					addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+							mData.getModelName(), null);
+
+					// call microservice
+					if (isCreateMicroservice = true) {
+						logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
+								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
+						try {
+							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
+									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
+									trackingID, mData.getModelName(), null, request_id);
+							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
+								isSuccess = true;
+							}
+						} catch (Exception e) {
+							logger.error(EELFLoggerDelegate.errorLogger,
+									"Exception occured while invoking microservice API " + e);
+							throw e;
+						}
+					}
+
+					// Model Sharing
+					if (isSuccess && (shareUserName != null) && revision.getRevisionId() != null) {
+						try {
+							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
+							AuthorTransport authors[] = new AuthorTransport[1];
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Author Name " + author.getName() + " and Email " + author.getContact());
+							authors[0] = author;
+							revision.setAuthors(authors);
+							cdmsClient.updateSolutionRevision(revision);
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Model Shared Successfully with " + shareUserName);
+						} catch (Exception e) {
+							isSuccess = false;
+							logger.error(EELFLoggerDelegate.errorLogger, " Failed to share Model", e);
+							throw e;
+						}
+					}
+
+					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
+							ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+					logger.debug(EELFLoggerDelegate.debugLogger,
+							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
+									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
+					return res;
+				} finally {
+
+					try {
+						UtilityFunction.deleteDirectory(outputFolder);
+						if (isSuccess == false) {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Onboarding Failed, Reverting failed solutions and artifacts.");
+							if (metadataParser != null && mData != null) {
+								revertbackOnboarding(metadataParser.getMetadata(), mlpSolution.getSolutionId());
+							}
+						}
+
+						// push docker build log into nexus
+
+						File file = new java.io.File(
+								lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
+						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
+								fileName);
+						if (metadataParser != null && mData != null) {
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"Adding of log artifacts into nexus started " + fileName);
+
+							// String nexusArtifactID = "onboardingLog_"+trackingID;
+							String nexusArtifactID = "OnboardingLog";
+
+							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+									nexusArtifactID, null);
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+									OnboardingLogConstants.ResponseStatus.COMPLETED.name());
+							logger.debug(EELFLoggerDelegate.debugLogger, "Artifacts log pushed to nexus successfully",
+									fileName);
+						}
+
+						// delete log file
+						UtilityFunction.deleteDirectory(file);
+						logThread.unset();
+						mData = null;
+					} catch (AcumosServiceException e) {
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+								OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
+								OnboardingLogConstants.ResponseStatus.ERROR.name());
+						mData = null;
+						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
+						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+					}
+				}
+			} else {
+				try {
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+							OnboardingLogConstants.ResponseStatus.ERROR.name());
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
+					logger.error(EELFLoggerDelegate.errorLogger, "Either Username/Password is invalid.");
+					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
+							"Either Username/Password is invalid.");
+				} catch (AcumosServiceException e) {
+					return new ResponseEntity<ServiceResponse>(
+							ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()), HttpStatus.UNAUTHORIZED);
+				}
+			}
+
+		} catch (AcumosServiceException e) {
+
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			logger.error(EELFLoggerDelegate.errorLogger, e.getErrorCode() + "  " + e.getMessage());
+			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+				httpCode = HttpStatus.BAD_REQUEST;
+			}
+			return new ResponseEntity<ServiceResponse>(
+					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+		} catch (HttpClientErrorException e) {
+			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
+			// invalid.
+			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
+				logger.debug(EELFLoggerDelegate.debugLogger,
+						"Unauthorized User - Either Username/Password is invalid.");
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
+						HttpStatus.UNAUTHORIZED);
+			} else {
+				logger.error(EELFLoggerDelegate.errorLogger, e.getMessage(), e);
+				return new ResponseEntity<ServiceResponse>(
+						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
+						e.getStatusCode());
+			}
+		} catch (Exception e) {
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			logger.error(EELFLoggerDelegate.errorLogger, "onboardModel Failed Exception " + e.getMessage(), e);
+			if (e instanceof AcumosServiceException) {
+				return new ResponseEntity<ServiceResponse>(ServiceResponse
+						.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				return new ResponseEntity<ServiceResponse>(ServiceResponse
+						.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(), modelName),
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
 	private Map<String, String> getArtifactsDetails() {
 		List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
 		Map<String, String> artifactsDetails = new HashMap<>();
