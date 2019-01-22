@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -19,6 +19,7 @@
  */
 package org.acumos.onboarding.common.models;
 
+import java.time.Instant;
 import java.util.Date;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
@@ -61,7 +62,7 @@ public class OnboardingNotification {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 	}
-	
+
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd, String requestId) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
@@ -76,16 +77,14 @@ public class OnboardingNotification {
 			String desc;
 			MLPStepResult stepResult = new MLPStepResult();
 
-			
 			stepResult.setArtifactId(this.artifactId);
 			stepResult.setUserId(this.userId);
 			stepResult.setStatusCode(currentStatus);
 			stepResult.setTrackingId(this.trackingId);
 			stepResult.setName(currentstep);
-			stepResult.setStartDate(new Date());
-			stepResult.setEndDate(new Date());
+			stepResult.setStartDate(Instant.now());
+			stepResult.setEndDate(Instant.now());
 			stepResult.setStepCode("OB");
-			
 
 			if (currentDescription != null && !currentDescription.isEmpty()) {
 				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
