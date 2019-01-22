@@ -230,7 +230,7 @@ public class OnboardingControllerTest {
             PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
             
             RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
-            pageResponse.setNextPage(true);
+            //pageResponse.setNextPage(true);
         	 
         	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
         	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);

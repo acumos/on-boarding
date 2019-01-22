@@ -19,6 +19,7 @@
  */
 package org.acumos.onboarding.common.models;
 
+import java.time.Instant;
 import java.util.Date;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
@@ -82,8 +83,8 @@ public class OnboardingNotification {
 			stepResult.setStatusCode(currentStatus);
 			stepResult.setTrackingId(this.trackingId);
 			stepResult.setName(currentstep);
-			stepResult.setStartDate(new Date());
-			stepResult.setEndDate(new Date());
+			stepResult.setStartDate(Instant.now());
+			stepResult.setEndDate(Instant.now());
 			stepResult.setStepCode("OB");
 			
 

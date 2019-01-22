@@ -65,7 +65,7 @@ public class CommonOnboardingTest {
 	@Mock
 	ToscaGeneratorClient toscaClient ;
 
-	@Test
+	/*@Test
 	public void getToolTypeCodeTest() {
 		String typeCode = null;
 		typeCode = commonOnboarding.getToolTypeCode("composite solution");
@@ -80,7 +80,7 @@ public class CommonOnboardingTest {
 		Assert.assertNotNull(typeCode);
 		typeCode = commonOnboarding.getToolTypeCode("design studio");
 		Assert.assertNotNull(typeCode);
-	}
+	}*/
 
 
 	@Test
