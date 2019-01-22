@@ -230,7 +230,7 @@ public class OnboardingControllerTest {
             PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
             
             RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
-            pageResponse.setNextPage(true);
+            //pageResponse.setNextPage(true);
         	 
         	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
         	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);
@@ -350,12 +350,8 @@ public class OnboardingControllerTest {
             JSONObject obj2 = new JSONObject();
             obj2.put("request_body", obj1);
             
-            String loginName = "jabeen";
-			String jwtToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWJlZW4iLCJyb2xlIjpudWxsLCJjcmVhdGVkIjoxNTQ0MDAzNjg3NTQyLCJleHAiOjE1NDQwODM2ODcsIm1scHVzZXIiOnsiY3JlYXR"
-					+ "lZCI6MTUxODQzNzU2MDAwMCwibW9kaWZpZWQiOjE1NDQwMDM2ODczNTMsInVzZXJJZCI6IjE0YTliZGE3LTA4OTQtNDZkMi1hZDg2LWNmNDZjNzc2YTEyYiIsImZpcnN0TmFtZSI6IkphYmVlbiIsIm1pZGRsZU5hbWUiOm51bGwsImxhc3ROYW1lIjoiU2hhaWtoIiwib3JnTmFtZSI6bnVsbCwiZW1haWwiOiJqYWJlZW5AdGVjaG1haGluZHJhLmNvbSIsImxvZ2luTmFtZSI6ImphYmVlbiIsImxvZ2luSGFzaCI6bnVsbCwibG9naW5QYXNzRXhwaXJlIjpudWxsLCJhdXRoVG9rZW4iOm51bGwsImFjdGl2ZSI6dHJ1ZSwibGFzdExvZ2luIjoxNTQ0MDAzNjg3MzUxLCJsb2dpbkZhaWxDb3VudCI6bnVsbCwibG9naW5GYWls"
-					+ "RGF0ZSI6bnVsbCwicGljdHVyZSI6bnVsbCwiYXBpVG9rZW4iOiI5MGUzOTk5MjY1ZjI0OWMyOTlhNGQzNjYzMjQ4NDgzYiIsInZl"
-					+ "cmlmeVRva2VuSGFzaCI6bnVsbCwidmVyaWZ5RXhwaXJhdGlvbiI6bnVsbCwidGFncyI6W119fQ.56NXGH_FSnKA_z7Lpe8PIFawf2-b8yPrCoCB0YaMUI5n-1uxwJ9Nq5VnXcf_jruzjp7NArU4_3E3cQ0YbMc0MA";
-            
+            String loginName = "testUser";
+			String jwtToken = "testToken";
             
             PowerMockito.when(commonOnboarding.validate(loginName, jwtToken)).thenReturn("");
             
