@@ -94,7 +94,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@ApiOperation(value = "Check User authentication and returns JWT token", response = ServiceResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
-			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class)	})
+			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class) })
 	@RequestMapping(value = "/auth", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> OnboardingWithAuthentication(@RequestBody JsonRequest<Crediantials> cred,
 			HttpServletResponse response) throws AcumosServiceException {
@@ -139,8 +139,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@Override
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@ApiOperation(value = "Upload model file and its meta data as string to dockerize", response = ServiceResponse.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Created", response = ServiceResponse.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Created", response = ServiceResponse.class),
 			@ApiResponse(code = 500, message = "Something bad happened", response = ServiceResponse.class),
 			@ApiResponse(code = 400, message = "Invalid request", response = ServiceResponse.class),
 			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
@@ -172,8 +171,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
 		}
 
-		//code to retrieve the current pom version
-		//UtilityFunction.getCurrentVersion();
+		// code to retrieve the current pom version
+		// UtilityFunction.getCurrentVersion();
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
 		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
@@ -189,7 +188,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		UtilityFunction.createLogFile();
 
 		String version = UtilityFunction.getProjectVersion();
-		logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding version : "+version);
+		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
 
 		MLPUser shareUser = null;
 		Metadata mData = null;
@@ -420,8 +419,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						// push docker build log into nexus
 
-						File file = new java.io.File(lOG_DIR_LOC + File.separator + trackingID
-								+ File.separator + fileName);
+						File file = new java.io.File(
+								lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
 								fileName);
 						if (metadataParser != null && mData != null) {
@@ -482,7 +481,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
-			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is invalid.
+			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
+			// invalid.
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Unauthorized User - Either Username/Password is invalid.");
@@ -607,15 +607,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				modelOriginalName = model.getOriginalFilename();
 				MLPSolutionRevision revision;
-				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
+				File localmodelFile = null;
 				File licenseFile = null;
+				String fileExt = getExtensionOfFile(model.getOriginalFilename());
 
 				try {
 
 					try {
 
-						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
-						if (!license.isEmpty() && license != null) {
+						if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+
+							localmodelFile = new File(outputFolder, model.getOriginalFilename());
+							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
+						}
+						if (license != null && !license.isEmpty()) {
 							licenseFile = new File(outputFolder, license.getOriginalFilename());
 							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 						}
@@ -667,12 +672,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					artifactsDetails = getArtifactsDetails();
-					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(), null);
-					addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-							mData.getModelName(), null);
+
+					if (dockerfileURL != null
+							&& (!fileExt.equalsIgnoreCase("onnx") || !fileExt.equalsIgnoreCase("pfa"))) {
+						addArtifact(mData, dockerfileURL, getArtifactTypeCode("Docker Image"), null);
+					} else if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+								null);
+					} else if (license != null && !license.isEmpty()) {
+						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+								mData.getModelName(), null);
+					}
 
 					// call microservice
-					if (isCreateMicroservice = true) {
+					if (isCreateMicroservice) {
 						logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
 								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 						try {

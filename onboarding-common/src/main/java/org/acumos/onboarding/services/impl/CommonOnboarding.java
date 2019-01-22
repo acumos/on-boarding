@@ -182,6 +182,19 @@ public class CommonOnboarding {
 		String[] values = authorization.split(":");
 		return values;
 	}
+	
+	public static String getExtensionOfFile(String fileName)
+	{
+		String fileExtension="";
+		
+		// If fileName do not contain "." or starts with "." then it is not a valid file
+		if(fileName.contains(".") && fileName.lastIndexOf(".")!= 0)
+		{
+			fileExtension=fileName.substring(fileName.lastIndexOf(".")+1);
+		}
+		
+		return fileExtension;
+	}
 
 	/*
 	 * @Method Name : getExistingSolution Gives existing solution against
