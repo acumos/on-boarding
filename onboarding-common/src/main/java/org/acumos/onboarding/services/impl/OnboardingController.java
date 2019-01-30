@@ -612,12 +612,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				} else if(fileExt.equalsIgnoreCase("tar")){
 					modelType = "dockerImage";
 					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
-				} else {
-					modelType = "other";
-					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 				}
 				
 			}
+			
+			modelType = "other";
+			logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 
 			// Call to validate Token .....!
 			String ownerId = validate(authorization, provider);
