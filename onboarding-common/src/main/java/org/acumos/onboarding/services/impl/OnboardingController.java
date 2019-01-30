@@ -603,21 +603,24 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				}
 			}
 			
-			if(model!= null && !model.isEmpty()) {
-				
+			if (model != null && !model.isEmpty()) {
+
 				String fileExt = getExtensionOfFile(model.getOriginalFilename());
 				if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
 					modelType = "interchangedModel";
 					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
-				} else if(fileExt.equalsIgnoreCase("tar")){
+				} else if (fileExt.equalsIgnoreCase("tar")) {
 					modelType = "dockerImage";
 					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
+				} else {
+					modelType = "other";
+					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 				}
-				
+
+			} else {
+				modelType = "other";
+				logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 			}
-			
-			modelType = "other";
-			logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 
 			// Call to validate Token .....!
 			String ownerId = validate(authorization, provider);
@@ -724,6 +727,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									"Exception occured while invoking microservice API " + e);
 							throw e;
 						}
+					} else {
+						isSuccess = true;
 					}
 
 					// Model Sharing
