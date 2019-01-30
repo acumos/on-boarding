@@ -608,8 +608,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				String fileExt = getExtensionOfFile(model.getOriginalFilename());
 				if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
 					modelType = "interchangedModel";
+					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 				} else if(fileExt.equalsIgnoreCase("tar")){
 					modelType = "dockerImage";
+					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
+				} else {
+					modelType = "other";
+					logger.debug(EELFLoggerDelegate.debugLogger, "ModelType is " + modelType);
 				}
 				
 			}
@@ -639,6 +644,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 						}
 
+						logger.debug(EELFLoggerDelegate.debugLogger, "Set the owner ID and Model Name");
 						mData.setOwnerId(ownerId);
 						mData.setModelName(modName);
 
@@ -861,16 +867,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 		}
 		return artifactsDetails;
-	}
-	
-	public String checkType (File model) {
-		
-		
-		
-		
-		
-		return null;
-		
 	}
 
 	private String getArtifactTypeCode(String artifactTypeName) {
