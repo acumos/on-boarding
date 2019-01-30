@@ -448,7 +448,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
 								OnboardingLogConstants.ResponseStatus.ERROR.name());
 						mData = null;
-						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed");
+						logger.error(EELFLoggerDelegate.errorLogger, "RevertbackOnboarding Failed", e.getMessage());
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 						return new ResponseEntity<ServiceResponse>(
 								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
@@ -522,7 +522,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
 	@RequestMapping(value = "/advancedModel", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> advancedModelOnboard(HttpServletRequest request,
-			@RequestPart(required = true) MultipartFile model, @RequestPart(required = false) MultipartFile license,
+			@RequestPart(required = false) MultipartFile model, @RequestPart(required = false) MultipartFile license,
 			@RequestHeader(value = "modelname", required = true) String modName,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
@@ -560,7 +560,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		String version = UtilityFunction.getProjectVersion();
 		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
-
+		
+		if((model !=null && !model.isEmpty()) && (dockerfileURL!=null && !dockerfileURL.isEmpty())) {
+			
+			logger.error(EELFLoggerDelegate.errorLogger, "Either pass Model File or Docker Uri for this request");
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
+					"Invalid Request");			
+		}
+		
 		MLPUser shareUser = null;
 		String modelName = null;
 		Metadata mData = new Metadata();
@@ -569,6 +576,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		outputFolder.mkdirs();
 		boolean isSuccess = false;
 		MLPSolution mlpSolution = null;
+		String modelType = null;
 
 		try {
 
@@ -594,6 +602,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					shareUser = uList.get(0);
 				}
 			}
+			
+			if(model!= null && !model.isEmpty()) {
+				
+				String fileExt = getExtensionOfFile(model.getOriginalFilename());
+				if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+					modelType = "interchangedModel";
+				} else if(fileExt.equalsIgnoreCase("tar")){
+					modelType = "dockerImage";
+				}
+				
+			}
 
 			// Call to validate Token .....!
 			String ownerId = validate(authorization, provider);
@@ -609,13 +628,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				MLPSolutionRevision revision;
 				File localmodelFile = null;
 				File licenseFile = null;
-				String fileExt = getExtensionOfFile(model.getOriginalFilename());
 
 				try {
 
 					try {
 
-						if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+						if (modelType.equalsIgnoreCase("interchangedModel")) {
 
 							localmodelFile = new File(outputFolder, model.getOriginalFilename());
 							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
@@ -673,16 +691,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					artifactsDetails = getArtifactsDetails();
 
-					if (dockerfileURL != null
-							&& (!fileExt.equalsIgnoreCase("onnx") || !fileExt.equalsIgnoreCase("pfa"))) {
+					if (dockerfileURL != null) {
 						addArtifact(mData, dockerfileURL, getArtifactTypeCode("Docker Image"), null);
-					} else if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+					} else if (modelType.equalsIgnoreCase("interchangedModel")) {
 						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 								null);
+						
+					//Need to add modelType.equalsIgnoreCase("dockerImage")
+						
 					} else if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 								mData.getModelName(), null);
 					}
+					
+					logger.debug(EELFLoggerDelegate.debugLogger, "isCreateMicroservice: " + isCreateMicroservice);
 
 					// call microservice
 					if (isCreateMicroservice) {
@@ -843,6 +865,16 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 		}
 		return artifactsDetails;
+	}
+	
+	public String checkType (File model) {
+		
+		
+		
+		
+		
+		return null;
+		
 	}
 
 	private String getArtifactTypeCode(String artifactTypeName) {
