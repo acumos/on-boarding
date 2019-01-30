@@ -621,7 +621,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
 
-				modelOriginalName = model.getOriginalFilename();
 				MLPSolutionRevision revision;
 				File localmodelFile = null;
 				File licenseFile = null;
