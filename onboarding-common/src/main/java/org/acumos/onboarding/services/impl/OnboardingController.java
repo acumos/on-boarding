@@ -560,14 +560,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		String version = UtilityFunction.getProjectVersion();
 		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
-		
-		if((model !=null && !model.isEmpty()) && (dockerfileURL!=null && !dockerfileURL.isEmpty())) {
-			
-			logger.error(EELFLoggerDelegate.errorLogger, "Either pass Model File or Docker Uri for this request");
-			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-					"Invalid Request");			
-		}
-		
+				
 		MLPUser shareUser = null;
 		String modelName = null;
 		Metadata mData = new Metadata();
@@ -580,6 +573,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		try {
 
+			if((model !=null && !model.isEmpty()) && (dockerfileURL!=null && !dockerfileURL.isEmpty())) {
+				
+				logger.error(EELFLoggerDelegate.errorLogger, "Either pass Model File or Docker Uri for this request");
+				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
+						"Either pass Model File or Docker Uri for this request");			
+			}
+			
 			// 'authorization' represents JWT token here...!
 			if (authorization == null) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Token Not Available...!");
