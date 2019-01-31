@@ -25,6 +25,7 @@ for public use, which are released together.
 
 Version 2.3.0, 31 January 2019
 ---------------------------------
+* `ACUMOS-2415 <https://jira.acumos.org/browse/ACUMOS-2415/>`_
 * `ACUMOS-2242 <https://jira.acumos.org/browse/ACUMOS-2242/>`_
 * `ACUMOS-2247 <https://jira.acumos.org/browse/ACUMOS-2247/>`_
 * `ACUMOS-2379 <https://jira.acumos.org/browse/ACUMOS-2379/>`_
