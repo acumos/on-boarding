@@ -269,7 +269,7 @@ public class OnboardingControllerTest {
 			PowerMockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyString())).thenReturn(response);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(201,resp.getStatusCodeValue());
@@ -349,7 +349,7 @@ public class OnboardingControllerTest {
             PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
 
         	ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(401,resp.getStatusCodeValue());
