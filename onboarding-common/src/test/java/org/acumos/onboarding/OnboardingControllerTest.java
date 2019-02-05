@@ -117,9 +117,9 @@ public class OnboardingControllerTest {
 
 	@Mock
 	NexusArtifactClient artifactClient1;
-	
+
 	@Mock
-	ToscaGeneratorClient client; 
+	ToscaGeneratorClient client;
 
 	@Mock
 	MicroserviceRestClientImpl microserviceClient;
@@ -128,7 +128,7 @@ public class OnboardingControllerTest {
 
 
 	final HttpServletResponse response = mock(HttpServletResponse.class);
-   
+
 	 @Before
 	  public void setUp() throws Exception {
 	        MockitoAnnotations.initMocks(this);
@@ -182,11 +182,11 @@ public class OnboardingControllerTest {
 
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
-			
+
 					CommonDataServiceRestClientImpl cmdDataSvc = mock(CommonDataServiceRestClientImpl.class);
 			OnboardingNotification onboardingStatus = mock(OnboardingNotification.class);
 			NexusArtifactClient artifactClient = mock(NexusArtifactClient.class);
-			
+
 			MLPSolution mlLPSolution = new MLPSolution();
 			mlLPSolution.setSolutionId("solutiontest1");
 			List<MLPSolution> mlpSoltuionList = new ArrayList<MLPSolution>();
@@ -224,19 +224,19 @@ public class OnboardingControllerTest {
 
             RestPageResponse<MLPSolution> pageResponse = new RestPageResponse();
             //pageResponse.setNextPage(true);
-        	 
+
         	PowerMockito.when(cdmsClient.searchSolutions(Mockito.anyObject(),Mockito.anyBoolean(),Mockito.anyObject())).thenReturn(pageResponse);
         	PowerMockito.when(cdmsClient.createSolution(Mockito.anyObject())).thenReturn(mlLPSolution);
-        	
+
         	MLPSolutionRevision mLPSolutionRevision = new MLPSolutionRevision();
         	mLPSolutionRevision.setSolutionId("solution1");
         	List<MLPSolutionRevision> listSolRev = new ArrayList<MLPSolutionRevision>();
         	listSolRev.add(mLPSolutionRevision);
         	PowerMockito.when(cdmsClient.getSolutionRevisions(Mockito.anyString())).thenReturn(listSolRev);
         	PowerMockito.when(cdmsClient.createSolutionRevision(Mockito.anyObject())).thenReturn(mLPSolutionRevision);
-                  
+
     		PowerMockito.whenNew(NexusArtifactClient.class).withArguments(Mockito.anyObject()).thenReturn(artifactClient);
-                  
+
     		byte[] buffer = new byte[4000];
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(100);
 			byteArrayOutputStream.write(buffer);
@@ -244,7 +244,7 @@ public class OnboardingControllerTest {
 			
     		UploadArtifactInfo artifactInfo = new UploadArtifactInfo("org.acumos","org.artifcatid","1.0","jar","orgacumos",515);
     		PowerMockito.when(artifactClient.uploadArtifact(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyLong(),Mockito.anyObject())).thenReturn(artifactInfo);
-                  
+
     		MLPArtifact modelArtifact = new MLPArtifact();
 			modelArtifact.setName("fileName");
 			modelArtifact.setDescription("fileName");
@@ -253,7 +253,7 @@ public class OnboardingControllerTest {
 			modelArtifact.setUserId("OwnerId");
 			modelArtifact.setUri("uri");
 			modelArtifact.setSize(515);
-                  
+
 			PowerMockito.when(cdmsClient.createArtifact(Mockito.anyObject())).thenReturn(modelArtifact);
 
 			PowerMockito.whenNew(ToscaGeneratorClient.class).withArguments(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString()).thenReturn(client);
@@ -269,7 +269,7 @@ public class OnboardingControllerTest {
 			PowerMockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyString())).thenReturn(response);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(201,resp.getStatusCodeValue());
@@ -349,7 +349,7 @@ public class OnboardingControllerTest {
             PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
 
         	ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, "authorization", null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(401,resp.getStatusCodeValue());
@@ -366,7 +366,7 @@ public class OnboardingControllerTest {
 
 	/*@Test
 	public void testValidate() {
-        
+
 		try {
 
 			//MLPUser mUser = new MLPUser();//mock(MLPUser.class);
@@ -401,7 +401,7 @@ public class OnboardingControllerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 	*/
 

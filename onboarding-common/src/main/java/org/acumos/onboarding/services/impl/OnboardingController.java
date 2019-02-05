@@ -39,6 +39,7 @@ import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.AuthorTransport;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
+import org.acumos.designstudio.toscagenerator.util.EELFLoggerDelegator;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
@@ -147,7 +148,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
+			@RequestPart(required = false) MultipartFile license,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
@@ -248,6 +251,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
 				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
 				MLPSolutionRevision revision;
+				File licenseFile = null;
 
 				try {
 
@@ -264,6 +268,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
 
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
+
+						if (license != null && !license.isEmpty()) {
+							licenseFile = new File(outputFolder, license.getOriginalFilename());
+							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+						}
 
 						metadataParser = new MetadataParser(localMetadataFile);
 						mData = metadataParser.getMetadata();
@@ -352,6 +361,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), mData.getModelName(),
 							onboardingStatus);
 
+					if (license != null && !license.isEmpty()) {
+						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+								mData.getModelName(), onboardingStatus);
+					}
+
 					// Notify TOSCA generation started
 					if (onboardingStatus != null) {
 						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
@@ -364,20 +378,26 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
 
-					// call microservice
-					logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
-							+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
-					try {
-						ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
-								mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-								trackingID, modName, deployment_env, request_id);
-						if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
-							isSuccess = true;
+					logger.debug(EELFLoggerDelegator.debugLogger, "Generate Microservice Flag: " +isCreateMicroservice);
+
+					if (isCreateMicroservice) {
+						// call microservice
+						logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
+								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
+						try {
+							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
+									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
+									trackingID, modName, deployment_env, request_id);
+							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
+								isSuccess = true;
+							}
+						} catch (Exception e) {
+							logger.error(EELFLoggerDelegate.errorLogger,
+									"Exception occured while invoking microservice API " + e);
+							throw e;
 						}
-					} catch (Exception e) {
-						logger.error(EELFLoggerDelegate.errorLogger,
-								"Exception occured while invoking microservice API " + e);
-						throw e;
+					} else {
+						isSuccess = true;
 					}
 
 					// Model Sharing
@@ -560,7 +580,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		String version = UtilityFunction.getProjectVersion();
 		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
-				
+
 		MLPUser shareUser = null;
 		String modelName = null;
 		Metadata mData = new Metadata();
@@ -574,12 +594,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		try {
 
 			if((model !=null && !model.isEmpty()) && (dockerfileURL!=null && !dockerfileURL.isEmpty())) {
-				
+
 				logger.error(EELFLoggerDelegate.errorLogger, "Either pass Model File or Docker Uri for this request");
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
-						"Either pass Model File or Docker Uri for this request");			
+						"Either pass Model File or Docker Uri for this request");
 			}
-			
+
 			// 'authorization' represents JWT token here...!
 			if (authorization == null) {
 				logger.error(EELFLoggerDelegate.errorLogger, "Token Not Available...!");
@@ -602,7 +622,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					shareUser = uList.get(0);
 				}
 			}
-			
+
 			if (model != null && !model.isEmpty()) {
 
 				String fileExt = getExtensionOfFile(model.getOriginalFilename());
@@ -701,14 +721,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					} else if (modelType.equalsIgnoreCase("interchangedModel")) {
 						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 								null);
-						
+
 					//Need to add modelType.equalsIgnoreCase("dockerImage")
-						
+
 					} else if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 								mData.getModelName(), null);
 					}
-					
+
 					logger.debug(EELFLoggerDelegate.debugLogger, "isCreateMicroservice: " + isCreateMicroservice);
 
 					// call microservice
