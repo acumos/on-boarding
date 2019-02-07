@@ -150,7 +150,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestPart(required = false) MultipartFile license,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
-			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
+			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
