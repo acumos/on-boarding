@@ -23,6 +23,12 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 2.4.0, 13 February 2019
+---------------------------------
+* Common Data Service client at version 2.0.7
+* `ACUMOS-2275 <https://jira.acumos.org/browse/ACUMOS-2275/>`_
+* `ACUMOS-2262 <https://jira.acumos.org/browse/ACUMOS-2262/>`_
+
 Version 2.3.0, 31 January 2019
 ---------------------------------
 * `ACUMOS-2415 <https://jira.acumos.org/browse/ACUMOS-2415/>`_
