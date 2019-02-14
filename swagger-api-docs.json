@@ -17,6 +17,120 @@
       }
    ],
    "paths":{
+      "/v2/advancedModel":{
+         "post":{
+            "tags":[
+               "Onboarding Service APIs"
+            ],
+            "summary":"Onboard the interchange models",
+            "operationId":"advancedModelOnboardUsingPOST",
+            "consumes":[
+               "multipart/form-data"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"model",
+                  "in":"formData",
+                  "description":"model",
+                  "required":false,
+                  "type":"file"
+               },
+               {
+                  "name":"license",
+                  "in":"formData",
+                  "description":"license",
+                  "required":false,
+                  "type":"file"
+               },
+               {
+                  "name":"modelname",
+                  "in":"header",
+                  "description":"modelname",
+                  "required":true,
+                  "type":"string"
+               },
+               {
+                  "name":"Authorization",
+                  "in":"header",
+                  "description":"Authorization",
+                  "required":false,
+                  "type":"string"
+               },
+               {
+                  "name":"isCreateMicroservice",
+                  "in":"header",
+                  "description":"isCreateMicroservice",
+                  "required":false,
+                  "type":"boolean"
+               },
+               {
+                  "name":"dockerfileURL",
+                  "in":"header",
+                  "description":"dockerfileURL",
+                  "required":false,
+                  "type":"string"
+               },
+               {
+                  "name":"provider",
+                  "in":"header",
+                  "description":"provider",
+                  "required":false,
+                  "type":"string"
+               },
+               {
+                  "name":"tracking_id",
+                  "in":"header",
+                  "description":"tracking_id",
+                  "required":false,
+                  "type":"string"
+               },
+               {
+                  "name":"Request-ID",
+                  "in":"header",
+                  "description":"Request-ID",
+                  "required":false,
+                  "type":"string"
+               },
+               {
+                  "name":"shareUserName",
+                  "in":"header",
+                  "description":"shareUserName",
+                  "required":false,
+                  "type":"string"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               },
+               "400":{
+                  "description":"Invalid request",
+                  "schema":{
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               },
+               "401":{
+                  "description":"Unauthorized User",
+                  "schema":{
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               },
+               "500":{
+                  "description":"Something bad happened",
+                  "schema":{
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               }
+            }
+         }
+   },
+   "paths":{
       "/v2/auth":{
          "post":{
             "tags":[
