@@ -1,100 +1,99 @@
-{
+{  
    "swagger":"2.0",
-   "info":{
+   "info":{  
       "description":"Model upload server API.",
       "version":"1.0.0",
       "title":"Model Upload Server",
-      "contact":{
+      "contact":{  
 
       }
    },
-   "host":"localhost:8090",
    "basePath":"/",
-   "tags":[
-      {
+   "tags":[  
+      {  
          "name":"Onboarding Service APIs",
          "description":"Onboarding Controller"
       }
    ],
-   "paths":{
-      "/v2/advancedModel":{
-         "post":{
-            "tags":[
+   "paths":{  
+      "/v2/advancedModel":{  
+         "post":{  
+            "tags":[  
                "Onboarding Service APIs"
             ],
             "summary":"Onboard the interchange models",
             "operationId":"advancedModelOnboardUsingPOST",
-            "consumes":[
+            "consumes":[  
                "multipart/form-data"
             ],
-            "produces":[
+            "produces":[  
                "application/json"
             ],
-            "parameters":[
-               {
+            "parameters":[  
+               {  
                   "name":"model",
                   "in":"formData",
                   "description":"model",
                   "required":false,
                   "type":"file"
                },
-               {
+               {  
                   "name":"license",
                   "in":"formData",
                   "description":"license",
                   "required":false,
                   "type":"file"
                },
-               {
+               {  
                   "name":"modelname",
                   "in":"header",
                   "description":"modelname",
                   "required":true,
                   "type":"string"
                },
-               {
+               {  
                   "name":"Authorization",
                   "in":"header",
                   "description":"Authorization",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"isCreateMicroservice",
                   "in":"header",
                   "description":"isCreateMicroservice",
                   "required":false,
                   "type":"boolean"
                },
-               {
+               {  
                   "name":"dockerfileURL",
                   "in":"header",
                   "description":"dockerfileURL",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"provider",
                   "in":"header",
                   "description":"provider",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"tracking_id",
                   "in":"header",
                   "description":"tracking_id",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"Request-ID",
                   "in":"header",
                   "description":"Request-ID",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"shareUserName",
                   "in":"header",
                   "description":"shareUserName",
@@ -102,152 +101,166 @@
                   "type":"string"
                }
             ],
-            "responses":{
-               "200":{
+            "responses":{  
+               "200":{  
                   "description":"OK",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "400":{
+               "400":{  
                   "description":"Invalid request",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "401":{
+               "401":{  
                   "description":"Unauthorized User",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "500":{
+               "500":{  
                   "description":"Something bad happened",
-                  "schema":{
-                     "$ref":"#/definitions/ServiceResponse"
-                  }
-               }
-            }
-         }
-   },
-   "paths":{
-      "/v2/auth":{
-         "post":{
-            "tags":[
-               "Onboarding Service APIs"
-            ],
-            "summary":"Check User authentication and returns JWT token",
-            "operationId":"OnboardingWithAuthenticationUsingPOST",
-            "consumes":[
-               "application/json"
-            ],
-            "produces":[
-               "application/json"
-            ],
-            "parameters":[
-               {
-                  "in":"body",
-                  "name":"cred",
-                  "description":"cred",
-                  "required":true,
-                  "schema":{
-                     "$ref":"#/definitions/JsonRequestÂ«CrediantialsÂ»"
-                  }
-               }
-            ],
-            "responses":{
-               "200":{
-                  "description":"OK",
-                  "schema":{
-                     "$ref":"#/definitions/ServiceResponse"
-                  }
-               },
-               "400":{
-                  "description":"Invalid request",
-                  "schema":{
-                     "$ref":"#/definitions/ServiceResponse"
-                  }
-               },
-               "500":{
-                  "description":"Something bad happened",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                }
             }
          }
       },
-      "/v2/models":{
-         "post":{
-            "tags":[
+      "/v2/auth":{  
+         "post":{  
+            "tags":[  
+               "Onboarding Service APIs"
+            ],
+            "summary":"Check User authentication and returns JWT token",
+            "operationId":"OnboardingWithAuthenticationUsingPOST",
+            "consumes":[  
+               "application/json"
+            ],
+            "produces":[  
+               "application/json"
+            ],
+            "parameters":[  
+               {  
+                  "in":"body",
+                  "name":"cred",
+                  "description":"cred",
+                  "required":true,
+                  "schema":{  
+                     "$ref":"#/definitions/JsonRequest«Crediantials»"
+                  }
+               }
+            ],
+            "responses":{  
+               "200":{  
+                  "description":"OK",
+                  "schema":{  
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               },
+               "400":{  
+                  "description":"Invalid request",
+                  "schema":{  
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               },
+               "500":{  
+                  "description":"Something bad happened",
+                  "schema":{  
+                     "$ref":"#/definitions/ServiceResponse"
+                  }
+               }
+            }
+         }
+      },
+      "/v2/models":{  
+         "post":{  
+            "tags":[  
                "Onboarding Service APIs"
             ],
             "summary":"Upload model file and its meta data as string to dockerize",
             "operationId":"onboardModelUsingPOST",
-            "consumes":[
+            "consumes":[  
                "multipart/form-data"
             ],
-            "produces":[
+            "produces":[  
                "application/json"
             ],
-            "parameters":[
-               {
+            "parameters":[  
+               {  
                   "name":"model",
                   "in":"formData",
                   "description":"model",
                   "required":true,
                   "type":"file"
                },
-               {
+               {  
                   "name":"metadata",
                   "in":"formData",
                   "description":"metadata",
                   "required":true,
                   "type":"file"
                },
-               {
+               {  
                   "name":"schema",
                   "in":"formData",
                   "description":"schema",
                   "required":true,
                   "type":"file"
                },
-               {
+               {  
+                  "name":"license",
+                  "in":"formData",
+                  "description":"license",
+                  "required":false,
+                  "type":"file"
+               },
+               {  
                   "name":"Authorization",
                   "in":"header",
                   "description":"Authorization",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
+                  "name":"isCreateMicroservice",
+                  "in":"header",
+                  "description":"isCreateMicroservice",
+                  "required":false,
+                  "type":"boolean",
+                  "default":true
+               },
+               {  
                   "name":"tracking_id",
                   "in":"header",
                   "description":"tracking_id",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"provider",
                   "in":"header",
                   "description":"provider",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"shareUserName",
                   "in":"header",
                   "description":"shareUserName",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"modName",
                   "in":"header",
                   "description":"modName",
                   "required":false,
                   "type":"string"
                },
-               {
+               {  
                   "name":"deployment_env",
                   "in":"header",
                   "description":"deployment_env",
@@ -255,7 +268,7 @@
                   "type":"integer",
                   "format":"int32"
                },
-               {
+               {  
                   "name":"Request-ID",
                   "in":"header",
                   "description":"Request-ID",
@@ -263,34 +276,28 @@
                   "type":"string"
                }
             ],
-            "responses":{
-               "200":{
-                  "description":"OK",
-                  "schema":{
-                     "$ref":"#/definitions/ServiceResponse"
-                  }
-               },
-               "201":{
+            "responses":{  
+               "200":{  
                   "description":"Created",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "400":{
+               "400":{  
                   "description":"Invalid request",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "401":{
+               "401":{  
                   "description":"Unauthorized User",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                },
-               "500":{
+               "500":{  
                   "description":"Something bad happened",
-                  "schema":{
+                  "schema":{  
                      "$ref":"#/definitions/ServiceResponse"
                   }
                }
@@ -298,51 +305,256 @@
          }
       }
    },
-   "definitions":{
-      "Crediantials":{
+   "definitions":{  
+      "Crediantials":{  
          "type":"object",
-         "properties":{
-            "password":{
+         "properties":{  
+            "password":{  
                "type":"string"
             },
-            "username":{
+            "username":{  
                "type":"string"
             }
          }
       },
-      "ServiceResponse":{
+      "URLStreamHandler":{  
+         "type":"object"
+      },
+      "ServiceResponse":{  
          "type":"object",
-         "properties":{
-            "errorCode":{
+         "properties":{  
+            "errorCode":{  
                "type":"string"
             },
-            "errorMessage":{
+            "errorMessage":{  
                "type":"string"
             },
-            "jwtToken":{
+            "jwtToken":{  
                "type":"string"
             },
-            "modelName":{
+            "modelName":{  
                "type":"string"
             },
-            "result":{
+            "result":{  
                "type":"object"
             },
-            "status":{
+            "status":{  
                "type":"string"
             }
          }
       },
-      "JsonRequestÂ«CrediantialsÂ»":{
+      "InputStream":{  
+         "type":"object"
+      },
+      "Resource":{  
          "type":"object",
-         "properties":{
-            "request_body":{
-               "$ref":"#/definitions/Crediantials"
-            },
-            "request_from":{
+         "properties":{  
+            "description":{  
                "type":"string"
             },
-            "request_id":{
+            "file":{  
+               "type":"file"
+            },
+            "filename":{  
+               "type":"string"
+            },
+            "inputStream":{  
+               "$ref":"#/definitions/InputStream"
+            },
+            "open":{  
+               "type":"boolean"
+            },
+            "readable":{  
+               "type":"boolean"
+            },
+            "uri":{  
+               "$ref":"#/definitions/URI"
+            },
+            "url":{  
+               "$ref":"#/definitions/URL"
+            }
+         }
+      },
+      "JsonRequest«Crediantials»":{  
+         "type":"object",
+         "properties":{  
+            "request_body":{  
+               "$ref":"#/definitions/Crediantials"
+            },
+            "request_from":{  
+               "type":"string"
+            },
+            "request_id":{  
+               "type":"string"
+            }
+         }
+      },
+      "File":{  
+         "type":"object",
+         "properties":{  
+            "absolute":{  
+               "type":"boolean"
+            },
+            "absoluteFile":{  
+               "type":"file"
+            },
+            "absolutePath":{  
+               "type":"string"
+            },
+            "canonicalFile":{  
+               "type":"file"
+            },
+            "canonicalPath":{  
+               "type":"string"
+            },
+            "directory":{  
+               "type":"boolean"
+            },
+            "executable":{  
+               "type":"boolean"
+            },
+            "file":{  
+               "type":"boolean"
+            },
+            "freeSpace":{  
+               "type":"integer",
+               "format":"int64"
+            },
+            "hidden":{  
+               "type":"boolean"
+            },
+            "lastModified":{  
+               "type":"integer",
+               "format":"int64"
+            },
+            "name":{  
+               "type":"string"
+            },
+            "parent":{  
+               "type":"string"
+            },
+            "parentFile":{  
+               "type":"file"
+            },
+            "path":{  
+               "type":"string"
+            },
+            "readable":{  
+               "type":"boolean"
+            },
+            "totalSpace":{  
+               "type":"integer",
+               "format":"int64"
+            },
+            "usableSpace":{  
+               "type":"integer",
+               "format":"int64"
+            },
+            "writable":{  
+               "type":"boolean"
+            }
+         }
+      },
+      "URI":{  
+         "type":"object",
+         "properties":{  
+            "absolute":{  
+               "type":"boolean"
+            },
+            "authority":{  
+               "type":"string"
+            },
+            "fragment":{  
+               "type":"string"
+            },
+            "host":{  
+               "type":"string"
+            },
+            "opaque":{  
+               "type":"boolean"
+            },
+            "path":{  
+               "type":"string"
+            },
+            "port":{  
+               "type":"integer",
+               "format":"int32"
+            },
+            "query":{  
+               "type":"string"
+            },
+            "rawAuthority":{  
+               "type":"string"
+            },
+            "rawFragment":{  
+               "type":"string"
+            },
+            "rawPath":{  
+               "type":"string"
+            },
+            "rawQuery":{  
+               "type":"string"
+            },
+            "rawSchemeSpecificPart":{  
+               "type":"string"
+            },
+            "rawUserInfo":{  
+               "type":"string"
+            },
+            "scheme":{  
+               "type":"string"
+            },
+            "schemeSpecificPart":{  
+               "type":"string"
+            },
+            "userInfo":{  
+               "type":"string"
+            }
+         }
+      },
+      "URL":{  
+         "type":"object",
+         "properties":{  
+            "authority":{  
+               "type":"string"
+            },
+            "content":{  
+               "type":"object"
+            },
+            "defaultPort":{  
+               "type":"integer",
+               "format":"int32"
+            },
+            "deserializedFields":{  
+               "$ref":"#/definitions/URLStreamHandler"
+            },
+            "file":{  
+               "type":"string"
+            },
+            "host":{  
+               "type":"string"
+            },
+            "path":{  
+               "type":"string"
+            },
+            "port":{  
+               "type":"integer",
+               "format":"int32"
+            },
+            "protocol":{  
+               "type":"string"
+            },
+            "query":{  
+               "type":"string"
+            },
+            "ref":{  
+               "type":"string"
+            },
+            "serializedHashCode":{  
+               "type":"integer",
+               "format":"int32"
+            },
+            "userInfo":{  
                "type":"string"
             }
          }
