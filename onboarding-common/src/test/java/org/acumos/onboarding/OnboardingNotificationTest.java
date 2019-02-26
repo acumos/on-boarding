@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -22,7 +22,7 @@ package org.acumos.onboarding;
 import java.util.Date;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
-import org.acumos.cds.domain.MLPStepResult;
+import org.acumos.cds.domain.MLPTask;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.junit.Assert;
 import org.junit.Test;
@@ -72,14 +72,13 @@ public class OnboardingNotificationTest {
 			onboardingNotify.getStepResultId();
 			Assert.assertNotNull(onboardingNotify);
 
-			MLPStepResult stepResult = new MLPStepResult();
-			stepResult.setArtifactId("615243");
+			MLPTask stepResult = new MLPTask();
 			stepResult.setUserId("512436");
 			stepResult.setStatusCode("ST");
 			stepResult.setTrackingId("8237465");
 			stepResult.setUserId("293686");
 
-			Mockito.when(cdmsClient.createStepResult(stepResult)).thenReturn(stepResult);
+			Mockito.when(cdmsClient.createTask(stepResult)).thenReturn(stepResult);
 			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 		}
 }

@@ -23,7 +23,8 @@ import java.time.Instant;
 import java.util.Date;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
-import org.acumos.cds.domain.MLPStepResult;
+import org.acumos.cds.domain.MLPTask;
+import org.acumos.cds.domain.MLPTaskStepResult;
 import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -75,8 +76,9 @@ public class OnboardingNotification {
 		if (trackingId != null) {
 
 			String desc;
-			MLPStepResult stepResult = new MLPStepResult();
 
+			//Commenting old code meanwhile
+			/*MLPStepResult stepResult = new MLPStepResult();
 			stepResult.setArtifactId(this.artifactId);
 			stepResult.setUserId(this.userId);
 			stepResult.setStatusCode(currentStatus);
@@ -84,19 +86,36 @@ public class OnboardingNotification {
 			stepResult.setName(currentstep);
 			stepResult.setStartDate(Instant.now());
 			stepResult.setEndDate(Instant.now());
-			stepResult.setStepCode("OB");
+			stepResult.setStepCode("OB"); */
+
+			MLPTask task = new MLPTask();
+			MLPTaskStepResult taskResult = new MLPTaskStepResult();
+
+			task.setUserId(this.userId);
+			task.setStatusCode(currentStatus);
+			task.setTrackingId(this.trackingId);
+			task.setName(currentstep);
+			task.setTaskCode("OB");
+
+			taskResult.setStartDate(Instant.now());
+			taskResult.setEndDate(Instant.now());
 
 			if (currentDescription != null && !currentDescription.isEmpty()) {
 				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
-				stepResult.setResult(desc);
+				//stepResult.setResult(desc);
+				taskResult.setResult(desc);
 			}
 			if (this.solutionId != null && !this.solutionId.isEmpty()) {
-				stepResult.setSolutionId(this.solutionId);
+				//stepResult.setSolutionId(this.solutionId);
+				task.setSolutionId(this.solutionId);
 			}
 			if (this.revisionId != null && !this.revisionId.isEmpty()) {
-				stepResult.setRevisionId(this.revisionId);
+				//stepResult.setRevisionId(this.revisionId);
+				task.setRevisionId(this.revisionId);
 			}
-			cdmsClient.createStepResult(stepResult);
+
+			cdmsClient.createTask(task);
+			cdmsClient.createTaskStepResult(taskResult);
 		}
 		logger.debug(EELFLoggerDelegate.debugLogger,"Send Notification to DB Ended");
 	}
