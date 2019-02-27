@@ -25,35 +25,28 @@ This is the developers guide to Onboarding.
 **1: introduction - What is Onboarding?**
 -----------------------------------------
 
-Acumos is intended to enable the use of a wide range of tools and
-technologies in the development of machine learning models including
-support for both open sourced and proprietary toolkits. Models can be
-easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components. 
+Acumos is intended to enable the use of a wide range of tools and technologies in the development
+of machine learning models including support for both open sourced and proprietary toolkits.
 
-The goal of Onboarding is to provide an ingestion interface for various
-types of models to enter the  Acumos machine learning platform. Examples
-of models include well-defined objects such as scikit-learn estimators,
-TensorFlow weights, and arbitrary R functions.
+The goal of Onboarding is to provide an ingestion interface, by web or CLI(command line interface)
+for various types of models and to create required artifacts and identifiers to enter the  Acumos
+machine learning platform.
 
-The solution for accommodating a myriad of different model types is to
-provide a custom wrapping library for each runtime. The wrapper 
-will encapsulate the complexity surrounding the serialization and
-deserialization of models. Additionally, the wrapper will provide a 
-common native interface for invoking the inner model.
+On-boarding allows user to create containerized microservice at the end of the on-boarding process
+for models developped in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow,
+H2O, and R. If user choose to not create the microservice during on-boarding he can created it later.
 
-In order for  Acumos to be able to reason about models uniformly, there
-will also have to be a common model interface description. E.g.  
-what are the available model methods, and what do they look like? One
-goal of  Acumos is to instantiate ML models as microservices and safely
-compose them together. We must collect enough model metadata to enable
-this.
+In short, our goals are to generate or provide all the necessary materials required to use the models
+with the others components of Acumos like : 
 
-In short, our goals are to:
+- Tosca file for Design studio
 
-- Create wrapper libraries that can serialize/deserialize models and provide a standard native interface.
+- Represent model I/O such for microservice generation
 
-- Represent model I/O such that  Acumos can generate microservices and validate connections between them.
+- SolutionID for CDS
+
+- Licence file
+
 
 **2: Target Users**
 -------------------
@@ -67,8 +60,7 @@ This guide is targeted towards the open source user community that:
 **3: Assumptions**
 ------------------
 
-It is assumed that the ML Models contributed by the open source
-community:
+It is assumed that the ML Models contributed by the open source community :
 
 1. Provide the basic request response style of communication.
 
@@ -76,59 +68,74 @@ community:
 
 3. Are capable of communicating via Http REST mechanism.
 
-4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O, and RCloud.
+4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
+and R or are developped in many others language and toolkits and converted into one of the two
+following model interchange format : ONNX or PFA.
 
-**4: Onboarding Design Architecture**
+**4: Onboarding High level Design Architecture**
 -------------------------------------
-
-|image0|
-
-The modeler will create model using various technologies (toolkits) and
-use the  Acumos client library to upload model to platform. Acumos
-onboarding server exposes REST interface, which is used by client
-library for uploading the model to platform.
-
 Below is high-level flow of model onboarding
 
 |image1|
 
+For model developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
+and R, the modeler will use the Acumos client library to create some artifacts and embeded them with
+the model in a model bundle. This model bundle can be pushed to the paltform by using On-boarding web
+page or by using command line (CLI) thanks to REST interface exposed by the Acumos onboarding server
+and used by Acumos client library.
+
+For model in a model interchange format like ONNX and PFA only web interface is useable to upload
+them in the platform
+
+
 **5: Onboarding Low Level Design**
 ----------------------------------
 
-Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o, Keras or 
-Tensorflow or any other. Modeller uses Acumos-client-library specific to the toolkit type to push the model to  Acumos platform.
-The client library pushes model binary, metadata file and protobuf definition for model input, output and model method to  Acumos onboarding 
-server. Onboarding server authenticates incoming request and then pushes model artifacts to nexus docker registry. It creates new solution 
-in common database for a new model or updates existing solution with, a new revision. It updates the revision with artefact details and also 
-uploads those to nexus maven repository.
+Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o,
+Keras or Tensorflow. Modeller uses Acumos-client-library specific to the toolkit type to push the
+model to Acumos platform. The client library pushes the model bundle composed of model binary, 
+metadata file and protobuf definition for model input/output and model method to Acumos onboarding
+server. The onboarding server invokes TOSCA generator to generate TOSCA files for the model and uploads 
+these to Nexus. Onboarding server authenticates incoming request and then pushes model artifacts to
+nexus docker registry. By default micro-service is created but modelers have the possibility to skip
+this step. When Onboarding server invokes microservice generation API to generate docker image for
+the model, the microservice generation component creates docker image and uploads it in Nexus docker
+repository.
 
-Below diagram depicts next level details of onboarding component.
+For models in a model interchange format like ONNX or PFA, only web onboarding can be used as there
+is no specific Acumos-client-library for these kinds of models. In that case, modeller has to use the 
+web onboarding interface to upload their model. Onboarding server authenticates incoming request and
+then pushes the model to nexus.
 
-|image2|
+|image0|
+
+Whatever the kinds of models : 
+
+- Modeler can upload a licence file associated to their model during Web or CLI onboarding.
+- New solution is created in common database for a new model.
+- Existing solution is updated with, a new revision. Revision is updated with artefact details and 
+those artefacts are uploaded to nexus maven repository.
 
 **6: Onboarding Use Case**
 --------------------------
 
-Below, the data scientist’s model is wrapped to produce a standardized
-native model. Depending on the input model, only a subset of 
-standard model interfaces may be supported.  
+Below, the data scientist’s model is wrapped to produce a standardized native model. Depending on
+the input model, only a subset of standard model interfaces may be supported.
 
-Acumos can then generate a microservice however it wishes. The
-underlying generic server can only interface with the inner model via
-the wrapper. This decoupling allows us to iterate upon and improve the
-wrapper independently of Acumos.
+Acumos can then generate a microservice however it wishes. The underlying generic server can only
+interface with the inner model via the wrapper. This decoupling allows us to iterate upon and
+improve the wrapper independently of Acumos.
 
 |image3|
 
 **7 Onboarding Model Artifact**
 -------------------------------
 
-Model artifacts must provide sufficient metadata that enables  Acumos to 
-instantiate runtimes, generate microservices, and validate microservice 
-compositions. The proposed solution is to split the model artifact into
-public and private  components.
+Model artifacts must provide sufficient metadata that enables Acumos to instantiate runtimes,
+generate microservices, and validate microservice compositions. The proposed solution is to split
+the model artifact into public and private components.
 
-- Public
+Public :
 
 - Understood by  Acumos. Includes metadata on:
 
@@ -136,7 +143,8 @@ public and private  components.
 
 - Runtime information
 
-- Private
+
+Private :
 
 - Opaque to  Acumos but understood by the wrapper library.
 
@@ -146,8 +154,8 @@ public and private  components.
 
 - Auxiliary artifacts required by model
 
-By splitting the artifact into public and private pieces, the wrapper
-library has the freedom to independently iterate and improve.
+By splitting the artifact into public and private pieces, the wrapper library has the freedom to
+ independently iterate and improve.
 
 |image4|
 
@@ -156,26 +164,26 @@ library has the freedom to independently iterate and improve.
 
 Steps:
 
-1. Clone the code from Gerrit Repo:
+1. Clone the code from Gerrit Repo: https://gerrit.acumos.org
 
-Repo URL: https://gerrit.acumos.org
-
-Under the dashboard page we have list of Projects, select Onboarding
-Project and clone this project by using below clone command:
+Under the dashboard page we have list of Projects, select Onboarding Project and clone this project
+by using below clone command:
 
 git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
+or by ssh
+
+git clone ssh://<GERRIT_USER_NAME>@gerrit.acumos.org:29418/on-boarding
+
 2. After cloning import this project in your recommended IDE like STS.
 
-3. Take the maven update so that you can download all the required
-   dependencies for the Onboarding Project.
+3. Take the maven update so that you can download all the required dependencies for the Onboarding
+Project.
 
-4. After doing maven update you can run or debug the code by using
-   Spring Boot App but before that we need to set the Environment
-   Variables in our IDE tool for local testing and if you want to read
-   the environment variables once you deployed your code on the dev or
-   IST server than you need to set all the environment variables in
-   system-integration Project.
+4. After doing maven update you can run or debug the code by using Spring Boot App but before that
+we need to set the Environment Variables in our IDE tool for local testing and if you want to read
+the environment variables once you deployed your code on the dev or IST server than you need to set
+all the environment variables in system-integration Project.
 
 **9: Onboarding Technology & Framework**
 ----------------------------------------
@@ -191,62 +199,56 @@ git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 **10: Onboarding – Code Walkthrough & details**
 -----------------------------------------------
 
-In Onboarding project we have template folder under resources where we
-are putting all the Docker file with some other dependencies for
-different Models like h20,java_argus,java_genric,,python,r ,etc.
+In Onboarding project we have template folder under resources where we are putting all the Docker
+file with some other dependencies for different Models like h20,java_argus,java_genric,,python,r ,etc.
 
 For example:
 
-For Onboarding H20 model we have the h20 Docker file and requirement.txt
-file attached below inside h20 folder.
+For Onboarding H20 model we have the h20 Docker file and requirement.txt file attached below inside
+h20 folder.
 
-Onboarding code understands this Docker file related to particular model
-line by line it reads the commands and performs the action accordingly
-.It will download all the required dependences accordingly. In this way
-we’ll Onboard Model by using this Onboarding Platform.
+Onboarding code understands this Docker file related to particular model line by line it reads the
+commands and performs the action accordingly. It will download all the required dependences
+accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
 
-Note: Make sure the Docker is installed in the local Machine before try
-to Onboard the model in by using our local machine Environment.
+Note: Make sure the Docker is installed in the local Machine before try to Onboard the model in by
+using our local machine Environment.
 
-**11: Onboarding – Docker Image Creation and details**
-------------------------------------------------------
-
-The onboarding server exposes REST API for model and metadata upload.
-
-It creates a new solution for new model or fetches existing solutionID and creates 
-a new revision for the solution and updates database with new set of artifacts.
-It also uploads the model artifacts in Nexus repository.
-
-The onboarding server invokes TOSCA generator to generate TOSCA files for the model
-and uploads these to Nexus against the new revision.
-
-Onboarding server also invokes microservice generation API to generate docker image for the model.
-Microservice generation component then creates docker image and uploads it in Nexus docker repository.
-
-The server uses common data APIs to create solution and store model and metadata links in 
-artifact repository to the database.
-
-**12: Onboarding – Model Validation Workflow**
+**11: Onboarding – Model Validation Workflow**
 ----------------------------------------------
 
-Following steps needs to be executed as part of model validation
-workflow:
+Following steps needs to be executed as part of model validation workflow:
 
--  Onboarding server will expose an REST API for validating the model.
-   The REST API will take solutionID and metadata JSON containing model
-   features as input parameters
+-   Onboarding server will expose an REST API for validating the model. The REST API will take
+    solutionID and metadata JSON containing model features as input parameters
 
--  The server will fetch the docker image details for the corresponding
-   solution and run the model image.
+-  The server will fetch the docker image details for the correspondingsolution and run the model
+image.
 
--  The input metadata JSON features will be send to predict API exposed
-   by model docker image and output of predict method will be returned
-   as API output.
+-  The input metadata JSON features will be send to predict API exposed by model docker image and
+   output of predict method will be returned as API output.
 
-**13: Onboarding Backend API**
+**12: Onboarding Backend API**
 ------------------------------
 
-Authentication API : This API provides the basic authentication prior to Onboard any model.
+**Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
+used to onboard a model
+
+- Portal will expose  validateApiToken
+
+- URL=http://{HOST}/auth/validateApiToken
+
+- input:apiToken , Username
+
+- output:ResponseDetail  -- "Valid Token" for success /  "Validation Failed" for failure
+
+- ResponseBody: UserId for success only
+
+Portal Webonboarding will  pass access_token = username:apitoken in the header  "Authorization"
+Request to Onboarding Onboarding will use the Header Info to get the Username + apitoken
+
+
+**Authentication API** : This API provides the basic authentication prior to Onboard any model.
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
 
@@ -264,13 +266,27 @@ Authentication API : This API provides the basic authentication prior to Onboard
 
 
 
-Push model API : This API is used for upload the model bundle in Acumos
+**Push model bundle API** : This API is used for upload the model bundle in Acumos
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
 
 - Method = POST
 
-- data Params = model bundle, authentication token (provided by Authentication API)
+- data Params :
+
+#.model bundle
+#.model protobuff file
+metadata JSON file
+model name (optional parameter)
+authentication token or username:apitoken
+createMicroservice (boolean value to trigger microservice generation, default=true)
+licenseFile (optional parameter - license.txt associated with model)
+tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation)
+provider (optional parameter - for portal authentication)
+shareUserName (optional parameter - User Name for sharing the model as co-owner)
+modName (optional parameter - Model Name to be used as display name else Model name from metadata is used)
+deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
@@ -278,10 +294,35 @@ Push model API : This API is used for upload the model bundle in Acumos
 
 - Description : Upload the model bundle on the on-boarding server.
 
-The previous authentication method will be soon deprecated in favor of a more robuste authentication
-method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
-your API_token located in your profil settings and then used it in the Push model API by replace the
-authentication token by : username:API_token
+
+**Push model API** : This API is used by web onboarding only to upload ONNX and PFA models in Acumos
+
+- URL = http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
+
+- Method = POST
+
+- data params :
+
+    model name
+    file (file for model to onboard)
+    docker URL (optional parameter). if docker URL is given then file is not necessary
+    authentication token or username:apitoken,
+    createMicroservice (boolean value to trigger microservice generation, default=false)
+    licenseFile (optional parameter - license.txt associated with model)
+    tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation) 
+    provider (optional parameter - for portal authentication)
+    shareUserName (optional parameter - User Name for sharing the model as co-owner)
+    modName (optional parameter - Model Name to be used as display name)
+    deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+    Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
+
+- hostname : the hostname of the machine in which Acumos have been installed.
+
+- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file
+
+
+
+
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
@@ -302,7 +343,5 @@ authentication token by : username:API_token
    :width: 3.90625in
    :height: 4.94792in
 .. |image0| image:: ./media/Architecture_Diagram.png
-   :width: 7.55555in 
+   :width: 9.55555in
    :height: 7.55555in
-	
-  
