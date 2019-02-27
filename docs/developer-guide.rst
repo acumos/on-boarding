@@ -25,35 +25,24 @@ This is the developers guide to Onboarding.
 **1: introduction - What is Onboarding?**
 -----------------------------------------
 
-Acumos is intended to enable the use of a wide range of tools and
-technologies in the development of machine learning models including
-support for both open sourced and proprietary toolkits. Models can be
-easily onboarded and wrapped into containerized microservices which are
-interoperable with many other components. 
+Acumos is intended to enable the use of a wide range of tools and technologies in the development
+of machine learning models including support for both open sourced and proprietary toolkits. 
 
-The goal of Onboarding is to provide an ingestion interface for various
-types of models to enter the  Acumos machine learning platform. Examples
-of models include well-defined objects such as scikit-learn estimators,
-TensorFlow weights, and arbitrary R functions.
+The goal of Onboarding is to provide an ingestion interface, by web or CLI(command line interface)
+for various types of models and to create required artifacts and identifiers to enter the  Acumos 
+machine learning platform.
 
-The solution for accommodating a myriad of different model types is to
-provide a custom wrapping library for each runtime. The wrapper 
-will encapsulate the complexity surrounding the serialization and
-deserialization of models. Additionally, the wrapper will provide a 
-common native interface for invoking the inner model.
+On-boarding allows user to create containerized microservice at the end of the on-boarding process.
+if microservice is not created during on-boarding it can be created later.
 
-In order for  Acumos to be able to reason about models uniformly, there
-will also have to be a common model interface description. E.g.  
-what are the available model methods, and what do they look like? One
-goal of  Acumos is to instantiate ML models as microservices and safely
-compose them together. We must collect enough model metadata to enable
-this.
+In short, our goals are to generate all the necessary materials for others Acumos components
 
-In short, our goals are to:
+- Tosca file for Design studio
 
-- Create wrapper libraries that can serialize/deserialize models and provide a standard native interface.
+- Represent model I/O such for microservice generation
 
-- Represent model I/O such that  Acumos can generate microservices and validate connections between them.
+- SolutionID for CDS
+
 
 **2: Target Users**
 -------------------
@@ -67,8 +56,7 @@ This guide is targeted towards the open source user community that:
 **3: Assumptions**
 ------------------
 
-It is assumed that the ML Models contributed by the open source
-community:
+It is assumed that the ML Models contributed by the open source community :
 
 1. Provide the basic request response style of communication.
 
@@ -76,17 +64,17 @@ community:
 
 3. Are capable of communicating via Http REST mechanism.
 
-4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O, and RCloud.
+4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
+and R or are developped in many others langauge and toolkits under ONNX or PFA language.
 
 **4: Onboarding Design Architecture**
 -------------------------------------
 
 |image0|
 
-The modeler will create model using various technologies (toolkits) and
-use the  Acumos client library to upload model to platform. Acumos
-onboarding server exposes REST interface, which is used by client
-library for uploading the model to platform.
+The modeler will create model using various technologies (toolkits) and use the Acumos client
+library or the on-boarding web interface to upload model to platform. Acumos onboarding server
+exposes REST interface, which is used by client library for uploading the model to platform.
 
 Below is high-level flow of model onboarding
 
@@ -95,13 +83,20 @@ Below is high-level flow of model onboarding
 **5: Onboarding Low Level Design**
 ----------------------------------
 
-Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o, Keras or 
-Tensorflow or any other. Modeller uses Acumos-client-library specific to the toolkit type to push the model to  Acumos platform.
-The client library pushes model binary, metadata file and protobuf definition for model input, output and model method to  Acumos onboarding 
-server. Onboarding server authenticates incoming request and then pushes model artifacts to nexus docker registry. It creates new solution 
-in common database for a new model or updates existing solution with, a new revision. It updates the revision with artefact details and also 
-uploads those to nexus maven repository.
+Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o,
+Keras or Tensorflow or any other. Modeller uses Acumos-client-library specific to the toolkit type 
+to push the model to  Acumos platform. The client library pushes model binary, metadata file and 
+protobuf definition for model input, output and model method to Acumos onboarding server. Onboarding
+server authenticates incoming request and then pushes model artifacts to nexus docker registry. It 
+creates new solution in common database for a new model or updates existing solution with, a new
+revision. It updates the revision with artefact details and also uploads those to nexus maven
+repository.
 
+For models in a model interchange format like ONNX or PFA, only web onboarding can be used as there
+is no specific Acumos-client-library for these kinds of models. In that case, onboarding server
+create all it is responsible for, plus the artifacts that are normaly in charge of the on-boarding
+client 
+##################################################################################################
 Below diagram depicts next level details of onboarding component.
 
 |image2|
@@ -246,6 +241,23 @@ workflow:
 **13: Onboarding Backend API**
 ------------------------------
 
+Validate API-Token API : This API provide an API Token (available in the user settings) that can be used to onboard a model
+
+- Portal will expose  validateApiToken 
+
+- URL=http://{HOST}/auth/validateApiToken
+
+- input:apiToken , Username
+
+- output:ResponseDetail  -- "Valid Token" for success /  "Validation Failed" for failure
+
+- ResponseBody: UserId for success only
+
+Portal Webonboarding will  pass access_token = username:apitoken in the header  "Authorization" Request to Onboarding 
+Onboarding will use the Header Info to get the Username + apitoken
+
+
+
 Authentication API : This API provides the basic authentication prior to Onboard any model.
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
@@ -264,13 +276,27 @@ Authentication API : This API provides the basic authentication prior to Onboard
 
 
 
-Push model API : This API is used for upload the model bundle in Acumos
+Push model bundle API : This API is used for upload the model bundle in Acumos
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
 
 - Method = POST
 
-- data Params = model bundle, authentication token (provided by Authentication API)
+- data Params :
+
+        model bundle
+        model protobuff file
+        metadata JSON file
+        model name (optional parameter)
+        authentication token or username:apitoken
+        createMicroservice (boolean value to trigger microservice generation, default=true)
+        licenseFile (optional parameter - license.txt associated with model)
+        tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation)
+        provider (optional parameter - for portal authentication)
+        shareUserName (optional parameter - User Name for sharing the model as co-owner)
+        modName (optional parameter - Model Name to be used as display name else Model name from metadata is used)
+        deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+        Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
@@ -282,6 +308,35 @@ The previous authentication method will be soon deprecated in favor of a more ro
 method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
 your API_token located in your profil settings and then used it in the Push model API by replace the
 authentication token by : username:API_token
+
+Push model API : This API is used by web onboarding only to upload ONNX and PFA models in Acumos
+
+- URL = http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
+
+- Method = POST
+
+- data params :
+
+    model name
+    file (file for model to onboard)
+    docker URL (optional parameter). if docker URL is given then file is not necessary
+    authentication token or username:apitoken,
+    createMicroservice (boolean value to trigger microservice generation, default=false)
+    licenseFile (optional parameter - license.txt associated with model)
+    tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation) 
+    provider (optional parameter - for portal authentication)
+    shareUserName (optional parameter - User Name for sharing the model as co-owner)
+    modName (optional parameter - Model Name to be used as display name)
+    deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+    Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
+
+- hostname : the hostname of the machine in which Acumos have been installed.
+
+- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file
+
+
+
+
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
@@ -302,7 +357,7 @@ authentication token by : username:API_token
    :width: 3.90625in
    :height: 4.94792in
 .. |image0| image:: ./media/Architecture_Diagram.png
-   :width: 7.55555in 
+   :width: 9.55555in 
    :height: 7.55555in
 	
   
