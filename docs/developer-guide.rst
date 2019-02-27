@@ -246,6 +246,23 @@ workflow:
 **13: Onboarding Backend API**
 ------------------------------
 
+Validate API-Token API : This API provide an API Token (available in the user settings) that can be used to onboard a model
+
+- Portal will expose  validateApiToken 
+
+- URL=http://{HOST}/auth/validateApiToken
+
+- input:apiToken , Username
+
+- output:ResponseDetail  -- "Valid Token" for success /  "Validation Failed" for failure
+
+- ResponseBody: UserId for success only
+
+Portal Webonboarding will  pass access_token = username:apitoken in the header  "Authorization" Request to Onboarding 
+Onboarding will use the Header Info to get the Username + apitoken
+
+
+
 Authentication API : This API provides the basic authentication prior to Onboard any model.
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
@@ -264,13 +281,27 @@ Authentication API : This API provides the basic authentication prior to Onboard
 
 
 
-Push model API : This API is used for upload the model bundle in Acumos
+Push model bundle API : This API is used for upload the model bundle in Acumos
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
 
 - Method = POST
 
-- data Params = model bundle, authentication token (provided by Authentication API)
+- data Params :
+
+        model bundle
+        model protobuff file
+        metadata JSON file
+        model name (optional parameter)
+        authentication token or username:apitoken
+        createMicroservice (boolean value to trigger microservice generation, default=true)
+        licenseFile (optional parameter - license.txt associated with model)
+        tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation)
+        provider (optional parameter - for portal authentication)
+        shareUserName (optional parameter - User Name for sharing the model as co-owner)
+        modName (optional parameter - Model Name to be used as display name else Model name from metadata is used)
+        deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+        Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
@@ -282,6 +313,35 @@ The previous authentication method will be soon deprecated in favor of a more ro
 method based on API_token. You will need first to be authenticate on the acumos portal to retrieve
 your API_token located in your profil settings and then used it in the Push model API by replace the
 authentication token by : username:API_token
+
+Push model API : This API is used by web onboarding only to upload ONNX and PFA models in Acumos
+
+- URL = http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
+
+- Method = POST
+
+- data params :
+
+    model name
+    file (file for model to onboard)
+    docker URL (optional parameter). if docker URL is given then file is not necessary
+    authentication token or username:apitoken,
+    createMicroservice (boolean value to trigger microservice generation, default=false)
+    licenseFile (optional parameter - license.txt associated with model)
+    tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation) 
+    provider (optional parameter - for portal authentication)
+    shareUserName (optional parameter - User Name for sharing the model as co-owner)
+    modName (optional parameter - Model Name to be used as display name)
+    deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
+    Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
+
+- hostname : the hostname of the machine in which Acumos have been installed.
+
+- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file
+
+
+
+
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
    :width: 5.64583in
