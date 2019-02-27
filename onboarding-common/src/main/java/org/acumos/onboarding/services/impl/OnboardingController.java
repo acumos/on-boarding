@@ -504,8 +504,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
 			// invalid.
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
-				logger.debug(EELFLoggerDelegate.debugLogger,
-						"Unauthorized User - Either Username/Password is invalid.");
+				logger.error(EELFLoggerDelegate.errorLogger, e.getStatusCode() + "  " + e.getMessage());
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);

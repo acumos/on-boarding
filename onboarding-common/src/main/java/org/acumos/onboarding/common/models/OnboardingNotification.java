@@ -99,6 +99,8 @@ public class OnboardingNotification {
 
 			taskResult.setStartDate(Instant.now());
 			taskResult.setEndDate(Instant.now());
+			
+			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to Task and Task Step Result");
 
 			if (currentDescription != null && !currentDescription.isEmpty()) {
 				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
@@ -114,6 +116,7 @@ public class OnboardingNotification {
 				task.setRevisionId(this.revisionId);
 			}
 
+			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to CDS Client");
 			cdmsClient.createTask(task);
 			cdmsClient.createTaskStepResult(taskResult);
 		}
