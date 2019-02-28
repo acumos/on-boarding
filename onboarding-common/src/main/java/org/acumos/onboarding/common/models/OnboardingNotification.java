@@ -77,17 +77,6 @@ public class OnboardingNotification {
 
 			String desc;
 
-			//Commenting old code meanwhile
-			/*MLPStepResult stepResult = new MLPStepResult();
-			stepResult.setArtifactId(this.artifactId);
-			stepResult.setUserId(this.userId);
-			stepResult.setStatusCode(currentStatus);
-			stepResult.setTrackingId(this.trackingId);
-			stepResult.setName(currentstep);
-			stepResult.setStartDate(Instant.now());
-			stepResult.setEndDate(Instant.now());
-			stepResult.setStepCode("OB"); */
-
 			MLPTask task = new MLPTask();
 			MLPTaskStepResult taskResult = new MLPTaskStepResult();
 
@@ -99,25 +88,26 @@ public class OnboardingNotification {
 
 			taskResult.setStartDate(Instant.now());
 			taskResult.setEndDate(Instant.now());
+			taskResult.setStatusCode(currentStatus);
+			taskResult.setName(currentstep);
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to Task and Task Step Result");
 
 			if (currentDescription != null && !currentDescription.isEmpty()) {
 				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
-				//stepResult.setResult(desc);
 				taskResult.setResult(desc);
 			}
 			if (this.solutionId != null && !this.solutionId.isEmpty()) {
-				//stepResult.setSolutionId(this.solutionId);
 				task.setSolutionId(this.solutionId);
 			}
 			if (this.revisionId != null && !this.revisionId.isEmpty()) {
-				//stepResult.setRevisionId(this.revisionId);
 				task.setRevisionId(this.revisionId);
 			}
 
 			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to CDS Client");
-			cdmsClient.createTask(task);
+			MLPTask ts = cdmsClient.createTask(task);
+			logger.debug(EELFLoggerDelegate.debugLogger,"TaskID: "+ ts.getTaskId());
+			taskResult.setTaskId(ts.getTaskId());
 			cdmsClient.createTaskStepResult(taskResult);
 		}
 		logger.debug(EELFLoggerDelegate.debugLogger,"Send Notification to DB Ended");
