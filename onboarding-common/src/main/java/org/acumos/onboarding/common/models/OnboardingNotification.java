@@ -64,12 +64,14 @@ public class OnboardingNotification {
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
+		task = new MLPTask();
 	}
 
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd, String requestId) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 		cdmsClient.setRequestId(requestId);
+		task = new MLPTask();
 	}
 
 	// current step, status and description sent to be logged.
@@ -93,8 +95,9 @@ public class OnboardingNotification {
 					desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
 					taskResult.setResult(desc);
 				}
+				logger.debug(EELFLoggerDelegate.debugLogger, "Step: " + currentstep + " with Status: " + currentStatus);
 				
-				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + getTaskId() + "with Description: " + currentDescription);
+				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription);
 				cdmsClient.createTaskStepResult(taskResult);
 			}
 		} catch (Exception e) {
@@ -110,7 +113,6 @@ public class OnboardingNotification {
 
 	public void setTaskId(Long taskId) {
 		this.taskId = taskId;
-		task.setTaskId(taskId);
 	}
 
 	public Long getStepResultId() {
