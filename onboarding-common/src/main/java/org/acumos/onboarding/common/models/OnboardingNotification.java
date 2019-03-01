@@ -47,6 +47,7 @@ public class OnboardingNotification {
 	private Date startDate;
 	private Date endDate;
 	private String requestId;
+	private MLPTask task;
 
 	public String getRequestId() {
 		return requestId;
@@ -62,55 +63,55 @@ public class OnboardingNotification {
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
+		this.initMLPTask();
 	}
 
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd, String requestId) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 		cdmsClient.setRequestId(requestId);
+		this.initMLPTask();
 	}
 
 	// current step, status and description sent to be logged.
 	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
-		logger.debug(EELFLoggerDelegate.debugLogger,"Notify" + currentDescription);
-		if (trackingId != null) {
+		logger.debug(EELFLoggerDelegate.debugLogger, "Notify " + currentDescription);
 
-			String desc;
+		try {
+			if (trackingId != null) {
 
-			MLPTask task = new MLPTask();
-			MLPTaskStepResult taskResult = new MLPTaskStepResult();
+				String desc;
 
-			task.setUserId(this.userId);
-			task.setStatusCode(currentStatus);
-			task.setTrackingId(this.trackingId);
-			task.setName(currentstep);
-			task.setTaskCode("OB");
+				MLPTaskStepResult taskResult = new MLPTaskStepResult();
 
-			taskResult.setStartDate(Instant.now());
-			taskResult.setEndDate(Instant.now());
-			taskResult.setStatusCode(currentStatus);
-			taskResult.setName(currentstep);
+				taskResult.setTaskId(task.getTaskId());
+				taskResult.setStartDate(Instant.now());
+				taskResult.setEndDate(Instant.now());
+				taskResult.setStatusCode(currentStatus);
+				taskResult.setName(currentstep);
 
-			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to Task and Task Step Result");
-
-			if (currentDescription != null && !currentDescription.isEmpty()) {
-				desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
-				taskResult.setResult(desc);
+				if (currentDescription != null && !currentDescription.isEmpty()) {
+					desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
+					taskResult.setResult(desc);
+				}
+				
+				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + task.getTaskId() + "with Description: " + currentDescription);
+				cdmsClient.createTaskStepResult(taskResult);
 			}
-			if (this.solutionId != null && !this.solutionId.isEmpty()) {
-				task.setSolutionId(this.solutionId);
-			}
-			if (this.revisionId != null && !this.revisionId.isEmpty()) {
-				task.setRevisionId(this.revisionId);
-			}
-
-			logger.debug(EELFLoggerDelegate.debugLogger,"Setting values to CDS Client");
-			MLPTask ts = cdmsClient.createTask(task);
-			logger.debug(EELFLoggerDelegate.debugLogger,"TaskID: "+ ts.getTaskId());
-			taskResult.setTaskId(ts.getTaskId());
-			cdmsClient.createTaskStepResult(taskResult);
+		} catch (Exception e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Failed to Notify");
 		}
-		logger.debug(EELFLoggerDelegate.debugLogger,"Send Notification to DB Ended");
+	}
+	
+	public void initMLPTask() {
+
+		try {
+			MLPTask task = new MLPTask();
+			task.setTaskCode("OB");
+			task = cdmsClient.createTask(task);
+		} catch (Exception e) {
+			logger.error(EELFLoggerDelegate.errorLogger, "Error creating Task Object");
+		}
 	}
 	// Get/Set methods ------
 
@@ -120,6 +121,7 @@ public class OnboardingNotification {
 
 	public void setStepResultId(Long stepResultId) {
 		this.stepResultId = stepResultId;
+		
 	}
 
 	public String getTrackingId() {
@@ -128,6 +130,7 @@ public class OnboardingNotification {
 
 	public void setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
+		task.setTrackingId(trackingId);
 	}
 
 	public String getStepCode() {
@@ -144,6 +147,7 @@ public class OnboardingNotification {
 
 	public void setSolutionId(String solutionId) {
 		this.solutionId = solutionId;
+		task.setSolutionId(solutionId);
 	}
 
 	public String getRevisionId() {
@@ -152,6 +156,7 @@ public class OnboardingNotification {
 
 	public void setRevisionId(String revisionId) {
 		this.revisionId = revisionId;
+		task.setRevisionId(revisionId);
 	}
 
 	public String getArtifactId() {
@@ -168,6 +173,7 @@ public class OnboardingNotification {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+		task.setUserId(userId);
 	}
 
 	public String getName() {
@@ -176,6 +182,7 @@ public class OnboardingNotification {
 
 	public void setName(String name) {
 		this.name = name;
+		task.setName(name);
 	}
 
 	public String getStatusCode() {
@@ -184,6 +191,7 @@ public class OnboardingNotification {
 
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
+		task.setStatusCode(statusCode);
 	}
 
 	public String getResult() {
