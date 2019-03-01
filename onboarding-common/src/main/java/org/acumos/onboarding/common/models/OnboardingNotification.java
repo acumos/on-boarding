@@ -47,8 +47,9 @@ public class OnboardingNotification {
 	private Date startDate;
 	private Date endDate;
 	private String requestId;
+	private Long taskId;
 	private MLPTask task;
-
+	
 	public String getRequestId() {
 		return requestId;
 	}
@@ -63,14 +64,12 @@ public class OnboardingNotification {
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
-		this.initMLPTask();
 	}
 
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd, String requestId) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 		cdmsClient.setRequestId(requestId);
-		this.initMLPTask();
 	}
 
 	// current step, status and description sent to be logged.
@@ -84,7 +83,7 @@ public class OnboardingNotification {
 
 				MLPTaskStepResult taskResult = new MLPTaskStepResult();
 
-				taskResult.setTaskId(task.getTaskId());
+				taskResult.setTaskId(getTaskId());
 				taskResult.setStartDate(Instant.now());
 				taskResult.setEndDate(Instant.now());
 				taskResult.setStatusCode(currentStatus);
@@ -94,26 +93,25 @@ public class OnboardingNotification {
 					desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
 					taskResult.setResult(desc);
 				}
-
-				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + task.getTaskId() + "with Description: " + currentDescription);
+				
+				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + getTaskId() + "with Description: " + currentDescription);
 				cdmsClient.createTaskStepResult(taskResult);
 			}
 		} catch (Exception e) {
 			logger.error(EELFLoggerDelegate.errorLogger, "Failed to Notify");
 		}
 	}
-
-	public void initMLPTask() {
-
-		try {
-			MLPTask task = new MLPTask();
-			task.setTaskCode("OB");
-			task = cdmsClient.createTask(task);
-		} catch (Exception e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Error creating Task Object");
-		}
-	}
+	
 	// Get/Set methods ------
+	
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+		task.setTaskId(taskId);
+	}
 
 	public Long getStepResultId() {
 		return stepResultId;
@@ -121,7 +119,7 @@ public class OnboardingNotification {
 
 	public void setStepResultId(Long stepResultId) {
 		this.stepResultId = stepResultId;
-
+		
 	}
 
 	public String getTrackingId() {
@@ -130,7 +128,6 @@ public class OnboardingNotification {
 
 	public void setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
-		task.setTrackingId(trackingId);
 	}
 
 	public String getStepCode() {
@@ -173,7 +170,6 @@ public class OnboardingNotification {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
-		task.setUserId(userId);
 	}
 
 	public String getName() {
@@ -182,7 +178,6 @@ public class OnboardingNotification {
 
 	public void setName(String name) {
 		this.name = name;
-		task.setName(name);
 	}
 
 	public String getStatusCode() {
@@ -191,7 +186,6 @@ public class OnboardingNotification {
 
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
-		task.setStatusCode(statusCode);
 	}
 
 	public String getResult() {

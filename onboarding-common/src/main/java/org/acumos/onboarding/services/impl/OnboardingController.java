@@ -21,6 +21,7 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import org.acumos.cds.CodeNameType;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.domain.MLPTask;
 import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.AuthorTransport;
 import org.acumos.cds.transport.RestPageRequest;
@@ -177,7 +179,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		// code to retrieve the current pom version
 		// UtilityFunction.getCurrentVersion();
 		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
-		onboardingStatus.setTrackingId(trackingID);
 		onboardingStatus.setRequestId(request_id);
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
 
@@ -228,10 +229,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				logger.debug(EELFLoggerDelegate.debugLogger, "Token validation successful");
 
-				// update userId in onboardingStatus
-				if (onboardingStatus != null)
-					onboardingStatus.setUserId(ownerId);
-
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Onboarding request recieved with " + model.getOriginalFilename());
 
@@ -254,6 +251,23 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						// has
 						// started
 						if (onboardingStatus != null) {
+							
+							MLPTask task = new MLPTask();
+							task.setTaskCode("OB");
+							task.setStatusCode("ST");
+							task.setName("OnBoarding");
+							task.setUserId(ownerId);
+							task.setCreated(Instant.now());
+							task.setModified(Instant.now());
+							
+							onboardingStatus.setTrackingId(trackingID);
+							onboardingStatus.setUserId(ownerId);
+							
+							task = cdmsClient.createTask(task);
+							
+							logger.debug(EELFLoggerDelegate.debugLogger, "TaskID: " + task.getTaskId());
+							
+							onboardingStatus.setTaskId(task.getTaskId());
 							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 						}
 
