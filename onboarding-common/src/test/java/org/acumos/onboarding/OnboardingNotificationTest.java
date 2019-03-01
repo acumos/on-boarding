@@ -37,6 +37,8 @@ public class OnboardingNotificationTest {
 
 	@Mock
     CommonDataServiceRestClientImpl cdmsClient;
+	
+	MLPTask stepResult = new MLPTask();
 
 	@InjectMocks
 	OnboardingNotification onboardingNotify = new OnboardingNotification("http://localhost:8080/ccds", "xyz","Test@123");
@@ -45,13 +47,7 @@ public class OnboardingNotificationTest {
 	public void notifyOnboardingStatusTest() {
 
 			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
-			onboardingNotify.setSolutionId("4215454");
-			onboardingNotify.setRevisionId("235425");
-			onboardingNotify.setArtifactId("352");
-			onboardingNotify.setUserId("xyz");
-			onboardingNotify.setStatusCode("ST");
-			onboardingNotify.setTrackingId("235");
-			onboardingNotify.setName("CreateSolution");
+
 			onboardingNotify.setStartDate(new Date());
 			onboardingNotify.setEndDate(new Date());
 			onboardingNotify.setStepCode("OB");
@@ -72,7 +68,6 @@ public class OnboardingNotificationTest {
 			onboardingNotify.getStepResultId();
 			Assert.assertNotNull(onboardingNotify);
 
-			MLPTask stepResult = new MLPTask();
 			stepResult.setUserId("512436");
 			stepResult.setStatusCode("ST");
 			stepResult.setTrackingId("8237465");
