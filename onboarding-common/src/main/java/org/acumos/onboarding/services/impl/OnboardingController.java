@@ -222,7 +222,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 
 			// Call to validate Token .....!
-			String ownerId = "3ac5c05a-394a-4e06-af7a-2b8fd40e033e";//validate(authorization, provider);
+			String ownerId = validate(authorization, provider);
 
 			if (ownerId != null && !ownerId.isEmpty()) {
 
@@ -234,12 +234,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				logger.debug(EELFLoggerDelegate.debugLogger,
 						"Onboarding request recieved with " + model.getOriginalFilename());
-
-				// Notify Create solution or get existing solution ID has
-				// started
-				if (onboardingStatus != null) {
-					onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
-				}
 
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
