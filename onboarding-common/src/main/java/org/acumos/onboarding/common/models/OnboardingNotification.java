@@ -49,7 +49,7 @@ public class OnboardingNotification {
 	private String requestId;
 	private Long taskId;
 	private MLPTask task;
-	
+
 	public String getRequestId() {
 		return requestId;
 	}
@@ -96,7 +96,7 @@ public class OnboardingNotification {
 					taskResult.setResult(desc);
 				}
 				logger.debug(EELFLoggerDelegate.debugLogger, "Step: " + currentstep + " with Status: " + currentStatus);
-				
+
 				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription);
 				cdmsClient.createTaskStepResult(taskResult);
 			}
@@ -104,9 +104,9 @@ public class OnboardingNotification {
 			logger.error(EELFLoggerDelegate.errorLogger, "Failed to Notify");
 		}
 	}
-	
+
 	// Get/Set methods ------
-	
+
 	public Long getTaskId() {
 		return taskId;
 	}
@@ -121,7 +121,7 @@ public class OnboardingNotification {
 
 	public void setStepResultId(Long stepResultId) {
 		this.stepResultId = stepResultId;
-		
+
 	}
 
 	public String getTrackingId() {
@@ -146,7 +146,6 @@ public class OnboardingNotification {
 
 	public void setSolutionId(String solutionId) {
 		this.solutionId = solutionId;
-		task.setSolutionId(solutionId);
 	}
 
 	public String getRevisionId() {
@@ -155,7 +154,6 @@ public class OnboardingNotification {
 
 	public void setRevisionId(String revisionId) {
 		this.revisionId = revisionId;
-		task.setRevisionId(revisionId);
 	}
 
 	public String getArtifactId() {
