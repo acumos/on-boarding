@@ -73,7 +73,7 @@ and R or are developped in many others language and toolkits and converted into 
 following model interchange format : ONNX or PFA.
 
 **4: Onboarding High level Design Architecture**
--------------------------------------
+------------------------------------------------
 Below is high-level flow of model onboarding
 
 |image1|
@@ -113,8 +113,7 @@ Whatever the kinds of models :
 
 - Modeler can upload a licence file associated to their model during Web or CLI onboarding.
 - New solution is created in common database for a new model.
-- Existing solution is updated with, a new revision. Revision is updated with artefact details and
-those artefacts are uploaded to nexus maven repository.
+- Existing solution is updated with, a new revision. Revision is updated with artefact details and those artefacts are uploaded to nexus maven repository.
 
 **6: Onboarding Use Case**
 --------------------------
@@ -222,8 +221,7 @@ Following steps needs to be executed as part of model validation workflow:
 -   Onboarding server will expose an REST API for validating the model. The REST API will take
     solutionID and metadata JSON containing model features as input parameters
 
--  The server will fetch the docker image details for the correspondingsolution and run the model
-image.
+-  The server will fetch the docker image details for the corresponding solution and run the modelimage.
 
 -  The input metadata JSON features will be send to predict API exposed by model docker image and
    output of predict method will be returned as API output.
