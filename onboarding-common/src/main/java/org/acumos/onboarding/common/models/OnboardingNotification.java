@@ -146,7 +146,6 @@ public class OnboardingNotification {
 
 	public void setSolutionId(String solutionId) {
 		this.solutionId = solutionId;
-		task.setSolutionId(solutionId);
 	}
 
 	public String getRevisionId() {
@@ -155,7 +154,6 @@ public class OnboardingNotification {
 
 	public void setRevisionId(String revisionId) {
 		this.revisionId = revisionId;
-		task.setRevisionId(revisionId);
 	}
 
 	public String getArtifactId() {

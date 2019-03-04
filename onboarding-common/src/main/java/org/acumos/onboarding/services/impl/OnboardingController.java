@@ -259,6 +259,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							task.setUserId(ownerId);
 							task.setCreated(Instant.now());
 							task.setModified(Instant.now());
+							task.setTrackingId(trackingID);
 							
 							onboardingStatus.setTrackingId(trackingID);
 							onboardingStatus.setUserId(ownerId);
