@@ -138,7 +138,7 @@ public class UtilityFunction {
 			}
 			boolean deleteFlag = fileStreamPath.delete();
 			//info as log file is deleted, in debug we are calling addLog()
-			logger.info("File Deleted Status = {}", deleteFlag);
+			logger.info("File Deleted Status = " + deleteFlag);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class UtilityFunction {
 					out.write(buffer, 0, bytesRead);
 				}
 			} catch (IOException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Fail to download {}", destFile.getName());
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to download " + destFile.getName());
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to download " + destFile.getName());
 			} finally {
@@ -208,7 +208,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= {}", count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is = " + count);
 			return bytes;
 		} finally {
 			in.close();
@@ -266,7 +266,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is= {}", count);
+			logger.debug(EELFLoggerDelegate.debugLogger,"Count is = " + count);
 			return bytes;
 		} finally {
 			in.close();

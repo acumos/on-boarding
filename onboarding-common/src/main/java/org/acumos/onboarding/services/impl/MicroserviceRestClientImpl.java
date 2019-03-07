@@ -142,7 +142,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		HttpEntity entity = new HttpEntity(headers);
 
 		URI uri = buildUri(new String[] { "v2", "generateMicroservice" }, copy, null);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Microservice: uri {}", uri);
+		logger.debug(EELFLoggerDelegate.debugLogger,"Microservice: uri " + uri);
 		logger.debug(EELFLoggerDelegate.debugLogger,
 				"Parameters for Microservice: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		ResponseEntity<ServiceResponse> response = restTemplate.exchange(uri, HttpMethod.POST, entity,
