@@ -254,7 +254,7 @@ public class CommonOnboarding {
 				// notify
 				onboardingStatus.notifyOnboardingStatus("CreateMicroservice", "FA", e.getMessage());
 			}
-			logger.error(EELFLoggerDelegate.errorLogger, "Creation of solution failed - {}", e.getResponseBodyAsString(), e);
+			logger.error(EELFLoggerDelegate.errorLogger, "Creation of solution failed - "+ e.getResponseBodyAsString(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -336,7 +336,7 @@ public class CommonOnboarding {
 			logger.debug(EELFLoggerDelegate.debugLogger,"Solution revision created: " + revision.getRevisionId());
 			return revision;
 		} catch (HttpStatusCodeException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,"Creation of solution revision failed: {}", e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Creation of solution revision failed: "+ e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
@@ -379,7 +379,7 @@ public class CommonOnboarding {
 		repositoryLocation.setUsername(nexusUserName);
 		repositoryLocation.setPassword(nexusPassword);
 		NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for {}", file.getName() + " started");
+		logger.debug(EELFLoggerDelegate.debugLogger,"Upload Artifact for " + file.getName() + " started");
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
 			onboardingStatus.notifyOnboardingStatus("AddArtifact", "ST",
@@ -392,7 +392,7 @@ public class CommonOnboarding {
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 
 			logger.debug(EELFLoggerDelegate.debugLogger,
-					"Upload Artifact for: {}", file.getName() + " successful response: {}", artifactInfo.getArtifactId());
+					"Upload Artifact for: " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
 				logger.debug(EELFLoggerDelegate.debugLogger,"Add Artifact called for " + file.getName());
 				MLPArtifact modelArtifact = new MLPArtifact();
@@ -418,26 +418,26 @@ public class CommonOnboarding {
 					}
 					return modelArtifact;
 				} catch (HttpStatusCodeException e) {
-					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact: {}", e);
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact: " + e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
 									+ e.getResponseBodyAsString(),
 							e);
 				}
 			} catch (HttpStatusCodeException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for {}", file.getName() + " - {}", e.getResponseBodyAsString(), e);
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificat for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,"Error: {}", e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Error: " + e);
 			throw e;
 		} catch (Exception e) {
 			// Notify add artifacts failed
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("AddArtifact", "FA", e.getMessage());
 			}
-			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificat for {}", file.getName() + " - {}", e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificat for " + file.getName() + " - " + e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificat for " + file.getName() + " - " + e.getMessage(), e);
 		}
@@ -477,24 +477,24 @@ public class CommonOnboarding {
 
 				} catch (HttpStatusCodeException e) {
 
-					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for solutoin "+metadata.getSolutionId()+ "{}", e.getResponseBodyAsString(), e);
+					logger.error(EELFLoggerDelegate.errorLogger,"Fail to call addSolutionRevisionArtifact for solutoin "+metadata.getSolutionId()+ e.getResponseBodyAsString(), e);
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + e.getResponseBodyAsString(), e);
 				}
 			} catch (HttpStatusCodeException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for solutoin " +metadata.getSolutionId()+"{}", e.getResponseBodyAsString(), e);
+				logger.error(EELFLoggerDelegate.errorLogger, "Fail to create artificate for solutoin " +metadata.getSolutionId()+ e.getResponseBodyAsString(), e);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to create artificate for " + e.getResponseBodyAsString(), e);
 			}
 		} catch (AcumosServiceException e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Error: {}", e);
+			logger.error(EELFLoggerDelegate.errorLogger, "Error: "+ e);
 			throw e;
 		} catch (Exception e) {
 			// Notify model artifact upload failed
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("AddDockerImage", "FA", e.getMessage());
 			}
-			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for {}", e.getMessage(), e);
+			logger.error(EELFLoggerDelegate.errorLogger, "Fail to upload artificate for " + e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
@@ -519,7 +519,7 @@ public class CommonOnboarding {
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "FA", e.getMessage());
 			}
-			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - {}", e);
+			logger.error(EELFLoggerDelegate.errorLogger,"Fail to generate TOSCA for solution - " + e);
 			// Storage of artifact location references in Common Data
 			// Store-failure
 		}
