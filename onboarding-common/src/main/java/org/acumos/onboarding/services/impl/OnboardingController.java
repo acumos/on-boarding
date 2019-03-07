@@ -279,7 +279,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
 
 						if (license != null && !license.isEmpty()) {
-							licenseFile = new File(outputFolder, license.getOriginalFilename());
+							String licenseFileName = license.getOriginalFilename();
+							logger.debug(EELFLoggerDelegate.debugLogger, "Licnese file name="+licenseFileName);
+
+							if(!licenseFileName.equalsIgnoreCase("licence.txt")) {
+								logger.debug(EELFLoggerDelegate.debugLogger, "Licnese is not macthcing so renaming it="+licenseFileName);
+								licenseFileName = "licence.txt";
+							}
+
+							licenseFile = new File(outputFolder, licenseFileName);
 							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 						}
 
