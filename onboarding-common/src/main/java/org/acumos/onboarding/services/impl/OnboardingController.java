@@ -163,17 +163,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		OnboardingNotification onboardingStatus = null;
 
 		if (trackingID != null) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: " + trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: " + trackingID);
 		}
 
 		if (request_id != null) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: " + request_id);
 		} else {
 			request_id = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: " + request_id);
 		}
 
 		// code to retrieve the current pom version
@@ -571,17 +571,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			throws AcumosServiceException {
 
 		if (trackingID != null) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: " + trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: {}", trackingID);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: " + trackingID);
 		}
 
 		if (request_id != null) {
-			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: {}", request_id);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: " + request_id);
 		} else {
 			request_id = UUID.randomUUID().toString();
-			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: {}", request_id);
+			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: " + request_id);
 		}
 
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);

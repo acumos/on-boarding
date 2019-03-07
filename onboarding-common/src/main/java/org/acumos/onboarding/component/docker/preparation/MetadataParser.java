@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -104,7 +104,7 @@ public class MetadataParser {
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 						"Invalid Model Name - " + modelName);
 			}
-			
+
 			logger.debug(EELFLoggerDelegate.debugLogger,"Model name [Metadata Parsing]:"+modelName);
 
 			int modelNameLength = modelName.length();
@@ -115,19 +115,18 @@ public class MetadataParser {
 						Math.min(modelNameLength, 100));
 				metadata.setModelName(newModelName);
 				logger.warn(EELFLoggerDelegate.debugLogger,
-                        "[Metadata Parsing] Modified Model name {} due to length more than 100 char : {}",newModelName ,modelNameLength);
+                        "[Metadata Parsing] Modified Model name " +newModelName+" due to length more than 100 char : " + modelNameLength);
 			}
-			
 
 			if (metadataJson.hasNonNull("modelVersion"))
 				metadata.setVersion(metadataJson.get("modelVersion").asText());
-			
+
 			String runtimeName;
 			JsonNode requirementsNode = null;
 			JsonNode runtimeNode = metadataJson.get("runtime");
-			
+
 			if(runtimeNode.isArray()){
-				
+
 				for(JsonNode trav : runtimeNode){
 					runtimeName = trav.get("name").asText().toLowerCase();
 					metadata.setRuntimeName(runtimeName);
