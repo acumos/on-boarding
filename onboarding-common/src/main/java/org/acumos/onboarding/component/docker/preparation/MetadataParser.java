@@ -115,7 +115,7 @@ public class MetadataParser {
 						Math.min(modelNameLength, 100));
 				metadata.setModelName(newModelName);
 				logger.warn(EELFLoggerDelegate.debugLogger,
-                        "[Metadata Parsing] Modified Model name {} due to length more than 100 char : {}",newModelName ,modelNameLength);
+                        "[Metadata Parsing] Modified Model name " +newModelName+" due to length more than 100 char : " + modelNameLength);
 			}
 			
 
