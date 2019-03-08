@@ -31,4 +31,6 @@ public class OnboardingConstants {
 	public static final String INVALID_PARAMETER="INVALID_PARAMETER";
 	public static final String ACCESS_TYPE_PRIVATE = "Private";
     public static final String VALIDATION_STATUS_IP = "In Progress";
+    public static final String LICENCE_FILENAME = "licence.txt";
+    
 }

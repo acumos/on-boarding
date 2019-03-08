@@ -150,7 +150,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	public ResponseEntity<ServiceResponse> onboardModel(HttpServletRequest request,
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
-			@RequestPart(required = false) MultipartFile license,
+			@RequestPart(required = false) MultipartFile licence,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
@@ -242,7 +242,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
 				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
 				MLPSolutionRevision revision;
-				File licenseFile = null;
+				File licenceFile = null;
 
 				try {
 
@@ -278,17 +278,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
 
-						if (license != null && !license.isEmpty()) {
-							String licenseFileName = license.getOriginalFilename();
-							logger.debug(EELFLoggerDelegate.debugLogger, "Licnese file name="+licenseFileName);
-
-							if(!licenseFileName.equalsIgnoreCase("licence.txt")) {
-								logger.debug(EELFLoggerDelegate.debugLogger, "Licnese is not macthcing so renaming it="+licenseFileName);
-								licenseFileName = "licence.txt";
+						if (licence != null && !licence.isEmpty()) {
+							String licenceFileName = licence.getOriginalFilename();
+							if(!licenceFileName.equalsIgnoreCase(OnboardingConstants.LICENCE_FILENAME)) {
+								logger.debug(EELFLoggerDelegate.debugLogger, "Provided Licence file name "+licenceFileName+ " changed to licence.txt");
+								licenceFileName = OnboardingConstants.LICENCE_FILENAME;
 							}
 
-							licenseFile = new File(outputFolder, licenseFileName);
-							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+							licenceFile = new File(outputFolder, licenceFileName);
+							UtilityFunction.copyFile(licence.getInputStream(), licenceFile);
 						}
 
 						metadataParser = new MetadataParser(localMetadataFile);
@@ -378,8 +376,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					addArtifact(mData, localMetadataFile, getArtifactTypeCode("Metadata"), mData.getModelName(),
 							onboardingStatus);
 
-					if (license != null && !license.isEmpty()) {
-						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+					if (licence != null && !licence.isEmpty()) {
+						addArtifact(mData, licenceFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 								mData.getModelName(), onboardingStatus);
 					}
 
@@ -559,7 +557,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@ApiResponse(code = 401, message = "Unauthorized User", response = ServiceResponse.class) })
 	@RequestMapping(value = "/advancedModel", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> advancedModelOnboard(HttpServletRequest request,
-			@RequestPart(required = false) MultipartFile model, @RequestPart(required = false) MultipartFile license,
+			@RequestPart(required = false) MultipartFile model, @RequestPart(required = false) MultipartFile licence,
 			@RequestHeader(value = "modelname", required = true) String modName,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
@@ -668,7 +666,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				MLPSolutionRevision revision;
 				File localmodelFile = null;
-				File licenseFile = null;
+				File licenceFile = null;
 
 				try {
 
@@ -679,9 +677,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							localmodelFile = new File(outputFolder, model.getOriginalFilename());
 							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
 						}
-						if (license != null && !license.isEmpty()) {
-							licenseFile = new File(outputFolder, license.getOriginalFilename());
-							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+						if (licence != null && !licence.isEmpty()) {
+							licenceFile = new File(outputFolder, licence.getOriginalFilename());
+							UtilityFunction.copyFile(licence.getInputStream(), licenceFile);
 						}
 
 						logger.debug(EELFLoggerDelegate.debugLogger, "Set the owner ID and Model Name");
@@ -741,8 +739,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					//Need to add modelType.equalsIgnoreCase("dockerImage")
 
-					} else if (license != null && !license.isEmpty()) {
-						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+					} else if (licence != null && !licence.isEmpty()) {
+						addArtifact(mData, licenceFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 								mData.getModelName(), null);
 					}
 
