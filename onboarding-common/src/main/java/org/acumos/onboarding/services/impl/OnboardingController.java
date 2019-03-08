@@ -378,7 +378,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					if (licence != null && !licence.isEmpty()) {
 						addArtifact(mData, licenceFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-								mData.getModelName(), onboardingStatus);
+								"licence", onboardingStatus);
 					}
 
 					// Notify TOSCA generation started
