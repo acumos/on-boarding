@@ -281,7 +281,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						if (licence != null && !licence.isEmpty()) {
 							String licenceFileName = licence.getOriginalFilename();
 							if(!licenceFileName.equalsIgnoreCase(OnboardingConstants.LICENCE_FILENAME)) {
-								logger.debug(EELFLoggerDelegate.debugLogger, "Provided Licence file name "+licenceFileName+ " changed to licence.txt");
+								logger.debug(EELFLoggerDelegate.debugLogger, "Provided licence file name "+licenceFileName+ " changed to licence.txt");
 								licenceFileName = OnboardingConstants.LICENCE_FILENAME;
 							}
 
@@ -378,7 +378,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					if (licence != null && !licence.isEmpty()) {
 						addArtifact(mData, licenceFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-								mData.getModelName(), onboardingStatus);
+								"licence", onboardingStatus);
 					}
 
 					// Notify TOSCA generation started
@@ -678,7 +678,12 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
 						}
 						if (licence != null && !licence.isEmpty()) {
-							licenceFile = new File(outputFolder, licence.getOriginalFilename());
+                                                  String licenceFileName = licence.getOriginalFilename();
+							if(!licenceFileName.equalsIgnoreCase(OnboardingConstants.LICENCE_FILENAME)) {
+								logger.debug(EELFLoggerDelegate.debugLogger, "Provided licence file name "+licenceFileName+ " changed to licence.txt");
+								licenceFileName = OnboardingConstants.LICENCE_FILENAME;
+							}
+							licenceFile = new File(outputFolder, licenceFileName);
 							UtilityFunction.copyFile(licence.getInputStream(), licenceFile);
 						}
 
