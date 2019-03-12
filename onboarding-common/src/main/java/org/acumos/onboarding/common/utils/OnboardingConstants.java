@@ -19,6 +19,9 @@
  */
 package org.acumos.onboarding.common.utils;
 
+import org.acumos.onboarding.common.models.ServiceResponse;
+import org.springframework.http.HttpStatus;
+
 public class OnboardingConstants {
 
 	public static final String LOG_FILE_EXT = ".log";
@@ -31,5 +34,8 @@ public class OnboardingConstants {
 	public static final String INVALID_PARAMETER="INVALID_PARAMETER";
 	public static final String ACCESS_TYPE_PRIVATE = "Private";
     public static final String VALIDATION_STATUS_IP = "In Progress";
-    public static final String LICENCE_FILENAME = "licence.txt";   
+    public static final String LICENSE_FILENAME = "license.json";   
+    public static final String BAD_REQUEST_CODE = "400";
+    public static final String LICENSE_FILENAME_ERROR = "License file must be named as license.json";
+    
 }
