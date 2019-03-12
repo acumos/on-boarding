@@ -38,9 +38,9 @@
                   "type":"file"
                },
                {
-                  "name":"licence",
+                  "name":"license",
                   "in":"formData",
-                  "description":"licence",
+                  "description":"license",
                   "required":false,
                   "type":"file"
                },
@@ -211,9 +211,9 @@
                   "type":"file"
                },
                {
-                  "name":"licence",
+                  "name":"license",
                   "in":"formData",
-                  "description":"licence",
+                  "description":"license",
                   "required":false,
                   "type":"file"
                },
