@@ -57,6 +57,8 @@ import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.acumos.onboarding.services.DockerService;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +86,7 @@ import io.swagger.annotations.ApiResponses;
  */
 public class OnboardingController extends CommonOnboarding implements DockerService {
 	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
+	private static final Logger log = LoggerFactory.getLogger(OnboardingController.class);
 	Map<String, String> artifactsDetails = new HashMap<>();
 	public static String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
 
@@ -161,19 +164,23 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Request-ID", required = false) String request_id) throws AcumosServiceException {
 
 		OnboardingNotification onboardingStatus = null;
-
+		
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: " + trackingID);
+			log.info("Tracking ID --> " + trackingID);
 		} else {
 			trackingID = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID Created: " + trackingID);
+			log.info("Tracking ID --> " + trackingID);
 		}
 
 		if (request_id != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID: " + request_id);
+			log.info("Request ID --> " + request_id);
 		} else {
 			request_id = UUID.randomUUID().toString();
 			logger.debug(EELFLoggerDelegate.debugLogger, "Request ID Created: " + request_id);
+			log.info("Request ID --> " + request_id);
 		}
 
 		// code to retrieve the current pom version
@@ -192,6 +199,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		UtilityFunction.createLogFile();
 
 		String version = UtilityFunction.getProjectVersion();
+		log.info("On-boarding version --> " + version);
 		logger.debug(EELFLoggerDelegate.debugLogger, "On-boarding version : " + version);
 
 		MLPUser shareUser = null;
@@ -280,7 +288,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						if (license != null && !license.isEmpty()) {
 							String licenseFileName = license.getOriginalFilename();
-							if(!licenseFileName.equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+							if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+								logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name= "+licenseFileName+ " should be license.json");
 								return new ResponseEntity<ServiceResponse>(
 										ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
 								//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
@@ -570,6 +579,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
 			throws AcumosServiceException {
 
+		
 		if (trackingID != null) {
 			logger.debug(EELFLoggerDelegate.debugLogger, "Tracking ID: " + trackingID);
 		} else {
