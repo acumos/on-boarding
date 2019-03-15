@@ -38,10 +38,10 @@ more.
 
 Onboard an ONNX or PFA model is really simple you just have to use the on-boarding web page to upload and
 then onboard the model. Acumos portal will automatically detect the format of the model (ONNX or PFA) and
-you only have to fill the name of the model and optionally add a licence file.
+you only have to fill the name of the model and optionally add a licence file (license.json).
 
 The process of on-boarding, for ONNX and PFA, in Boreas is reduced to create a solution Id and upload the model.
-There are no docker, nor tosca fil, nor metadata file, nor protobuf file.
+There are no micro-service, nor tosca file, nor metadata file, nor protobuf file created.
 
 
 
