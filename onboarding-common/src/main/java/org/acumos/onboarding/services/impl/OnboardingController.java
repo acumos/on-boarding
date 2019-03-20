@@ -584,7 +584,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "Request-ID", required = false) String request_id,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
 			throws AcumosServiceException {
-
+		
 		OnboardingNotification onboardingStatus = null;
 
 		if (trackingID != null) {
@@ -821,7 +821,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					logger.debug(EELFLoggerDelegate.debugLogger, "License Value before adding to artifact --> "+license.getOriginalFilename());
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-						mData.getModelName(), onboardingStatus);
+								"license", onboardingStatus);
 					}
 
 					logger.debug(EELFLoggerDelegate.debugLogger, "isCreateMicroservice: " + isCreateMicroservice);
@@ -888,9 +888,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							}
 						}
 
-						if(isSuccess == true) {
+						if (isSuccess == true) {
 							task.setStatusCode("SU");
-                                                        logger.debug(EELFLoggerDelegate.debugLogger,"MLP task updating with the values ="+task.toString());
+							logger.debug(EELFLoggerDelegate.debugLogger,
+									"MLP task updating with the values =" + task.toString());
 							cdmsClient.updateTask(task);
 						}
 
@@ -900,7 +901,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
 						logger.debug(EELFLoggerDelegate.debugLogger, "Log file length " + file.length(), file.getPath(),
 								fileName);
-						if (metadataParser != null && mData != null) {
+						if (mData != null) {
 							logger.debug(EELFLoggerDelegate.debugLogger,
 									"Adding of log artifacts into nexus started " + fileName);
 
