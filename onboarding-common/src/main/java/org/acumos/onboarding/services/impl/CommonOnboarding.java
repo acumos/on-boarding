@@ -383,7 +383,7 @@ public class CommonOnboarding {
 		// Notify add artifacts started
 		if (onboardingStatus != null) {
 			onboardingStatus.notifyOnboardingStatus("AddArtifact", "ST",
-					"Add Artifact for" + file.getName() + " started");
+					"Add Artifact for " + file.getName() + " started");
 		}
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
@@ -414,7 +414,7 @@ public class CommonOnboarding {
 					if (onboardingStatus != null) {
 						//onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 						onboardingStatus.notifyOnboardingStatus("AddArtifact", "SU",
-								"Add Artifact for" + file.getName() + " Successful");
+								"Add Artifact for " + file.getName() + " Successful");
 					}
 					return modelArtifact;
 				} catch (HttpStatusCodeException e) {

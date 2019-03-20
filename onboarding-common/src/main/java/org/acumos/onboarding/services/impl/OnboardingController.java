@@ -818,7 +818,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					//Need to add modelType.equalsIgnoreCase("dockerImage")
 					}
 
-					logger.debug("License Value before adding to artifact --> "+license.getOriginalFilename());
+					logger.debug(EELFLoggerDelegate.debugLogger, "License Value before adding to artifact --> "+license.getOriginalFilename());
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 						mData.getModelName(), onboardingStatus);
