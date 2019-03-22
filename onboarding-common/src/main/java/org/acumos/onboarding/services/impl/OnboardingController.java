@@ -699,8 +699,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logger.debug(EELFLoggerDelegate.debugLogger, "License file name= "+licenseFileName+ " should be license.json");
 						return new ResponseEntity<ServiceResponse>(
 								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
-						//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
-						//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
 					licenseFile = new File(outputFolder, licenseFileName);
 					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
@@ -819,7 +817,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					//Need to add modelType.equalsIgnoreCase("dockerImage")
 					}
 
-					logger.debug(EELFLoggerDelegate.debugLogger, "License Value before adding to artifact --> "+license.getOriginalFilename());
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
 								"license", onboardingStatus);
