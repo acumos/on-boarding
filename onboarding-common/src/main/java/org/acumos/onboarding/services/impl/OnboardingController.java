@@ -244,6 +244,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
 				MLPSolutionRevision revision;
 				File licenseFile = null;
+				
+				if (license != null && !license.isEmpty()) {
+					String licenseFileName = license.getOriginalFilename();
+					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug(EELFLoggerDelegate.debugLogger, "License file name= "+licenseFileName+ " should be license.json");
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
+						//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
+						//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					}
+
+					licenseFile = new File(outputFolder, licenseFileName);
+					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+				}
 
 				try {
 
@@ -278,20 +292,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
 
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
-
-						if (license != null && !license.isEmpty()) {
-							String licenseFileName = license.getOriginalFilename();
-							if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-								logger.debug(EELFLoggerDelegate.debugLogger, "License file name= "+licenseFileName+ " should be license.json");
-								return new ResponseEntity<ServiceResponse>(
-										ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
-								//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
-								//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
-							}
-
-							licenseFile = new File(outputFolder, licenseFileName);
-							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
-						}
 
 						metadataParser = new MetadataParser(localMetadataFile);
 						mData = metadataParser.getMetadata();
@@ -692,6 +692,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				MLPSolutionRevision revision;
 				File localmodelFile = null;
 				File licenseFile = null;
+				
+				if (license != null && !license.isEmpty()) {
+                    String licenseFileName = license.getOriginalFilename();
+					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug(EELFLoggerDelegate.debugLogger, "License file name= "+licenseFileName+ " should be license.json");
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
+						//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
+						//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					}
+					licenseFile = new File(outputFolder, licenseFileName);
+					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+				}
 
 				try {
 
@@ -723,18 +736,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 							localmodelFile = new File(outputFolder, model.getOriginalFilename());
 							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
-						}
-						if (license != null && !license.isEmpty()) {
-                            String licenseFileName = license.getOriginalFilename();
-							if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-								logger.debug(EELFLoggerDelegate.debugLogger, "License file name= "+licenseFileName+ " should be license.json");
-								return new ResponseEntity<ServiceResponse>(
-										ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
-								//logger.debug(EELFLoggerDelegate.debugLogger, "Provided license file name "+licenseFileName+ " changed to license.txt");
-								//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
-							}
-							licenseFile = new File(outputFolder, licenseFileName);
-							UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 						}
 
 						logger.debug(EELFLoggerDelegate.debugLogger, "Set the owner ID and Model Name");
