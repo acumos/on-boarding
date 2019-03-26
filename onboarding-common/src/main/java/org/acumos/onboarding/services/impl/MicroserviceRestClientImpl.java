@@ -120,7 +120,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
-			String authorization, String trackingID, String modName, Integer deployment_env, String request_id) {
+			String authorization, String trackingID, String modName, Integer deployment_env, String request_id, boolean microServiceAsyncFlag) {
 		logger.debug(EELFLoggerDelegate.debugLogger,
 				"In MicroserviceRestClientImpl: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		Map<String, Object> copy = new HashMap<>();
