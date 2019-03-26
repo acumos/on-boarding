@@ -103,6 +103,9 @@ public class CommonOnboarding {
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 
+	@Value("${microService.microServiceAsyncFlag}")
+	protected boolean microServiceAsyncFlag;
+
 	protected String modelOriginalName = null;
 
 	protected boolean dcaeflag = false;
