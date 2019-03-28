@@ -43,6 +43,10 @@ public class ServiceResponse {
 
 	private String modelName;
 
+	private long taskId;
+	
+	private String trackingId;
+	
 	public static final String sStatus = "SUCCESS";
 
 	public ServiceResponse() {
@@ -72,6 +76,14 @@ public class ServiceResponse {
 		return success;
 	}
 
+	public static ServiceResponse successResponse(Object result, long taskId, String trackingId) {
+		ServiceResponse success = new ServiceResponse();
+		success.setStatus(sStatus);
+		success.setResult(result);
+		success.setTaskId(taskId);
+		return success;
+	}
+	
 	public static ServiceResponse successResponse(Object result) {
 		ServiceResponse success = new ServiceResponse();
 		success.setStatus(sStatus);
@@ -133,15 +145,30 @@ public class ServiceResponse {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
+	public long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getTrackingId() {
+		return trackingId;
+	}
+
+	public void setTrackingId(String trackingId) {
+		this.trackingId = trackingId;
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{status=" + status);
 		if (this.errorCode != null) {
 			if (this.modelName != null) {
-				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", modelName=" + modelName);
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", modelName=" + modelName + ", taskId=" + taskId);
 			} else {
-				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage);
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", taskId=" + taskId);
 			}
 		}
 		if (this.result != null) {

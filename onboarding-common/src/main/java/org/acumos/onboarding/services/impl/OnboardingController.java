@@ -406,7 +406,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						try {
 							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-									trackingID, modName, deployment_env, request_id, microServiceAsyncFlag);
+									trackingID, modName, deployment_env, request_id);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
@@ -439,7 +439,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, task.getTaskId(), trackingID), HttpStatus.CREATED);
 					logger.debug(EELFLoggerDelegate.debugLogger,
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
@@ -831,7 +831,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						try {
 							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-									trackingID, mData.getModelName(), null, request_id, microServiceAsyncFlag);
+									trackingID, mData.getModelName(), null, request_id);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
@@ -864,7 +864,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, task.getTaskId(), trackingID), HttpStatus.CREATED);
 					logger.debug(EELFLoggerDelegate.debugLogger,
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());

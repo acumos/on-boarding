@@ -617,5 +617,13 @@ public class CommonOnboarding {
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
 	}
+	
+	public boolean isMicroServiceAsyncFlag() {
+		return microServiceAsyncFlag;
+	}
 
+	public void setMicroServiceAsyncFlag(boolean microServiceAsyncFlag) {
+		this.microServiceAsyncFlag = microServiceAsyncFlag;
+	}
+	
 }
