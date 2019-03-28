@@ -103,9 +103,6 @@ public class CommonOnboarding {
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 
-	@Value("${microService.microServiceAsyncFlag}")
-	protected boolean microServiceAsyncFlag;
-
 	protected String modelOriginalName = null;
 
 	protected boolean dcaeflag = false;
@@ -616,14 +613,6 @@ public class CommonOnboarding {
 
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
-	}
-	
-	public boolean isMicroServiceAsyncFlag() {
-		return microServiceAsyncFlag;
-	}
-
-	public void setMicroServiceAsyncFlag(boolean microServiceAsyncFlag) {
-		this.microServiceAsyncFlag = microServiceAsyncFlag;
 	}
 	
 }
