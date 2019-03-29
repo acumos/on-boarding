@@ -198,6 +198,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		Metadata mData = null;
 		String modelName = null;
 		MLPTask task = null;
+		long taskId = 0;
 
 		try {
 			// 'authorization' represents JWT token here...!
@@ -275,14 +276,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							task.setCreated(Instant.now());
 							task.setModified(Instant.now());
 							task.setTrackingId(trackingID);
-
 							onboardingStatus.setTrackingId(trackingID);
 							onboardingStatus.setUserId(ownerId);
 
 							task = cdmsClient.createTask(task);
 
 							logger.debug(EELFLoggerDelegate.debugLogger, "TaskID: " + task.getTaskId());
-
+							taskId = task.getTaskId();
 							onboardingStatus.setTaskId(task.getTaskId());
 							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 						}
@@ -399,17 +399,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					logger.debug(EELFLoggerDelegator.debugLogger, "Generate Microservice Flag: " +isCreateMicroservice);
 
+					ResponseEntity<ServiceResponse> response = null;
+
 					if (isCreateMicroservice) {
 						// call microservice
 						logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
 								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 						try {
-							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
+							response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
 									trackingID, modName, deployment_env, request_id);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
+							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
 							logger.error(EELFLoggerDelegate.errorLogger,
 									"Exception occured while invoking microservice API " + e);
@@ -439,7 +442,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, task.getTaskId(), trackingID), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, taskId, trackingID), HttpStatus.CREATED);
 					logger.debug(EELFLoggerDelegate.debugLogger,
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
@@ -623,6 +626,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		Metadata mData = new Metadata();
 		String modelName = null;
 		MLPTask task = null;
+		long taskId = 0;
 
 		String modelId = UtilityFunction.getGUID();
 		File outputFolder = new File("tmp", modelId);
@@ -725,7 +729,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							task = cdmsClient.createTask(task);
 
 							logger.debug(EELFLoggerDelegate.debugLogger, "TaskID: " + task.getTaskId());
-
+							taskId = task.getTaskId();
 							onboardingStatus.setTaskId(task.getTaskId());
 							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 						}
@@ -824,17 +828,20 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					logger.debug(EELFLoggerDelegate.debugLogger, "isCreateMicroservice: " + isCreateMicroservice);
 
+					ResponseEntity<ServiceResponse> response = null;
+
 					// call microservice
 					if (isCreateMicroservice) {
 						logger.debug(EELFLoggerDelegate.debugLogger, "Before microservice call Parameters : SolutionId "
 								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 						try {
-							ResponseEntity<ServiceResponse> response = microserviceClient.generateMicroservice(
+							response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
 									trackingID, mData.getModelName(), null, request_id);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
+							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
 							logger.error(EELFLoggerDelegate.errorLogger,
 									"Exception occured while invoking microservice API " + e);
@@ -864,7 +871,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, task.getTaskId(), trackingID), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, taskId, trackingID), HttpStatus.CREATED);
 					logger.debug(EELFLoggerDelegate.debugLogger,
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
