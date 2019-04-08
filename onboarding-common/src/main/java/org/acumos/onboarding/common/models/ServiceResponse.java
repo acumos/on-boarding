@@ -47,6 +47,10 @@ public class ServiceResponse {
 	
 	private String trackingId;
 	
+	private String dockerImageUri;
+	
+	
+
 	public static final String sStatus = "SUCCESS";
 
 	public ServiceResponse() {
@@ -82,6 +86,16 @@ public class ServiceResponse {
 		success.setResult(result);
 		success.setTaskId(taskId);
 		success.setTrackingId(trackingId);
+		return success;
+	}
+	
+	public static ServiceResponse successResponse(Object result, long taskId, String trackingId,String dockerImageUri) {
+		ServiceResponse success = new ServiceResponse();
+		success.setStatus(sStatus);
+		success.setResult(result);
+		success.setTaskId(taskId);
+		success.setTrackingId(trackingId);
+		success.setDockerImageUri(dockerImageUri);
 		return success;
 	}
 	
@@ -161,15 +175,23 @@ public class ServiceResponse {
 	public void setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
 	}
+	
+	public String getDockerImageUri() {
+		return dockerImageUri;
+	}
+
+	public void setDockerImageUri(String dockerImageUri) {
+		this.dockerImageUri = dockerImageUri;
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{status=" + status);
 		if (this.errorCode != null) {
 			if (this.modelName != null) {
-				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", modelName=" + modelName + ", taskId=" + taskId);
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", modelName=" + modelName + ", taskId=" + taskId+", dockerimageuri="+dockerImageUri);
 			} else {
-				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", taskId=" + taskId);
+				sb.append(", errorCode=" + errorCode + ", errorMessage=" + errorMessage + ", taskId=" + taskId+", dockerimageuri="+dockerImageUri);
 			}
 		}
 		if (this.result != null) {

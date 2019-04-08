@@ -108,6 +108,9 @@ public class CommonOnboarding {
 
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
+	
+	@Value("${imagetag.prefix}")
+	protected String imagetagPrefix;
 
 	protected String modelOriginalName = null;
 

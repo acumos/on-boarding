@@ -672,24 +672,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				}
 			}
 
-			if (model != null && !model.isEmpty()) {
-
-				String fileExt = getExtensionOfFile(model.getOriginalFilename());
-				if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
-					modelType = "interchangedModel";
-					logger.debug( "ModelType is " + modelType);
-				} else if (fileExt.equalsIgnoreCase("tar")) {
-					modelType = "dockerImage";
-					logger.debug( "ModelType is " + modelType);
-				} else {
-					modelType = "other";
-					logger.debug( "ModelType is " + modelType);
-				}
-
-			} else {
-				modelType = "other";
-				logger.debug( "ModelType is " + modelType);
-			}
+			modelType = getModelType(model);
 
 			// Call to validate Token .....!
 			String ownerId = validate(authorization, provider);
@@ -814,6 +797,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									HttpStatus.INTERNAL_SERVER_ERROR);
 						}
 					}
+					
+					String dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
+					
+					logger.debug("model type="+modelType);
+					logger.debug( "dockerImageUri: " + dockerImageUri);
 
 					artifactsDetails = getArtifactsDetails();
 
@@ -822,8 +810,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					} else if (modelType.equalsIgnoreCase("interchangedModel")) {
 						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 						onboardingStatus);
-
-					//Need to add modelType.equalsIgnoreCase("dockerImage")
+					} else if(modelType.equalsIgnoreCase("other")) {
+						//Need to add modelType.equalsIgnoreCase("dockerImage")
+						addArtifact(mData, dockerImageUri, getArtifactTypeCode("Docker Image"),
+								onboardingStatus);
 					}
 
 					if (license != null && !license.isEmpty()) {
@@ -876,7 +866,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, taskId, trackingID), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, taskId, trackingID,dockerImageUri), HttpStatus.CREATED);
 					logger.debug(
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
@@ -998,7 +988,39 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
-}
+   }
+
+	
+	/**
+	 *  This method returns model type
+	 * @param model
+	 * @return model type
+	 */
+	private String getModelType(MultipartFile model) {
+		
+		String modelType;
+		if (model != null && !model.isEmpty()) {
+
+			String fileExt = getExtensionOfFile(model.getOriginalFilename());
+			if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+				modelType = "interchangedModel";
+				logger.debug( "ModelType is " + modelType);
+			} else if (fileExt.equalsIgnoreCase("tar")) {
+				modelType = "dockerImage";
+				logger.debug( "ModelType is " + modelType);
+			} else {
+				modelType = "other";
+				logger.debug( "ModelType is " + modelType);
+			}
+
+		} else {
+			modelType = "other";
+			logger.debug( "ModelType is " + modelType);
+		}
+		
+		return modelType;
+	
+	}
 
 	private Map<String, String> getArtifactsDetails() {
 		List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
