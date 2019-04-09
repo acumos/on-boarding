@@ -109,7 +109,7 @@ public class CommonOnboarding {
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
 	
-	@Value("${imagetag.prefix}")
+	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
 
 	protected String modelOriginalName = null;
