@@ -84,8 +84,18 @@ the model in a model bundle. This model bundle can be pushed to the paltform by 
 page or by using command line (CLI) thanks to REST interface exposed by the Acumos onboarding server
 and used by Acumos client library.
 
+|image1bis|
+
 For model in a model interchange format like ONNX and PFA only web interface is useable to upload
-them in the platform.
+them in the platform. For the moment micro-service generation is not triggered for thee two kinds 
+of on-boarding.
+
+|image1ter|
+
+For model Dockerized and store in repo outside Acumos (like for xample ockr hub) you can save the model
+ URI in Acumos. You can also stored the docker image of your model in Acumos
+
+
 
 
 **5: Onboarding Low Level Design**
@@ -326,6 +336,12 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
    :width: 5.64583in
    :height: 5.55208in
 .. |image1| image:: ./media/HighLevelFlow.png
+   :width: 7.26806in
+   :height: 2.51389in
+.. |image1bis| image:: ./media/HighLevelFlow1bis.png
+   :width: 7.26806in
+   :height: 2.51389in
+.. |image1ter| image:: ./media/HighLevelFlow1ter.png
    :width: 7.26806in
    :height: 2.51389in
 .. |image2| image:: ./media/LowLevelDesign.png
