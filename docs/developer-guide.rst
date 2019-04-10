@@ -93,7 +93,7 @@ of on-boarding.
 |image1ter|
 
 For model Dockerized and store in repo outside Acumos (like for xample ockr hub) you can save the model
- URI in Acumos. You can also stored the docker image of your model in Acumos
+URI in Acumos. You can also stored the docker image of your model in Acumos
 
 
 
@@ -119,11 +119,20 @@ then pushes the model to nexus.
 
 |image0|
 
+
+Modeler/Data scientist can also create models in the languague of their choice then dockerized their
+models themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds
+of models the microservice generation process is not triggered. Below is the low level dsign for these
+models.
+
+|image0bis|
+
 Whatever the kinds of models :
 
 - Modeler can upload a licence file associated to their model during Web or CLI onboarding.
 - New solution is created in common database for a new model.
-- Existing solution is updated with, a new revision. Revision is updated with artefact details and those artefacts are uploaded to nexus maven repository.
+- Existing solution is updated with, a new revision. Revision is updated with artefact details and
+those artefacts are uploaded to nexus maven repository.
 
 **6: Onboarding Use Case**
 --------------------------
@@ -340,10 +349,10 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
    :height: 2.51389in
 .. |image1bis| image:: ./media/HighLevelFlow1bis.png
    :width: 7.26806in
-   :height: 2.51389in
+   :height: 1.2in
 .. |image1ter| image:: ./media/HighLevelFlow1ter.png
    :width: 7.26806in
-   :height: 2.51389in
+   :height: 1.2in
 .. |image2| image:: ./media/LowLevelDesign.png
    :width: 6.26806in
    :height: 2.43333in
@@ -357,4 +366,5 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
    :width: 3.90625in
    :height: 4.94792in
 .. |image0| image:: ./media/Architecture_Diagram.png
+.. |image0bis| image:: ./media/ArchitectureDiagram2.png
 
