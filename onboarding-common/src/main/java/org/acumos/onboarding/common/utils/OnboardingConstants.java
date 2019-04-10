@@ -19,9 +19,6 @@
  */
 package org.acumos.onboarding.common.utils;
 
-import org.acumos.onboarding.common.models.ServiceResponse;
-import org.springframework.http.HttpStatus;
-
 public class OnboardingConstants {
 
 	public static final String LOG_FILE_EXT = ".log";
@@ -30,6 +27,7 @@ public class OnboardingConstants {
 	public static final String lOG_TYPE_DEBUG = "DEBUG";
 	public static final String lOG_TYPE_ERROR = "ERROR";
 	public static final String lOG_TYPE_INFO = "INFO";
+	public static final String lOG_TYPE_WARN = "WARN";
 	public static final String ARTIFACT_TYPE_LOG= "Log File";
 	public static final String INVALID_PARAMETER="INVALID_PARAMETER";
 	public static final String ACCESS_TYPE_PRIVATE = "Private";

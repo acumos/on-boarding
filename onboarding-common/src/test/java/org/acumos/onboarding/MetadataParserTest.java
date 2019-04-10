@@ -25,20 +25,23 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataParserTest {
 
 	@Mock
 	MetadataParser metadataParser;
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(MetadataParser.class);
+	private static final Logger log = LoggerFactory.getLogger(MetadataParser.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 
 	String filePath = FilePathTest.filePath();
 	File validJsonFile = new File(filePath + "metadata.json");

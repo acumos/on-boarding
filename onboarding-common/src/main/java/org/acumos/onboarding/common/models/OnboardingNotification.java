@@ -25,7 +25,9 @@ import java.util.Date;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPTask;
 import org.acumos.cds.domain.MLPTaskStepResult;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -59,8 +61,9 @@ public class OnboardingNotification {
 	}
 
 	private CommonDataServiceRestClientImpl cdmsClient;
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingNotification.class);
-
+	private static Logger log = LoggerFactory.getLogger(OnboardingNotification.class);
+    LoggerDelegate logger = new LoggerDelegate(log);
+    
 	public OnboardingNotification(String cmnDataSvcEndPoinURL, String cmnDataSvcUser, String cmnDataSvcPwd) {
 
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
@@ -76,7 +79,7 @@ public class OnboardingNotification {
 
 	// current step, status and description sent to be logged.
 	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
-		logger.debug(EELFLoggerDelegate.debugLogger, "Notify " + currentDescription);
+		logger.debug("Notify " + currentDescription);
 
 		try {
 			if (trackingId != null) {
@@ -95,13 +98,13 @@ public class OnboardingNotification {
 					desc = currentDescription.substring(0, Math.min(currentDescription.length(), 8000));
 					taskResult.setResult(desc);
 				}
-				logger.debug(EELFLoggerDelegate.debugLogger, "Step: " + currentstep + " with Status: " + currentStatus);
+				logger.debug("Step: " + currentstep + " with Status: " + currentStatus);
 
-				logger.debug(EELFLoggerDelegate.debugLogger, "Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription);
+				logger.debug("Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription);
 				cdmsClient.createTaskStepResult(taskResult);
 			}
 		} catch (Exception e) {
-			logger.error(EELFLoggerDelegate.errorLogger, "Failed to Notify");
+			logger.error("Failed to Notify");
 		}
 	}
 

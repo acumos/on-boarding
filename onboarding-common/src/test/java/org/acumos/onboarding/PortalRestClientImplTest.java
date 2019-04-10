@@ -21,7 +21,7 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.services.PortalRestClient;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
 import org.json.simple.JSONObject;
@@ -31,11 +31,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PortalRestClientImplTest {
 	
-	public static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(PortalRestClientImplTest.class);
+	public static Logger log = LoggerFactory.getLogger(PortalRestClientImplTest.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 	
 	@Mock
 	PortalRestClient portalRestClient;
@@ -62,7 +65,7 @@ public class PortalRestClientImplTest {
 		try {
 
 			portalRestClient.tokenValidation(obj2, null);
-			logger.debug(EELFLoggerDelegate.debugLogger, "tokenValidation success");
+			logger.debug("tokenValidation success");
 
 		} catch (Exception e) {
 			Assert.fail("tokenValidation failed : " + e.getMessage());

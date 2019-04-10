@@ -25,9 +25,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.services.impl.OnboardingController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,8 +45,9 @@ public class MetadataParser {
 
 	private JsonNode metadataJson;
 
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
-
+	private static Logger log = LoggerFactory.getLogger(OnboardingController.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
+	
 	public MetadataParser(File dataFile) throws AcumosServiceException {
 		try {
 
@@ -73,7 +76,7 @@ public class MetadataParser {
 			ProcessingReport report = validator.validate(schema, this.metadataJson);
 
 			if (!report.isSuccess()) {
-				logger.debug(EELFLoggerDelegate.debugLogger,report.toString());
+				logger.debug(report.toString());
 				StringBuilder sb = new StringBuilder();
 				for (ProcessingMessage processingMessage : report) {
 					if (!processingMessage.getMessage()
@@ -100,12 +103,12 @@ public class MetadataParser {
 
 			// validating Model-Name
 			if (!modelName.matches("^[a-zA-Z0-9_-]*$")) {
-				logger.debug(EELFLoggerDelegate.debugLogger,"Invalid Model name [Metadata Parsing]:"+modelName);
+				logger.debug("Invalid Model name [Metadata Parsing]:"+modelName);
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_PARAMETER,
 						"Invalid Model Name - " + modelName);
 			}
 
-			logger.debug(EELFLoggerDelegate.debugLogger,"Model name [Metadata Parsing]:"+modelName);
+			logger.debug("Model name [Metadata Parsing]:"+modelName);
 
 			int modelNameLength = modelName.length();
 			if (modelNameLength <= 100) {
@@ -114,8 +117,7 @@ public class MetadataParser {
 				String newModelName = modelName.substring(0,
 						Math.min(modelNameLength, 100));
 				metadata.setModelName(newModelName);
-				logger.warn(EELFLoggerDelegate.debugLogger,
-                        "[Metadata Parsing] Modified Model name " +newModelName+" due to length more than 100 char : " + modelNameLength);
+				logger.warn("[Metadata Parsing] Modified Model name " +newModelName+" due to length more than 100 char : " + modelNameLength);
 			}
 
 			if (metadataJson.hasNonNull("modelVersion"))

@@ -21,12 +21,14 @@ package org.acumos.onboarding.aspect;
 
 
 import org.acumos.onboarding.common.utils.Crediantials;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 /**
@@ -37,8 +39,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class OnboardingLoggingAspect  {
 	
-	private static final EELFLoggerDelegate log = EELFLoggerDelegate.getLogger(OnboardingLoggingAspect.class);
-		
+	private static final Logger logger = LoggerFactory.getLogger(OnboardingLoggingAspect.class);
+	LoggerDelegate log = new LoggerDelegate(logger);
 	@Pointcut("within(@org.springframework.stereotype.Controller *)")
 	   public void controller() {
 	}
@@ -57,7 +59,7 @@ public class OnboardingLoggingAspect  {
 				String username = user.getBody().getUsername();
 				MDC.put("user", username);
 				MDC.put("contextName", "Onboarding");
-				log.info(EELFLoggerDelegate.securityLogger, "User Logging in");
+				log.info("User Logging in");
 				MDC.remove("user");
 				MDC.remove("contextName");				
 			}

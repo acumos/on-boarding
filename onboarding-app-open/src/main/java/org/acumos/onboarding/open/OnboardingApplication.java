@@ -20,8 +20,10 @@
 
 package org.acumos.onboarding.open;
 
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.UtilityFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +37,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ComponentScan("org.acumos.onboarding")
 public class OnboardingApplication implements ApplicationContextAware
 {
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(OnboardingApplication.class);
+	static LoggerDelegate logger = new LoggerDelegate(log);
 
 	public static final String CONFIG_ENV_VAR_NAME = "SPRING_APPLICATION_JSON";
 
@@ -68,7 +71,7 @@ public class OnboardingApplication implements ApplicationContextAware
         String version = classPath.startsWith("jar")
                                         ? OnboardingApplication.class.getPackage().getImplementationVersion()
                                         : "no version, classpath is not jar";
-        logger.debug(EELFLoggerDelegate.debugLogger,"On-boarding app version : "+version);
+        logger.debug("On-boarding app version : "+version);
         UtilityFunction.setProjectVersion(version);
     }
 }

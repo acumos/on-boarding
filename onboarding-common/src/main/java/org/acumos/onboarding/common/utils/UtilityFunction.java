@@ -46,6 +46,8 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import com.github.dockerjava.api.DockerClient;
@@ -54,7 +56,8 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 
 public class UtilityFunction {
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(UtilityFunction.class);
+	private static final Logger log = LoggerFactory.getLogger(UtilityFunction.class);
+	static LoggerDelegate logger = new LoggerDelegate(log);
 	private static String version = null;
     private static String projectVersion = null;
 
@@ -154,7 +157,7 @@ public class UtilityFunction {
 			}
 			return result.toString();
 		} catch (NoSuchAlgorithmException e) {
-			logger.error(EELFLoggerDelegate.errorLogger,e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			return data;
 		}
 	}
@@ -190,7 +193,7 @@ public class UtilityFunction {
 					out.write(buffer, 0, bytesRead);
 				}
 			} catch (IOException e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "Fail to download " + destFile.getName());
+				logger.error("Fail to download " + destFile.getName());
 				throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 						"Fail to download " + destFile.getName());
 			} finally {
@@ -208,7 +211,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is = " + count);
+			logger.debug("Count is = " + count);
 			return bytes;
 		} finally {
 			in.close();
@@ -266,7 +269,7 @@ public class UtilityFunction {
 			byte[] bytes = new byte[in.available()];
 			int count = 0;
 			count = in.read(bytes);
-			logger.debug(EELFLoggerDelegate.debugLogger,"Count is = " + count);
+			logger.debug("Count is = " + count);
 			return bytes;
 		} finally {
 			in.close();
@@ -284,8 +287,7 @@ public class UtilityFunction {
 			if (!f1.exists()) {
 				f1.createNewFile();
 			}
-			logger.debug(EELFLoggerDelegate.debugLogger,
-					"Log file created successfully " + f1.getAbsolutePath());
+			logger.debug("Log file created successfully " + f1.getAbsolutePath());
 		} catch (Exception e) {
 			//info to avoid infinite loop.logger.debug call again calls addlog method
 			logger.info("Failed while creating log file " + e.getMessage());
@@ -314,15 +316,15 @@ public class UtilityFunction {
 	}
 
 	public static DockerClientConfig createDockerClientConfig(String host) {
-		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClientConfig");
+		logger.debug("Inside createDockerClientConfig");
 		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false).build();
 	}
 
 	public static DockerClient createDockerClient (String host) {
-		logger.debug(EELFLoggerDelegate.debugLogger, "Inside createDockerClient");
+		logger.debug("Inside createDockerClient");
 		DockerClientConfig dockerClientConfig = createDockerClientConfig(host);
 		DockerClient dockerClient = DockerClientBuilder.getInstance(dockerClientConfig).build();
-		logger.debug(EELFLoggerDelegate.debugLogger, "createDockerClient ended");
+		logger.debug("createDockerClient ended");
 		return dockerClient;
 
 	}
@@ -341,7 +343,7 @@ public class UtilityFunction {
 				model = reader.read(new FileReader("pom.xml"));
 				version = model.getVersion();
 			} catch (Exception e) {
-				logger.error(EELFLoggerDelegate.errorLogger, "getCurrentVersion Failed Exception " + e.getMessage(), e);
+				logger.error("getCurrentVersion Failed Exception " + e.getMessage(), e);
 			}
 		}
 		logger.debug("Onboarding version:::" + version);

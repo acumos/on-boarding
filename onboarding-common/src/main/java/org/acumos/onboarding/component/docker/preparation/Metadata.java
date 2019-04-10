@@ -22,7 +22,9 @@ package org.acumos.onboarding.component.docker.preparation;
 
 import java.util.ArrayList;
 
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Metadata {
 
@@ -36,8 +38,9 @@ public class Metadata {
 	private String runtimeVersion;
 	private String toolkit;
 	
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(Metadata.class);
-
+	private static Logger log = LoggerFactory.getLogger(Metadata.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
+	
 	private ArrayList<Requirement> requirements;
 
 	public String getSolutionName() {
@@ -47,7 +50,7 @@ public class Metadata {
 	public void setModelName(String modelName) {
 		this.solutionName = modelName;
 		this.modelName = modelName.toLowerCase();		
-		logger.debug(EELFLoggerDelegate.debugLogger,"Model name :"+modelName);
+		logger.debug("Model name :"+modelName);
 	}
 
 	public String getModelName() {

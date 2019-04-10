@@ -20,22 +20,23 @@
 
 package org.acumos.onboarding;
 
-import java.io.IOException;
-
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceUtilsTest {
 
-	private static final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ResourceUtilsTest.class);	
+	private static final Logger log = LoggerFactory.getLogger(ResourceUtilsTest.class);	
+	LoggerDelegate logger = new LoggerDelegate(log);
 	private ResourceLoader resourceLoader;
 	ResourceUtils resourceUtils = new ResourceUtils(resourceLoader);
 

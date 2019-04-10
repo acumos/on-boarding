@@ -30,7 +30,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LogThreadLocal;
 import org.acumos.onboarding.common.utils.UtilityFunction;

@@ -23,18 +23,14 @@
  */
 package org.acumos.onboarding;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +41,8 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
-import org.acumos.cds.domain.MLPUser;
-import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
-import org.acumos.designstudio.toscagenerator.exceptionhandler.AcumosException;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
 //import org.acumos.microservice.FilePathTest;
@@ -58,31 +51,22 @@ import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.models.ServiceResponse;
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
 import org.acumos.onboarding.common.utils.Crediantials;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonRequest;
 import org.acumos.onboarding.common.utils.JsonResponse;
-import org.acumos.onboarding.common.utils.UtilityFunction;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.services.impl.CommonOnboarding;
 import org.acumos.onboarding.services.impl.MicroserviceRestClientImpl;
 import org.acumos.onboarding.services.impl.OnboardingController;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
-import org.apache.maven.wagon.ConnectionException;
-import org.apache.maven.wagon.ResourceDoesNotExistException;
-import org.apache.maven.wagon.TransferFailedException;
-import org.apache.maven.wagon.authentication.AuthenticationException;
-import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -124,7 +108,8 @@ public class OnboardingControllerTest {
 	@Mock
 	MicroserviceRestClientImpl microserviceClient;
 
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
+	private static Logger log = LoggerFactory.getLogger(OnboardingController.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 
 
 	final HttpServletResponse response = mock(HttpServletResponse.class);

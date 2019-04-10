@@ -43,7 +43,6 @@ import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.OnboardingConstants;

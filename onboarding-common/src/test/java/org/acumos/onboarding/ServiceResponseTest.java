@@ -21,16 +21,19 @@
 package org.acumos.onboarding;
 
 import org.acumos.onboarding.common.models.ServiceResponse;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceResponseTest {
 
-	public static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(ServiceResponseTest.class);
+	public static Logger log = LoggerFactory.getLogger(ServiceResponseTest.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 
 	ServiceResponse serviceResponse = new ServiceResponse();
 

@@ -28,8 +28,10 @@ import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.client.ICommonDataServiceRestClient;
 import org.acumos.cds.transport.SuccessTransport;
 import org.acumos.onboarding.common.models.ServiceResponse;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.services.HealthcheckService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/", produces = "application/json")
 public class HealthcheckController implements HealthcheckService {
 
-	private final EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(HealthcheckController.class);
+	private final Logger log = LoggerFactory.getLogger(HealthcheckController.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 
 	private ICommonDataServiceRestClient cdmsClient;
 
@@ -65,7 +68,7 @@ public class HealthcheckController implements HealthcheckService {
 	 */
 	@PostConstruct
 	public void init() {
-		logger.debug(EELFLoggerDelegate.debugLogger, "init: creating CDS client");
+		logger.debug("init: creating CDS client");
 		cdmsClient = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,null);
 	}
 
@@ -81,13 +84,13 @@ public class HealthcheckController implements HealthcheckService {
 	@ResponseBody
 	public ResponseEntity<ServiceResponse> getHealth(HttpServletRequest request, HttpServletResponse response) {
 		ResponseEntity<ServiceResponse> result = null;
-		logger.debug(EELFLoggerDelegate.debugLogger, "getHealth");
+		logger.debug("getHealth");
 		try {
 			SuccessTransport cdmsHealth = cdmsClient.getHealth();
 			result = new ResponseEntity<ServiceResponse>(
 					ServiceResponse.successResponse("CDMS health: " + cdmsHealth.getData().toString()), HttpStatus.OK);
 		} catch (Exception ex) {
-			logger.error(EELFLoggerDelegate.errorLogger, "getHealth failed", ex);
+			logger.error("getHealth failed", ex);
 			result = new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse("not healthy", ex.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}

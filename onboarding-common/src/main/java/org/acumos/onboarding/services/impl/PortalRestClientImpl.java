@@ -29,8 +29,8 @@ import java.util.Map;
 import org.acumos.cds.client.HttpComponentsClientHttpRequestFactoryBasicAuth;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.onboarding.common.utils.AbstractResponseObject;
-import org.acumos.onboarding.common.utils.EELFLoggerDelegate;
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.services.PortalRestClient;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -40,6 +40,8 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
@@ -47,7 +49,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class PortalRestClientImpl implements PortalRestClient {
 
-	private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(PortalRestClientImpl.class);
+	private static Logger log = LoggerFactory.getLogger(PortalRestClientImpl.class);
+	LoggerDelegate logger = new LoggerDelegate(log);
 
 	private final String baseUrl;
 	private final RestTemplate restTemplate;
@@ -152,8 +155,8 @@ public class PortalRestClientImpl implements PortalRestClient {
 	@Override
 	public String loginToAcumos(org.json.simple.JSONObject credentials) {
 		URI uri = buildUri(new String[] { "auth", "jwtToken" }, null, null);
-		logger.debug(EELFLoggerDelegate.debugLogger,"jwtToken: uri : " + uri);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Token URI : " + uri);
+		logger.debug("jwtToken: uri : " + uri);
+		logger.debug("Token URI : " + uri);
 		AbstractResponseObject result = restTemplate.postForObject(uri, credentials, AbstractResponseObject.class);
 
 		return result.getJwtToken();
@@ -163,8 +166,8 @@ public class PortalRestClientImpl implements PortalRestClient {
 	public JsonResponse<Object> tokenValidation(org.json.simple.JSONObject token, String provider) {
 
 		URI uri = buildUri(new String[] { "auth", "validateToken" }, null, null);
-		logger.debug(EELFLoggerDelegate.debugLogger,"jwtToken: uri : " + uri);
-		logger.debug(EELFLoggerDelegate.debugLogger,"Validation URI : " + uri);
+		logger.debug("jwtToken: uri : " + uri);
+		logger.debug("Validation URI : " + uri);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("provider", provider);

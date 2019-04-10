@@ -14,6 +14,11 @@ public class LoggerDelegate {
 		this.logger = logger;
 	}
 
+	public void info(String msg) {
+		logger.info(msg);
+		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_INFO);
+	}
+	
 	public void debug(String msg) {
 
 		logger.debug(msg);
@@ -35,6 +40,12 @@ public class LoggerDelegate {
 
 	}
 
+	public void warn(String msg) {
+		logger.warn(msg);
+		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_WARN);
+	}
+
+	
 	public void error(String message) {
 
 		logger.error(message);
@@ -63,4 +74,5 @@ public class LoggerDelegate {
 		this.logger = logger;
 	}
 
+	
 }
