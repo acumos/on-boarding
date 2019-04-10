@@ -93,7 +93,7 @@ of on-boarding.
 |image1ter|
 
 For model Dockerized and store in repo outside Acumos (like for xample ockr hub) you can save the model
- URI in Acumos. You can also stored the docker image of your model in Acumos
+URI in Acumos. You can also stored the docker image of your model in Acumos
 
 
 
@@ -118,6 +118,15 @@ web onboarding interface to upload their model. Onboarding server authenticates 
 then pushes the model to nexus.
 
 |image0|
+
+
+Modeler/Data scientist can also create models in the languague of their choice then dockerized their
+models themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds
+of models the microservice generation process is not triggered. Below is the low level dsign for these
+models.
+
+|image0bis|
+
 
 Whatever the kinds of models :
 
@@ -357,4 +366,5 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
    :width: 3.90625in
    :height: 4.94792in
 .. |image0| image:: ./media/Architecture_Diagram.png
+.. |image0bis| image:: ./media/Architecture_Diagram2.png
 
