@@ -796,11 +796,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 					}
 					
-					String dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
-					
+					String dockerImageUri = null;
 					logger.debug("model type="+modelType);
-					logger.debug( "dockerImageUri: " + dockerImageUri);
-
 					artifactsDetails = getArtifactsDetails();
 
 					if (dockerfileURL != null) {
@@ -810,6 +807,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						onboardingStatus);
 					} else if(modelType.equalsIgnoreCase("other")) {
 						//Need to add modelType.equalsIgnoreCase("dockerImage")
+						dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
+						logger.debug( "dockerImageUri: " + dockerImageUri);
 						addArtifact(mData, dockerImageUri, getArtifactTypeCode("Docker Image"),
 								onboardingStatus);
 					}
