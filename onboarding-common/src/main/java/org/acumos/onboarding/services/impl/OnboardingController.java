@@ -237,6 +237,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				logger.debug(
 						"Onboarding request recieved with " + model.getOriginalFilename());
 
+				MDC.put(OnboardingLogConstants.MDCs.USER, ownerId);
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
@@ -855,6 +856,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							cdmsClient.updateSolutionRevision(revision);
 							logger.debug(
 									"Model Shared Successfully with " + shareUserName);
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
+									HttpStatus.CREATED.toString());
 						} catch (Exception e) {
 							isSuccess = false;
 							logger.error( " Failed to share Model", e);

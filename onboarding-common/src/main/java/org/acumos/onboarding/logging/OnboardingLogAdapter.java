@@ -162,10 +162,12 @@ public class OnboardingLogAdapter {
 		MDC.put(OnboardingLogConstants.MDCs.USER,userName);
 	
 		// Set standard MDCs. 
-		MDC.put(OnboardingLogConstants.MDCs.INVOKE_TIMESTAMP,
-				ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+		/*
+		 * MDC.put(OnboardingLogConstants.MDCs.INVOKE_TIMESTAMP,
+		 * ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+		 */
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, requestID);
-		MDC.put(OnboardingLogConstants.MDCs.INVOCATION_ID, invocationID);
+		//MDC.put(OnboardingLogConstants.MDCs.INVOCATION_ID, invocationID);
 		//if (!partnerName.isEmpty())
 		MDC.put(OnboardingLogConstants.MDCs.PARTNER_NAME, OnboardingLogConstants.PARTNER_NAME);
 		MDC.put(OnboardingLogConstants.MDCs.CLIENT_IP_ADDRESS, defaultToEmpty(request.getClientAddress()));
@@ -173,7 +175,7 @@ public class OnboardingLogAdapter {
 		
 		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,OnboardingLogConstants.ResponseStatus.INPROGRESS.name());
 		MDC.put(OnboardingLogConstants.MDCs.SERVICE_NAME,OnboardingLogConstants.SERVICE_NAME);
-		MDC.put(OnboardingLogConstants.MDCs.INSTANCE_UUID,instanceID);
+		//MDC.put(OnboardingLogConstants.MDCs.INSTANCE_UUID,instanceID);
 		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,SUCCESS);
 		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,SUCCESS);
 		
