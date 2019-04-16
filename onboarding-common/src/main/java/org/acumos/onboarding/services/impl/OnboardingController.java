@@ -506,6 +506,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								OnboardingLogConstants.ResponseStatus.ERROR.name());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
 								OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
+								HttpStatus.INTERNAL_SERVER_ERROR.toString());
+						
 						mData = null;
 						logger.error( "RevertbackOnboarding Failed: ", e.getMessage());
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -518,6 +521,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
 							OnboardingLogConstants.ResponseStatus.ERROR.name());
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.UNAUTHORIZED.toString());
 					logger.error( "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
@@ -537,6 +541,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
 				httpCode = HttpStatus.BAD_REQUEST;
 			}
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
@@ -557,6 +562,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
 					OnboardingLogConstants.ResponseStatus.ERROR.name());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(ServiceResponse
@@ -925,6 +931,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								OnboardingLogConstants.ResponseStatus.ERROR.name());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
 								OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
+								HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						mData = null;
 						logger.error( "RevertbackOnboarding Failed");
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -937,6 +945,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
 							OnboardingLogConstants.ResponseStatus.ERROR.name());
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.UNAUTHORIZED.toString());
 					logger.error( "Either Username/Password is invalid.");
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
 							"Either Username/Password is invalid.");
@@ -956,6 +965,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
 				httpCode = HttpStatus.BAD_REQUEST;
 			}
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
@@ -977,6 +987,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
 					OnboardingLogConstants.ResponseStatus.ERROR.name());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
 			if (e instanceof AcumosServiceException) {
 				return new ResponseEntity<ServiceResponse>(ServiceResponse
