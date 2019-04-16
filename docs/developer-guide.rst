@@ -291,19 +291,18 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 - data Params :
 
-	- model bundle
-	- model protobuff file
-	- metadata JSON file
-	- model name (optional parameter)
-	- authentication token or username:apitoken
-	- createMicroservice (boolean value to trigger microservice generation, default=true)
-	- licenseFile (optional parameter - license.txt associated with model)
-	- tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation)
-	- provider (optional parameter - for portal authentication)
-	- shareUserName (optional parameter - User Name for sharing the model as co-owner)
-	- modName (optional parameter - Model Name to be used as display name else Model name from metadata is used)
-	- deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
-	- Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
+	- model (Required - file for model bundle model.zip to onboard, Parameter Type - formdata)
+	- metadata (Required - model.protobuf file for model to onboard, Parameter Type - formdata)
+	- schema (Required - metadata.JOSN file for model, Parameter Type - formdata)
+	- license (optional parameter - license.JSON associated with model, Parameter Type - formdata)
+	- Authorization(Optional - Authentication token or username:apitoken, Parameter Type - header)
+	- isCreateMicroservice (Optional - boolean value to trigger microservice generation, default=true, Parameter Type - header)
+	- tracking_id (Optional - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
+	- provider (Optional - for portal authentication, Parameter Type - header)
+	- shareUserName (Optional - User Name for sharing the model as co-owner, Parameter Type - header)
+	- modName (Optional - Model Name to be used as display name else Model name from metadata is used, Parameter Type - header)
+	- deployment_env (Optional - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE, Parameter Type - header)
+	- Request-ID (Optional - UUID received from Portal else generated for tracking transaction in CDS, Parameter Type - header)
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
@@ -320,18 +319,18 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 - data params :
 
-	- model name
-	- file (file for model to onboard)
-	- docker URL (optional parameter). if docker URL is given then file is not necessary
-	- authentication token or username:apitoken,
-	- createMicroservice (boolean value to trigger microservice generation, default=false)
-	- licenseFile (optional parameter - license.txt associated with model)
-	- tracking ID (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation)
-	- provider (optional parameter - for portal authentication)
-	- shareUserName (optional parameter - User Name for sharing the model as co-owner)
-	- modName (optional parameter - Model Name to be used as display name)
-	- deployment_env (optional parameter - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE)
-	- Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS)
+	
+	- model (Optional - file for model to onboard - ONNX/PFA file, Parameter Type - formdata)
+	- license (optional parameter - license.txt associated with model, Parameter Type - formdata)
+	- modelname (Required - Model Name to be used as display name, Parameter Type - header)
+	- Authorization (authentication token or username:apitoken, Parameter Type - header)
+	- isCreateMicroservice (boolean value to trigger microservice generation, default=false, Parameter Type - header)
+	- dockerfileURL (Optional - if docker URL is given then file is not necessary, Parameter Type - header)
+	- provider (optional parameter - for portal authentication, Parameter Type - header)
+	- tracking_id (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
+	- Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS, Parameter Type - header)
+	- shareUserName (optional parameter - User Name for sharing the model as co-owner, Parameter Type - header)
+	
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
