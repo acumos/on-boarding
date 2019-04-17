@@ -322,13 +322,13 @@ public class CommonOnboarding {
 
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
-		 List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
+		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
 		if (!typeCodeList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : typeCodeList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.ACCESS_TYPE_PRIVATE))
 					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
 			}
-		}
+		}*/
 
 			/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
 		if (!validationStatusList.isEmpty()) {
