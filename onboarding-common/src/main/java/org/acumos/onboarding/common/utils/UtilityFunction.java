@@ -41,6 +41,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
+import org.acumos.onboarding.services.impl.CommonOnboarding;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
@@ -348,5 +349,21 @@ public class UtilityFunction {
 		}
 		logger.debug("Onboarding version:::" + version);
 	  return version;
+	}
+	
+	public static void moveFile(File srcFile, File outputFolder) throws AcumosServiceException {
+
+		try {
+			String fileExt = CommonOnboarding.getExtensionOfFile(srcFile.getName());
+
+			if (fileExt.equalsIgnoreCase("json")) {
+				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\metadata.json"));
+			} else if (fileExt.equalsIgnoreCase("proto") || fileExt.equalsIgnoreCase("zip")) {
+				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\model." + fileExt));
+			}
+		} catch (Exception e) {
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Fail to move file " + srcFile.getName() + " form folder cause: ", e);
+		}
 	}
 }
