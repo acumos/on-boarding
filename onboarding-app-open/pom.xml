@@ -214,6 +214,11 @@
 										</files>
 									</inline>
 								</assembly>
+								<runCmds>
+									<!-- Ensure logs dir exists and is world writable -->
+									<runCmd>mkdir /maven/logs</runCmd>
+									<runCmd>chmod -R 777 /maven</runCmd>
+								</runCmds>
 								<cmd>
 									<!--CDATA prevents Eclipse formatter from breaking line-->
 									<shell><![CDATA[cd /maven; java -Xms256m -Xmx2048m -Djava.security.egd=file:/dev/./urandom -jar ${project.artifactId}-${project.version}.${project.packaging}]]></shell>
@@ -223,7 +228,7 @@
 					</images>
 				</configuration>
 				<!-- build Docker image in install phase, push in deploy phase -->
-			  	<executions>
+				<executions>
 					<execution>
 						<goals>
 							<goal>build</goal>
@@ -234,4 +239,4 @@
 			</plugin>
 		</plugins>
 	</build>
-  </project>
+</project>
