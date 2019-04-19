@@ -357,14 +357,12 @@ public class UtilityFunction {
 			String fileName = srcFile.getName();
 			String fileExt = CommonOnboarding.getExtensionOfFile(srcFile.getName());
 
-			if (fileExt.equalsIgnoreCase("json") && !(fileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME))) {
+			if (fileExt.equalsIgnoreCase("json") && !(fileName.toLowerCase().contains("license"))) {
 				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + File.separator+"metadata.json"));
-				logger.debug("New Path new of: "+srcFile.getName()+" is: "+srcFile.getAbsolutePath());
 			} else if (fileExt.equalsIgnoreCase("proto") || fileExt.equalsIgnoreCase("zip")) {
 				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + File.separator+"model." + fileExt));
-				logger.debug("New Path new of: "+srcFile.getName()+" is: "+srcFile.getAbsolutePath());
 			}
 		} catch (Exception e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
