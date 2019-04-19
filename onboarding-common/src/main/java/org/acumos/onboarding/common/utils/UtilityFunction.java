@@ -360,9 +360,11 @@ public class UtilityFunction {
 			if (fileExt.equalsIgnoreCase("json") && !(fileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME))) {
 				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\metadata.json"));
+				logger.debug("New Path new of: "+srcFile.getName()+" is: "+srcFile.getAbsolutePath());
 			} else if (fileExt.equalsIgnoreCase("proto") || fileExt.equalsIgnoreCase("zip")) {
 				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\model." + fileExt));
+				logger.debug("New Path new of: "+srcFile.getName()+" is: "+srcFile.getAbsolutePath());
 			}
 		} catch (Exception e) {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
