@@ -358,8 +358,10 @@ public class UtilityFunction {
 			String fileExt = CommonOnboarding.getExtensionOfFile(srcFile.getName());
 
 			if (fileExt.equalsIgnoreCase("json") && !(fileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME))) {
+				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\metadata.json"));
 			} else if (fileExt.equalsIgnoreCase("proto") || fileExt.equalsIgnoreCase("zip")) {
+				logger.debug("moving file "+ srcFile.getName() +" from path :"+ srcFile.getAbsolutePath() + " to " + outputFolder.getAbsolutePath());
 				srcFile.renameTo(new File(outputFolder.getAbsolutePath() + "\\model." + fileExt));
 			}
 		} catch (Exception e) {
