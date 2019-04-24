@@ -49,7 +49,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 
 	private static Logger log = LoggerFactory.getLogger(MicroserviceRestClientImpl.class);
 	LoggerDelegate logger = new LoggerDelegate(log);
-	
+
 	private final String baseUrl;
 	private final RestTemplate restTemplate;
 
@@ -91,35 +91,35 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 			logger.debug("In MicroserviceRestClientImpl(String webapiUrl) at end "+restTemplate.toString());
 	}
 
-		private URI buildUri(final String[] path, final Map<String, Object> queryParams, RestPageRequest pageRequest) {
-			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.baseUrl);
-			for (int p = 0; p < path.length; ++p)
-				builder.pathSegment(path[p]);
-			if (queryParams != null && queryParams.size() > 0) {
-				for (Map.Entry<String, ? extends Object> entry : queryParams.entrySet()) {
-					Object value = null;
-					// Server expect Date as Long.
-					if (entry.getValue() instanceof Date)
-						value = ((Date) entry.getValue()).getTime();
-					else
-						value = entry.getValue().toString();
-					builder.queryParam(entry.getKey(), value);
-				}
+	public URI buildUri(final String[] path, final Map<String, Object> queryParams, RestPageRequest pageRequest) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.baseUrl);
+		for (int p = 0; p < path.length; ++p)
+			builder.pathSegment(path[p]);
+		if (queryParams != null && queryParams.size() > 0) {
+			for (Map.Entry<String, ? extends Object> entry : queryParams.entrySet()) {
+				Object value = null;
+				// Server expect Date as Long.
+				if (entry.getValue() instanceof Date)
+					value = ((Date) entry.getValue()).getTime();
+				else
+					value = entry.getValue().toString();
+				builder.queryParam(entry.getKey(), value);
 			}
-			if (pageRequest != null) {
-				if (pageRequest.getSize() != null)
-					builder.queryParam("page", Integer.toString(pageRequest.getPage()));
-				if (pageRequest.getPage() != null)
-					builder.queryParam("size", Integer.toString(pageRequest.getSize()));
-				if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
-					for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
-						String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
-						builder.queryParam("sort", value);
-					}
-				}
-			}
-			return builder.build().encode().toUri();
 		}
+		if (pageRequest != null) {
+			if (pageRequest.getSize() != null)
+				builder.queryParam("page", Integer.toString(pageRequest.getPage()));
+			if (pageRequest.getPage() != null)
+				builder.queryParam("size", Integer.toString(pageRequest.getSize()));
+			if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
+				for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
+					String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
+					builder.queryParam("sort", value);
+				}
+			}
+		}
+		return builder.build().encode().toUri();
+	}
 
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
