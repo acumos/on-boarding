@@ -51,11 +51,12 @@ public class MetadataParser {
 	public MetadataParser(File dataFile) throws AcumosServiceException {
 		try {
 
+			logger.debug("::Parsing of metadata file started::");
 			String schemafile = null;
 
 			this.metadataJson = JsonLoader.fromFile(dataFile);
 			String schemaVersion = metadataJson.get("schema").asText();
-			System.out.println("schemaVersion: " + schemaVersion);
+			logger.debug("schemaVersion: " + schemaVersion);
 
 			if (schemaVersion.contains("1")) {
 				schemafile = "/model-schema-0.1.0.json";
