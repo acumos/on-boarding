@@ -294,7 +294,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 	- model (Required - file for model bundle model.zip to onboard, Parameter Type - formdata)
 	- metadata (Required - model.protobuf file for model to onboard, Parameter Type - formdata)
 	- schema (Required - metadata.JOSN file for model, Parameter Type - formdata)
-	- license (optional parameter - license.JSON associated with model, Parameter Type - formdata)
+	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
 	- Authorization(Optional - Authentication token or username:apitoken, Parameter Type - header)
 	- isCreateMicroservice (Optional - boolean value to trigger microservice generation, default=true, Parameter Type - header)
 	- tracking_id (Optional - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
@@ -318,10 +318,9 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 - Method = POST
 
 - data params :
-
 	
 	- model (Optional - file for model to onboard - ONNX/PFA file, Parameter Type - formdata)
-	- license (optional parameter - license.txt associated with model, Parameter Type - formdata)
+	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
 	- modelname (Required - Model Name to be used as display name, Parameter Type - header)
 	- Authorization (authentication token or username:apitoken, Parameter Type - header)
 	- isCreateMicroservice (boolean value to trigger microservice generation, default=false, Parameter Type - header)
@@ -330,7 +329,6 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 	- tracking_id (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
 	- Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS, Parameter Type - header)
 	- shareUserName (optional parameter - User Name for sharing the model as co-owner, Parameter Type - header)
-	
 
 - hostname : the hostname of the machine in which Acumos have been installed.
 
