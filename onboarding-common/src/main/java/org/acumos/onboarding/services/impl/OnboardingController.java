@@ -779,6 +779,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									"CreateSolution Successful");
 						}
 					} catch (AcumosServiceException e) {
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 						logger.error( e.getErrorCode() + "  " + e.getMessage());
 						if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
@@ -792,6 +795,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						return new ResponseEntity<ServiceResponse>(
 								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 					} catch (Exception e) {
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						logger.error( e.getMessage());
 						// Create Solution failed. Notify
 						if (onboardingStatus != null) {
@@ -889,23 +895,28 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					try {
 						UtilityFunction.deleteDirectory(outputFolder);
-						task.setSolutionId(mData.getSolutionId());
-						task.setRevisionId(mData.getRevisionId());
+						
 						if (isSuccess == false) {
-						        task.setStatusCode("FA");
-                                                        logger.debug( "MLP task updating with the values ="+task.toString());
+							task.setSolutionId(mData.getSolutionId());
+							task.setRevisionId(mData.getRevisionId());
+							task.setStatusCode("FA");
+							logger.debug("MLP task updating with the values =" + task.toString());
 							cdmsClient.updateTask(task);
-							logger.debug(
-									"Onboarding Failed, Reverting failed solutions and artifacts.");
+							logger.debug("Onboarding Failed, Reverting failed solutions and artifacts.");
 							if (metadataParser != null && mData != null) {
 								revertbackOnboarding(metadataParser.getMetadata(), mlpSolution.getSolutionId());
 							}
 						}
 
 						if (isSuccess == true) {
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.COMPLETED.name());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Advanced Model Onboarding Completed");
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.CREATED.toString());
+							
+							task.setSolutionId(mData.getSolutionId());
+							task.setRevisionId(mData.getRevisionId());
 							task.setStatusCode("SU");
-							logger.debug(
-									"MLP task updating with the values =" + task.toString());
+							logger.debug("MLP task updating with the values =" + task.toString());
 							cdmsClient.updateTask(task);
 						}
 
@@ -935,12 +946,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logThread.unset();
 						mData = null;
 					} catch (AcumosServiceException e) {
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
-								OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,
-								OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
-								HttpStatus.INTERNAL_SERVER_ERROR.toString());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						mData = null;
 						logger.error( "RevertbackOnboarding Failed");
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -950,8 +958,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				}
 			} else {
 				try {
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
-							OnboardingLogConstants.ResponseStatus.ERROR.name());
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
 					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.UNAUTHORIZED.toString());
 					logger.error( "Either Username/Password is invalid.");
@@ -965,8 +972,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		} catch (AcumosServiceException e) {
 
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
-					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 			logger.error( e.getErrorCode() + "  " + e.getMessage());
@@ -979,21 +985,24 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		} catch (HttpClientErrorException e) {
 			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
 			// invalid.
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
 				logger.debug(
 						"Unauthorized User - Either Username/Password is invalid.");
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
 						HttpStatus.UNAUTHORIZED);
 			} else {
 				logger.error( e.getMessage(), e);
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
 				return new ResponseEntity<ServiceResponse>(
 						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
 						e.getStatusCode());
 			}
 		} catch (Exception e) {
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
-					OnboardingLogConstants.ResponseStatus.ERROR.name());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
