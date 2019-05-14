@@ -32,21 +32,51 @@ The goal of Onboarding is to provide an ingestion interface, by web or CLI(comma
 for various types of models and to create required artifacts and identifiers to enter the  Acumos
 machine learning platform.
 
-On-boarding allows user to create containerized microservice at the end of the on-boarding process
-for models developped in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow,
-H2O, and R. If user choose to not create the microservice during on-boarding he can create it later.
+#. Legacy models
 
-In short, our goals are to generate or provide all the necessary materials required to use the models
-with the others components of Acumos like :
+ As for Athena release, in Boreas you can on-board models developped in Java 8 or 9, Python>=3.5, <3.7,
+ R>=3.4.4 and sourced from toolkits such as Scikit, TensorFlow, H2O, and R. But in Boreas you can choose
+ to create or not the microservice at the end of the on-boarding process. If user choose to not create
+ the microservice at teh end of on-boarding he can create it later.
 
-- Tosca file for Design studio
+ In short, our goals for these kinds of models are to generate or provide all the necessary materials
+ required to use these kinds of models with the others components of Acumos like:
 
-- Represent model I/O such for microservice generation
+ - Tosca file for Design studio
+ - Represent model I/O such for microservice generation
+ - SolutionID for CDS
+ - Licence file for licensing management
 
-- SolutionID for CDS
+#. Since Boreas, we are able to on-board news kinds of model like :
 
-- Licence file
+ - model in onnx format : model.onnx
+ - model in pfa format : model.pfa
+ - Dockerized model : model dockerised by Data scientist himself
+ - Docker model URI : URI of Dockerized model stored in external repo like Docker-Hub for example
 
+ For this new kinds of model, Micro service generation and Design studio capabilities are not available.
+
+#. Acumos capabilities by models type
+
+ This table sum-up all the Acumos capabilities available for each kinds of model
+
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ |   Model          | Micro-service generation | Design studio | Market place | on-board with license |on-boarding  |
+ +==================+==========================+===============+==============+=======================+=============+
+ | R model          | Available                |Available      |Available     |Available              | Web and CLI | 
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | Pyhton model     | Available                |Available      |Available     |Available              | Web and CLI |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | Java model       | Available                |Available      |Available     |Available              | Web and CLI |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | ONNX model       | Not available            |Not available  |Available     |Available              | Web only    |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | PFA model        | Not available            |Not available  |Available     |Available              | Web only    |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | Dockerized model | Not applicable           |Not available  |Available     |Not available          | Web only    |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ | URI model        | Not applicable           |Not applicable |Available     |Available              | Web only    |
+ +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
 
 **2: Target Users**
 -------------------
@@ -60,17 +90,14 @@ This guide is targeted towards the open source user community that:
 **3: Assumptions**
 ------------------
 
-It is assumed that the ML Models contributed by the open source community :
+It is assumed that the ML Models contributed by the open source community an created under Java 8 or
+9, Python>=3.5, <3.7 or R>=3.4.4  :
 
 1. Provide the basic request response style of communication.
 
-2. Can be converted in Microservices
+2. Can be converted in Microservices.
 
 3. Are capable of communicating via Http REST mechanism.
-
-4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
-and R or are developped in many others language and toolkits and converted into one of the two
-following model interchange format : ONNX or PFA.
 
 **4: Onboarding High level Design Architecture**
 ------------------------------------------------
@@ -78,64 +105,50 @@ Below is high-level flow of model onboarding
 
 |image1|
 
-For model developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
-and R, the modeler will use the Acumos client library to create some artifacts and embeded them with
-the model in a model bundle. This model bundle can be pushed to the paltform by using On-boarding web
-page or by using command line (CLI) thanks to REST interface exposed by the Acumos onboarding server
-and used by Acumos client library.
+For models developed in Java, Python and R the data scientist will use the Acumos client library to
+create some artifacts embeded them in a model bundle. This model bundle can be pushed to the platform
+by using WEB on-boarding or command line (CLI) thanks to REST interface exposed by the Acumos
+onboarding server.
 
 |image1bis|
 
 For model in a model interchange format like ONNX and PFA only web interface is useable to upload
-them in the platform. For the moment micro-service generation is not triggered for thee two kinds 
-of on-boarding.
+them in the platform. For the moment micro-service generation cannot be triggered for ONNX and PFA
+models. 
 
 |image1ter|
 
-For model Dockerized and store in repo outside Acumos (like for xample ockr hub) you can save the model
-URI in Acumos. You can also stored the docker image of your model in Acumos
+For model Dockerized and store in repo outside Acumos (like for example Docker hub) you can save the
+model URI in Acumos. You can also dockerized your models by yourself and on-board them in Acumos.
 
+**5: Onboarding Low Level Design for R, Java, Python, ONNX and PFA models**
+---------------------------------------------------------------------------
 
-
-
-**5: Onboarding Low Level Design**
-----------------------------------
-
-Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o,
-Keras or Tensorflow. Modeller uses Acumos-client-library specific to the toolkit type to push the
-model to Acumos platform. The client library pushes the model bundle composed of model binary,
-metadata file and protobuf definition for model input/output and model method to Acumos onboarding
-server. The onboarding server invokes TOSCA generator to generate TOSCA files for the model and uploads
-these to Nexus. Onboarding server authenticates incoming request and then pushes model artifacts to
-nexus docker registry. By default micro-service is created but modelers have the possibility to skip
-this step and do it later . When Onboarding server invokes microservice generation API to generate
-docker image for the model, the microservice generation component creates docker image and uploads
-it in Nexus docker repository.
+For models created with R, Java or Python, Data scientists must use Acumos-client-library specific
+to the toolkit type to push the model to Acumos platform. The client library creates first the model
+bundle composed of model binary, metadata file and protobuf definition for model input/output. Then
+data scientists can choose to onboard the model bundle by WEB on-boarding or CLI on-boarding
+(Common Line Interface). The onboarding server invokes TOSCA generator to generate TOSCA files for the
+model and uploads these to Nexus. Onboarding server authenticates incoming request and then pushes
+model artifacts to nexus docker registry. By default micro-service is created but modelers have the
+possibility to skip this step and do it later . When Onboarding server invokes microservice generation
+API to generate docker image for the model, the microservice generation component creates docker image
+and uploads it in Nexus docker repository.
 
 For models in a model interchange format like ONNX or PFA, only web onboarding can be used as there
 is no specific Acumos-client-library for these kinds of models. In that case, modeller has to use the
 web onboarding interface to upload their model. Onboarding server authenticates incoming request and
 then pushes the model to nexus.
 
+Data scientists can also on-board a license file (license.json) that will be part of the models artefacts.
+After onboarding the model with license, the artifacts will show license file with name "license.json"
+even if user has uploaded the license file with different name
+
+- Architecture diagramm for R, Java, Python, ONNX and PFA models
+
 |image0|
 
-
-Modeler/Data scientist can also create models in the languague of their choice then dockerized their
-models themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds
-of models the microservice generation process is not triggered. Below is the low level dsign for these
-models.
-
-|image0bis|
-
-Whatever the kinds of models :
-
-- Modeler can upload a licence file associated to their model during Web or CLI onboarding.
-- New solution is created in common database for a new model.
-- Existing solution is updated with, a new revision. Revision is updated with artefact details and
-those artefacts are uploaded to nexus maven repository.
-
-**6: Onboarding Use Case**
---------------------------
+- On-boarding use case
 
 Below, the data scientist’s model is wrapped to produce a standardized native model. Depending on
 the input model, only a subset of standard model interfaces may be supported.
@@ -146,8 +159,7 @@ improve the wrapper independently of Acumos.
 
 |image3|
 
-**7 Onboarding Model Artifact**
--------------------------------
+- On-boarding Model Artefact
 
 Model artifacts must provide sufficient metadata that enables Acumos to instantiate runtimes,
 generate microservices, and validate microservice compositions. The proposed solution is to split
@@ -177,7 +189,32 @@ By splitting the artifact into public and private pieces, the wrapper library ha
 
 |image4|
 
-**8 Onboarding Setup**
+
+
+**6: Onboarding Low Level Design for Dockerized model and Dockerized model URI**
+--------------------------------------------------------------------------------
+
+Data scientist can also create models in the language of their choice then dockerized their models
+themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds of
+models the microservice generation process is not triggered. Below is the low level design for these
+models.
+
+Data scientists can on-board a license, in the same way as previously explained, only with the Dockerized
+model URI as we assume that for Dockerized model the license has been embeded in the Docker image.
+
+- Architecture diagramm for Dockerized model and Dockerized model URI
+
+
+|image0bis|
+
+
+Whatever the kinds of models :
+
+- New solution is created in common database for a new model.
+- Existing solution is updated with, a new revision. Revision is updated with artefact details and
+those artefacts are uploaded to nexus maven repository.
+
+**7: Onboarding Setup**
 ----------------------
 
 Steps:
@@ -189,11 +226,10 @@ by using below clone command:
 
 git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
 
-or by ssh
-
-git clone ssh://<GERRIT_USER_NAME>@gerrit.acumos.org:29418/on-boarding
+or by ssh git clone ssh://<GERRIT_USER_NAME>@gerrit.acumos.org:29418/on-boarding
 
 2. After cloning import this project in your recommended IDE like STS.
+
 
 3. Take the maven update so that you can download all the required dependencies for the Onboarding
 Project.
@@ -203,7 +239,7 @@ we need to set the Environment Variables in our IDE tool for local testing and i
 the environment variables once you deployed your code on the dev or IST server than you need to set
 all the environment variables in system-integration Project.
 
-**9: Onboarding Technology & Framework**
+**8: Onboarding Technology & Framework**
 ----------------------------------------
 
 -  Java 1.8
@@ -214,7 +250,7 @@ all the environment variables in system-integration Project.
 
 -  Docker Java Library
 
-**10: Onboarding – Code Walkthrough & details**
+**9: Onboarding – Code Walkthrough & details**
 -----------------------------------------------
 
 In Onboarding project we have template folder under resources where we are putting all the Docker
@@ -232,7 +268,7 @@ accordingly. In this way we’ll Onboard Model by using this Onboarding Platform
 Note: Make sure the Docker is installed in the local Machine before try to Onboard the model in by
 using our local machine Environment.
 
-**11: Onboarding – Model Validation Workflow**
+**10: Onboarding – Model Validation Workflow**
 ----------------------------------------------
 
 Following steps needs to be executed as part of model validation workflow:
@@ -245,7 +281,7 @@ Following steps needs to be executed as part of model validation workflow:
 -  The input metadata JSON features will be send to predict API exposed by model docker image and
    output of predict method will be returned as API output.
 
-**12: Onboarding Backend API**
+**11: Onboarding Backend API**
 ------------------------------
 
 **Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
@@ -265,7 +301,7 @@ Portal Webonboarding will  pass access_token = username:apitoken in the header  
 Request to Onboarding Onboarding will use the Header Info to get the Username + apitoken
 
 
-**Authentication API** : This API provides the basic authentication prior to Onboard any model.
+**Authentication API** : This API provides a JWT token that can be used to onboard a model
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
 
@@ -293,9 +329,9 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 	- model (Required - file for model bundle model.zip to onboard, Parameter Type - formdata)
 	- metadata (Required - model.protobuf file for model to onboard, Parameter Type - formdata)
-	- schema (Required - metadata.JOSN file for model, Parameter Type - formdata)
+	- schema (Required - metadata.json file for model, Parameter Type - formdata)
 	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
-	- Authorization(Optional - Authentication token or username:apitoken, Parameter Type - header)
+	- Authorization(Optional - jwt token or username:apitoken, Parameter Type - header)
 	- isCreateMicroservice (Optional - boolean value to trigger microservice generation, default=true, Parameter Type - header)
 	- tracking_id (Optional - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
 	- provider (Optional - for portal authentication, Parameter Type - header)
@@ -322,7 +358,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 	- model (Optional - file for model to onboard - ONNX/PFA file, Parameter Type - formdata)
 	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
 	- modelname (Required - Model Name to be used as display name, Parameter Type - header)
-	- Authorization (authentication token or username:apitoken, Parameter Type - header)
+	- Authorization (jwt token or username:apitoken, Parameter Type - header)
 	- isCreateMicroservice (boolean value to trigger microservice generation, default=false, Parameter Type - header)
 	- dockerfileURL (Optional - if docker URL is given then file is not necessary, Parameter Type - header)
 	- provider (optional parameter - for portal authentication, Parameter Type - header)
