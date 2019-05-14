@@ -32,9 +32,39 @@ The goal of Onboarding is to provide an ingestion interface, by web or CLI(comma
 for various types of models and to create required artifacts and identifiers to enter the  Acumos
 machine learning platform.
 
-On-boarding allows user to create containerized microservice at the end of the on-boarding process
-for models developped in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow,
-H2O, and R. If user choose to not create the microservice during on-boarding he can create it later.
+Since Boreas, we are able to on-board news kinds of model like : 
+
+- model in onnx format : model.onnx
+- model in pfa format : model.pfa
+- Dockerized model : model dockerised by Data scientist himself
+- Docker model URI : URI of Dockerized model stored in external repo like Docker-Hub for example
+
+For this new kinds of model, Micro service generation and Design studio capabilities are not available.
+
+For models developped in Java, Python>=3.5, <3.7, R>=3.4.4 and sourced from toolkits such as
+Scikit, TensorFlow, H2O, and R, on-boarding allows user to create, or not a microservice at the end
+of the on-boarding process. If user choose to not create the microservice during on-boarding he
+can create it later.
+
+
+
+
+|   Model          | Micro-service generation | Design studio | Market place | on-board with license |
++==================+==========================+===============+==============+=======================+
+| R model          | Available                |Available      |Available     |Available              | 
++------------------+--------------------------+---------------+--------------+-----------------------+
+| Pyhton model     | Available                |Available      |Available     |Available              |
++-----------+------+--------------------------+---------------+--------------+-----------------------+
+| Java model       | Available                |Available      |Available     |Available              |
++------------------+--------------------------+---------------+--------------+-----------------------+
+| ONNX model       |
++-----------------------------------------------------------------------------------------------------
+| PFA model        |
++-----------------------------------------------------------------------------------------------------
+| Dockerized model |
++-----------------------------------------------------------------------------------------------------
+| URI model        |
++-----------------------------------------------------------------------------------------------------
 
 In short, our goals are to generate or provide all the necessary materials required to use the models
 with the others components of Acumos like :
@@ -45,7 +75,7 @@ with the others components of Acumos like :
 
 - SolutionID for CDS
 
-- Licence file
+- Licence file for licensing management
 
 
 **2: Target Users**
@@ -64,13 +94,11 @@ It is assumed that the ML Models contributed by the open source community :
 
 1. Provide the basic request response style of communication.
 
-2. Can be converted in Microservices
+2. Can be converted in Microservices.
 
 3. Are capable of communicating via Http REST mechanism.
 
-4. Are developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
-and R or are developped in many others language and toolkits and converted into one of the two
-following model interchange format : ONNX or PFA.
+4. Are developed in Java, Python >=3.5, <3.7, R>=3.4.4  and sourced from toolkits such as Scikit, TensorFlow, H2O, and R or are developped in many others language and toolkits and converted into one of the two following model interchange format : ONNX or PFA.
 
 **4: Onboarding High level Design Architecture**
 ------------------------------------------------
@@ -78,58 +106,69 @@ Below is high-level flow of model onboarding
 
 |image1|
 
-For model developed in Java, Python 3.0, R and sourced from toolkits such as Scikit, TensorFlow, H2O,
-and R, the modeler will use the Acumos client library to create some artifacts and embeded them with
-the model in a model bundle. This model bundle can be pushed to the paltform by using On-boarding web
-page or by using command line (CLI) thanks to REST interface exposed by the Acumos onboarding server
-and used by Acumos client library.
+For models developed in Java, Python and R the modeler will use the Acumos client library to create some
+artifacts embeded them in a model bundle. This model bundle can be pushed to the platform by using WEB
+on-boarding or command line (CLI) thanks to REST interface exposed by the Acumos onboarding server and
+used by Acumos client library.
 
 |image1bis|
 
 For model in a model interchange format like ONNX and PFA only web interface is useable to upload
-them in the platform. For the moment micro-service generation is not triggered for thee two kinds 
-of on-boarding.
+them in the platform. For the moment micro-service generation cannot be triggered for ONNX and PFA
+models.
 
 |image1ter|
 
-For model Dockerized and store in repo outside Acumos (like for xample ockr hub) you can save the model
-URI in Acumos. You can also stored the docker image of your model in Acumos
-
-
-
+For model Dockerized and store in repo outside Acumos (like for example Docker hub) you can save the model
+URI in Acumos. You can also dockerized your models by yourself and on-board them in Acumos.
 
 **5: Onboarding Low Level Design**
 ----------------------------------
 
-Modeller/Data scientist creates model using some machine learning toolkit like scikit-learn, R, H2o,
-Keras or Tensorflow. Modeller uses Acumos-client-library specific to the toolkit type to push the
-model to Acumos platform. The client library pushes the model bundle composed of model binary,
-metadata file and protobuf definition for model input/output and model method to Acumos onboarding
-server. The onboarding server invokes TOSCA generator to generate TOSCA files for the model and uploads
-these to Nexus. Onboarding server authenticates incoming request and then pushes model artifacts to
-nexus docker registry. By default micro-service is created but modelers have the possibility to skip
-this step and do it later . When Onboarding server invokes microservice generation API to generate
-docker image for the model, the microservice generation component creates docker image and uploads
-it in Nexus docker repository.
+-- R, Java, Python, ONNX and PFA models
+
+For models created with R, Java or Python, Data scientists must  use Acumos-client-library specific
+to the toolkit type to push the modelto Acumos platform. The client library creates first the model
+bundle composed of model binary, metadata file and protobuf definition for model input/output. Then
+data scientists can choose to onboard the model bundle by WEB on-boarding or CLI on-boarding
+(Common Line Interface). The onboarding server invokes TOSCA generator to generate TOSCA files for the
+model and uploads these to Nexus. Onboarding server authenticates incoming request and then pushes
+model artifacts to nexus docker registry. By default micro-service is created but modelers have the
+possibility to skip this step and do it later . When Onboarding server invokes microservice generation
+API to generate docker image for the model, the microservice generation component creates docker image
+and uploads it in Nexus docker repository.
 
 For models in a model interchange format like ONNX or PFA, only web onboarding can be used as there
 is no specific Acumos-client-library for these kinds of models. In that case, modeller has to use the
 web onboarding interface to upload their model. Onboarding server authenticates incoming request and
 then pushes the model to nexus.
 
+Data scientists can also on-board a license file (license.json) that will be part of the models artefacts.
+After onboarding the model with license, the artifacts will show license file with name "license.json"
+even if user has uploaded the license file with different name
+
+- Architecture diagramm for R, Java, Python, ONNX and PFA models
+
 |image0|
 
+-- Dockerized model and Dockerized model URI
 
-Modeler/Data scientist can also create models in the languague of their choice then dockerized their
-models themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds
-of models the microservice generation process is not triggered. Below is the low level dsign for these
+Data scientist can also create models in the languague of their choice then dockerized their models
+themselves and onboard these dockerized models or dockerized model URI. Of course for these kinds of
+models the microservice generation process is not triggered. Below is the low level design for these
 models.
+
+Data scientists can on-board a license, in the same way as previously explained, only with the Dockerized
+model URI as we assume that for Dockerized model the license has been embeded in the Docker image.
+
+- Architecture diagramm for Dockerized model and Dockerized model URI
+
 
 |image0bis|
 
+
 Whatever the kinds of models :
 
-- Modeler can upload a licence file associated to their model during Web or CLI onboarding.
 - New solution is created in common database for a new model.
 - Existing solution is updated with, a new revision. Revision is updated with artefact details and
 those artefacts are uploaded to nexus maven repository.
