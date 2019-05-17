@@ -61,9 +61,9 @@ machine learning platform.
  This table sum-up all the Acumos capabilities available for each kinds of model
 
  +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- |   Model          | Micro-service generation | Design studio | Market place | on-board with license |on-boarding  |
+ |   Model          | Micro-service generation | Design studio | Market place | on-board with license |onboarding   |
  +==================+==========================+===============+==============+=======================+=============+
- | R model          | Available                |Available      |Available     |Available              | Web and CLI | 
+ | R model          | Available                |Available      |Available     |Available              | Web and CLI |
  +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
  | Pyhton model     | Available                |Available      |Available     |Available              | Web and CLI |
  +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
@@ -114,12 +114,12 @@ onboarding server.
 
 For model in a model interchange format like ONNX and PFA only web interface is useable to upload
 them in the platform. For the moment micro-service generation cannot be triggered for ONNX and PFA
-models. 
+models.
 
 |image1ter|
 
-For model Dockerized and store in repo outside Acumos (like for example Docker hub) you can save the
-model URI in Acumos. You can also dockerized your models by yourself and on-board them in Acumos.
+For model Dockerized and stored in repo outside Acumos (like for example Docker hub) you can save the
+model URI in Acumos. You can also dockerize your models by yourself and on-board them in Acumos.
 
 **5: Onboarding Low Level Design for R, Java, Python, ONNX and PFA models**
 ---------------------------------------------------------------------------
@@ -230,7 +230,6 @@ or by ssh git clone ssh://<GERRIT_USER_NAME>@gerrit.acumos.org:29418/on-boarding
 
 2. After cloning import this project in your recommended IDE like STS.
 
-
 3. Take the maven update so that you can download all the required dependencies for the Onboarding
 Project.
 
@@ -319,7 +318,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 
 
-**Push model bundle API** : This API is used for upload the model bundle in Acumos
+**Push model bundle API** : This API is used to on-board the model bundle in Acumos for R, Python or Java models by WEB or CLI on-boarding
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
 
@@ -347,14 +346,14 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 - Description : Upload the model bundle on the on-boarding server.
 
 
-**Push model API** : This API is used by web onboarding only to upload ONNX and PFA models in Acumos
+**Push model API** : This API is used by web onboarding only to upload ONNX/PFA or Dockerized models in Acumos
 
 - URL = http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
 
 - Method = POST
 
 - data params :
-	
+
 	- model (Optional - file for model to onboard - ONNX/PFA file, Parameter Type - formdata)
 	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
 	- modelname (Required - Model Name to be used as display name, Parameter Type - header)
@@ -375,7 +374,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
-   :width: 5.64583in
+   :width: 5.64583inlicense (optional parameter - license.json associated with model, Parameter Type - formdata)
    :height: 5.55208in
 .. |image1| image:: ./media/HighLevelFlow.png
    :width: 7.26806in
