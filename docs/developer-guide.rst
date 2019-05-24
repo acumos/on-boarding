@@ -140,9 +140,13 @@ is no specific Acumos-client-library for these kinds of models. In that case, mo
 web onboarding interface to upload their model. Onboarding server authenticates incoming request and
 then pushes the model to nexus.
 
-Data scientists can also on-board a license file (license.json) that will be part of the models artefacts.
-After onboarding the model with license, the artifacts will show license file with name "license.json"
-even if user has uploaded the license file with different name
+You can on-board your model with a license. Whatever the case, CLI or WEB on-boarding, if the license
+file extension is not 'json' the license on-boarding will not be possible and if the name is not
+'license' Acumos will rename your license file as license.json and you will see your license file as
+"license-1.json" in the artifacts table. If you upload a new version of your license through the portal,
+the license number revision will be increased by one like that "license-2.json". To help user create
+the license file expected by Acumos a license editor is available on the web :
+`Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
 
 - Architecture diagramm for R, Java, Python, ONNX and PFA models
 
@@ -207,6 +211,8 @@ model URI as we assume that for Dockerized model the license has been embeded in
 
 |image0bis|
 
+On-boarding with license is only possible for Dockerized model URI, with the same rules explained above,
+as we assume that modelers will embed their licence in their Docker image for the Dockerized model.
 
 Whatever the kinds of models :
 
@@ -215,7 +221,7 @@ Whatever the kinds of models :
 those artefacts are uploaded to nexus maven repository.
 
 **7: Onboarding Setup**
-----------------------
+-----------------------
 
 Steps:
 
