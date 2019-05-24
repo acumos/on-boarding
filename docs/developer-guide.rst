@@ -249,38 +249,38 @@ all the environment variables in system-integration Project.
 
 -  Docker Java Library
 
-**9: Onboarding – Code Walkthrough & details**
------------------------------------------------
+.. **9: Onboarding – Code Walkthrough & details**
+.. -----------------------------------------------
 
-In Onboarding project we have template folder under resources where we are putting all the Docker
-file with some other dependencies for different Models like h20,java_argus,java_genric,,python,r ,etc.
+.. In Onboarding project we have template folder under resources where we are putting all the Docker
+.. file with some other dependencies for different Models like h20,java_argus,java_genric,,python,r ,etc.
 
-For example:
+.. For example:
 
-For Onboarding H20 model we have the h20 Docker file and requirement.txt file attached below inside
-h20 folder.
+.. For Onboarding H20 model we have the h20 Docker file and requirement.txt file attached below inside
+.. h20 folder.
 
-Onboarding code understands this Docker file related to particular model line by line it reads the
-commands and performs the action accordingly. It will download all the required dependences
-accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
+.. Onboarding code understands this Docker file related to particular model line by line it reads the
+.. commands and performs the action accordingly. It will download all the required dependences
+.. accordingly. In this way we’ll Onboard Model by using this Onboarding Platform.
 
-Note: Make sure the Docker is installed in the local Machine before try to Onboard the model in by
-using our local machine Environment.
+.. Note: Make sure the Docker is installed in the local Machine before try to Onboard the model in by
+.. using our local machine Environment.
 
-**10: Onboarding – Model Validation Workflow**
-----------------------------------------------
+.. **10: Onboarding – Model Validation Workflow**
+.. ----------------------------------------------
 
-Following steps needs to be executed as part of model validation workflow:
+.. Following steps needs to be executed as part of model validation workflow:
 
--   Onboarding server will expose an REST API for validating the model. The REST API will take
+.. -   Onboarding server will expose an REST API for validating the model. The REST API will take
     solutionID and metadata JSON containing model features as input parameters
 
--  The server will fetch the docker image details for the corresponding solution and run the modelimage.
+.. -  The server will fetch the docker image details for the corresponding solution and run the modelimage.
 
--  The input metadata JSON features will be send to predict API exposed by model docker image and
+.. -  The input metadata JSON features will be send to predict API exposed by model docker image and
    output of predict method will be returned as API output.
 
-**11: Onboarding Backend API**
+**9: Onboarding Backend API**
 ------------------------------
 
 **Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
@@ -348,7 +348,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 **Push model API** : This API is used by web onboarding only to upload ONNX/PFA or Dockerized models in Acumos
 
-- URL = http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
+- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
 
 - Method = POST
 
