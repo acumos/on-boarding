@@ -252,12 +252,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				if (license != null && !license.isEmpty()) {
 					String licenseFileName = license.getOriginalFilename();
-					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-						logger.debug( "License file name= "+licenseFileName+ " should be license.json");
-						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
-						//logger.debug( "Provided license file name "+licenseFileName+ " changed to license.txt");
-						//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
+
+					if (!licenseFileExtension.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
+						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								OnboardingConstants.LICENSE_FILENAME_ERROR + ". Original File : " + licenseFileName),
+								HttpStatus.BAD_REQUEST);
+					}
+
+					if (!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
+						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
 
 					licenseFile = new File(outputFolder, licenseFileName);
@@ -475,11 +482,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 
 						if (isSuccess == true) {
-							
+
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Onboarding Completed");
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.CREATED.toString());
-							
+
 							task.setSolutionId(mData.getSolutionId());
 							task.setRevisionId(mData.getRevisionId());
 							task.setStatusCode("SU");
@@ -699,12 +706,22 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File licenseFile = null;
 
 				if (license != null && !license.isEmpty()) {
-                    String licenseFileName = license.getOriginalFilename();
-					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-						logger.debug( "License file name= "+licenseFileName+ " should be license.json");
-						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
+					String licenseFileName = license.getOriginalFilename();
+					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
+
+					if (!licenseFileExtension.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
+						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								OnboardingConstants.LICENSE_FILENAME_ERROR + ". Original File : " + licenseFileName),
+								HttpStatus.BAD_REQUEST);
 					}
+
+					if (!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
+						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					}
+
 					licenseFile = new File(outputFolder, licenseFileName);
 					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 				}
@@ -816,7 +833,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									HttpStatus.INTERNAL_SERVER_ERROR);
 						}
 					}
-					
+
 					String dockerImageUri = null;
 					logger.debug("model type="+modelType);
 					artifactsDetails = getArtifactsDetails();
@@ -895,7 +912,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 					try {
 						UtilityFunction.deleteDirectory(outputFolder);
-						
+
 						if (isSuccess == false) {
 							task.setSolutionId(mData.getSolutionId());
 							task.setRevisionId(mData.getRevisionId());
@@ -912,7 +929,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.COMPLETED.name());
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Advanced Model Onboarding Completed");
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.CREATED.toString());
-							
+
 							task.setSolutionId(mData.getSolutionId());
 							task.setRevisionId(mData.getRevisionId());
 							task.setStatusCode("SU");
@@ -1018,14 +1035,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		}
    }
 
-	
+
 	/**
 	 *  This method returns model type
 	 * @param model
 	 * @return model type
 	 */
 	private String getModelType(MultipartFile model) {
-		
+
 		String modelType;
 		if (model != null && !model.isEmpty()) {
 
@@ -1045,9 +1062,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			modelType = "other";
 			logger.debug( "ModelType is " + modelType);
 		}
-		
+
 		return modelType;
-	
+
 	}
 
 	private Map<String, String> getArtifactsDetails() {
