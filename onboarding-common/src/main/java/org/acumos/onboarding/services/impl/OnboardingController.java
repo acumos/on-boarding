@@ -252,12 +252,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 				if (license != null && !license.isEmpty()) {
 					String licenseFileName = license.getOriginalFilename();
-					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-						logger.debug( "License file name= "+licenseFileName+ " should be license.json");
-						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
-						//logger.debug( "Provided license file name "+licenseFileName+ " changed to license.txt");
-						//licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
+
+					if (!licenseFileExtension.equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
+						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								OnboardingConstants.LICENSE_FILENAME_ERROR + ". Original File : " + licenseFileName),
+								HttpStatus.BAD_REQUEST);
+					}
+
+					if (!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
+						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
 
 					licenseFile = new File(outputFolder, licenseFileName);
@@ -699,12 +706,22 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File licenseFile = null;
 
 				if (license != null && !license.isEmpty()) {
-                    String licenseFileName = license.getOriginalFilename();
-					if(!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
-						logger.debug( "License file name= "+licenseFileName+ " should be license.json");
-						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(OnboardingConstants.BAD_REQUEST_CODE, OnboardingConstants.LICENSE_FILENAME_ERROR), HttpStatus.BAD_REQUEST);
+					String licenseFileName = license.getOriginalFilename();
+					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
+
+					if (!licenseFileExtension.equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
+						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								OnboardingConstants.LICENSE_FILENAME_ERROR + ". Original File : " + licenseFileName),
+								HttpStatus.BAD_REQUEST);
 					}
+
+					if (!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
+						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
+						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
+					}
+
 					licenseFile = new File(outputFolder, licenseFileName);
 					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 				}
