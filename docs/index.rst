@@ -25,6 +25,7 @@ On-Boarding
 
        release-notes
        developer-guide
-       api-doc.rst
+       api-docs.rst
        onboarding-ONNX-PFA-guide.rst
        onboarding-pre_dockerised_and_URI_guide.rst
+
