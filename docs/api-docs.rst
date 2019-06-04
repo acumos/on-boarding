@@ -33,7 +33,7 @@ API Group 1
 ===========
 
 **Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
-used to onboard a model
+used to onboard a model.
 
 - Portal will expose  validateApiToken
 
@@ -130,5 +130,5 @@ You an include your API JSON file either by pointing to a URL or by pointing to 
 
 .. code:: restructuredtext
 
-    .. swaggerv2doc:: ../swagger-api-docs.json
+    .. swaggerv2doc:: file:///../swagger-api-docs.json
 
