@@ -33,7 +33,7 @@ API Group 1
 ===========
 
 **Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
-used to onboard a model
+used to onboard a model.
 
 - Portal will expose  validateApiToken
 
