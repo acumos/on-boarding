@@ -33,7 +33,7 @@ API Group 1
 ===========
 
 **Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
-used to onboard a model
+used to onboard a model.
 
 - Portal will expose  validateApiToken
 
@@ -121,14 +121,13 @@ API Group 2
 
 
 
-Including a Swagger File
-========================
+Swagger
+=======
 
-Acumos uses `Swagger <https://swagger.io/>`_ to generate dynamic API docs. However, to read the docs you must have access to the Swagger server running on your Acumos instance. This can be inconvenient, so the Docs project uses a Sphinx plugin called `sphinx-swaggerdoc <https://github.com/unaguil/sphinx-swaggerdoc/>`_, which provides an RST directive to render a ``swagger.json`` file. The sphinx-swaggerdoc extension is defined in the Documentation project's ``conf.py`` file.
+You can also access to the on-boarding swagger API thanks to the following URL
 
-You an include your API JSON file either by pointing to a URL or by pointing to a file. This example uses a local file called ``example-swagger.json``.  See the `sphinx-swaggerdoc <https://github.com/unaguil/sphinx-swaggerdoc/>`_ for more examples.
+.. code:: bash
 
-.. code:: restructuredtext
+   https://{ACUMOS_DOMAIN}:{ACUMOS_KONG_PROXY_SSL_PORT}/onboarding-app/swagger-ui.html
 
-    .. swaggerv2doc:: ../swagger-api-docs.json
-
+where {ACUMOS_DOMAIN} and {ACUMOS_KONG_PROXY_SSL_PORT} value can be found in system-integration/AIO/acumos_env.sh file
