@@ -17,8 +17,6 @@
 .. ===============LICENSE_END=========================================================
 .. PLEASE REMEMBER TO UPDATE THE LICENSE ABOVE WITH YOUR COMPANY NAME AND THE CORRECT YEAR
 
-.. _api-docs-template:
-
 ==================================
 Application Programming Interfaces
 ==================================
@@ -132,10 +130,5 @@ You an include your API JSON file either by pointing to a URL or by pointing to 
 
 .. code:: restructuredtext
 
-    .. swaggerv2doc:: swagger-api-docs.json
+    .. swaggerv2doc:: ../swagger-api-docs.json
 
-
-Example of Rendered Content From api-docs.json File
-===================================================
-
-`https://docs.acumos.org/en/latest/docs-contributor-guide/templates/swaggerv2doc-example-output.html <https://docs.acumos.org/en/latest/docs-contributor-guide/templates/swaggerv2doc-example-output.html>`_
