@@ -27,23 +27,31 @@ Acumos allows users to onboard their docker image models. Each model dockerised 
 modelers can be onboarded in Acumos. You just have to use the "Onboard dockerised model" panel in
 the "on-boarding model" page of the Acumos portal. In this panel just type the name of the model and
 you will received the Acumos image reference to be used to push your docker image model in Acumos.
-This Acumos image reference looks like : 
+This Acumos image reference looks like :
 
-<acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
+.. code:: bash
 
-Then users have to follows th thre steps depicted here : 
+    <acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
+
+Then users have to follow the three steps depicted here :
 
 1 : Authenticate in the Acumos docker registry
 
-docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
+.. code:: bash
+
+    docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
 
 2 : Tag the docker image model with the Acumos image reference
 
-docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code:: bash
+
+    docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 3 : Push the model in Acumos
 
-docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code:: bash
+
+    docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 The process of on-boarding a docker image model in Acumos is reduced to create a solution Id and
 upload the model. There are no micro-service, nor tosca file, nor metadata file, nor protobuf file
@@ -59,7 +67,14 @@ been previously stored by modelers in docker repo like Docker Hub for example, m
 use the "Onboard dockerised model URI" panel in the "on-boarding model" page of the Acumos portal.
 In this panel, type the name of the model and the Host, optionally you can fill the port an the tag.
 
-It is also possible to on-board a licence file (license.json) associated with this docker URI model.
+It is also possible to on-board a licence file associated with your docker URI model. Just drag and
+drop or browse your licence file to on-board it. The license file name must be "license.json", if the
+license file extension is not 'json' the license on-boarding will not be possible and if the name is
+not 'license' Acumos will rename your license file as license.json and you will see your license file
+named as license.json in the artifacts table. If you upload a new version of your license after
+on-boarding, a number revision will be added to the name of your license file like : "license-2.json".
+To help user create the license file expected by Acumos a license editor is available on the web
+: `Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
 
 The process of on-boarding a docker URI model in Acumos is reduced to create a solution Id, save the
 URI and if needed associate a license file with this URI. There are no micro-service, nor tosca file
