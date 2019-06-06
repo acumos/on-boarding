@@ -29,21 +29,29 @@ the "on-boarding model" page of the Acumos portal. In this panel just type the n
 you will received the Acumos image reference to be used to push your docker image model in Acumos.
 This Acumos image reference looks like : 
 
-<acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
+.. code-block::
+
+    <acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
 
 Then users have to follows th thre steps depicted here : 
 
 1 : Authenticate in the Acumos docker registry
 
-docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
+.. code-block::
+
+    docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
 
 2 : Tag the docker image model with the Acumos image reference
 
-docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code-block::
+
+    docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 3 : Push the model in Acumos
 
-docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code-block::
+
+    docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 The process of on-boarding a docker image model in Acumos is reduced to create a solution Id and
 upload the model. There are no micro-service, nor tosca file, nor metadata file, nor protobuf file
