@@ -27,23 +27,31 @@ Acumos allows users to onboard their docker image models. Each model dockerised 
 modelers can be onboarded in Acumos. You just have to use the "Onboard dockerised model" panel in
 the "on-boarding model" page of the Acumos portal. In this panel just type the name of the model and
 you will received the Acumos image reference to be used to push your docker image model in Acumos.
-This Acumos image reference looks like : 
+This Acumos image reference looks like :
 
-<acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
+.. code:: bash
 
-Then users have to follows th thre steps depicted here : 
+    <acumos_domain>:<docker_proxy_port>/modelname_soultion_id:tag
+
+Then users have to follows th thre steps depicted here :
 
 1 : Authenticate in the Acumos docker registry
 
-docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
+.. code:: bash
+
+    docker login https://<acumos_domain>:<docker_proxy_port> -u <acumos_userid> -p <acumos_password>
 
 2 : Tag the docker image model with the Acumos image reference
 
-docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code:: bash
+
+    docker tag my_image_model <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 3 : Push the model in Acumos
 
-docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
+.. code:: bash
+
+    docker push <acumos_domain>:<docker_proxy_port>/modelname_solution_id:tag
 
 The process of on-boarding a docker image model in Acumos is reduced to create a solution Id and
 upload the model. There are no micro-service, nor tosca file, nor metadata file, nor protobuf file
