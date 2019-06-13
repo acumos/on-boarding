@@ -225,21 +225,15 @@ those artefacts are uploaded to nexus maven repository.
 
 Steps:
 
-1. Clone the code from Gerrit Repo: https://gerrit.acumos.org
+# Clone the code from Gerrit Repo: https://gerrit.acumos.org
 
-Under the dashboard page we have list of Projects, select Onboarding Project and clone this project
-by using below clone command:
+Browse the repositories to find on-boarding project then use the HTTPS, HTTP or SSH git clone commande line.
 
-git clone https://<GERRIT_USER_NAME>@gerrit.acumos.org/r/on-boarding.git
+# After cloning import this project in your recommended IDE like STS.
 
-or by ssh git clone ssh://<GERRIT_USER_NAME>@gerrit.acumos.org:29418/on-boarding
+# Take the maven update so that you can download all the required dependencies for the Onboarding Project.
 
-2. After cloning import this project in your recommended IDE like STS.
-
-3. Take the maven update so that you can download all the required dependencies for the Onboarding
-Project.
-
-4. After doing maven update you can run or debug the code by using Spring Boot App but before that
+After doing maven update you can run or debug the code by using Spring Boot App but before that
 we need to set the Environment Variables in our IDE tool for local testing and if you want to read
 the environment variables once you deployed your code on the dev or IST server than you need to set
 all the environment variables in system-integration Project.
@@ -380,7 +374,7 @@ Request to Onboarding Onboarding will use the Header Info to get the Username + 
 
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
-   :width: 5.64583inlicense (optional parameter - license.json associated with model, Parameter Type - formdata)
+   :width: 5.64583in
    :height: 5.55208in
 .. |image1| image:: ./media/HighLevelFlow.png
    :width: 7.26806in
