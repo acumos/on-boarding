@@ -29,6 +29,14 @@ public class LoggerDelegate {
 		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_DEBUG);
 
 	}
+	
+	public void debug(String msg, LogBean logBean) {
+
+		logger.debug(msg);
+		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_SEVERITY, "DEBUG");
+		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_DEBUG, logBean);
+
+	}
 
 	public void debug(String message, String path, String fileName) {
 
