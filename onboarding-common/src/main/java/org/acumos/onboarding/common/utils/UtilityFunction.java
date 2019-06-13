@@ -316,6 +316,42 @@ public class UtilityFunction {
 		}
 	}
 
+	public static void addLogs(String msg, String logType, LogBean logBean) {
+		try {
+			log.debug("Message to Log in addLogs --> "+msg);
+			log.info("Message to Log in addLogs --> "+msg);
+			log.debug("LogType in addLogs --> "+logType);
+			log.info("LogType to Log in addLogs --> "+logType);
+			System.out.println("Message to Log in addLogs --> "+msg+" and LogType to Log in addLogs --> "+logType);
+			
+			//LogBean logBean = LogThreadLocal.get();
+			
+			log.debug("LogBean in addLogs outside the check --> "+logBean);
+			log.info("LogBean in addLogs outside the check --> "+logBean);
+			System.out.println("LogBean in addLogs outside the check --> "+logBean);
+
+			if (logBean != null) {
+
+				log.debug("LogBean in addLogs inside the check --> "+logBean);
+				log.info("LogBean in addLogs inside the check --> "+logBean);
+				System.out.println("LogBean in addLogs inside the check --> "+logBean);
+
+				String fileName = logBean.getFileName();
+				String logPath = logBean.getLogPath();
+				File file = new java.io.File(logPath);
+				if (file.isDirectory()) {
+					FileWriter fout = new FileWriter(file.getPath() + File.separator + fileName, true);
+					fout.write(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + "  " + logType + "  "
+							+ msg + "\n");
+					fout.close();
+				}
+			}
+		} catch (IOException e) {
+			//info to avoid infinite loop.logger.debug call again calls addlog method
+			logger.info("Exception occured while adding logs in log file" + e.getMessage());
+		}
+	}
+
 	public static DockerClientConfig createDockerClientConfig(String host) {
 		logger.debug("Inside createDockerClientConfig");
 		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost(host).withDockerTlsVerify(false).build();
@@ -350,7 +386,7 @@ public class UtilityFunction {
 		logger.debug("Onboarding version:::" + version);
 	  return version;
 	}
-	
+
 	public static void moveFile(File srcFile, File outputFolder) throws AcumosServiceException {
 
 		try {

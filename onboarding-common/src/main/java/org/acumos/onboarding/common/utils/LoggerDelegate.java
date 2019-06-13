@@ -21,12 +21,20 @@ public class LoggerDelegate {
 		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_SEVERITY, "INFO");
 		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_INFO);
 	}
-	
+
 	public void debug(String msg) {
 
 		logger.debug(msg);
 		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_SEVERITY, "DEBUG");
 		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_DEBUG);
+
+	}
+
+	public void debug(String msg, LogBean logBean) {
+
+		logger.debug(msg);
+		MDC.put(OnboardingLogConstants.MDCs.RESPONSE_SEVERITY, "DEBUG");
+		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_DEBUG, logBean);
 
 	}
 
@@ -52,7 +60,6 @@ public class LoggerDelegate {
 		UtilityFunction.addLogs(msg, OnboardingConstants.lOG_TYPE_WARN);
 	}
 
-	
 	public void error(String message) {
 
 		logger.error(message);
@@ -84,5 +91,5 @@ public class LoggerDelegate {
 		this.logger = logger;
 	}
 
-	
+
 }
