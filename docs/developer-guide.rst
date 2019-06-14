@@ -22,63 +22,7 @@ On-Boarding Developer Guide
 
 This is the developers guide to Onboarding.
 
-**1: introduction - What is Onboarding?**
------------------------------------------
-
-Acumos is intended to enable the use of a wide range of tools and technologies in the development
-of machine learning models including support for both open sourced and proprietary toolkits.
-
-The goal of Onboarding is to provide an ingestion interface, by web or CLI(command line interface)
-for various types of models and to create required artifacts and identifiers to enter the  Acumos
-machine learning platform.
-
-#. Legacy models
-
- As for Athena release, in Boreas you can on-board models developped in Java 8 or 9, Python>=3.5, <3.7,
- R>=3.4.4 and sourced from toolkits such as Scikit, TensorFlow, H2O, and R. But in Boreas you can choose
- to create or not the microservice at the end of the on-boarding process. If user choose to not create
- the microservice at teh end of on-boarding he can create it later.
-
- In short, our goals for these kinds of models are to generate or provide all the necessary materials
- required to use these kinds of models with the others components of Acumos like:
-
- - Tosca file for Design studio
- - Represent model I/O such for microservice generation
- - SolutionID for CDS
- - Licence file for licensing management
-
-#. Since Boreas, we are able to on-board news kinds of model like :
-
- - model in onnx format : model.onnx
- - model in pfa format : model.pfa
- - Dockerized model : model dockerised by Data scientist himself
- - Docker model URI : URI of Dockerized model stored in external repo like Docker-Hub for example
-
- For this new kinds of model, Micro service generation and Design studio capabilities are not available.
-
-#. Acumos capabilities by models type
-
- This table sum-up all the Acumos capabilities available for each kinds of model
-
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | Model            | Micro-service generation | Design studio  | Market place | on-board with license | onboarding  |
- +==================+==========================+================+==============+=======================+=============+
- | R model          | Available                | Available      | Available    | Available             | Web and CLI |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | Pyhton model     | Available                | Available      | Available    | Available             | Web and CLI |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | Java model       | Available                | Available      | Available    | Available             | Web and CLI |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | ONNX model       | Not available            | Not available  | Available    | Available             | Web only    |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | PFA model        | Not available            | Not available  | Available    | Available             | Web only    |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | Dockerized model | Not applicable           | Not available  | Available    | Not available         | Web only    |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | URI model        | Not applicable           | Not applicable | Available    | Available             | Web only    |
- +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
-
-**2: Target Users**
+**1: Target Users**
 -------------------
 
 This guide is targeted towards the open source user community that:
@@ -87,7 +31,7 @@ This guide is targeted towards the open source user community that:
 
 2. Intends to contribute code to enhance the functionality of the Onboarding.
 
-**3: Assumptions**
+**2: Assumptions**
 ------------------
 
 It is assumed that the ML Models contributed by the open source community an created under Java 8 or
@@ -99,7 +43,7 @@ It is assumed that the ML Models contributed by the open source community an cre
 
 3. Are capable of communicating via Http REST mechanism.
 
-**4: Onboarding High level Design Architecture**
+**3: Onboarding High level Design Architecture**
 ------------------------------------------------
 Below is high-level flow of model onboarding
 
@@ -121,7 +65,7 @@ models.
 For model Dockerized and stored in repo outside Acumos (like for example Docker hub) you can save the
 model URI in Acumos. You can also dockerize your models by yourself and on-board them in Acumos.
 
-**5: Onboarding Low Level Design for R, Java, Python, ONNX and PFA models**
+**4: Onboarding Low Level Design for R, Java, Python, ONNX and PFA models**
 ---------------------------------------------------------------------------
 
 For models created with R, Java or Python, Data scientists must use Acumos-client-library specific
@@ -196,7 +140,7 @@ By splitting the artifact into public and private pieces, the wrapper library ha
 
 
 
-**6: Onboarding Low Level Design for Dockerized model and Dockerized model URI**
+**5: Onboarding Low Level Design for Dockerized model and Dockerized model URI**
 --------------------------------------------------------------------------------
 
 Data scientist can also create models in the language of their choice then dockerized their models
@@ -221,7 +165,7 @@ Whatever the kinds of models :
 - Existing solution is updated with, a new revision. Revision is updated with artefact details and
 those artefacts are uploaded to nexus maven repository.
 
-**7: Onboarding Setup**
+**6: Onboarding Setup**
 -----------------------
 
 Steps:
@@ -239,7 +183,7 @@ we need to set the Environment Variables in our IDE tool for local testing and i
 the environment variables once you deployed your code on the dev or IST server than you need to set
 all the environment variables in system-integration Project.
 
-**8: Onboarding Technology & Framework**
+**7: Onboarding Technology & Framework**
 ----------------------------------------
 
 -  Java 1.8
@@ -281,7 +225,7 @@ all the environment variables in system-integration Project.
 .. -  The input metadata JSON features will be send to predict API exposed by model docker image and
    output of predict method will be returned as API output.
 
-**9: Onboarding Backend API**
+**8: Onboarding Backend API**
 ------------------------------
 Please consult the following file : `On-boarding Application Programming Interface <api-docs.html>`_
 
