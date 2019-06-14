@@ -78,8 +78,8 @@ machine learning platform.
  | URI model        | Not applicable           | Not applicable | Available    | Available             | WEB only    |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
 
-**3: Onboarding models built in R, Java or python language **
--------------------------------------------------------------
+**3: Onboarding models built in R, Java or python language**
+------------------------------------------------------------
 
 For these three different languages it exists three on-boarding acumos clients to use. The client will build a model bundle
 composed of differents files requested by Acumos. Whatever the kind of on-boarding, by WEB or by CLI, you can choose to
@@ -92,11 +92,11 @@ Please refer to the following user guide :
 
 `Acumos Python client user guide <https://pypi.org/project/acumos/>`_
 
-`Acumos Java client user guide <../../acumos-java-client/docs/onboarding-java-guide.rst>`_
+`Acumos Java client user guide <../../acumos-java-client/docs/onboarding-java-guide.html>`_
 
 
-**4: Onboarding ONNX and PFA models **
---------------------------------------
+**4: Onboarding ONNX and PFA models**
+-------------------------------------
 
 Onboard ONNX and PFA model consists only of an upload of the model as there is no micro-service creation for the moment.
 
@@ -105,8 +105,8 @@ Please refer to the following user guide
 `On-Boarding ONNX and PFA Model user guide <onboarding-ONNX-PFA-guide.html>`_
 
 
-**5: On-Boarding docker image model or docker URI model **
-----------------------------------------------------------
+**5: On-Boarding docker image model or docker URI model**
+---------------------------------------------------------
 
 You can create models in the language of your choice then dockerize your models yourelves and onboard these
 dockerized models or dockerized model URIs. Of course for these kinds of models the microservice generation process is never used.
@@ -115,8 +115,8 @@ Please refer to the following user-guide
 
 `On-Boarding docker image model or docker URI model user guide <onboarding-pre_dockerised_and_URI_guide.html>`_
 
-**5: On-Boarding model with a license file **
----------------------------------------------
+**5: On-Boarding model with a license file**
+--------------------------------------------
 
 You can on-board your model with a license (Except for dockerized models as we assume that modelers will embed their licence
 in their Docker image). Whatever the case, CLI or WEB on-boarding, if the license file extension is not 'json' the license
