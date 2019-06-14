@@ -60,23 +60,23 @@ machine learning platform.
 
  This table sum-up all the Acumos capabilities available for each kinds of model
 
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- |   Model          | Micro-service generation | Design studio | Market place | on-board with license |onboarding   |
- +==================+==========================+===============+==============+=======================+=============+
- | R model          | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Pyhton model     | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Java model       | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | ONNX model       | Not available            |Not available  |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | PFA model        | Not available            |Not available  |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Dockerized model | Not applicable           |Not available  |Available     |Not available          | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | URI model        | Not applicable           |Not applicable |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Model            | Micro-service generation | Design studio  | Market place | on-board with license | onboarding  |
+ +==================+==========================+================+==============+=======================+=============+
+ | R model          | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Pyhton model     | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Java model       | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | ONNX model       | Not available            | Not available  | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | PFA model        | Not available            | Not available  | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Dockerized model | Not applicable           | Not available  | Available    | Not available         | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | URI model        | Not applicable           | Not applicable | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
 
 **2: Target Users**
 -------------------
@@ -145,8 +145,9 @@ file extension is not 'json' the license on-boarding will not be possible and if
 'license' Acumos will rename your license file as license.json and you will see your license file as
 "license-1.json" in the artifacts table. If you upload a new version of your license through the portal,
 the license number revision will be increased by one like that "license-2.json". To help user create
-the license file expected by Acumos a license editor is available on the web :
-`Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
+the license file expected by Acumos a license user guide is available here :
+`License user guide <../../security-verification/license-manager-client-library/docs/user-guide.html>`_
+
 
 - Architecture diagramm for R, Java, Python, ONNX and PFA models
 
