@@ -490,6 +490,7 @@ public class CommonOnboarding {
 				onboardingStatus.notifyOnboardingStatus("AddArtifact", "SU",
 						"Add Artifact for " + file.getName() + " Successful", logBean);
 			}
+			return mlpArtifact;
 		} catch (AcumosServiceException e) {
 			logger.error("Error: " + e);
 			throw e;
@@ -507,8 +508,6 @@ public class CommonOnboarding {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificat for " + file.getName() + " - " + e.getMessage(), e);
 		}
-		
-		return mlpArtifact;
 	}
 
 	public MLPArtifact addArtifact(Metadata metadata, String uri, String typeCode, OnboardingNotification onboardingStatus)
@@ -573,6 +572,50 @@ public class CommonOnboarding {
 
 	}
 
+	public MLPArtifact addArtifact(Metadata metadata, String uri, String typeCode, OnboardingNotification onboardingStatus, LogBean logBean)
+			throws AcumosServiceException {
+
+		MLPArtifact mlpArtifact;
+		try {
+			mlpArtifact = addArtifact(metadata, uri, typeCode, onboardingStatus);
+			logger.debug("Add Artifact - " + uri + " for solution - " + metadata.getSolutionId() + " started", logBean);
+			// Notify add artifacts started
+			if (onboardingStatus != null) {
+				onboardingStatus.notifyOnboardingStatus("AddDockerImage", "ST", "Add Artifact for" + uri + " started",
+						logBean);
+			}
+
+			logger.debug("create Artifact - " + uri + " for solution - " + metadata.getSolutionId() + " Successful",
+					logBean);
+			logger.debug("addSolutionRevisionArtifact - " + uri + " for solution - " + metadata.getSolutionId()
+					+ " Successful", logBean);
+			if (onboardingStatus != null) {
+				// onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
+				onboardingStatus.notifyOnboardingStatus("AddDockerImage", "SU",
+						"Add Artifact - " + uri + " for solution - " + metadata.getSolutionId() + " Successful",
+						logBean);
+			}
+			return mlpArtifact;
+
+		} catch (AcumosServiceException e) {
+			logger.error("Error: " + e);
+			throw e;
+		} catch (Exception e) {
+			// Notify model artifact upload failed
+			if (onboardingStatus != null) {
+				try {
+					onboardingStatus.notifyOnboardingStatus("AddDockerImage", "FA", e.getMessage());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			logger.error("Fail to upload artificate for " + e.getMessage(), e);
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Fail to upload artificate for " + e.getMessage(), e);
+		}
+	}
+	
 	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata, OnboardingNotification onboardingStatus) {
 		logger.debug("Generate TOSCA started");
 		try {

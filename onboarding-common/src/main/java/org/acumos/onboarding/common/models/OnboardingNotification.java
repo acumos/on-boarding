@@ -112,8 +112,8 @@ public class OnboardingNotification {
 	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription,
 			LogBean logBean) {
 		try {
-			notifyOnboardingStatus(currentstep, currentStatus, currentDescription);
 			logger.debug("Notify " + currentDescription, logBean);
+			notifyOnboardingStatus(currentstep, currentStatus, currentDescription);
 			logger.debug("Step: " + currentstep + " with Status: " + currentStatus, logBean);
 			logger.debug("Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription, logBean);
 		}catch (Exception e) {
