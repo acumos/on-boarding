@@ -25,6 +25,7 @@ import java.util.Date;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPTask;
 import org.acumos.cds.domain.MLPTaskStepResult;
+import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,7 @@ public class OnboardingNotification {
 	}
 
 	// current step, status and description sent to be logged.
-	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) {
+	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription) throws Exception{
 		logger.debug("Notify " + currentDescription);
 
 		try {
@@ -104,6 +105,18 @@ public class OnboardingNotification {
 				cdmsClient.createTaskStepResult(taskResult);
 			}
 		} catch (Exception e) {
+			logger.error("Failed to Notify");
+		}
+	}
+	
+	public void notifyOnboardingStatus(String currentstep, String currentStatus, String currentDescription,
+			LogBean logBean) {
+		try {
+			notifyOnboardingStatus(currentstep, currentStatus, currentDescription);
+			logger.debug("Notify " + currentDescription, logBean);
+			logger.debug("Step: " + currentstep + " with Status: " + currentStatus, logBean);
+			logger.debug("Sending Notification for Task: " + getTaskId() + " with Description: " + currentDescription, logBean);
+		}catch (Exception e) {
 			logger.error("Failed to Notify");
 		}
 	}

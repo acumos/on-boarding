@@ -46,7 +46,12 @@ public class OnboardingNotificationTest {
 	@Test
 	public void notifyOnboardingStatusTest() {
 
-			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+			try {
+				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			onboardingNotify.setStartDate(new Date());
 			onboardingNotify.setEndDate(new Date());
@@ -74,6 +79,11 @@ public class OnboardingNotificationTest {
 			stepResult.setUserId("293686");
 
 			Mockito.when(cdmsClient.createTask(stepResult)).thenReturn(stepResult);
-			onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+			try {
+				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 }
