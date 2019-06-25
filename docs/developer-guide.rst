@@ -60,23 +60,23 @@ machine learning platform.
 
  This table sum-up all the Acumos capabilities available for each kinds of model
 
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- |   Model          | Micro-service generation | Design studio | Market place | on-board with license |onboarding   |
- +==================+==========================+===============+==============+=======================+=============+
- | R model          | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Pyhton model     | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Java model       | Available                |Available      |Available     |Available              | Web and CLI |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | ONNX model       | Not available            |Not available  |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | PFA model        | Not available            |Not available  |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | Dockerized model | Not applicable           |Not available  |Available     |Not available          | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
- | URI model        | Not applicable           |Not applicable |Available     |Available              | Web only    |
- +------------------+--------------------------+---------------+--------------+-----------------------+-------------+
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Model            | Micro-service generation | Design studio  | Market place | on-board with license | onboarding  |
+ +==================+==========================+================+==============+=======================+=============+
+ | R model          | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Pyhton model     | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Java model       | Available                | Available      | Available    | Available             | Web and CLI |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | ONNX model       | Not available            | Not available  | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | PFA model        | Not available            | Not available  | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | Dockerized model | Not applicable           | Not available  | Available    | Not available         | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | URI model        | Not applicable           | Not applicable | Available    | Available             | Web only    |
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
 
 **2: Target Users**
 -------------------
@@ -145,8 +145,9 @@ file extension is not 'json' the license on-boarding will not be possible and if
 'license' Acumos will rename your license file as license.json and you will see your license file as
 "license-1.json" in the artifacts table. If you upload a new version of your license through the portal,
 the license number revision will be increased by one like that "license-2.json". To help user create
-the license file expected by Acumos a license editor is available on the web :
-`Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
+the license file expected by Acumos a license user guide is available here :
+`License user guide <../../security-verification/license-manager-client-library/docs/user-guide.html>`_
+
 
 - Architecture diagramm for R, Java, Python, ONNX and PFA models
 
@@ -282,95 +283,7 @@ all the environment variables in system-integration Project.
 
 **9: Onboarding Backend API**
 ------------------------------
-
-**Validate API-Token API** : This API provide an API Token (available in the user settings) that can be
-used to onboard a model
-
-- Portal will expose  validateApiToken
-
-- URL=http://{HOST}/auth/validateApiToken
-
-- input:apiToken , Username
-
-- output:ResponseDetail  -- "Valid Token" for success /  "Validation Failed" for failure
-
-- ResponseBody: UserId for success only
-
-Portal Webonboarding will  pass access_token = username:apitoken in the header  "Authorization"
-Request to Onboarding Onboarding will use the Header Info to get the Username + apitoken
-
-
-**Authentication API** : This API provides a JWT token that can be used to onboard a model
-
-- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/auth
-
-- Method = GET.
-
-- input : User_Name, Password.
-
-- output : authentication token.
-
-- hostname : the hostname of the machine in which Acumos have been installed.
-
-- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
-
-- Description : Checks User Name & password to provide an authentication token.
-
-
-
-**Push model bundle API** : This API is used to on-board the model bundle in Acumos for R, Python or Java models by WEB or CLI on-boarding
-
-- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/models
-
-- Method = POST
-
-- data Params :
-
-	- model (Required - file for model bundle model.zip to onboard, Parameter Type - formdata)
-	- metadata (Required - model.protobuf file for model to onboard, Parameter Type - formdata)
-	- schema (Required - metadata.json file for model, Parameter Type - formdata)
-	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
-	- Authorization(Optional - jwt token or username:apitoken, Parameter Type - header)
-	- isCreateMicroservice (Optional - boolean value to trigger microservice generation, default=true, Parameter Type - header)
-	- tracking_id (Optional - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
-	- provider (Optional - for portal authentication, Parameter Type - header)
-	- shareUserName (Optional - User Name for sharing the model as co-owner, Parameter Type - header)
-	- modName (Optional - Model Name to be used as display name else Model name from metadata is used, Parameter Type - header)
-	- deployment_env (Optional - Identify deployment environment for model as DCAE or non-DCAE, default is non-DCAE, Parameter Type - header)
-	- Request-ID (Optional - UUID received from Portal else generated for tracking transaction in CDS, Parameter Type - header)
-
-- hostname : the hostname of the machine in which Acumos have been installed.
-
-- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file.
-
-- Description : Upload the model bundle on the on-boarding server.
-
-
-**Push model API** : This API is used by web onboarding only to upload ONNX/PFA or Dockerized models in Acumos
-
-- URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
-
-- Method = POST
-
-- data params :
-
-	- model (Optional - file for model to onboard - ONNX/PFA file, Parameter Type - formdata)
-	- license (optional parameter - license.json associated with model, Parameter Type - formdata)
-	- modelname (Required - Model Name to be used as display name, Parameter Type - header)
-	- Authorization (jwt token or username:apitoken, Parameter Type - header)
-	- isCreateMicroservice (boolean value to trigger microservice generation, default=false, Parameter Type - header)
-	- dockerfileURL (Optional - if docker URL is given then file is not necessary, Parameter Type - header)
-	- provider (optional parameter - for portal authentication, Parameter Type - header)
-	- tracking_id (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
-	- Request-ID (optional parameter - UUID received from Portal else generated for tracking transaction in CDS, Parameter Type - header)
-	- shareUserName (optional parameter - User Name for sharing the model as co-owner, Parameter Type - header)
-
-- hostname : the hostname of the machine in which Acumos have been installed.
-
-- ACUMOS_ONBOARDING_PORT : You can retrieve the value of this variable in the acumos-env.sh file
-
-
-
+Please consult the following file : `On-boarding Application Programming Interface <api-docs.html>`_
 
 
 .. |image0_old| image:: ./media/DesignArchitecture.png
