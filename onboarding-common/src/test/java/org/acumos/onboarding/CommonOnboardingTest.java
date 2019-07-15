@@ -20,6 +20,8 @@
 
 package org.acumos.onboarding;
 
+import static org.mockito.Mockito.mock;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.utils.JsonResponse;
+import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.CommonOnboarding;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
@@ -160,15 +163,13 @@ public class CommonOnboardingTest {
 	}
 
 	@Test
-	public void listFilesAndFilesSubDirectoriesTest(){
+	public void listFilesAndFilesSubDirectoriesTest() {
 
-	File f1 = new File(FilePathTest.filePath());
-     	try {
-     		commonOnboarding.listFilesAndFilesSubDirectories(f1);
+		File f1 = new File(FilePathTest.filePath());
+		try {
+			commonOnboarding.listFilesAndFilesSubDirectories(f1);
 		} catch (Exception e) {
 			Assert.fail("Exception occured while listFilesAndFilesSubDirectoriesTest(): " + e.getMessage());
 		}
-
-  }
-
+	}
 }
