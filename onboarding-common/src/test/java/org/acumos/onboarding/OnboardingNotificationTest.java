@@ -24,6 +24,7 @@ import java.util.Date;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPTask;
 import org.acumos.onboarding.common.models.OnboardingNotification;
+import org.acumos.onboarding.common.utils.LogBean;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,6 +59,7 @@ public class OnboardingNotificationTest {
 			onboardingNotify.setStepCode("OB");
 			onboardingNotify.setResult("Success");
 			onboardingNotify.setStepResultId(2452l);
+			onboardingNotify.setTrackingId("8237465");
 
 			onboardingNotify.getSolutionId();
 			onboardingNotify.getRevisionId();
@@ -78,9 +80,14 @@ public class OnboardingNotificationTest {
 			stepResult.setTrackingId("8237465");
 			stepResult.setUserId("293686");
 
+			LogBean logBean = new LogBean();
+			logBean.setFileName("DummyFileName");
+			logBean.setLogPath("DummyLogPath");
+
 			Mockito.when(cdmsClient.createTask(stepResult)).thenReturn(stepResult);
 			try {
 				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
+				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started", logBean);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

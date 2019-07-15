@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -20,12 +20,17 @@
 
 package org.acumos.onboarding;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -156,6 +161,18 @@ public class UtilityFunctionTest {
     }
 
 	@Test
+    public void zipFileTest() {
+        try {
+            File fos = new File(filePath + "atest.txt");
+            File[] fileArray = new File[] {fos};
+            UtilityFunction.zipFile(fileArray, fos);
+            UtilityFunction.deleteDirectory(fos);
+        } catch (Exception e) {
+            Assert.fail("Exception occured while zipFileTest() : " + e.getMessage());
+        }
+    }
+
+	@Test
 	public void getGUID() {
 		UtilityFunction.getGUID();
 	}
@@ -175,7 +192,7 @@ public class UtilityFunctionTest {
 
 	@Test
 	public void copyFileTest1(){
-		
+
 		try {
 			UtilityFunction.copyFile(srcFile, destFile);
 		} catch (AcumosServiceException e) {
@@ -216,4 +233,74 @@ public class UtilityFunctionTest {
 		LogThreadLocal.unset();
 		assertNull(LogThreadLocal.get());
 	}
+
+	@Test
+	public void setProjectVersionTest() {
+		UtilityFunction.setProjectVersion("1.0");
+	}
+
+	@Test
+	public void unTarFileTest() {
+		try {
+			String modelId = UtilityFunction.getGUID();
+			File opFolder = new File(filePath + "tmpOutputFolder", modelId);
+			opFolder.mkdirs();
+
+			File files = new File(filePath + "tempModel");
+			files.mkdir();
+
+			File modelFile = new File(files, "mod.txt");
+			modelFile.createNewFile();
+			File tarFile = new File(opFolder, "tempFile.txt");
+			tarFile.createNewFile();
+			UtilityFunction.unTarFile(tarFile, opFolder);
+			UtilityFunction.deleteDirectory(opFolder);
+			UtilityFunction.deleteDirectory(files);
+		} catch (Exception e) {
+			Assert.fail("Exception occured while unTarFileTest() : " + e.getMessage());
+		}
+	}
+
+	@Test
+	public void getCurrentVersionTest() {
+		String currentVersion = UtilityFunction.getCurrentVersion();
+		assertNotNull(currentVersion);
+	}
+
+	@Test
+	public void addLogsTest() {
+		try {
+			String msg = "Test add Logs";
+			String logType = "DEBUG";
+			LogBean logBean = new LogBean();
+
+			logBean.setFileName("TestLogBeanFile");
+			logBean.setLogPath(filePath);
+
+			UtilityFunction.addLogs(msg, logType, logBean);
+			File f = new File(filePath+"TestLogBeanFile");
+			f.createNewFile();
+			Files.delete(f.toPath());
+		} catch (Exception e) {
+			Assert.fail("Failed while testing addLogsTest - " + e.getMessage());
+		}
+	}
+
+	@Test
+	public void moveFileTest() {
+		try {
+			File srcFile1 = new File(filePath + "testMoveJsonFile.json");
+			srcFile1.createNewFile();
+			File srcFile2 = new File(filePath + "testMoveProtoFile.proto");
+			srcFile2.createNewFile();
+			File outputFolder = new File(filePath + "tempModel");
+			outputFolder.mkdir();
+			UtilityFunction.moveFile(srcFile1, outputFolder);
+			UtilityFunction.moveFile(srcFile2, outputFolder);
+			UtilityFunction.deleteDirectory(outputFolder);
+		} catch (Exception e) {
+			Assert.fail("Failed while testing moveFileTest - " + e.getMessage());
+		}
+	}
+
 }

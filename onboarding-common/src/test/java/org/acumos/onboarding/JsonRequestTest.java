@@ -31,18 +31,20 @@ public class JsonRequestTest {
 	
 	@Test
 	public void testJsonRequestParameter(){
-		
-		Object body = new Object();		
+
+		Object body = new Object();
 		String requestFrom = "testReqFrom";
 		String requestId = "testReqId";
-		
+
 		JsonRequest jsonReq = new JsonRequest();
 		jsonReq.setBody(body);
-		jsonReq.setRequestFrom(requestFrom);		
+		jsonReq.setRequestFrom(requestFrom);
 		jsonReq.setRequestId(requestId);
-		
+		jsonReq.getRequestFrom();
+		jsonReq.getRequestId();
+
 		Assert.assertNotNull(jsonReq);
 	}
-	
+
 
 }

@@ -20,6 +20,8 @@ public class MicroserviceRestClientImplTest {
 	@Test
 	public void buildUriTest() {
 
+	new MicroserviceRestClientImpl();
+	new MicroserviceRestClientImpl("https://nexus.acumos.org/");
 	Map<String, Object> copy = new HashMap<>();
 	copy.put("solutioId", "1111");
 	copy.put("revisionId", "2222");

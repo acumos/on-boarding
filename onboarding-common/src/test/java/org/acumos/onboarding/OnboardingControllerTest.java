@@ -163,16 +163,19 @@ public class OnboardingControllerTest {
 
 			ClassLoader classLoader = getClass().getClassLoader();
 			File file = new File(classLoader.getResource("metadata.json").getFile());
+			File file1 = new File(classLoader.getResource("license.json").getFile());
 
 			String filePath = FilePathTest.filePath();
 			String fileJson = filePath + "metadata.json";
 
 			FileInputStream modelIS = new FileInputStream(file.getAbsolutePath());
+			FileInputStream licenseIS = new FileInputStream(file1.getAbsolutePath());
 
 			MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",modelIS);
 			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",metataprotoIS);
-
+			MockMultipartFile licenseFile = new MockMultipartFile("file", "license.json", "multipart/form-data",licenseIS);
+			
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
 
@@ -269,6 +272,15 @@ public class OnboardingControllerTest {
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
+			
+			ResponseEntity<ServiceResponse> resp1 = onboardingController.onboardModel(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, "trackingId", "provider", "shareUserName",null,null,"requestId");
+			
+			ResponseEntity<ServiceResponse> resp2 = onboardingController.onboardModel(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, licenseFile, "authorization", true, null, "provider", null,null,null,null);
+			
+			ResponseEntity<ServiceResponse> resp3 = onboardingController.onboardModel(mock(HttpServletRequest.class),
+					metaDatazipFile, metaDataFile, protoFile, null, null, false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(201,resp.getStatusCodeValue());
@@ -392,6 +404,15 @@ public class OnboardingControllerTest {
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
 					metaDatazipFile, licenseFile, modelname, "authorization", false, null, "provider", null,null,null);
+			
+			ResponseEntity<ServiceResponse> resp1 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
+					metaDatazipFile, licenseFile, modelname, "authorization", false, null, "provider", "trackingId","requestId", "shareUserName");
+			
+			ResponseEntity<ServiceResponse> resp2 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
+					metaDatazipFile, licenseFile, modelname, null, false, null, "provider", null,null,null);
+			
+			ResponseEntity<ServiceResponse> resp3 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
+					metaDatazipFile, licenseFile,modelname, "authorization", true, null, "provider", null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
             assertEquals(201,resp.getStatusCodeValue());
@@ -526,6 +547,31 @@ public class OnboardingControllerTest {
 
 	}
 	*/
+	@Test
+	public void testGetCmnDataSvcEndPoinURL() {
+		try {
+			onboardingController.getCmnDataSvcEndPoinURL();
+		} catch (Exception e) {
+			Assert.fail("Failure while testing testGetCmnDataSvcEndPoinURL - " + e.getMessage());
+		}
+	}
 
+	@Test
+	public void testGetCmnDataSvcUser() {
+		try {
+			onboardingController.getCmnDataSvcUser();
+		} catch (Exception e) {
+			Assert.fail("Failure while testing testGetCmnDataSvcUser - " + e.getMessage());
+		}
+	}
 
+	@Test
+	public void testGetCmnDataSvcPwd() {
+		try {
+			onboardingController.getCmnDataSvcPwd();
+		} catch (Exception e) {
+			Assert.fail("Failure while testing testGetCmnDataSvcPwd - " + e.getMessage());
+		}
+
+	}
 }
