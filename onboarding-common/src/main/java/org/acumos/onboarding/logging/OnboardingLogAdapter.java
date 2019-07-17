@@ -169,7 +169,7 @@ public class OnboardingLogAdapter {
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, requestID);
 		//MDC.put(OnboardingLogConstants.MDCs.INVOCATION_ID, invocationID);
 		//if (!partnerName.isEmpty())
-		MDC.put(OnboardingLogConstants.MDCs.PARTNER_NAME, OnboardingLogConstants.PARTNER_NAME);
+		//MDC.put(OnboardingLogConstants.MDCs.PARTNER_NAME, OnboardingLogConstants.PARTNER_NAME);
 		MDC.put(OnboardingLogConstants.MDCs.CLIENT_IP_ADDRESS, defaultToEmpty(request.getClientAddress()));
 		MDC.put(OnboardingLogConstants.MDCs.SERVER_FQDN, defaultToEmpty(request.getServerAddress()));	
 		
