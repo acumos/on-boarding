@@ -40,6 +40,8 @@ public class JsonRequestTest {
 		jsonReq.setBody(body);
 		jsonReq.setRequestFrom(requestFrom);		
 		jsonReq.setRequestId(requestId);
+		jsonReq.getRequestFrom();		
+		jsonReq.getRequestId();
 		
 		Assert.assertNotNull(jsonReq);
 	}

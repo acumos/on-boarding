@@ -20,12 +20,14 @@ public class MicroserviceRestClientImplTest {
 	@Test
 	public void buildUriTest() {
 
+	new MicroserviceRestClientImpl();
+	new MicroserviceRestClientImpl("https://nexus.acumos.org/");
 	Map<String, Object> copy = new HashMap<>();
 	copy.put("solutioId", "1111");
 	copy.put("revisionId", "2222");
 
 	URI uri1 = microserviceRestClientImpl.buildUri(new String[] { "v2", "generateMicroservice" }, copy, null);
-
+	
 	RestPageRequest pageRequest = new RestPageRequest();
 	pageRequest.setSize(1);
 	pageRequest.setPage(9);

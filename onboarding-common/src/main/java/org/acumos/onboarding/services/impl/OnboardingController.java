@@ -348,11 +348,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 						logger.error( e.getErrorCode() + "  " + e.getMessage());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 						if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
 							httpCode = HttpStatus.BAD_REQUEST;
 							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
 						}
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, httpCode.toString());
 						// Create Solution failed. Notify
 						if (onboardingStatus != null) {
 							// notify
@@ -363,7 +363,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					} catch (Exception e) {
 						logger.error( e.getMessage());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						// Create Solution failed. Notify
 						if (onboardingStatus != null) {
@@ -521,7 +521,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						mData = null;
 					} catch (AcumosServiceException e) {
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						mData = null;
 						logger.error( "RevertbackOnboarding Failed: ", e.getMessage());
@@ -546,14 +546,16 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		} catch (AcumosServiceException e) {
 
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+
 			logger.error( e.getErrorCode() + "  " + e.getMessage());
 			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
 				httpCode = HttpStatus.BAD_REQUEST;
 			}
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, httpCode.toString());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
+
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 		} catch (HttpClientErrorException e) {
@@ -576,7 +578,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 		} catch (Exception e) {
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
 			if (e instanceof AcumosServiceException) {
@@ -797,7 +799,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 					} catch (AcumosServiceException e) {
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
 						logger.error( e.getErrorCode() + "  " + e.getMessage());
@@ -813,7 +815,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 					} catch (Exception e) {
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						logger.error( e.getMessage());
 						// Create Solution failed. Notify
@@ -964,7 +966,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						mData = null;
 					} catch (AcumosServiceException e) {
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 						mData = null;
 						logger.error( "RevertbackOnboarding Failed");
@@ -989,13 +991,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		} catch (AcumosServiceException e) {
 
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
 			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
 			logger.error( e.getErrorCode() + "  " + e.getMessage());
 			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
 				httpCode = HttpStatus.BAD_REQUEST;
 			}
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,  httpCode.toString());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
@@ -1020,7 +1022,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			}
 		} catch (Exception e) {
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
 			if (e instanceof AcumosServiceException) {
