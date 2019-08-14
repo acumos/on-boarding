@@ -29,6 +29,7 @@ public class OnboardingConstants {
 	public static final String lOG_TYPE_INFO = "INFO";
 	public static final String lOG_TYPE_WARN = "WARN";
 	public static final String ARTIFACT_TYPE_LOG= "Log File";
+	public static final String ARTIFACT_TYPE_LICENSE_LOG= "License";
 	public static final String INVALID_PARAMETER="INVALID_PARAMETER";
 	public static final String ACCESS_TYPE_PRIVATE = "Private";
     public static final String VALIDATION_STATUS_IP = "In Progress";

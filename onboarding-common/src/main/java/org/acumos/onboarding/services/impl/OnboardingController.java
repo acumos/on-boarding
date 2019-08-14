@@ -398,7 +398,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							onboardingStatus);
 
 					if (license != null && !license.isEmpty()) {
-						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
 								"license", onboardingStatus);
 					}
 
@@ -854,7 +854,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					if (license != null && !license.isEmpty()) {
-						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
 								"license", onboardingStatus);
 					}
 
