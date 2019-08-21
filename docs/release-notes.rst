@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+
+Version 3.0.0, 21 Aug 2019
+-----------------------------
+* Common Data Service client at version 2.2.6
+* attach a license profile as JSON during on-boarding with Artifact Type LI : `ACUMOS-3171 <https://jira.acumos.org/browse/ACUMOS-3171/>`_
+
+
 Version 2.16.0, 18 July 2019
 -----------------------------
 * Common Data Service client at version 2.2.4
