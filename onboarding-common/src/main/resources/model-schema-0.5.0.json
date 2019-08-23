@@ -50,7 +50,8 @@
             "r",
             "javaargus",
             "h2o",
-            "javageneric"
+            "javageneric",
+            "javaspark"
           ]
         },
         "version": {
