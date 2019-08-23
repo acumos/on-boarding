@@ -150,7 +150,9 @@ public class MetadataParser {
 						requirementsNode = trav.get("dependencies").get("java").get("requirements");
 					} else if (("javageneric").equals(runtimeName)) {
 						requirementsNode = trav.get("dependencies").get("java").get("requirements");
-					}
+					} else if (("javaspark").equals(runtimeName)) {
+                        requirementsNode = trav.get("dependencies").get("java").get("requirements");
+                    }
 				}
 			}
 			else {
@@ -173,7 +175,9 @@ public class MetadataParser {
 					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
 				} else if (("javageneric").equals(runtimeName)) {
 					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
-				}
+				} else if (("javaspark").equals(runtimeName)) {
+                    requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
+                }
 			}
 
 			if (requirementsNode != null) {
