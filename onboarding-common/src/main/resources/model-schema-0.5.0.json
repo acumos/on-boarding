@@ -51,7 +51,8 @@
             "javaargus",
             "h2o",
             "javageneric",
-            "javaspark"
+            "javaspark",
+            "c++"
           ]
         },
         "version": {
@@ -61,6 +62,9 @@
           "enum": [
             "protobuf"
           ]
+        },
+		"executable": {
+          "type": "string"
         },
         "dependencies": {
           "oneOf": [

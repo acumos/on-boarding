@@ -37,7 +37,10 @@ public class Metadata {
 	private String runtimeName;
 	private String runtimeVersion;
 	private String toolkit;
+	private String executable;
 	
+	
+
 	private static Logger log = LoggerFactory.getLogger(Metadata.class);
 	LoggerDelegate logger = new LoggerDelegate(log);
 	
@@ -124,6 +127,14 @@ public class Metadata {
 
 	public void setSolutionName(String solutionName) {
 		this.solutionName = solutionName;
+	}
+	
+	public String getExecutable() {
+		return executable;
+	}
+
+	public void setExecutable(String executable) {
+		this.executable = executable;
 	}
 
 }
