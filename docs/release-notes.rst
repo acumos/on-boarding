@@ -24,6 +24,14 @@ These release notes cover the on-boarding common library and the on-boarding app
 for public use, which are released together.
 
 
+
+Version 3.1.0, 30 Aug 2019
+-----------------------------
+* Common Data Service client at version 2.2.6
+* Take into account c/c++ model in on-boarding process : `ACUMOS-3107 <https://jira.acumos.org/browse/ACUMOS-3107/>`_
+* Take into account java model from Spark in on-boarding process : `ACUMOS-3130 <https://jira.acumos.org/browse/ACUMOS-3130/>`_
+* <Asynchronous Microservice> Errored model is getting onboarded successfully : `ACUMOS-3022 <https://jira.acumos.org/browse/ACUMOS-3022/>`_
+
 Version 3.0.0, 21 Aug 2019
 -----------------------------
 * Common Data Service client at version 2.2.6
