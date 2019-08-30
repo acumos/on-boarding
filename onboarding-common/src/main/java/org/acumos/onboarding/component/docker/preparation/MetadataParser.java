@@ -151,14 +151,19 @@ public class MetadataParser {
 					} else if (("javageneric").equals(runtimeName)) {
 						requirementsNode = trav.get("dependencies").get("java").get("requirements");
 					} else if (("javaspark").equals(runtimeName)) {
-                        requirementsNode = trav.get("dependencies").get("java").get("requirements");
-                    }
+						requirementsNode = trav.get("dependencies").get("java").get("requirements");
+					} else if (("c++").equals(runtimeName)) {
+						requirementsNode = trav.get("dependencies").get("pip").get("requirements");
+						metadata.setExecutable(trav.get("executable").asText());
+                                                logger.debug("executable:"+trav.get("executable").asText());
+					}
 				}
 			}
 			else {
 				runtimeName = runtimeNode.get("name").asText().toLowerCase();
 				metadata.setRuntimeName(runtimeName);
 				metadata.setRuntimeVersion(runtimeNode.get("version").asText());
+	
 
 				if (metadataJson.hasNonNull("toolkit"))
 					metadata.setToolkit(runtimeNode.get("toolkit").asText().toLowerCase());
@@ -175,9 +180,12 @@ public class MetadataParser {
 					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
 				} else if (("javageneric").equals(runtimeName)) {
 					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
-				} else if (("javaspark").equals(runtimeName)) {
-                    requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
-                }
+				}  else if (("javaspark").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("java").get("requirements");
+				} else if (("c++").equals(runtimeName)) {
+					requirementsNode = runtimeNode.get("dependencies").get("pip").get("requirements");
+					metadata.setExecutable(runtimeNode.get("executable").asText());
+				} 
 			}
 
 			if (requirementsNode != null) {
