@@ -83,8 +83,11 @@ machine learning platform.
 
 For these three different languages it exists three on-boarding acumos clients to use. The client will build a model bundle
 composed of differents files requested by Acumos. Whatever the kind of on-boarding, by WEB or by CLI, you can choose to
-trigger or not trigger the launch of the micro-service generation at the end of the on-boarding process. 
+trigger or not trigger the launch of the micro-service generation at the end of the on-boarding process.
 
+for CLI on-boarding you need to be authenticated before on-board a model. Whatever the acumos client  you used, you will
+prompt to provide your credentials in this way : "your_acumos_login":"your_api_token". Your api token can be retrieved in
+the acumos portal, after authentication, in your acumos settings.
 
 Please refer to the following user guide : 
 
