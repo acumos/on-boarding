@@ -298,8 +298,16 @@ public class UtilityFunction {
 
 	public static void addLogs(String msg, String logType) {
 		try {
+			log.debug("Message to Log in addLogs --> "+msg);
+			log.info("Message to Log in addLogs --> "+msg);
+			log.debug("LogType in addLogs --> "+logType);
+			log.info("LogType to Log in addLogs --> "+logType);
+			log.debug("LogBean in addLogs outside the check --> "+msg);
+			log.info("LogBean in addLogs outside the check --> "+msg);
 			LogBean logBean = LogThreadLocal.get();
 			if (logBean != null) {
+				log.debug("LogBean in addLogs inside the check --> "+logBean);
+				log.info("LogBean in addLogs inside the check --> "+logBean);
 				String fileName = logBean.getFileName();
 				String logPath = logBean.getLogPath();
 				File file = new java.io.File(logPath);
