@@ -59,6 +59,7 @@ import com.github.dockerjava.core.DockerClientConfig;
 public class UtilityFunction {
 	private static final Logger log = LoggerFactory.getLogger(UtilityFunction.class);
 	static LoggerDelegate logger = new LoggerDelegate(log);
+
 	private static String version = null;
     private static String projectVersion = null;
 
@@ -298,16 +299,8 @@ public class UtilityFunction {
 
 	public static void addLogs(String msg, String logType) {
 		try {
-			log.debug("Message to Log in addLogs --> "+msg);
-			log.info("Message to Log in addLogs --> "+msg);
-			log.debug("LogType in addLogs --> "+logType);
-			log.info("LogType to Log in addLogs --> "+logType);
-			log.debug("LogBean in addLogs outside the check --> "+msg);
-			log.info("LogBean in addLogs outside the check --> "+msg);
 			LogBean logBean = LogThreadLocal.get();
 			if (logBean != null) {
-				log.debug("LogBean in addLogs inside the check --> "+logBean);
-				log.info("LogBean in addLogs inside the check --> "+logBean);
 				String fileName = logBean.getFileName();
 				String logPath = logBean.getLogPath();
 				File file = new java.io.File(logPath);
@@ -326,24 +319,7 @@ public class UtilityFunction {
 
 	public static void addLogs(String msg, String logType, LogBean logBean) {
 		try {
-			log.debug("Message to Log in addLogs --> "+msg);
-			log.info("Message to Log in addLogs --> "+msg);
-			log.debug("LogType in addLogs --> "+logType);
-			log.info("LogType to Log in addLogs --> "+logType);
-			System.out.println("Message to Log in addLogs --> "+msg+" and LogType to Log in addLogs --> "+logType);
-			
-			//LogBean logBean = LogThreadLocal.get();
-			
-			log.debug("LogBean in addLogs outside the check --> "+logBean);
-			log.info("LogBean in addLogs outside the check --> "+logBean);
-			System.out.println("LogBean in addLogs outside the check --> "+logBean);
-
-			if (logBean != null) {
-
-				log.debug("LogBean in addLogs inside the check --> "+logBean);
-				log.info("LogBean in addLogs inside the check --> "+logBean);
-				System.out.println("LogBean in addLogs inside the check --> "+logBean);
-
+				if (logBean != null) {
 				String fileName = logBean.getFileName();
 				String logPath = logBean.getLogPath();
 				File file = new java.io.File(logPath);
