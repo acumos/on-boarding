@@ -24,6 +24,10 @@ These release notes cover the on-boarding common library and the on-boarding app
 for public use, which are released together.
 
 
+Version 3.2.0, 19 Sept 2019
+-----------------------------
+* Common Data Service client at version 3.0.0
+
 
 Version 3.1.0, 30 Aug 2019
 -----------------------------
