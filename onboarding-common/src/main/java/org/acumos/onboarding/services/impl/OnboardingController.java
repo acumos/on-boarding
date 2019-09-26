@@ -84,7 +84,6 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 public class OnboardingController extends CommonOnboarding implements DockerService {
-	//private static EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(OnboardingController.class);
 	private static Logger log = LoggerFactory.getLogger(OnboardingController.class);
 	LoggerDelegate logger = new LoggerDelegate(log);
 	Map<String, String> artifactsDetails = new HashMap<>();
@@ -325,7 +324,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
 
-						revision = createSolutionRevision(mData);
+						revision = createSolutionRevision(mData, localProtobufFile);
 
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
 

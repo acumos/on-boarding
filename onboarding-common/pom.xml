@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.2.0-SNAPSHOT</version>
+	<version>3.2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -182,6 +182,18 @@
     		<artifactId>maven-model</artifactId>
     		<version>3.3.9</version>
 		</dependency>
+		<!-- For Dynamic protobuf message construction -->
+	<dependency>
+		<groupId>com.google.protobuf</groupId>
+		<artifactId>protobuf-java</artifactId>
+		<version>3.5.1</version>
+	</dependency>
+
+	<dependency>
+		<groupId>com.github.os72</groupId>
+		<artifactId>protobuf-dynamic</artifactId>
+		<version>0.9.4</version>
+	</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>

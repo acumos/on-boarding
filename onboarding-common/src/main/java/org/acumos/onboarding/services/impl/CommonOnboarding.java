@@ -20,8 +20,13 @@
 
 package org.acumos.onboarding.services.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,22 +48,28 @@ import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
+import org.acumos.onboarding.common.proto.Protobuf;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.OnboardingConstants;
+import org.acumos.onboarding.common.utils.ProtobufUtil;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
+import org.powermock.mockpolicies.support.LogPolicySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.multipart.MultipartFile;
 
 public class CommonOnboarding {
 
@@ -355,17 +366,126 @@ public class CommonOnboarding {
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
 	}
+	
+	public MLPSolutionRevision createSolutionRevision(Metadata metadata, File localProtoFile) throws AcumosServiceException {
+		logger.debug("Create solution revision call started");
+		MLPSolutionRevision revision = new MLPSolutionRevision();
+		revision.setUserId(metadata.getOwnerId());
+
+		/******************* Version Management *********************/
+		String version = metadata.getVersion();
+
+		if (version == null) {
+			version = getModelVersion(metadata.getSolutionId(), metadata.getRevisionId(), localProtoFile);
+			metadata.setVersion(version);
+		}
+
+		revision.setVersion(metadata.getVersion());
+		revision.setSolutionId(metadata.getSolutionId());
+		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
+		if (!typeCodeList.isEmpty()) {
+			for (MLPCodeNamePair mlpCodeNamePair : typeCodeList) {
+				if (mlpCodeNamePair.getName().equals(OnboardingConstants.ACCESS_TYPE_PRIVATE))
+					revision.setAccessTypeCode(mlpCodeNamePair.getCode());
+			}
+		}*/
+
+			/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
+		if (!validationStatusList.isEmpty()) {
+			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
+				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
+					revision.setValidationStatusCode(mlpCodeNamePair.getCode());
+			}
+		}*/
+
+		try {
+			revision = cdmsClient.createSolutionRevision(revision);
+			metadata.setRevisionId(revision.getRevisionId());
+			logger.debug("Solution revision created: " + revision.getRevisionId());
+			return revision;
+		} catch (HttpStatusCodeException e) {
+			logger.error("Creation of solution revision failed: "+ e);
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
+		}
+	}
 
 	public String getModelVersion(String solutionId) {
 		int count = 0;
+
 		List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
-		if (revList != null)
+		if (revList != null) {
 			count = revList.size();
-
+		}
 		count++;
-
 		return "" + count;
+	}
+	
+	public String getModelVersion(String solutionId, String revisionId, File localProtoFile) {
+		int count = 0;
+		FileInputStream fis = null;
+		String lastProtobufString = "";
+		String currentProtobufString = "";
+		String version = "";
+
+		try {
+			if (localProtoFile != null) {
+				fis = new FileInputStream(localProtoFile);
+				currentProtobufString = IOUtils.toString(fis, StandardCharsets.UTF_8);
+			}
+			lastProtobufString = getLastProtobuf(solutionId, revisionId);
+			
+			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
+
+			if (revList != null) {
+				count = revList.size();
+			}
+			//count++;
+			version = getRevisionVersion(lastProtobufString, currentProtobufString, ""+count);
+		} catch (Exception e) {
+			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
+		}
+		return version;
+	}
+	
+	public String getLastProtobuf(String solutionId, String revisionId) {
+
+		String lastProtoBuffString = "";
+
+		File files = null;
+
+		try {
+
+			String artifactName = "";
+			files = new File("model");
+
+			MultipartFile proto = null;
+			File protoFile = null;
+
+			DownloadModelArtifacts download = new DownloadModelArtifacts();
+			logger.debug("solutioId: " + solutionId, "revisionId: " + revisionId);
+			
+			artifactName = download.getModelArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
+					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
+
+			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
+
+			if (artifactName.toLowerCase().contains(".proto")) {
+				logger.debug("ProtoFile: " + artifactName);
+				protoFile = new File(files, artifactName);
+			}
+
+			if (protoFile.exists()) {
+
+				FileInputStream fisProto = new FileInputStream(protoFile);
+				lastProtoBuffString = IOUtils.toString(fisProto, StandardCharsets.UTF_8);
+			}
+		} catch (Exception e) {
+			logger.error("Failed to fetch the Last Protofile : "+e.getMessage());
+		}
+
+		return lastProtoBuffString;
 	}
 
 	/**
@@ -409,7 +529,6 @@ public class CommonOnboarding {
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
-
 			logger.debug(
 					"Upload Artifact for: " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
 			try {
@@ -718,6 +837,43 @@ public class CommonOnboarding {
 		}
 	}
 
+	
+	public String getRevisionVersion(String lastProtobufString, String currentProtobufString, String count) {
+
+		ProtobufRevision protoRevision = new ProtobufRevision();
+		Protobuf protoBuf1 = ProtobufUtil.parseProtobuf(lastProtobufString);
+		Protobuf protoBuf2 = ProtobufUtil.parseProtobuf(currentProtobufString);
+		String verA = count;
+		String verB = "0";
+		String verC = "0";
+		String version = "";
+
+		List<String> versionList = new ArrayList<>();
+		versionList.add(verA);
+		versionList.add(verB);
+		versionList.add(verC);
+
+		int countA = 0;
+		int countB = 0;
+		int countC = 0;
+
+		if (protoBuf1 != null && protoBuf2 != null) {
+
+			versionList = protoRevision.checkServiceParameters(versionList, protoBuf1, protoBuf2, countA, countB,
+					countC, count);
+			if (versionList.get(0).equals(count) && versionList.get(1).equals("0") && versionList.get(2).equals("0")) {
+
+				versionList = protoRevision.checkMessageParameters(versionList, protoBuf1, protoBuf2, countA, countB,
+						countC, count);
+			}
+		}
+
+		version = ProtobufRevision.getFullVersion(versionList.get(0), versionList.get(1), versionList.get(2));
+		logger.debug("New Revision Version = " + version);
+		return version;
+	}
+	
+	
 	//Method for getting model name used for Image
 	protected String getActualModelName(Metadata metadata, String solutionID) {
 
