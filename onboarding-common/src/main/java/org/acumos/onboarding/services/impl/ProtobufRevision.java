@@ -21,7 +21,7 @@ public class ProtobufRevision extends CommonOnboarding {
 	static LoggerDelegate logger = new LoggerDelegate(log);
 	
 	public List<String> checkMessageParameters(List<String> versionList, Protobuf protoBuf1, Protobuf protoBuf2,
-			int countA, int countB, int countC, String count) {
+			int countA, int countB, int countC, String countMajor, String countMinor, String countIncremental) {
 
 		String version = "";
 		int tempVer = 0;
@@ -103,17 +103,18 @@ public class ProtobufRevision extends CommonOnboarding {
 										if (fieldList1.size() == fieldList2.size()) {
 
 											versionList = retunVersionWhenEqualNumberOfMessageFields(fieldList1,
-													fieldList2, countA, countB, countC, count);
+													fieldList2, countA, countB, countC, countMajor,
+													 countMinor, countIncremental);
 
-											if (!versionList.get(0).equals(count)) {
+											if (!versionList.get(0).equals(countMajor)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
-											} else if (!versionList.get(1).equals("0")) {
+											} else if (!versionList.get(1).equals(countMinor)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
-											} else if (!versionList.get(2).equals("0")) {
+											} else if (!versionList.get(2).equals(countIncremental)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
@@ -124,17 +125,18 @@ public class ProtobufRevision extends CommonOnboarding {
 											// if the size of the Message fields List is not equal
 
 											versionList = retunVersionWhenUnEqualNumberOfMessageFields(fieldList1,
-													fieldList2, countA, countB, countC, count);
+													fieldList2, countA, countB, countC, countMajor,
+													 countMinor, countIncremental);
 
-											if (!versionList.get(0).equals(count)) {
+											if (!versionList.get(0).equals(countMajor)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
-											} else if (!versionList.get(1).equals("0")) {
+											} else if (!versionList.get(1).equals(countMinor)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
-											} else if (!versionList.get(2).equals("0")) {
+											} else if (!versionList.get(2).equals(countIncremental)) {
 												version = getFullVersion(versionList.get(0), versionList.get(1),
 														versionList.get(2));
 												break process_i;
@@ -213,7 +215,8 @@ public class ProtobufRevision extends CommonOnboarding {
 	}
 
 	public List<String> checkServiceParameters(List<String> versionList, Protobuf protoBuf1,
-			Protobuf protoBuf2, int countA, int countB, int countC, String count) {
+			Protobuf protoBuf2, int countA, int countB, int countC, String countMajor,
+			String countMinor, String countIncremental) {
 
 		String verA = versionList.get(0);
 		String verB = versionList.get(1);
@@ -310,24 +313,25 @@ public class ProtobufRevision extends CommonOnboarding {
 
 													versionList = retunVersionWhenEqualNumberOfServiceFields(
 															serviceInputFieldList1, serviceInputFieldList2, countA,
-															countB, countC, count);
+															countB, countC, countMajor,
+															 countMinor, countIncremental);
 
-													if (!versionList.get(0).equals(count)) {
+													if (!versionList.get(0).equals(countMajor)) {
 														version = getFullVersion(versionList.get(0), versionList.get(1),
 																versionList.get(2));
 														break process_m;
-													} else if (!versionList.get(1).equals("0")) {
+													} else if (!versionList.get(1).equals(countMinor)) {
 														version = getFullVersion(versionList.get(0), versionList.get(1),
 																versionList.get(2));
 														break process_m;
-													} else if (!versionList.get(2).equals("0")) {
+													} else if (!versionList.get(2).equals(countIncremental)) {
 														version = getFullVersion(versionList.get(0), versionList.get(1),
 																versionList.get(2));
 														break process_m;
 													}
 
-													if (versionList.get(0).equals(count) && versionList.get(1).equals("0")
-															&& versionList.get(2).equals("0")) {
+													if (versionList.get(0).equals(countMajor) && versionList.get(1).equals(countMinor)
+															&& versionList.get(2).equals(countIncremental)) {
 
 														if (!serviceOutputFieldList1.isEmpty()
 																&& !serviceOutputFieldList2.isEmpty()) {
@@ -340,17 +344,18 @@ public class ProtobufRevision extends CommonOnboarding {
 																versionList = retunVersionWhenEqualNumberOfServiceFields(
 																		serviceOutputFieldList1,
 																		serviceOutputFieldList2, countA, countB,
-																		countC, count);
+																		countC, countMajor,
+																		 countMinor, countIncremental);
 
-																if (!versionList.get(0).equals(count)) {
+																if (!versionList.get(0).equals(countMajor)) {
 																	version = getFullVersion(versionList.get(0),
 																			versionList.get(1), versionList.get(2));
 																	break process_m;
-																} else if (!versionList.get(1).equals("0")) {
+																} else if (!versionList.get(1).equals(countMinor)) {
 																	version = getFullVersion(versionList.get(0),
 																			versionList.get(1), versionList.get(2));
 																	break process_m;
-																} else if (!versionList.get(2).equals("0")) {
+																} else if (!versionList.get(2).equals(countIncremental)) {
 																	version = getFullVersion(versionList.get(0),
 																			versionList.get(1), versionList.get(2));
 																	break process_m;
@@ -553,7 +558,8 @@ public class ProtobufRevision extends CommonOnboarding {
 	}
 
 	public static List<String> retunVersionWhenEqualNumberOfMessageFields(List<ProtobufMessageField> fieldList1,
-			List<ProtobufMessageField> fieldList2, int countA, int countB, int countC, String count) {
+			List<ProtobufMessageField> fieldList2, int countA, int countB, int countC, String countMajor,
+			String countMinor, String countIncremental) {
 
 		ProtobufMessageField protobufMessageField1 = null;
 		ProtobufMessageField protobufMessageField2 = null;
@@ -567,9 +573,9 @@ public class ProtobufRevision extends CommonOnboarding {
 		String messageRole1 = "";
 		String messageRole2 = "";
 
-		String verA = count;
-		String verB = "0";
-		String verC = "0";
+		String verA = countMajor;
+		String verB = countMinor;
+		String verC = countIncremental;
 
 		String version = "";
 		int tempVer = 0;
@@ -670,11 +676,12 @@ public class ProtobufRevision extends CommonOnboarding {
 	}
 	
 	private static List<String> retunVersionWhenUnEqualNumberOfMessageFields(List<ProtobufMessageField> fieldList1,
-			List<ProtobufMessageField> fieldList2, int countA, int countB, int countC, String count) {
+			List<ProtobufMessageField> fieldList2, int countA, int countB, int countC, String countMajor,
+			String countMinor, String countIncremental) {
 
-		String verA = count;
-		String verB = "0";
-		String verC = "0";
+		String verA = countMajor;
+		String verB = countMinor;
+		String verC = countIncremental;
 
 		String version = "";
 		int tempVer = 0;
@@ -750,10 +757,10 @@ public class ProtobufRevision extends CommonOnboarding {
 
 				// Here, given priority to already present message fields to decide the version.
 				versionList = retunVersionWhenEqualNumberOfMessageFields(fieldList1, fieldListTemp1, countA, countB,
-						countC, count);
+						countC, countMajor, countMinor, countIncremental);
 
-				if (versionList.get(0).equals(count) && versionList.get(1).equals("0")
-						&& versionList.get(2).equals("0")) {
+				if (versionList.get(0).equals(countMajor) && versionList.get(1).equals(countMinor)
+						&& versionList.get(2).equals(countIncremental)) {
 
 					// Clear the version List
 					versionList.clear();
@@ -815,11 +822,12 @@ public class ProtobufRevision extends CommonOnboarding {
 	}
 
 	public static List<String> retunVersionWhenEqualNumberOfServiceFields(List<String> serviceFieldList1,
-			List<String> serviceFieldList2, int countA, int countB, int countC, String count) {
+			List<String> serviceFieldList2, int countA, int countB, int countC, String countMajor,
+			String countMinor, String countIncremental) {
 
-		String verA = count;
-		String verB = "0";
-		String verC = "0";
+		String verA = countMajor;
+		String verB = countMinor;
+		String verC = countIncremental;
 
 		String version = "";
 		int tempVer = 0;
