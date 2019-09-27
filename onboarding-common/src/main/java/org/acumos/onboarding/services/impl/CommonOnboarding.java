@@ -424,22 +424,28 @@ public class CommonOnboarding {
 		FileInputStream fis = null;
 		String lastProtobufString = "";
 		String currentProtobufString = "";
+		String lastVersion = "";
 		String version = "";
-		String revisionId = "";
+		String lastRevisionId = "";
 
 		try {
 			if (localProtoFile != null) {
 				fis = new FileInputStream(localProtoFile);
 				currentProtobufString = IOUtils.toString(fis, StandardCharsets.UTF_8);
 			}
-			
+			logger.debug("\n\nCurrent Protobuf String :-\n\n"+currentProtobufString+"\n\n");
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
 			if (revList != null) {
 				count = revList.size();
-				revisionId = revList.get(revList.size()-1).getRevisionId();
+				logger.debug("Last Version's MLPSolutionRevision : "+revList.get(revList.size()-1));
+				logger.debug("Last Version's MLPSolutionRevision's Size : "+count);
+				lastRevisionId = revList.get(revList.size()-1).getRevisionId();
+				lastVersion = revList.get(revList.size()-1).getVersion();
+				logger.debug("Last Version's Revision Id: "+lastRevisionId);
+				logger.debug("Last Version : "+lastVersion);
 			}
-			countTemp = ""+count;
+			countTemp = lastVersion;//""+count;
 			if(countTemp.contains(".")) {
 				countMajor = countTemp.substring(0,countTemp.indexOf("."));
 				countMinor = countTemp.substring(countTemp.indexOf("."), countTemp.lastIndexOf("."));
@@ -449,8 +455,9 @@ public class CommonOnboarding {
 			}
 			//count++;
 			
-			lastProtobufString = getLastProtobuf(solutionId, revisionId);
-			
+			lastProtobufString = getLastProtobuf(solutionId, lastRevisionId);
+			logger.debug("\n\nLast Protobuf String :-\n\n"+lastProtobufString+"\n\n");
+			logger.debug("countMajor = "+countMajor+", countMinor = "+countMinor+", countIncremental = "+countIncremental);
 			version = getRevisionVersion(lastProtobufString, currentProtobufString, countMajor, countMinor, countIncremental);
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
@@ -472,7 +479,7 @@ public class CommonOnboarding {
 			File protoFile = null;
 
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
-			logger.debug("solutioId: " + solutionId + ", revisionId: " + revisionId);
+			logger.debug("solutionId: " + solutionId + ", revisionId: " + revisionId);
 			
 			artifactName = download.getModelArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
@@ -480,7 +487,7 @@ public class CommonOnboarding {
 			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
 
 			if (artifactName.toLowerCase().contains(".proto")) {
-				logger.debug("ProtoFile: " + artifactName);
+				logger.debug("Last ProtoFile: " + artifactName);
 				protoFile = new File(files, artifactName);
 			}
 
