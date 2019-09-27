@@ -440,7 +440,7 @@ public class CommonOnboarding {
 			}
 			logger.debug("Current Protobuf String :- " + currentProtobufString);
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
-			if (revList != null || !revList.isEmpty()) {
+			if (revList != null) {
 				count = revList.size();
 				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(revList.size() - 1));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
@@ -466,9 +466,11 @@ public class CommonOnboarding {
 						+ countIncremental);
 				version = getRevisionVersion(lastProtobufString, currentProtobufString, countMajor, countMinor,
 						countIncremental);
-			} else {
+				return version;
+			} 
+			
 				version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
-			}
+			
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
 		}

@@ -694,7 +694,7 @@ public class ProtobufRevision extends CommonOnboarding {
 
 		List<String> versionList = new ArrayList<>();
 
-		logger.debug("No. of Messages in Proto Files are NOT equal");
+		logger.debug("No. of Message Fields in Proto Files are NOT equal");
 
 		// Fill a list with Message Field Names 1. This list (fieldNameList1) contain
 		// String names of the Message Fields
