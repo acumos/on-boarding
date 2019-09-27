@@ -374,6 +374,9 @@ public class CommonOnboarding {
 			metadata.setVersion(version);
 		}
 
+		logger.debug("After Setting Version in createSolutionRevision method : "+version);
+		logger.debug("After Setting Version in createSolutionRevision method in Metedata: "+metadata.getVersion());
+		
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
 		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
@@ -554,6 +557,13 @@ public class CommonOnboarding {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
+			logger.debug("MetaData Version 1 before uploading to artifact = " +metadata.getVersion());
+			
+			if(metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
+				metadata.setVersion("1.0.0");
+			}
+			
+			logger.debug("MetaData Version 2 before uploading to artifact = " +metadata.getVersion());
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			logger.debug(
 					"Upload Artifact for: " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
@@ -710,6 +720,7 @@ public class CommonOnboarding {
 					e1.printStackTrace();
 				}
 			}
+			e.printStackTrace();
 			logger.error( "Fail to upload artificate for " + e.getMessage(), e);
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to upload artificate for " + e.getMessage(), e);
