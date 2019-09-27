@@ -51,6 +51,7 @@ import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.common.utils.ProtobufUtil;
 import org.acumos.onboarding.common.utils.ResourceUtils;
+import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
@@ -433,30 +434,30 @@ public class CommonOnboarding {
 				fis = new FileInputStream(localProtoFile);
 				currentProtobufString = IOUtils.toString(fis, StandardCharsets.UTF_8);
 			}
-			logger.debug("\n\nCurrent Protobuf String :-\n\n"+currentProtobufString+"\n\n");
+			logger.debug("Current Protobuf String :- "+currentProtobufString);
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
 			if (revList != null) {
 				count = revList.size();
 				logger.debug("Last Version's MLPSolutionRevision : "+revList.get(revList.size()-1));
 				logger.debug("Last Version's MLPSolutionRevision's Size : "+count);
-				lastRevisionId = revList.get(revList.size()-1).getRevisionId();
-				lastVersion = revList.get(revList.size()-1).getVersion();
+				lastRevisionId = revList.get(0).getRevisionId();
+				lastVersion = revList.get(0).getVersion();
 				logger.debug("Last Version's Revision Id: "+lastRevisionId);
 				logger.debug("Last Version : "+lastVersion);
 			}
 			countTemp = lastVersion;//""+count;
 			if(countTemp.contains(".")) {
 				countMajor = countTemp.substring(0,countTemp.indexOf("."));
-				countMinor = countTemp.substring(countTemp.indexOf("."), countTemp.lastIndexOf("."));
-				countIncremental = countTemp.substring(countTemp.lastIndexOf("."));
+				countMinor = countTemp.substring(countTemp.indexOf(".")+1, countTemp.lastIndexOf("."));
+				countIncremental = countTemp.substring(countTemp.lastIndexOf(".")+1);
 			}else {
 				countMajor = countTemp;
 			}
 			//count++;
 			
 			lastProtobufString = getLastProtobuf(solutionId, lastRevisionId);
-			logger.debug("\n\nLast Protobuf String :-\n\n"+lastProtobufString+"\n\n");
+			logger.debug("Last Protobuf String :- "+lastProtobufString);
 			logger.debug("countMajor = "+countMajor+", countMinor = "+countMinor+", countIncremental = "+countIncremental);
 			version = getRevisionVersion(lastProtobufString, currentProtobufString, countMajor, countMinor, countIncremental);
 		} catch (Exception e) {
@@ -468,9 +469,10 @@ public class CommonOnboarding {
 	public String getLastProtobuf(String solutionId, String revisionId) {
 
 		String lastProtoBuffString = "";
-
-		File files = null;
-
+		String modelId = UtilityFunction.getGUID();
+		File files = new File("tmp", modelId);;
+		files.mkdirs();
+		
 		try {
 
 			String artifactName = "";
@@ -488,6 +490,7 @@ public class CommonOnboarding {
 
 			if (artifactName.toLowerCase().contains(".proto")) {
 				logger.debug("Last ProtoFile: " + artifactName);
+				
 				protoFile = new File(files, artifactName);
 			}
 
@@ -498,6 +501,8 @@ public class CommonOnboarding {
 			}
 		} catch (Exception e) {
 			logger.error("Failed to fetch the Last Protofile : "+e.getMessage());
+		}finally {
+			UtilityFunction.deleteDirectory(files);
 		}
 
 		return lastProtoBuffString;
