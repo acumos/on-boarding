@@ -39,6 +39,8 @@ public class DownloadModelArtifacts {
 	
 	CommonDataServiceRestClientImpl cmnDataService;
 	
+	File artifactFile = null;
+	
 	public String getModelArtifacts(String solutionId, String revisionId, String userName, String password,
 			String nexusUrl, String nexusUserName, String nexusPassword, String dataSource) throws Exception {
 		logger.debug("------ Start getBluePrintNexus-----------------");
@@ -87,6 +89,7 @@ public class DownloadModelArtifacts {
 						File file = new File(outputFolder,artifactFileName);
 						FileOutputStream fout = new FileOutputStream(file);
 						fout.write(byteArrayOutputStream.toByteArray());
+						this.setArtifactFile(file);
 						fout.flush();
 						fout.close();
 
@@ -95,6 +98,14 @@ public class DownloadModelArtifacts {
 			}
 		}
 		return artifactFileName;
+	}
+
+	public void setArtifactFile(File file) {
+		this.artifactFile = file;
+	}
+	
+	public File getArtifactFile() {
+		return this.artifactFile;
 	}
 	
 }
