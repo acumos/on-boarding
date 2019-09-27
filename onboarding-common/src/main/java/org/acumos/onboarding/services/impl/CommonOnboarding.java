@@ -20,11 +20,8 @@
 
 package org.acumos.onboarding.services.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +49,6 @@ import org.acumos.onboarding.common.proto.Protobuf;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
-import org.acumos.onboarding.common.utils.OnboardingConstants;
 import org.acumos.onboarding.common.utils.ProtobufUtil;
 import org.acumos.onboarding.common.utils.ResourceUtils;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
@@ -60,16 +56,13 @@ import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
-import org.powermock.mockpolicies.support.LogPolicySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.multipart.MultipartFile;
 
 public class CommonOnboarding {
 
@@ -376,7 +369,7 @@ public class CommonOnboarding {
 		String version = metadata.getVersion();
 
 		if (version == null) {
-			version = getModelVersion(metadata.getSolutionId(), metadata.getRevisionId(), localProtoFile);
+			version = getModelVersion(metadata.getSolutionId(), localProtoFile);
 			metadata.setVersion(version);
 		}
 
@@ -422,27 +415,37 @@ public class CommonOnboarding {
 		return "" + count;
 	}
 	
-	public String getModelVersion(String solutionId, String revisionId, File localProtoFile) {
+	public String getModelVersion(String solutionId, File localProtoFile) {
 		int count = 0;
+		String countTemp = "";
 		FileInputStream fis = null;
 		String lastProtobufString = "";
 		String currentProtobufString = "";
 		String version = "";
+		String revisionId = "";
 
 		try {
 			if (localProtoFile != null) {
 				fis = new FileInputStream(localProtoFile);
 				currentProtobufString = IOUtils.toString(fis, StandardCharsets.UTF_8);
 			}
-			lastProtobufString = getLastProtobuf(solutionId, revisionId);
+			
 			
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 
 			if (revList != null) {
 				count = revList.size();
+				revisionId = revList.get(revList.size()-1).getRevisionId();
+			}
+			countTemp = ""+count;
+			if(countTemp.contains(".")) {
+				countTemp = countTemp.substring(0,countTemp.indexOf("."));
 			}
 			//count++;
-			version = getRevisionVersion(lastProtobufString, currentProtobufString, ""+count);
+			
+			lastProtobufString = getLastProtobuf(solutionId, revisionId);
+			
+			version = getRevisionVersion(lastProtobufString, currentProtobufString, countTemp);
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
 		}
@@ -460,11 +463,10 @@ public class CommonOnboarding {
 			String artifactName = "";
 			files = new File("model");
 
-			MultipartFile proto = null;
 			File protoFile = null;
 
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
-			logger.debug("solutioId: " + solutionId, "revisionId: " + revisionId);
+			logger.debug("solutioId: " + solutionId + ", revisionId: " + revisionId);
 			
 			artifactName = download.getModelArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
