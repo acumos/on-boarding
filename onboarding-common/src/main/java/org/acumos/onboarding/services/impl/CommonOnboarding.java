@@ -452,7 +452,8 @@ public class CommonOnboarding {
 					countMinor = countTemp.substring(countTemp.indexOf(".") + 1, countTemp.lastIndexOf("."));
 					countIncremental = countTemp.substring(countTemp.lastIndexOf(".") + 1);
 				} else {
-					countMajor = countTemp;
+					if (!countTemp.equals(""))
+						countMajor = countTemp;
 				}
 				// count++;
 
