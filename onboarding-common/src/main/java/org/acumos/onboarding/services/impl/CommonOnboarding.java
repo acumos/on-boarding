@@ -371,6 +371,9 @@ public class CommonOnboarding {
 		logger.debug("Version in createSolutionRevision method : "+version);
 		if (version == null) {
 			version = getModelVersion(metadata.getSolutionId(), localProtoFile);
+			if(version == null) {
+				version = "1.0.0";
+			}
 			metadata.setVersion(version);
 		}
 
@@ -467,12 +470,13 @@ public class CommonOnboarding {
 				version = getRevisionVersion(lastProtobufString, currentProtobufString, countMajor, countMinor,
 						countIncremental);
 				return version;
-			} 
-			
+			}
 				version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
+				logger.debug("New Version = "+version);
 			
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
+			e.printStackTrace();
 		}
 		return version;
 	}
@@ -559,13 +563,7 @@ public class CommonOnboarding {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
-			logger.debug("MetaData Version 1 before uploading to artifact = " +metadata.getVersion());
-			
-			if(metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
-				metadata.setVersion("1.0.0");
-			}
-			
-			logger.debug("MetaData Version 2 before uploading to artifact = " +metadata.getVersion());
+			logger.debug("MetaData Version before uploading artifact = " +metadata.getVersion());
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			logger.debug(
 					"Upload Artifact for: " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
@@ -678,15 +676,8 @@ public class CommonOnboarding {
 					onboardingStatus.notifyOnboardingStatus("AddDockerImage", "ST",
 							"Add Artifact for" + uri + " started");
 				}
-				
-				logger.debug("MetaData Version 1 before uploading to artifact = " +metadata.getVersion());
-				
-				if(metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
-					metadata.setVersion("1.0.0");
-				}
-				
-				logger.debug("MetaData Version 2 before uploading to artifact = " +metadata.getVersion());
-				
+
+				logger.debug("MetaData Version before uploading artifact = " +metadata.getVersion());
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(metadata.getModelName());
 				modelArtifact.setDescription(uri);
