@@ -678,6 +678,15 @@ public class CommonOnboarding {
 					onboardingStatus.notifyOnboardingStatus("AddDockerImage", "ST",
 							"Add Artifact for" + uri + " started");
 				}
+				
+				logger.debug("MetaData Version 1 before uploading to artifact = " +metadata.getVersion());
+				
+				if(metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
+					metadata.setVersion("1.0.0");
+				}
+				
+				logger.debug("MetaData Version 2 before uploading to artifact = " +metadata.getVersion());
+				
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(metadata.getModelName());
 				modelArtifact.setDescription(uri);
@@ -782,6 +791,14 @@ public class CommonOnboarding {
 			ToscaGeneratorClient client = new ToscaGeneratorClient(toscaOutputFolder, toscaGeneratorEndPointURL,
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
 					cmnDataSvcPwd);
+
+			logger.debug("MetaData Version 1 before Generating TOSCA = " + metadata.getVersion());
+
+			if (metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
+				metadata.setVersion("1.0.0");
+			}
+
+			logger.debug("MetaData Version 2 before Generating TOSCA = " + metadata.getVersion());
 
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 					metadata.getRevisionId(), localProtobufFile, localMetadataFile);
