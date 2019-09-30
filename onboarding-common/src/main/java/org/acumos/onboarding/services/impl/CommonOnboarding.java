@@ -565,6 +565,9 @@ public class CommonOnboarding {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
+			if (metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
+				metadata.setVersion("1.0.0");
+			}
 			logger.debug("MetaData Version before uploading artifact = " +metadata.getVersion());
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			logger.debug(
@@ -678,7 +681,9 @@ public class CommonOnboarding {
 					onboardingStatus.notifyOnboardingStatus("AddDockerImage", "ST",
 							"Add Artifact for" + uri + " started");
 				}
-
+				if (metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
+					metadata.setVersion("1.0.0");
+				}
 				logger.debug("MetaData Version before uploading artifact = " +metadata.getVersion());
 				MLPArtifact modelArtifact = new MLPArtifact();
 				modelArtifact.setName(metadata.getModelName());
