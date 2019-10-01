@@ -324,8 +324,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
 
+						logger.debug("Metadata Version before calling createSolutionRevision = "+mData.getVersion());
 						revision = createSolutionRevision(mData, localProtobufFile);
-
+						logger.debug("Metadata Version after calling createSolutionRevision = "+mData.getVersion());
+						
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
 
 						// Solution id creation completed
@@ -387,6 +389,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					// addArtifact method itself for started/success/failure
 					artifactsDetails = getArtifactsDetails();
 
+					logger.debug("Metadata Version before adding Artifacts = "+mData.getVersion());
 					addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 							onboardingStatus);
 
