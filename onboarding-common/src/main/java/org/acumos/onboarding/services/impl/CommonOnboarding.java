@@ -487,6 +487,7 @@ public class CommonOnboarding {
 		try {
 
 			String artifactName = "";
+			List<String> artifactNameList = new ArrayList<String>();
 			files = new File("model");
 
 			File protoFile = null;
@@ -494,16 +495,19 @@ public class CommonOnboarding {
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
 			logger.debug("solutionId: " + solutionId + ", revisionId: " + revisionId);
 			
-			artifactName = download.getModelProtoArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
+			artifactNameList = download.getModelProtoArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
 			
+			logger.debug("Number of artifacts: "+ artifactNameList.size());
 			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
 
-			if (artifactName.toLowerCase().contains(".proto")) {
-				logger.debug("Last ProtoFile: " + artifactName);
-				protoFile = download.getArtifactFile();
-			}
+			for (String name : artifactNameList) {
+				if (name.toLowerCase().contains(".proto")) {
+					logger.debug("Last ProtoFile: " + name);
+					protoFile = download.getArtifactFile();
+				}
 
+			}
 			if (protoFile != null && protoFile.exists()) {
 
 				FileInputStream fisProto = new FileInputStream(protoFile);

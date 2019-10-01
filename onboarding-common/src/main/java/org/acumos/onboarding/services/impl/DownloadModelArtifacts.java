@@ -22,6 +22,7 @@ package org.acumos.onboarding.services.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
@@ -99,7 +100,7 @@ public class DownloadModelArtifacts {
 		return artifactFileName;
 	}
 	
-	public String getModelProtoArtifacts(String solutionId, String revisionId, String userName, String password,
+	public List<String> getModelProtoArtifacts(String solutionId, String revisionId, String userName, String password,
 			String nexusUrl, String nexusUserName, String nexusPassword, String dataSource) throws Exception {
 		logger.debug("------ Start getBluePrintNexus-----------------");
 		logger.debug("-------solutionId-----------" + solutionId);
@@ -108,12 +109,17 @@ public class DownloadModelArtifacts {
 		List<MLPArtifact> mlpArtifactList;
 		String nexusURI = "";
 
+		List<String> artifactNameArray = new ArrayList<String>();
+
 		ByteArrayOutputStream byteArrayOutputStream = null;
 		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
 
-		File outputFolder = new File("dcae_model_proto");
+		File outputFolder = new File("dcae_model");
 		outputFolder.mkdirs();
 
+		File outputFolder1 = new File("dcae_model_proto");
+		outputFolder1.mkdirs();
+		
 		if (revisionId != null) {
 			/* Get the list of Artifacts for the SolutionId and revisionId. */
 			mlpArtifactList = cmnDataService.getSolutionRevisionArtifacts(solutionId, revisionId);
@@ -131,40 +137,41 @@ public class DownloadModelArtifacts {
 						if (nexusURI != null) {
 							RepositoryLocation repositoryLocation = new RepositoryLocation();
 							repositoryLocation.setId("1");
-							repositoryLocation.setUrl(nexusURI);
+							repositoryLocation.setUrl(nexusUrl);
 							repositoryLocation.setUsername(nexusUserName);
 							repositoryLocation.setPassword(nexusPassword);
 							NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-							logger.debug("Putting Artifact in ByteArrayOutputStream !!!");
+
 							byteArrayOutputStream = artifactClient.getArtifact(nexusURI);
-							logger.debug("Protobuf ByteArrayOutputStream = "+byteArrayOutputStream);
 							if (!nexusURI.isEmpty()) {
 								artifactFileName = nexusURI.substring(nexusURI.lastIndexOf("/") + 1, nexusURI.length());
-								logger.debug("Proto Artifact File Name = " + artifactFileName);
+								artifactNameArray.add(artifactFileName);
+								logger.debug("------ Downloaded Artifact : " + artifactFileName);
 							}
 						}
 						if (byteArrayOutputStream != null) {
 							byteArrayOutputStream.close();
 						}
-						File file = null;
-						if (artifactFileName.substring(artifactFileName.lastIndexOf(".") + 1).equals("proto")) {
-							file = new File(outputFolder, artifactFileName);
-						}else {
-							logger.debug("Artifact File Name is not proto = "+artifactFileName);
-							continue;
+						
+						if (artifactFileName.contains(".proto")) {
+							File file1 = new File(outputFolder1, artifactFileName);
+							FileOutputStream fout1 = new FileOutputStream(file1);
+							fout1.write(byteArrayOutputStream.toByteArray());
+							this.setArtifactFile(file1);
+							fout1.flush();
+							fout1.close();
+						} else {
+							File file = new File(outputFolder, artifactFileName);
+							FileOutputStream fout = new FileOutputStream(file);
+							fout.write(byteArrayOutputStream.toByteArray());
+							fout.flush();
+							fout.close();
 						}
-						logger.debug("Artifact File Name before output stream = "+artifactFileName);
-						FileOutputStream fout = new FileOutputStream(file);
-						fout.write(byteArrayOutputStream.toByteArray());
-						this.setArtifactFile(file);
-						fout.flush();
-						fout.close();
 					}
 				}
 			}
 		}
-		logger.debug("Artifact Proto File Name --> " + artifactFileName);
-		return artifactFileName;
+		return artifactNameArray;
 	}
 
 
