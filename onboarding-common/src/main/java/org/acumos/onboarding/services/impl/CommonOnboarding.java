@@ -444,8 +444,8 @@ public class CommonOnboarding {
 			logger.debug("Current Protobuf String :- " + currentProtobufString);
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
                         logger.debug("After getSolutionRevisions call!! ");
-			if (revList != null) {
-                                logger.debug("Inside revList not NULL!! ");
+			if (revList != null || !revList.isEmpty()) {
+				logger.debug("Inside revList not NULL!! "+revList.get(0));
 				count = revList.size();
 				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(revList.size() - 1));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
