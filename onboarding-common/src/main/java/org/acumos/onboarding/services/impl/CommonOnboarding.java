@@ -496,13 +496,12 @@ public class CommonOnboarding {
 			
 			artifactName = download.getModelArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
-			protoFile = download.getArtifactFile();
+			
 			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
 
 			if (artifactName.toLowerCase().contains(".proto")) {
 				logger.debug("Last ProtoFile: " + artifactName);
-				
-				//protoFile = new File(files, artifactName);
+				protoFile = download.getArtifactFile();
 			}
 
 			if (protoFile != null && protoFile.exists()) {
@@ -875,13 +874,17 @@ public class CommonOnboarding {
 		}
 	}
 
-	
 	public String getRevisionVersion(String lastProtobufString, String currentProtobufString, String countMajor,
 			String countMinor, String countIncremental) {
 
 		ProtobufRevision protoRevision = new ProtobufRevision();
-		Protobuf protoBuf1 = ProtobufUtil.parseProtobuf(lastProtobufString);
-		Protobuf protoBuf2 = ProtobufUtil.parseProtobuf(currentProtobufString);
+		Protobuf protoBuf1 = null;
+		Protobuf protoBuf2 = null;
+		
+		if (lastProtobufString != null && !lastProtobufString.isEmpty()) {
+			protoBuf1 = ProtobufUtil.parseProtobuf(lastProtobufString);
+			protoBuf2 = ProtobufUtil.parseProtobuf(currentProtobufString);
+		}
 		String verA = countMajor;
 		String verB = countMinor;
 		String verC = countIncremental;
