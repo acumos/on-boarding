@@ -324,10 +324,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
 
-						logger.debug("Metadata Version before calling createSolutionRevision = "+mData.getVersion());
 						revision = createSolutionRevision(mData, localProtobufFile);
-						logger.debug("Metadata Version after calling createSolutionRevision = "+mData.getVersion());
-						
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
 
 						// Solution id creation completed

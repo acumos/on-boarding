@@ -374,7 +374,6 @@ public class CommonOnboarding {
 			metadata.setVersion(version);
 		}
 
-		logger.debug("After Setting Version in createSolutionRevision method : "+version);
 		logger.debug("After Setting Version in createSolutionRevision method in Metedata: "+metadata.getVersion());
 		
 		revision.setVersion(metadata.getVersion());
@@ -440,11 +439,8 @@ public class CommonOnboarding {
 			}
 			logger.debug("Current Protobuf String :- " + currentProtobufString);
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
-                        logger.debug("After getSolutionRevisions call!! ");
 			if (revList != null && !revList.isEmpty() && revList.size() != 0) {
-				logger.debug("Inside revList not NULL!! "+revList);
 				count = revList.size();
-				logger.debug("revList size = "+revList.size());
 				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(revList.size() - 1));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
 				lastRevisionId = revList.get(0).getRevisionId();
@@ -452,7 +448,7 @@ public class CommonOnboarding {
 				logger.debug("Last Version's Revision Id: " + lastRevisionId);
 				logger.debug("Last Version : " + lastVersion);
 
-				countTemp = lastVersion;// ""+count;
+				countTemp = lastVersion;
 				if (countTemp.contains(".")) {
 					countMajor = countTemp.substring(0, countTemp.indexOf("."));
 					countMinor = countTemp.substring(countTemp.indexOf(".") + 1, countTemp.lastIndexOf("."));
@@ -472,7 +468,7 @@ public class CommonOnboarding {
 				return version;
 			}
 				version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
-				logger.debug("New Version = "+version);
+				logger.debug("Set a New Version = "+version);
 			
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
@@ -563,11 +559,7 @@ public class CommonOnboarding {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			int size = (int) file.length();
 			String nexusGrpId=nexusGroupId+"."+metadata.getSolutionId();
-			logger.debug("MetaData Version 1 before uploading artifact = " +metadata.getVersion());
-			if (metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
-				metadata.setVersion("1.0.0");
-			}
-			logger.debug("MetaData Version 2 before uploading artifact = " +metadata.getVersion());
+			logger.debug("MetaData Version before uploading artifact = " +metadata.getVersion());
 			UploadArtifactInfo artifactInfo = artifactClient.uploadArtifact(nexusGrpId, nexusArtifactId, metadata.getVersion(), ext, size, fileInputStream);
 			logger.debug(
 					"Upload Artifact for: " + file.getName() + " successful response: " + artifactInfo.getArtifactId());
@@ -789,14 +781,7 @@ public class CommonOnboarding {
 					nexusEndPointURL, nexusUserName, nexusPassword, nexusGroupId, cmnDataSvcEndPoinURL, cmnDataSvcUser,
 					cmnDataSvcPwd);
 
-			logger.debug("MetaData Version 1 before Generating TOSCA = " + metadata.getVersion());
-
-			if (metadata.getVersion() == null || metadata.getVersion().isEmpty()) {
-				metadata.setVersion("1.0.0");
-			}
-
-			logger.debug("MetaData Version 2 before Generating TOSCA = " + metadata.getVersion());
-
+			logger.debug("MetaData Version before Generating TOSCA = " + metadata.getVersion());
 			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 					metadata.getRevisionId(), localProtobufFile, localMetadataFile);
 			logger.debug("Generate TOSCA completed and result:" + result);
