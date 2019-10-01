@@ -128,41 +128,37 @@ public class DownloadModelArtifacts {
 
 						logger.debug("------ Nexus URI : " + nexusURI + " -------");
 
-						if (nexusURI.contains("proto")) {
+						if (nexusURI != null) {
+							RepositoryLocation repositoryLocation = new RepositoryLocation();
+							repositoryLocation.setId("1");
+							repositoryLocation.setUrl(nexusURI);
+							repositoryLocation.setUsername(nexusUserName);
+							repositoryLocation.setPassword(nexusPassword);
+							NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
 
-							if (nexusURI != null) {
-								RepositoryLocation repositoryLocation = new RepositoryLocation();
-								repositoryLocation.setId("1");
-								repositoryLocation.setUrl(nexusURI);
-								repositoryLocation.setUsername(nexusUserName);
-								repositoryLocation.setPassword(nexusPassword);
-								NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-
-								byteArrayOutputStream = artifactClient.getArtifact(nexusURI);
-								if (!nexusURI.isEmpty()) {
+							byteArrayOutputStream = artifactClient.getArtifact(nexusURI);
+							if (!nexusURI.isEmpty()) {
+								if (nexusURI.substring(nexusURI.lastIndexOf(".") + 1).equals("proto")) {
 									artifactFileName = nexusURI.substring(nexusURI.lastIndexOf("/") + 1,
 											nexusURI.length());
-
+									if (byteArrayOutputStream != null) {
+										byteArrayOutputStream.close();
+									}
+									File file = new File(outputFolder, artifactFileName);
+									FileOutputStream fout = new FileOutputStream(file);
+									fout.write(byteArrayOutputStream.toByteArray());
+									this.setArtifactFile(file);
+									fout.flush();
+									fout.close();
 								}
+								logger.debug("---Nexus URI without proto---" + nexusURI);
 							}
-							if (byteArrayOutputStream != null) {
-								byteArrayOutputStream.close();
-							}
-							File file = new File(outputFolder, artifactFileName);
-							FileOutputStream fout = new FileOutputStream(file);
-							fout.write(byteArrayOutputStream.toByteArray());
-							this.setArtifactFile(file);
-							fout.flush();
-							fout.close();
-
-						} else {
-							continue;
 						}
 					}
 				}
 			}
 		}
-
+		logger.debug("Artifact Proto File Name --> " + artifactFileName);
 		return artifactFileName;
 	}
 
