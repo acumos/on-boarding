@@ -486,7 +486,6 @@ public class CommonOnboarding {
 		
 		try {
 
-			String artifactName = "";
 			List<String> artifactNameList = new ArrayList<String>();
 			files = new File("model");
 
@@ -499,7 +498,6 @@ public class CommonOnboarding {
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
 			
 			logger.debug("Number of artifacts: "+ artifactNameList.size());
-			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
 
 			for (String name : artifactNameList) {
 				if (name.toLowerCase().contains(".proto")) {
