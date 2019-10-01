@@ -135,25 +135,30 @@ public class DownloadModelArtifacts {
 							repositoryLocation.setUsername(nexusUserName);
 							repositoryLocation.setPassword(nexusPassword);
 							NexusArtifactClient artifactClient = new NexusArtifactClient(repositoryLocation);
-
+							logger.debug("Putting Artifact in ByteArrayOutputStream !!!");
 							byteArrayOutputStream = artifactClient.getArtifact(nexusURI);
+							logger.debug("Protobuf ByteArrayOutputStream = "+byteArrayOutputStream);
 							if (!nexusURI.isEmpty()) {
-								if (nexusURI.substring(nexusURI.lastIndexOf(".") + 1).equals("proto")) {
-									artifactFileName = nexusURI.substring(nexusURI.lastIndexOf("/") + 1,
-											nexusURI.length());
-									if (byteArrayOutputStream != null) {
-										byteArrayOutputStream.close();
-									}
-									File file = new File(outputFolder, artifactFileName);
-									FileOutputStream fout = new FileOutputStream(file);
-									fout.write(byteArrayOutputStream.toByteArray());
-									this.setArtifactFile(file);
-									fout.flush();
-									fout.close();
-								}
-								logger.debug("---Nexus URI without proto---" + nexusURI);
+								artifactFileName = nexusURI.substring(nexusURI.lastIndexOf("/") + 1, nexusURI.length());
+								logger.debug("Proto Artifact File Name = " + artifactFileName);
 							}
 						}
+						if (byteArrayOutputStream != null) {
+							byteArrayOutputStream.close();
+						}
+						File file = null;
+						if (artifactFileName.substring(artifactFileName.lastIndexOf(".") + 1).equals("proto")) {
+							file = new File(outputFolder, artifactFileName);
+						}else {
+							logger.debug("Artifact File Name is not proto = "+artifactFileName);
+							continue;
+						}
+						logger.debug("Artifact File Name before output stream = "+artifactFileName);
+						FileOutputStream fout = new FileOutputStream(file);
+						fout.write(byteArrayOutputStream.toByteArray());
+						this.setArtifactFile(file);
+						fout.flush();
+						fout.close();
 					}
 				}
 			}
