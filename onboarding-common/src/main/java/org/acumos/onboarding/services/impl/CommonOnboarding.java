@@ -441,7 +441,7 @@ public class CommonOnboarding {
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 			if (revList != null && !revList.isEmpty() && revList.size() != 0) {
 				count = revList.size();
-				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(revList.size() - 1));
+				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(0));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
 				lastRevisionId = revList.get(0).getRevisionId();
 				lastVersion = revList.get(0).getVersion();
@@ -494,7 +494,7 @@ public class CommonOnboarding {
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
 			logger.debug("solutionId: " + solutionId + ", revisionId: " + revisionId);
 			
-			artifactName = download.getModelArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
+			artifactName = download.getModelProtoArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
 			
 			logger.debug("Name of artifact for fetching Last Protobuf: " + artifactName);
