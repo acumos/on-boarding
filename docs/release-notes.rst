@@ -24,6 +24,12 @@ These release notes cover the on-boarding common library and the on-boarding app
 for public use, which are released together.
 
 
+Version 3.4.0, 3 Oct 2019
+-----------------------------
+* Common Data Service client at version 3.0.0
+* As a User , I want to see an Enhance on-boarding processes to allow choice of new model vs new revision : `ACUMOS-1216 <https://jira.acumos.org/browse/ACUMOS-1216/>`_
+
+
 Version 3.2.0, 19 Sept 2019
 -----------------------------
 * Common Data Service client at version 3.0.0
