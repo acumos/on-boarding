@@ -22,11 +22,13 @@ package org.acumos.onboarding.services.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -40,6 +42,9 @@ import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
+import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
+import org.acumos.licensemanager.profilevalidator.exceptions.LicenseProfileException;
+import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
@@ -55,6 +60,8 @@ import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
+import org.acumos.securityverification.domain.Workflow;
+import org.acumos.securityverification.service.SecurityVerificationClientServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -64,6 +71,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
+
+import com.networknt.schema.ValidationMessage;
+
 
 public class CommonOnboarding {
 
@@ -116,6 +126,9 @@ public class CommonOnboarding {
 	
 	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
+	
+	@Value("$security.VerificationApiUrl")
+	protected String securityVerificationApiUrl;
 
 	protected String modelOriginalName = null;
 
@@ -933,6 +946,86 @@ public class CommonOnboarding {
 
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
-	}
+	}	 
+     
+     public String validateLicense(String license) throws AcumosServiceException, FileNotFoundException, LicenseProfileException
+     {
+    	 try {
+	    	   FileInputStream fio = new FileInputStream(license);
+	 		   LicenseProfileValidator validator = new LicenseProfileValidator();			        
+	           LicenseProfileValidationResults licenseProfileValidationResults=null;
+	         
+	           licenseProfileValidationResults=validator.validate(fio);
+	           Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
+	           
+	           if(errMesgList == null || errMesgList.isEmpty()) {
+	        	   logger.debug("License validated. ");
+	               return "SUCCESS";
+	           } else {
+	        	   logger.debug("Failed to validate license. ");
+	        	   return errMesgList.toString();
+	           }
+	           
+         } catch (LicenseProfileException licExp) {
+        	 logger.error("Exception occurred during License SV scan: ", licExp.getMessage());
+        	 throw licExp;
+         } catch (FileNotFoundException fnf) {
+        	 logger.error("Exception occurred during License SV scan: ", fnf.getMessage());
+        	 throw fnf;
+ 		 } catch (Exception e) {
+ 			logger.error("Exception occurred during License SV scan: ", e.getMessage());
+ 			throw e;
+         }
+    	
+     }
+     
+     public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
+ 		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId); 
+ 		Workflow workflow = getValidWorkflow();
+ 			try {
+ 				SecurityVerificationClientServiceImpl sv = getSVClient();
+
+ 				workflow = sv.securityVerificationScan(solutionId, revisionId, workflowId, loggedInUserId);
+ 				if (!workflow.isWorkflowAllowed()) {
+ 					String message = (!UtilityFunction.isEmptyOrNullString(workflow.getSvException()))
+ 							? workflow.getSvException()
+ 							: (!UtilityFunction.isEmptyOrNullString(workflow.getReason())) ? workflow.getReason()
+ 									: "Unknown problem occurred during security verification";
+ 					workflow.setReason(message);
+ 					logger.error("Problem occurred during SV scan: ", message);
+ 				} else {
+ 					log.debug("SV Scan completed :  ", workflow);
+ 				}
+ 			} catch (Exception e) {
+ 				String message = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
+ 				workflow = getInvalidWorkflow(message);
+ 				logger.error("Exception occurred during SV scan: ", message);
+ 			}
+ 		return workflow;
+ 	}
+     
+ 	
+    protected Workflow getValidWorkflow() {
+ 		Workflow workflow = new Workflow();
+ 		workflow.setWorkflowAllowed(true);
+ 		return workflow;
+ 	}
+
+ 	protected Workflow getInvalidWorkflow(String message) {
+ 		Workflow workflow = new Workflow();
+ 		workflow.setWorkflowAllowed(false);
+ 		workflow.setReason(message);
+ 		return workflow;
+ 	}
+ 	
+ 	protected SecurityVerificationClientServiceImpl getSVClient() {
+ 		SecurityVerificationClientServiceImpl securityVerificationServiceImpl = new SecurityVerificationClientServiceImpl(
+ 				securityVerificationApiUrl,cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,
+ 				nexusEndPointURL, nexusUserName, nexusPassword
+ 				);
+ 		
+ 		return securityVerificationServiceImpl;
+ 	}
+     
 
 }
