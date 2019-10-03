@@ -19,7 +19,6 @@
  */
 
 package org.acumos.onboarding.common.utils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -388,5 +387,13 @@ public class UtilityFunction {
 			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 					"Fail to move file " + srcFile.getName() + " form folder cause: ", e);
 		}
+	}
+	
+	public static boolean isEmptyOrNullString(String input) {
+		boolean isEmpty = false;
+		if (null == input || 0 == input.trim().length()) {
+			isEmpty = true;
+		}
+		return isEmpty;
 	}
 }

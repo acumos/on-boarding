@@ -21,10 +21,12 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +57,8 @@ import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.acumos.onboarding.services.DockerService;
+import org.acumos.securityverification.domain.Workflow;
+import org.acumos.securityverification.utils.SVConstants;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,10 +74,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+
 
 @RestController
 @RequestMapping(value = "/v2")
@@ -250,9 +257,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File licenseFile = null;
 
 				if (license != null && !license.isEmpty()) {
+					
 					String licenseFileName = license.getOriginalFilename();
 					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
-
+					
 					if (!licenseFileExtension.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
 						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
 						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
@@ -260,14 +268,24 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								OnboardingConstants.LICENSE_FILENAME_ERROR + ". Original File : " + licenseFileName),
 								HttpStatus.BAD_REQUEST);
 					}
-
 					if (!licenseFileName.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_FILENAME)) {
 						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
 						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
-
-					licenseFile = new File(outputFolder, licenseFileName);
-					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+					
+					String result =  validateLicense(license.toString());
+					if(result.equals("SUCCESS")) {
+						logger.debug("License validation is successfull.");
+						licenseFile = new File(outputFolder, licenseFileName);
+						UtilityFunction.copyFile(license.getInputStream(), licenseFile);
+						
+					}
+					else {
+						logger.error( "License validation failed. ");
+						return new ResponseEntity<ServiceResponse>(
+								ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
+										""+result),HttpStatus.BAD_REQUEST);
+					}
 				}
 
 				try {
@@ -326,7 +344,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						revision = createSolutionRevision(mData, localProtobufFile);
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
-
+						
+						Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
+						
+						if (workflow == null) {
+							logger.debug("SV Scan failed, workflow null");
+							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+									OnboardingConstants.BAD_REQUEST_CODE,
+									"License Security Verification Scan failed."),
+									HttpStatus.BAD_REQUEST);
+						}					
+						
 						// Solution id creation completed
 						// Notify Creation of solution ID is successful
 						if (onboardingStatus != null) {
