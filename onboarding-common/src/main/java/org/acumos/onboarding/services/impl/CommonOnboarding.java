@@ -453,11 +453,11 @@ public class CommonOnboarding {
 					countMajor = countTemp.substring(0, countTemp.indexOf("."));
 					countMinor = countTemp.substring(countTemp.indexOf(".") + 1, countTemp.lastIndexOf("."));
 					countIncremental = countTemp.substring(countTemp.lastIndexOf(".") + 1);
+					countIncremental = (Integer.parseInt(countIncremental)+1) +"";
 				} else {
 					if (!countTemp.equals(""))
 						countMajor = countTemp;
 				}
-				// count++;
 
 				lastProtobufString = getLastProtobuf(solutionId, lastRevisionId);
 				logger.debug("Last Protobuf String :- " + lastProtobufString);
@@ -883,6 +883,7 @@ public class CommonOnboarding {
 		Protobuf protoBuf1 = null;
 		Protobuf protoBuf2 = null;
 		
+		//Check if the lastProtobuf is not null
 		if (lastProtobufString != null && !lastProtobufString.isEmpty()) {
 			protoBuf1 = ProtobufUtil.parseProtobuf(lastProtobufString);
 			protoBuf2 = ProtobufUtil.parseProtobuf(currentProtobufString);
@@ -900,6 +901,9 @@ public class CommonOnboarding {
 		int countA = 0;
 		int countB = 0;
 		int countC = 0;
+		if(Integer.parseInt(countIncremental) != 0) {
+			countC = Integer.parseInt(countIncremental);
+		}
 
 		if (protoBuf1 != null && protoBuf2 != null) {
 
