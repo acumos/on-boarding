@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>3.4.1-SNAPSHOT</version>
+	<version>3.4.2-SNAPSHOT</version>
 	<name>Onboarding app for public use</name>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -160,7 +160,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.1</version>
+				<version>0.8.4</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -180,7 +180,7 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.21.0</version>
+				<version>0.30.0</version>
 				<configuration>
 					<verbose>true</verbose>
 					<!-- docker runs on the LF build minion so the default value is ok -->
@@ -226,14 +226,14 @@
 					</images>
 				</configuration>
 				<!-- build Docker image in install phase, push in deploy phase -->
-				<executions>
+				 <executions>
 					<execution>
 						<goals>
 							<goal>build</goal>
 							<goal>push</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions> 
 			</plugin>
 		</plugins>
 	</build>

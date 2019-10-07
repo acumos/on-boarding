@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.4.1-SNAPSHOT</version>
+	<version>3.4.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -194,7 +194,7 @@
 		<artifactId>protobuf-dynamic</artifactId>
 		<version>0.9.4</version>
 	</dependency>
-	
+	<!-- 
 	<dependency>
         <groupId>org.acumos.license-manager</groupId>
         <artifactId>license-manager-client-library</artifactId>
@@ -216,14 +216,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<!-- spring sets version -->
+			spring sets version
 		</dependency>
 		
 		<dependency>
 			<groupId>org.acumos.security-verification</groupId>
 			<artifactId>security-verification-client</artifactId>
 			<version>1.0.1</version>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 		    <groupId>javax.xml.bind</groupId>
@@ -235,8 +235,6 @@
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
-			
-			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
