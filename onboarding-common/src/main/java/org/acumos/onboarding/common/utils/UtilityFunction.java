@@ -389,4 +389,12 @@ public class UtilityFunction {
 					"Fail to move file " + srcFile.getName() + " form folder cause: ", e);
 		}
 	}
+	
+	public static boolean isEmptyOrNullString(String input) {
+		boolean isEmpty = false;
+		if (null == input || 0 == input.trim().length()) {
+			isEmpty = true;
+		}
+		return isEmpty;
+	}
 }

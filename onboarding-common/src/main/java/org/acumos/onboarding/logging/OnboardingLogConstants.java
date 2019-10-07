@@ -124,7 +124,7 @@ public final class OnboardingLogConstants {
 	}
 
 	/**
-	 * Response success or not, for setting <tt>StatusCode</tt>.
+	 * Response success or not, for setting <code>StatusCode</code>.
 	 */
 	public enum ResponseStatus {
 
