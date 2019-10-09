@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.4.4-SNAPSHOT</version>
+	<version>3.4.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -203,6 +203,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.networknt</groupId>
 			<artifactId>json-schema-validator</artifactId>
 			<version>1.0.20</version>
@@ -379,7 +385,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins
+	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins 
 		settings for credentials. -->
 	<distributionManagement>
 		<repository>
