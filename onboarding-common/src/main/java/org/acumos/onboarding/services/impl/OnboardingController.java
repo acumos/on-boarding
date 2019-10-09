@@ -57,8 +57,8 @@ import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.acumos.onboarding.services.DockerService;
-/*import org.acumos.securityverification.domain.Workflow;
-import org.acumos.securityverification.utils.SVConstants;*/
+import org.acumos.securityverification.domain.Workflow;
+import org.acumos.securityverification.utils.SVConstants;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -257,10 +257,10 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File licenseFile = null;
 
 				if (license != null && !license.isEmpty()) {
-					
+
 					String licenseFileName = license.getOriginalFilename();
 					String licenseFileExtension = licenseFileName.substring(licenseFileName.indexOf('.'));
-					
+
 					if (!licenseFileExtension.toLowerCase().equalsIgnoreCase(OnboardingConstants.LICENSE_EXTENSION)) {
 						logger.debug("License file extension of " + licenseFileName + " should be \".json\"");
 						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
@@ -272,13 +272,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logger.debug("Changing License file name = " + licenseFileName + " to \"license.json\"");
 						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
-					/*
+
 					String result =  validateLicense(license.toString());
 					if(result.equals("SUCCESS")) {
 						logger.debug("License validation is successfull.");
 						licenseFile = new File(outputFolder, licenseFileName);
 						UtilityFunction.copyFile(license.getInputStream(), licenseFile);
-						
+
 					}
 					else {
 						logger.error( "License validation failed. ");
@@ -286,7 +286,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
 										""+result),HttpStatus.BAD_REQUEST);
 					}
-					*/
+
 				}
 
 				try {
@@ -345,17 +345,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 						revision = createSolutionRevision(mData, localProtobufFile);
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
-						/*
+
 						Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
-						
+
 						if (workflow == null) {
 							logger.debug("SV Scan failed, workflow null");
 							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
 									OnboardingConstants.BAD_REQUEST_CODE,
 									"License Security Verification Scan failed."),
 									HttpStatus.BAD_REQUEST);
-						}					
-						*/
+						}
+
 						// Solution id creation completed
 						// Notify Creation of solution ID is successful
 						if (onboardingStatus != null) {

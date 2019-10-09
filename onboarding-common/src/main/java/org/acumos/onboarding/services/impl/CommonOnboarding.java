@@ -42,9 +42,9 @@ import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
-/*import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
+import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
 import org.acumos.licensemanager.profilevalidator.exceptions.LicenseProfileException;
-import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;*/
+import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
@@ -60,8 +60,8 @@ import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
-/*import org.acumos.securityverification.domain.Workflow;
-import org.acumos.securityverification.service.SecurityVerificationClientServiceImpl;*/
+import org.acumos.securityverification.domain.Workflow;
+import org.acumos.securityverification.service.SecurityVerificationClientServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -72,8 +72,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
 
-//import com.networknt.schema.ValidationMessage;
-
+import com.networknt.schema.ValidationMessage;
 
 public class CommonOnboarding {
 
@@ -123,10 +122,10 @@ public class CommonOnboarding {
 
 	@Value("${microService.microServiceEndPointURL}")
 	protected String microServiceURL;
-	
+
 	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
-	
+
 	@Value("$security.VerificationApiUrl")
 	protected String securityVerificationApiUrl;
 
@@ -148,7 +147,7 @@ public class CommonOnboarding {
 	protected ResourceUtils resourceUtils;
 
 	Map<String, String> toolkitTypeDetails = new HashMap<>();
-	
+
 	@PostConstruct
 	public void init() {
 		logger.debug("Creating docker service instance");
@@ -373,7 +372,7 @@ public class CommonOnboarding {
 					"Creation of solution revision failed - " + e.getResponseBodyAsString(), e);
 		}
 	}
-	
+
 	public MLPSolutionRevision createSolutionRevision(Metadata metadata, File localProtoFile) throws AcumosServiceException {
 		logger.debug("Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
@@ -388,7 +387,7 @@ public class CommonOnboarding {
 		}
 
 		logger.debug("After Setting Version in createSolutionRevision method in Metedata: "+metadata.getVersion());
-		
+
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
 		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
@@ -430,7 +429,7 @@ public class CommonOnboarding {
 		count++;
 		return "" + count;
 	}
-	
+
 	public String getModelVersion(String solutionId, File localProtoFile) {
 		int count = 0;
 		String countMajor = "1";
@@ -482,21 +481,21 @@ public class CommonOnboarding {
 			}
 				version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
 				logger.debug("Set a New Version = "+version);
-			
+
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
 			e.printStackTrace();
 		}
 		return version;
 	}
-	
+
 	public String getLastProtobuf(String solutionId, String revisionId) {
 
 		String lastProtoBuffString = "";
 		String modelId = UtilityFunction.getGUID();
 		File files = new File("tmp", modelId);;
 		files.mkdirs();
-		
+
 		try {
 
 			List<String> artifactNameList = new ArrayList<String>();
@@ -506,10 +505,10 @@ public class CommonOnboarding {
 
 			DownloadModelArtifacts download = new DownloadModelArtifacts();
 			logger.debug("solutionId: " + solutionId + ", revisionId: " + revisionId);
-			
+
 			artifactNameList = download.getModelProtoArtifacts(solutionId, revisionId, cmnDataSvcUser, cmnDataSvcPwd,
 					nexusEndPointURL, nexusUserName, nexusPassword, cmnDataSvcEndPoinURL);
-			
+
 			logger.debug("Number of artifacts: "+ artifactNameList.size());
 
 			for (String name : artifactNameList) {
@@ -632,7 +631,7 @@ public class CommonOnboarding {
 		}
 
 	}
-	
+
 	public MLPArtifact addArtifact(Metadata metadata, File file, String typeCode, String nexusArtifactId, OnboardingNotification onboardingStatus, LogBean logBean)
 			throws AcumosServiceException {
 		MLPArtifact mlpArtifact;
@@ -785,7 +784,7 @@ public class CommonOnboarding {
 					"Fail to upload artificate for " + e.getMessage(), e);
 		}
 	}
-	
+
 	public void generateTOSCA(File localProtobufFile, File localMetadataFile, Metadata metadata, OnboardingNotification onboardingStatus) {
 		logger.debug("Generate TOSCA started");
 		try {
@@ -895,7 +894,7 @@ public class CommonOnboarding {
 		ProtobufRevision protoRevision = new ProtobufRevision();
 		Protobuf protoBuf1 = null;
 		Protobuf protoBuf2 = null;
-		
+
 		if (lastProtobufString != null && !lastProtobufString.isEmpty()) {
 			protoBuf1 = ProtobufUtil.parseProtobuf(lastProtobufString);
 			protoBuf2 = ProtobufUtil.parseProtobuf(currentProtobufString);
@@ -929,8 +928,7 @@ public class CommonOnboarding {
 		logger.debug("New Revision Version = " + version);
 		return version;
 	}
-	
-	
+
 	//Method for getting model name used for Image
 	protected String getActualModelName(Metadata metadata, String solutionID) {
 
@@ -947,17 +945,17 @@ public class CommonOnboarding {
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
 	}	 
-     /*
+     
      public String validateLicense(String license) throws AcumosServiceException, FileNotFoundException, LicenseProfileException
      {
     	 try {
 	    	   FileInputStream fio = new FileInputStream(license);
-	 		   LicenseProfileValidator validator = new LicenseProfileValidator();			        
+	 		   LicenseProfileValidator validator = new LicenseProfileValidator();
 	           LicenseProfileValidationResults licenseProfileValidationResults=null;
-	         
+
 	           licenseProfileValidationResults=validator.validate(fio);
 	           Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
-	           
+
 	           if(errMesgList == null || errMesgList.isEmpty()) {
 	        	   logger.debug("License validated. ");
 	               return "SUCCESS";
@@ -965,7 +963,7 @@ public class CommonOnboarding {
 	        	   logger.debug("Failed to validate license. ");
 	        	   return errMesgList.toString();
 	           }
-	           
+
          } catch (LicenseProfileException licExp) {
         	 logger.error("Exception occurred during License SV scan: ", licExp.getMessage());
         	 throw licExp;
@@ -976,11 +974,10 @@ public class CommonOnboarding {
  			logger.error("Exception occurred during License SV scan: ", e.getMessage());
  			throw e;
          }
-    	
      }
-     
+
      public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
- 		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId); 
+ 		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId);
  		Workflow workflow = getValidWorkflow();
  			try {
  				SecurityVerificationClientServiceImpl sv = getSVClient();
@@ -1003,8 +1000,7 @@ public class CommonOnboarding {
  			}
  		return workflow;
  	}
-     
- 	
+
     protected Workflow getValidWorkflow() {
  		Workflow workflow = new Workflow();
  		workflow.setWorkflowAllowed(true);
@@ -1017,15 +1013,13 @@ public class CommonOnboarding {
  		workflow.setReason(message);
  		return workflow;
  	}
- 	
+
  	protected SecurityVerificationClientServiceImpl getSVClient() {
  		SecurityVerificationClientServiceImpl securityVerificationServiceImpl = new SecurityVerificationClientServiceImpl(
  				securityVerificationApiUrl,cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,
  				nexusEndPointURL, nexusUserName, nexusPassword
  				);
- 		
+ 
  		return securityVerificationServiceImpl;
  	}
-     */
-
 }
