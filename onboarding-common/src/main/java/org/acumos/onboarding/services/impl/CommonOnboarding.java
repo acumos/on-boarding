@@ -454,10 +454,10 @@ public class CommonOnboarding {
 			if (revList != null && !revList.isEmpty() && revList.size() != 0) {
 				Collections.sort(revList, new RevisionListDateComaparator());
 				count = revList.size();
-				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(0));
+				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(count-1));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
-				lastRevisionId = revList.get(0).getRevisionId();
-				lastVersion = revList.get(0).getVersion();
+				lastRevisionId = revList.get(count-1).getRevisionId();
+				lastVersion = revList.get(count-1).getVersion();
 				logger.debug("Last Version's Revision Id: " + lastRevisionId);
 				logger.debug("Last Version : " + lastVersion);
 
