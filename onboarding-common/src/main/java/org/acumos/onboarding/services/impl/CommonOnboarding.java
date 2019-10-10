@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ import org.acumos.nexus.client.data.UploadArtifactInfo;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.proto.Protobuf;
+import org.acumos.onboarding.common.proto.RevisionListDateComaparator;
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
@@ -450,6 +452,7 @@ public class CommonOnboarding {
 			logger.debug("Current Protobuf String :- " + currentProtobufString);
 			List<MLPSolutionRevision> revList = cdmsClient.getSolutionRevisions(solutionId);
 			if (revList != null && !revList.isEmpty() && revList.size() != 0) {
+				Collections.sort(revList, new RevisionListDateComaparator());
 				count = revList.size();
 				logger.debug("Last Version's MLPSolutionRevision : " + revList.get(0));
 				logger.debug("Last Version's MLPSolutionRevision's Size : " + count);
