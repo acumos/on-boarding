@@ -43,9 +43,9 @@ import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
-/*import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
+import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
 import org.acumos.licensemanager.profilevalidator.exceptions.LicenseProfileException;
-import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;*/
+import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;
 import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.acumos.nexus.client.data.UploadArtifactInfo;
@@ -62,8 +62,8 @@ import org.acumos.onboarding.common.utils.UtilityFunction;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
 import org.acumos.onboarding.logging.OnboardingLogConstants;
-/*import org.acumos.securityverification.domain.Workflow;
-import org.acumos.securityverification.service.SecurityVerificationClientServiceImpl;*/
+import org.acumos.securityverification.domain.Workflow;
+import org.acumos.securityverification.service.SecurityVerificationClientServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -74,7 +74,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.HttpStatusCodeException;
 
-//import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.ValidationMessage;
 
 public class CommonOnboarding {
 
@@ -952,7 +952,7 @@ public class CommonOnboarding {
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
 	}
-	/*
+	
      public String validateLicense(String license) throws AcumosServiceException, FileNotFoundException, LicenseProfileException
      {
     	 try {
@@ -1029,5 +1029,5 @@ public class CommonOnboarding {
 
  		return securityVerificationServiceImpl;
  	}
- 	*/
+ 	
 }
