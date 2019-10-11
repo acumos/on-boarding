@@ -23,6 +23,14 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 3.5.0, 11 Oct 2019
+-----------------------------
+* Common Data Service client at version 3.0.0
+* YML changes - "security":{"verificationApiUrl":"<securityverificationurl>"}
+* Onboarding - Add calls to LicenseProfile.validate api : `ACUMOS-3337 <https://jira.acumos.org/browse/ACUMOS-3337/>`_
+* Ability to run SV license scan at completion of onboarding :  `ACUMOS-3394 <https://jira.acumos.org/browse/ACUMOS-3394/>`_
+* Fix the Revision Version of Components :  `ACUMOS-3529 <https://jira.acumos.org/browse/ACUMOS-3529/>`_
+
 
 Version 3.4.0, 3 Oct 2019
 -----------------------------
