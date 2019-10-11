@@ -128,7 +128,7 @@ public class CommonOnboarding {
 	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
 
-	@Value("$security.VerificationApiUrl")
+	@Value("${security.VerificationApiUrl}")
 	protected String securityVerificationApiUrl;
 
 	protected String modelOriginalName = null;
