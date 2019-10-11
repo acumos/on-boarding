@@ -273,7 +273,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
 					
-					String result =  validateLicense(license.toString());
+					String inputLicense = new String(license.getBytes());
+					String result =  validateLicense(inputLicense.toString());
 					if(result.equals("SUCCESS")) {
 						logger.debug("License validation is successfull.");
 						licenseFile = new File(outputFolder, licenseFileName);
@@ -349,11 +350,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						
 						Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
 
-						if (workflow == null) {
-							logger.debug("SV Scan failed, workflow null");
+						if (!workflow.isWorkflowAllowed()) {
+							logger.debug("SV Scan failed, "+workflow.getReason());
 							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
 									OnboardingConstants.BAD_REQUEST_CODE,
-									"License Security Verification Scan failed."),
+									"License Security Verification Scan failed, "+workflow.getReason()),
 									HttpStatus.BAD_REQUEST);
 						}
 						

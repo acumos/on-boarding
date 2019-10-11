@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.4.10-SNAPSHOT</version>
+	<version>3.4.11-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -267,20 +267,6 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- Generate javadoc jar; see profile for Java 8 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<!-- Generate javadoc jar; see profile for Java 11 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
 
 import org.acumos.cds.CodeNameType;
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
+import org.acumos.cds.client.ICommonDataServiceRestClient;
 import org.acumos.cds.domain.MLPArtifact;
 import org.acumos.cds.domain.MLPCodeNamePair;
 import org.acumos.cds.domain.MLPSolution;
@@ -43,6 +44,7 @@ import org.acumos.cds.domain.MLPUser;
 import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
+import org.acumos.licensemanager.client.LicenseProfile;
 import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
 import org.acumos.licensemanager.profilevalidator.exceptions.LicenseProfileException;
 import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;
@@ -953,14 +955,12 @@ public class CommonOnboarding {
 		return cmnDataSvcPwd;
 	}
 	
-     public String validateLicense(String license) throws AcumosServiceException, FileNotFoundException, LicenseProfileException
+     public String validateLicense(String license) throws LicenseProfileException, AcumosServiceException
      {
     	 try {
-	    	   FileInputStream fio = new FileInputStream(license);
-	 		   LicenseProfileValidator validator = new LicenseProfileValidator();
-	           LicenseProfileValidationResults licenseProfileValidationResults=null;
-
-	           licenseProfileValidationResults=validator.validate(fio);
+	    	   ICommonDataServiceRestClient dataServiceRestClient = getClient();
+			   LicenseProfile licenseProfile= new LicenseProfile(dataServiceRestClient);
+	           LicenseProfileValidationResults licenseProfileValidationResults=licenseProfile.validate(license);
 	           Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
 
 	           if(errMesgList == null || errMesgList.isEmpty()) {
@@ -974,14 +974,17 @@ public class CommonOnboarding {
          } catch (LicenseProfileException licExp) {
         	 logger.error("Exception occurred during License SV scan: ", licExp.getMessage());
         	 throw licExp;
-         } catch (FileNotFoundException fnf) {
-        	 logger.error("Exception occurred during License SV scan: ", fnf.getMessage());
-        	 throw fnf;
- 		 } catch (Exception e) {
+         } catch (Exception e) {
  			logger.error("Exception occurred during License SV scan: ", e.getMessage());
  			throw e;
          }
      }
+	 
+	 public ICommonDataServiceRestClient getClient() {
+		ICommonDataServiceRestClient client = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, null);
+		client.setRequestId(MDC.get(OnboardingLogConstants.MDCs.REQUEST_ID));
+		return client;
+	}
 
      public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
  		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId);
