@@ -45,7 +45,6 @@ import org.acumos.cds.transport.RestPageRequest;
 import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.licensemanager.client.LicenseProfile;
-import org.acumos.licensemanager.profilevalidator.LicenseProfileValidator;
 import org.acumos.licensemanager.profilevalidator.exceptions.LicenseProfileException;
 import org.acumos.licensemanager.profilevalidator.model.LicenseProfileValidationResults;
 import org.acumos.nexus.client.NexusArtifactClient;
@@ -128,7 +127,7 @@ public class CommonOnboarding {
 	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
 
-	@Value("${security.VerificationApiUrl}")
+	@Value("${security.verificationApiUrl}")
 	protected String securityVerificationApiUrl;
 
 	protected String modelOriginalName = null;
