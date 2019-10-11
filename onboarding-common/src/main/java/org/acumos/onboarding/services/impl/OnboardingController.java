@@ -284,10 +284,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						logger.error( "License validation failed. ");
 						return new ResponseEntity<ServiceResponse>(
 								ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
-										""+result),HttpStatus.BAD_REQUEST);
+										"License Validaton failed "+result),HttpStatus.BAD_REQUEST);
 					}
-					
-
 				}
 
 				try {
