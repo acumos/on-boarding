@@ -273,7 +273,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						licenseFileName = OnboardingConstants.LICENSE_FILENAME;
 					}
 					
-					String result =  validateLicense(license.toString());
+					String inputLicense = new String(license.getBytes());
+					String result =  validateLicense(inputLicense.toString());
 					if(result.equals("SUCCESS")) {
 						logger.debug("License validation is successfull.");
 						licenseFile = new File(outputFolder, licenseFileName);
@@ -347,16 +348,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						revision = createSolutionRevision(mData, localProtobufFile);
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
 						
-						Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
-
-						if (workflow == null) {
-							logger.debug("SV Scan failed, workflow null");
-							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
-									OnboardingConstants.BAD_REQUEST_CODE,
-									"License Security Verification Scan failed."),
-									HttpStatus.BAD_REQUEST);
+						if (license != null && !license.isEmpty()) {
+							Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
+	
+							if (!workflow.isWorkflowAllowed()) {
+								logger.debug("SV Scan failed, "+workflow.getReason());
+								return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+										OnboardingConstants.BAD_REQUEST_CODE,
+										"License Security Verification Scan failed, "+workflow.getReason()),
+										HttpStatus.BAD_REQUEST);
+							}
 						}
-						
 						// Solution id creation completed
 						// Notify Creation of solution ID is successful
 						if (onboardingStatus != null) {
