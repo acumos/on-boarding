@@ -30,6 +30,7 @@ Version 3.5.0, 11 Oct 2019
 * Onboarding - Add calls to LicenseProfile.validate api : `ACUMOS-3337 <https://jira.acumos.org/browse/ACUMOS-3337/>`_
 * Ability to run SV license scan at completion of onboarding :  `ACUMOS-3394 <https://jira.acumos.org/browse/ACUMOS-3394/>`_
 * Fix the Revision Version of Components :  `ACUMOS-3529 <https://jira.acumos.org/browse/ACUMOS-3529/>`_
+* On-boarding - Java Code upgrade to Java 11 or 12 :  `ACUMOS-3328 <https://jira.acumos.org/browse/ACUMOS-3328/>`_
 
 
 Version 3.4.0, 3 Oct 2019
