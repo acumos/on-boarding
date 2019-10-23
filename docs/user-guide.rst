@@ -77,6 +77,8 @@ machine learning platform.
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
  | URI model        | Not applicable           | Not applicable | Available    | Available             | WEB only    |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
+ | C++ model        | Available                | Not applicable | Available    | Available             | WEB only    | 
+ +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
 
 **3: Onboarding models built in R, Java or python language**
 ------------------------------------------------------------
@@ -96,6 +98,8 @@ Please refer to the following user guide :
 `Acumos Python client user guide <https://pypi.org/project/acumos/>`_
 
 `Acumos Java client user guide <../../acumos-java-client/docs/onboarding-java-guide.html>`_
+
+`Acumos C++ client user guide <../../acumos-c-client/docs/onboarding-Cpp-guide.html>`_
 
 
 **4: Onboarding ONNX and PFA models**
@@ -128,7 +132,7 @@ you will see your license file as "license-1.json" in the artifacts table. If yo
 the portal, the license number revision will be increased by one like that "license-2.json". To help user create the license file
 expected by Acumos a license user guide is available here :
 
-`License user guide <../../security-verification/license-manager-client-library/docs/user-guide.html>`_
+`License user guide <../../../submodules/license-manager/docs/user-guide.html>`_
 
 Whatever the kinds of models :
 
