@@ -40,13 +40,13 @@ Onboard an ONNX or PFA model is really simple you just have to use the on-boardi
 then onboard the model. Acumos portal will automatically detect the format of the model (ONNX or PFA) and
 you only have to fill the name of the model. 
 
-You can on-board your model with a license, you just have to browse your license file or drag and drop it.
-The license file name must be : license.json. If the license file extension is not 'json' the license
-on-boarding will not be possible and if the name is not 'license' Acumos will rename your license file as
-license.json and you will see your license file named as license.json in the artifacts table. If you upload
-a new version of your license after on-boarding, a number revision will be added to the name of your license
-file like : "license-2.json". To help user create the license file expected by Acumos a license editor is
-available on the web : `Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
+You can on-board your model with a license profile, you just have to browse your license profile file or drag and drop it.
+The license profile file name must be : license.json. If the license file extension is not 'json' the license profile
+on-boarding will not be possible and if the name is not 'license' Acumos will rename your license profile file as
+license.json and you will see your license profile file named as license.json in the artifacts table. If you upload
+a new version of your license profile after on-boarding, a number revision will be added to the name of your license
+file like : "license-2.json". To help user create the license profile file expected by Acumos
+a license profile editor user guide is available here : `License profile editor user guide <../../submodules/license-manager/docs/user-guide-license-profile-editor.html>`_
 
 The process of on-boarding, for ONNX and PFA, in Boreas is reduced to create a solution Id and upload the model.
 There are no micro-service, nor tosca file, nor metadata file, nor protobuf file created.
