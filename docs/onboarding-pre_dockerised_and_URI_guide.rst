@@ -68,16 +68,17 @@ use the "Onboard dockerised model URI" panel in the "on-boarding model" page of 
 In this panel, type the name of the model and the Host, optionally you can fill the port an the tag.
 
 It is also possible to on-board a licence file associated with your docker URI model. Just drag and
-drop or browse your licence file to on-board it. The license file name must be "license.json", if the
-license file extension is not 'json' the license on-boarding will not be possible and if the name is
-not 'license' Acumos will rename your license file as license.json and you will see your license file
-named as license.json in the artifacts table. If you upload a new version of your license after
-on-boarding, a number revision will be added to the name of your license file like : "license-2.json".
-To help user create the license file expected by Acumos a license editor is available on the web
-: `Acumos license editor <https://acumos-license-editor.stackblitz.io/#/>`_
+drop or browse your licence file to on-board it. The license profile file name must be "license.json", if the
+license profile file extension is not 'json' the license profile on-boarding will not be possible and if the name is
+not 'license' Acumos will rename your license profile file as license.json and you will see your license profile file
+named as license.json in the artifacts table. If you upload a new version of your license profile after
+on-boarding, a number revision will be added to the name of your license profile file like : "license-2.json".
+To help user create the license profile file expected by Acumos
+a license profile editor user guide is available here : `License profile editor user guide <../../submodules/license-manager/docs/user-guide-license-profile-editor.html>`_
+
 
 The process of on-boarding a docker URI model in Acumos is reduced to create a solution Id, save the
-URI and if needed associate a license file with this URI. There are no micro-service, nor tosca file
+URI and if needed associate a license profile file with this URI. There are no micro-service, nor tosca file
 , nor metadata file, nor protobuf file created.
 
 
