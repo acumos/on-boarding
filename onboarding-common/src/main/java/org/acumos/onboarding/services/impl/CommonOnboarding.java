@@ -22,7 +22,6 @@ package org.acumos.onboarding.services.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -428,7 +427,7 @@ public class CommonOnboarding {
 			count = revList.size();
 		}
 		count++;
-		return "" + count;
+		return "" + count +".0.0";
 	}
 
 	public String getModelVersion(String solutionId, File localProtoFile) {
