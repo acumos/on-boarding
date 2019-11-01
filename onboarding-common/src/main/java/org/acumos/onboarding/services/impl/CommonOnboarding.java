@@ -1022,7 +1022,7 @@ public class CommonOnboarding {
  	protected SecurityVerificationClientServiceImpl getSVClient() {
  		SecurityVerificationClientServiceImpl securityVerificationServiceImpl = new SecurityVerificationClientServiceImpl(
  				securityVerificationApiUrl,cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,
- 				nexusEndPointURL, nexusUserName, nexusPassword, "lum.url"
+ 				nexusEndPointURL, nexusUserName, nexusPassword
  				);
 
  		return securityVerificationServiceImpl;
