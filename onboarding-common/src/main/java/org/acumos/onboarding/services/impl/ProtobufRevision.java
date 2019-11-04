@@ -703,7 +703,7 @@ public class ProtobufRevision extends CommonOnboarding {
 	}
 
 	//This method returns the Version List when the size of the Field lists in Messages(currently compared) are NOT equal
-	private static List<String> returnVersionWhenUnEqualNumberOfMessageFields(List<ProtobufMessageField> fieldList1,
+	public static List<String> returnVersionWhenUnEqualNumberOfMessageFields(List<ProtobufMessageField> fieldList1,
 			List<ProtobufMessageField> fieldList2, int countA, int countB, int countC, String countMajor,
 			String countMinor, String countIncremental) {
 
