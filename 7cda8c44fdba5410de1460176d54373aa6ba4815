@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2124b955_d283a122",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/CommonOnboarding.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2019-11-04T14:02:40Z",
+      "side": 1,
+      "message": "Aditya, Justin, could you have a look here, when I remove \"lum.url\" jobs failed, then when I add \"lum.url\" jobs are successfull",
+      "range": {
+        "startLine": 1027,
+        "startChar": 61,
+        "endLine": 1027,
+        "endChar": 62
+      },
+      "revId": "7cda8c44fdba5410de1460176d54373aa6ba4815",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
