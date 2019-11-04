@@ -462,15 +462,17 @@ public class CommonOnboarding {
 				logger.debug("Last Version : " + lastVersion);
 
 				countTemp = lastVersion;
-				if (countTemp.contains(".")) {
-					countMajor = countTemp.substring(0, countTemp.indexOf("."));
-					countMinor = countTemp.substring(countTemp.indexOf(".") + 1, countTemp.lastIndexOf("."));
-					countIncremental = countTemp.substring(countTemp.lastIndexOf(".") + 1);
-					countIncremental = (Integer.parseInt(countIncremental)+1) +"";
-				} else {
-					if (!countTemp.equals("")) {
-						countMajor = countTemp;
+				if (countTemp != null) {
+					if (countTemp.contains(".")) {
+						countMajor = countTemp.substring(0, countTemp.indexOf("."));
+						countMinor = countTemp.substring(countTemp.indexOf(".") + 1, countTemp.lastIndexOf("."));
+						countIncremental = countTemp.substring(countTemp.lastIndexOf(".") + 1);
 						countIncremental = (Integer.parseInt(countIncremental) + 1) + "";
+					} else {
+						if (!countTemp.equals("")) {
+							countMajor = countTemp;
+							countIncremental = (Integer.parseInt(countIncremental) + 1) + "";
+						}
 					}
 				}
 
@@ -1027,5 +1029,4 @@ public class CommonOnboarding {
 
  		return securityVerificationServiceImpl;
  	}
- 	
 }
