@@ -20,8 +20,6 @@
 
 package org.acumos.onboarding;
 
-import static org.mockito.Mockito.mock;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
 import org.acumos.onboarding.common.utils.JsonResponse;
-import org.acumos.onboarding.common.utils.LogBean;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.CommonOnboarding;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
@@ -87,7 +84,7 @@ public class CommonOnboardingTest {
 
 
 	@Test
-	public void getModelVersion() {
+	public void getModelVersionTest1() {
 		List<MLPSolutionRevision> revList = new ArrayList<>();
 		MLPSolutionRevision rev = new MLPSolutionRevision();
 		rev.setRevisionId("361de562-2e4d-49d7-b6a2-b551c35050e6");
@@ -97,6 +94,19 @@ public class CommonOnboardingTest {
 
 		Mockito.when(cdsClientImpl.getSolutionRevisions("03a87750-9ba3-4ea7-8c20-c1286930f85c")).thenReturn(revList);
 		Assert.assertNotEquals(commonOnboarding.getModelVersion("03a87750-9ba3-4ea7-8c20-c1286930f85c"), "0");
+	}
+	
+	@Test
+	public void getModelVersionTest2() {
+		List<MLPSolutionRevision> revList = new ArrayList<>();
+		MLPSolutionRevision rev = new MLPSolutionRevision();
+		rev.setRevisionId("361de562-2e4d-49d7-b6a2-b551c35050e6");
+		rev.setUserId("02a87750-7ba3-4ea7-8c20-c1286930f57c");
+		rev.setSolutionId("03a87750-9ba3-4ea7-8c20-c1286930f85c");
+		revList.add(rev);
+
+		Mockito.when(cdsClientImpl.getSolutionRevisions("03a87750-9ba3-4ea7-8c20-c1286930f85c")).thenReturn(revList);
+		Assert.assertNotEquals(commonOnboarding.getModelVersion("03a87750-9ba3-4ea7-8c20-c1286930f85c", new File(FilePathTest.filePath()+"model.proto")), "0");
 	}
 
 
@@ -121,7 +131,7 @@ public class CommonOnboardingTest {
 	}
 
 	@Test
-	public void createSolutionRevisionTest() {
+	public void createSolutionRevisionTest1() {
 
 		Metadata data = new Metadata();
 		data.setModelName("Predictor");
@@ -136,6 +146,27 @@ public class CommonOnboardingTest {
 		Mockito.when(cdsClientImpl.createSolutionRevision(Mockito.any(MLPSolutionRevision.class))).thenReturn(revision);
 		try {
 			Assert.assertNotNull(commonOnboarding.createSolutionRevision(data));
+		} catch (AcumosServiceException e) {
+			Assert.fail("Exception occured while createSolutionRevisionTest(): " + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void createSolutionRevisionTest2() {
+
+		Metadata data = new Metadata();
+		data.setModelName("Predictor");
+		data.setOwnerId("361de562-2e4d-49d7-b6a2-b551c35050e6");
+		data.setVersion("3.6.1");
+		data.setSolutionId("02a87750-7ba3-4ea7-8c20-c1286930f57c");
+
+		MLPSolutionRevision revision = new MLPSolutionRevision();
+		revision.setRevisionId("361de562-2e4d-49d7-b6a2-b551c35050e6");
+		revision.setVersion("3.6.1");
+
+		Mockito.when(cdsClientImpl.createSolutionRevision(Mockito.any(MLPSolutionRevision.class))).thenReturn(revision);
+		try {
+			Assert.assertNotNull(commonOnboarding.createSolutionRevision(data, new File(FilePathTest.filePath()+"model.proto")));
 		} catch (AcumosServiceException e) {
 			Assert.fail("Exception occured while createSolutionRevisionTest(): " + e.getMessage());
 		}
