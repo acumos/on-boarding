@@ -55,7 +55,7 @@ Then users have to follow the three steps depicted here :
 
 The process of on-boarding a docker image model in Acumos is reduced to create a solution Id and
 upload the model. There are no micro-service, nor tosca file, nor metadata file, nor protobuf file
-created. Acumos desn't request a license file during the on-boarding, if needed modelers can add a
+created. Acumos doesn't request a license file during the on-boarding, if needed modelers can add a
 license file in their docker image model before the on-boarding.
 
 
