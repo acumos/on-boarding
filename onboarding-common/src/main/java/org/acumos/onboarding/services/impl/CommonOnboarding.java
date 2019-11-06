@@ -129,6 +129,9 @@ public class CommonOnboarding {
 	@Value("${security.verificationApiUrl}")
 	protected String securityVerificationApiUrl;
 
+	@Value("${security.verificationEnableFlag}")
+	protected Boolean securityVerificationEnable;
+
 	protected String modelOriginalName = null;
 
 	protected boolean dcaeflag = false;
@@ -985,7 +988,9 @@ public class CommonOnboarding {
 	}
 	 public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
  		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId);
+ 		logger.debug("Security Verificaton enable= "+securityVerificationEnable);
  		Workflow workflow = getValidWorkflow();
+ 		if (securityVerificationEnable) {
  			try {
  				SecurityVerificationClientServiceImpl sv = getSVClient();
 
@@ -998,13 +1003,14 @@ public class CommonOnboarding {
  					workflow.setReason(message);
  					logger.error("Problem occurred during SV scan: ", message);
  				} else {
- 					log.debug("SV Scan completed :  ", workflow);
+ 					logger.debug("SV Scan completed :  "+workflow);
  				}
  			} catch (Exception e) {
  				String message = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
  				workflow = getInvalidWorkflow(message);
  				logger.error("Exception occurred during SV scan: ", message);
  			}
+ 		}
  		return workflow;
  	}
 
@@ -1029,5 +1035,5 @@ public class CommonOnboarding {
 
  		return securityVerificationServiceImpl;
  	}
- 	
+
 }
