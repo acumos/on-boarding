@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>3.5.3-SNAPSHOT</version>
+	<version>3.5.4-SNAPSHOT</version>
 	<name>Onboarding app for public use</name>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -190,7 +190,7 @@
 					<images>
 						<image>
 							<!--Specify a tag to avoid default tag "latest"-->
-							<name>onboarding-app:${project.version}</name>
+							<name>acumos/onboarding-app:${project.version}</name>
 							<build>
 								<from>adoptopenjdk/openjdk11-openj9:alpine-jre</from>
 								<tags>
