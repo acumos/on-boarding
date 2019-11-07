@@ -966,7 +966,7 @@ public class CommonOnboarding {
 	           Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
 
 	           if(errMesgList == null || errMesgList.isEmpty()) {
-	        	   logger.debug("License validated. ");
+	        	   logger.debug("License validated Successfully. ");
 	               return "SUCCESS";
 	           } else {
 	        	   logger.debug("Failed to validate license. ");
@@ -974,10 +974,10 @@ public class CommonOnboarding {
 	           }
 
          } catch (LicenseProfileException licExp) {
-        	 logger.error("Exception occurred during License SV scan: ", licExp.getMessage());
+        	 logger.error("Exception occurred during License validation: "+licExp.getMessage());
         	 throw licExp;
          } catch (Exception e) {
- 			logger.error("Exception occurred during License SV scan: ", e.getMessage());
+ 			logger.error("Exception occurred during License validation: "+e.getMessage());
  			throw e;
          }
      }

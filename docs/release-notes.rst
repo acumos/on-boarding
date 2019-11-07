@@ -23,9 +23,12 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-Version 3.6.0, 1 Nov 2019
--------------------------
+Version 3.6.0, 7 Nov 2019
+---------------------------
+* Common Data Service client at version 3.0.0
+* YML changes - "security":{"verificationEnableFlag":"<Boolean>"}
 * Update LMCL to 1.4.1 and Update SV Client to 1.2.0 `ACUMOS-3668 <https://jira.acumos.org/browse/ACUMOS-3668/>`_
+* IST2 - Onboarding block calling SV with a flag `ACUMOS-3676 <https://jira.acumos.org/browse/ACUMOS-3676/>`_
 
 Version 3.5.0, 11 Oct 2019
 -----------------------------
