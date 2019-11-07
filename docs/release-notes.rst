@@ -23,12 +23,17 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
-Version 3.6.0, 1 Nov 2019
+Version 3.6.0, 7 Nov 2019
 -------------------------
+* Common Data Service client at version 3.0.0
+* YML changes - "security":{"verificationEnableFlag":"<Boolean>"}
 * Update LMCL to 1.4.1 and Update SV Client to 1.2.0 `ACUMOS-3668 <https://jira.acumos.org/browse/ACUMOS-3668/>`_
+* IST2 - Onboarding block calling SV with a flag `ACUMOS-3676 <https://jira.acumos.org/browse/ACUMOS-3676/>`_
+* <IST><Portal Marketplace> Version display format is not consistent `ACUMOS-3656 <https://jira.acumos.org/browse/ACUMOS-3656/>`_
+* correcting typo mistake `ACUMOS-3675 <https://jira.acumos.org/browse/ACUMOS-3675/>`_
 
 Version 3.5.0, 11 Oct 2019
------------------------------
+--------------------------
 * Common Data Service client at version 3.0.0
 * YML changes - "security":{"verificationApiUrl":"<securityverificationurl>"}
 * Onboarding - Add calls to LicenseProfile.validate api : `ACUMOS-3337 <https://jira.acumos.org/browse/ACUMOS-3337/>`_
@@ -38,48 +43,48 @@ Version 3.5.0, 11 Oct 2019
 
 
 Version 3.4.0, 3 Oct 2019
------------------------------
+-------------------------
 * Common Data Service client at version 3.0.0
 * As a User , I want to see an Enhance on-boarding processes to allow choice of new model vs new revision : `ACUMOS-1216 <https://jira.acumos.org/browse/ACUMOS-1216/>`_
 
 
 Version 3.2.0, 19 Sept 2019
------------------------------
+---------------------------
 * Common Data Service client at version 3.0.0
 
 
 Version 3.1.0, 30 Aug 2019
------------------------------
+--------------------------
 * Common Data Service client at version 2.2.6
 * Take into account c/c++ model in on-boarding process : `ACUMOS-3107 <https://jira.acumos.org/browse/ACUMOS-3107/>`_
 * Take into account java model from Spark in on-boarding process : `ACUMOS-3130 <https://jira.acumos.org/browse/ACUMOS-3130/>`_
 * <Asynchronous Microservice> Errored model is getting onboarded successfully : `ACUMOS-3022 <https://jira.acumos.org/browse/ACUMOS-3022/>`_
 
 Version 3.0.0, 21 Aug 2019
------------------------------
+--------------------------
 * Common Data Service client at version 2.2.6
 * attach a license profile as JSON during on-boarding with Artifact Type LI : `ACUMOS-3171 <https://jira.acumos.org/browse/ACUMOS-3171/>`_
 
 
 Version 2.16.0, 18 July 2019
------------------------------
+----------------------------
 * Common Data Service client at version 2.2.4
 * Log files generated in application should display logs as per the log standardization : `ACUMOS-2923 <https://jira.acumos.org/browse/ACUMOS-2923/>`_
 * code coverage : `ACUMOS-3224 <https://jira.acumos.org/browse/ACUMOS-3224/>`_
 
 Version 2.15.0, 20 June 2019
------------------------------
+----------------------------
 * Common Data Service client at version 2.2.4
 * Microservice entry is remaining InProgress after completing onboarding process : `ACUMOS-3012 <https://jira.acumos.org/browse/ACUMOS-3012/>`_
 * Async MSGen Notification logs not getting generated : `ACUMOS-3088 <https://jira.acumos.org/browse/ACUMOS-3088/>`_
 
 Version 2.14.0, 30 May 2019
------------------------------
+---------------------------
 * Common Data Service client at version 2.2.4
 * Test on licence file name : `ACUMOS-2955 <https://jira.acumos.org/browse/ACUMOS-2955/>`_
 
 Version 2.13.0, 8 May 2019
------------------------------
+--------------------------
 * Common Data Service client at version 2.2.2
 * Logs are not displayed as per the standardization : `ACUMOS-2779 <https://jira.acumos.org/browse/ACUMOS-2779/>`_
 * Add non configurable parameters to application.properties file : `ACUMOS-2872 <https://jira.acumos.org/browse/ACUMOS-2872/>`_
