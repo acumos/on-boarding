@@ -165,6 +165,19 @@ Whatever the kinds of models :
 - Existing solution is updated with, a new revision. Revision is updated with artefact details and
 those artefacts are uploaded to nexus maven repository.
 
+**6: Onboarding Low Level Design for C++ model**
+------------------------------------------------
+
+C++ model can also be onboarded in Acumos, the main difference with other models coming from R, python or 
+java language is that there is no model runner for C++ model, so Acumos user must write a short C++ program
+that attaches the trained model with the generated gRPC stub in order to build an executable that contains
+the gRPC webserver as well as the trained model. This executable will then be started in the docker container.
+
+- Architecture diagramm for C++ model
+
+|image6|
+
+
 **6: Onboarding Setup**
 -----------------------
 
@@ -257,3 +270,4 @@ Please consult the following file : `On-boarding Application Programming Interfa
 .. |image0| image:: ./media/Architecture_Diagram.png
 .. |image0bis| image:: ./media/ArchitectureDiagram2.png
 
+.. |image6| image:: ./media/Obdr_arch_diagramm_c++_model.png
