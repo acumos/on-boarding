@@ -81,7 +81,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 //@RunWith(MockitoJUnitRunner.class)
-//@RunWith(PowerMockRunner.class)
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({OnboardingController.class,CommonOnboarding.class,PortalRestClientImpl.class,CommonDataServiceRestClientImpl.class})
 public class OnboardingControllerTest {
 
@@ -126,7 +126,7 @@ public class OnboardingControllerTest {
 	        MockitoAnnotations.initMocks(this);
 	 }
 
-	//@Test
+	@Test
 	public void testOnboardingWithAuthentication() throws Exception {
 
 		Crediantials credential = new Crediantials();
@@ -155,7 +155,7 @@ public class OnboardingControllerTest {
      * Testcase to check invalid metadata json which should recieve failure or exception
      * @throws Exception
      */
-	//@Test
+	@Test
 	public void testOnboardModel() throws Exception {
 
 		try {
@@ -170,12 +170,12 @@ public class OnboardingControllerTest {
 
 			FileInputStream modelIS = new FileInputStream(file.getAbsolutePath());
 			FileInputStream licenseIS = new FileInputStream(file1.getAbsolutePath());
-			
+
 			MockMultipartFile metaDatazipFile = new MockMultipartFile("file1", "metadata.json", "multipart/form-data",modelIS);
 			FileInputStream metataprotoIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile protoFile = new MockMultipartFile("file", "model.proto", "multipart/form-data",metataprotoIS);
 			MockMultipartFile licenseFile = new MockMultipartFile("file", "license.json", "multipart/form-data",licenseIS);
-			
+
 			FileInputStream metaDataIS = new FileInputStream(file.getAbsolutePath());
 			MockMultipartFile metaDataFile = new MockMultipartFile("file", "meta.json", "multipart/form-data",metaDataIS);
 
@@ -272,13 +272,13 @@ public class OnboardingControllerTest {
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, null, "provider", null,null,null,null);
-			
+
 			ResponseEntity<ServiceResponse> resp1 = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, null, "authorization", false, "trackingId", "provider", "shareUserName",null,null,"requestId");
-			
+
 			ResponseEntity<ServiceResponse> resp2 = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, licenseFile, "authorization", true, null, "provider", null,null,null,null);
-			
+
 			ResponseEntity<ServiceResponse> resp3 = onboardingController.onboardModel(mock(HttpServletRequest.class),
 					metaDatazipFile, metaDataFile, protoFile, null, null, false, null, "provider", null,null,null,null);
 
@@ -294,7 +294,7 @@ public class OnboardingControllerTest {
 
 	}
 
-	//@Test
+	@Test
 	public void testAdvancedModel() throws Exception {
 
 		try {
@@ -404,13 +404,13 @@ public class OnboardingControllerTest {
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
 					metaDatazipFile, licenseFile, modelname, "authorization", false, null, "provider", null,null,null);
-			
+
 			ResponseEntity<ServiceResponse> resp1 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
 					metaDatazipFile, licenseFile, modelname, "authorization", false, null, "provider", "trackingId","requestId", "shareUserName");
-			
+
 			ResponseEntity<ServiceResponse> resp2 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
 					metaDatazipFile, licenseFile, modelname, null, false, null, "provider", null,null,null);
-			
+
 			ResponseEntity<ServiceResponse> resp3 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
 					metaDatazipFile, licenseFile,modelname, "authorization", true, null, "provider", null,null,null);
 
@@ -427,7 +427,7 @@ public class OnboardingControllerTest {
 	}
 
 
-	///@Test
+	@Test
 	public void testAuthenticationException() throws Exception {
 
 		try {
@@ -547,7 +547,7 @@ public class OnboardingControllerTest {
 
 	}
 	*/
-	//@Test
+	@Test
 	public void testGetCmnDataSvcEndPoinURL() {
 		try {
 			onboardingController.getCmnDataSvcEndPoinURL();
@@ -556,7 +556,7 @@ public class OnboardingControllerTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testGetCmnDataSvcUser() {
 		try {
 			onboardingController.getCmnDataSvcUser();
@@ -565,7 +565,7 @@ public class OnboardingControllerTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void testGetCmnDataSvcPwd() {
 		try {
 			onboardingController.getCmnDataSvcPwd();
