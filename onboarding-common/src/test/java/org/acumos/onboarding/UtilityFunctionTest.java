@@ -278,6 +278,7 @@ public class UtilityFunctionTest {
 			logBean.setLogPath(filePath);
 			
 			UtilityFunction.addLogs(msg, logType, logBean);
+			UtilityFunction.addLogs(msg, logType);
 			File f = new File(filePath+"TestLogBeanFile");
 			f.createNewFile();
 			Files.delete(f.toPath());

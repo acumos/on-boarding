@@ -22,11 +22,15 @@ package org.acumos.onboarding;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.acumos.cds.client.CommonDataServiceRestClientImpl;
 import org.acumos.cds.domain.MLPSolution;
 import org.acumos.cds.domain.MLPSolutionRevision;
+import org.acumos.cds.transport.RestPageRequest;
+import org.acumos.cds.transport.RestPageResponse;
 import org.acumos.designstudio.toscagenerator.ToscaGeneratorClient;
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.models.OnboardingNotification;
@@ -51,7 +55,7 @@ public class CommonOnboardingTest {
 	RestTemplate restTemplate;
 
 	@Mock
-    CommonDataServiceRestClientImpl cdsClientImpl;
+	CommonDataServiceRestClientImpl cdsClientImpl;
 
 	@Mock
 	PortalRestClientImpl client;
@@ -63,25 +67,22 @@ public class CommonOnboardingTest {
 	OnboardingNotification onboardingStatus;
 
 	@Mock
-	ToscaGeneratorClient toscaClient ;
+	ToscaGeneratorClient toscaClient;
 
-	/*@Test
-	public void getToolTypeCodeTest() {
-		String typeCode = null;
-		typeCode = commonOnboarding.getToolTypeCode("composite solution");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("scikit-learn");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("tensorflow");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("r");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("h2o");
-		Assert.assertNotNull(typeCode);
-		typeCode = commonOnboarding.getToolTypeCode("design studio");
-		Assert.assertNotNull(typeCode);
-	}*/
-
+	/*
+	 * @Test public void getToolTypeCodeTest() { String typeCode = null; typeCode =
+	 * commonOnboarding.getToolTypeCode("composite solution");
+	 * Assert.assertNotNull(typeCode); typeCode =
+	 * commonOnboarding.getToolTypeCode("scikit-learn");
+	 * Assert.assertNotNull(typeCode); typeCode =
+	 * commonOnboarding.getToolTypeCode("tensorflow");
+	 * Assert.assertNotNull(typeCode); typeCode =
+	 * commonOnboarding.getToolTypeCode("r"); Assert.assertNotNull(typeCode);
+	 * typeCode = commonOnboarding.getToolTypeCode("h2o");
+	 * Assert.assertNotNull(typeCode); typeCode =
+	 * commonOnboarding.getToolTypeCode("design studio");
+	 * Assert.assertNotNull(typeCode); }
+	 */
 
 	@Test
 	public void getModelVersionTest1() {
@@ -95,7 +96,7 @@ public class CommonOnboardingTest {
 		Mockito.when(cdsClientImpl.getSolutionRevisions("03a87750-9ba3-4ea7-8c20-c1286930f85c")).thenReturn(revList);
 		Assert.assertNotEquals(commonOnboarding.getModelVersion("03a87750-9ba3-4ea7-8c20-c1286930f85c"), "0");
 	}
-	
+
 	@Test
 	public void getModelVersionTest2() {
 		List<MLPSolutionRevision> revList = new ArrayList<>();
@@ -106,9 +107,9 @@ public class CommonOnboardingTest {
 		revList.add(rev);
 
 		Mockito.when(cdsClientImpl.getSolutionRevisions("03a87750-9ba3-4ea7-8c20-c1286930f85c")).thenReturn(revList);
-		Assert.assertNotEquals(commonOnboarding.getModelVersion("03a87750-9ba3-4ea7-8c20-c1286930f85c", new File(FilePathTest.filePath()+"model.proto")), "0");
+		Assert.assertNotEquals(commonOnboarding.getModelVersion("03a87750-9ba3-4ea7-8c20-c1286930f85c",
+				new File(FilePathTest.filePath() + "model.proto")), "0");
 	}
-
 
 	@Test
 	public void validateTest() {
@@ -123,11 +124,11 @@ public class CommonOnboardingTest {
 		obj2.put("request_body", obj1);
 		Mockito.when(client.tokenValidation(obj2, "GitHub")).thenReturn(valid);
 
-		/*try {
-		   Assert.assertNotNull(commonOnboarding.validate(token, "loginName", "GitHub"));
+		try {
+			Assert.assertNotNull(commonOnboarding.validate(token, "loginName"));
 		} catch (AcumosServiceException e) {
 			Assert.fail("Exception occured while validateTest(): " + e.getMessage());
-		}*/
+		}
 	}
 
 	@Test
@@ -150,7 +151,7 @@ public class CommonOnboardingTest {
 			Assert.fail("Exception occured while createSolutionRevisionTest(): " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void createSolutionRevisionTest2() {
 
@@ -166,7 +167,8 @@ public class CommonOnboardingTest {
 
 		Mockito.when(cdsClientImpl.createSolutionRevision(Mockito.any(MLPSolutionRevision.class))).thenReturn(revision);
 		try {
-			Assert.assertNotNull(commonOnboarding.createSolutionRevision(data, new File(FilePathTest.filePath()+"model.proto")));
+			Assert.assertNotNull(
+					commonOnboarding.createSolutionRevision(data, new File(FilePathTest.filePath() + "model.proto")));
 		} catch (AcumosServiceException e) {
 			Assert.fail("Exception occured while createSolutionRevisionTest(): " + e.getMessage());
 		}
@@ -187,9 +189,24 @@ public class CommonOnboardingTest {
 		Mockito.when(cdsClientImpl.createSolution(Mockito.any(MLPSolution.class))).thenReturn(solution1);
 
 		try {
-			Assert.assertNotNull(commonOnboarding.createSolution(data,null));
+			Assert.assertNotNull(commonOnboarding.createSolution(data, null));
 		} catch (AcumosServiceException e) {
 			Assert.fail("Exception occured while createSolutionTest(): " + e.getMessage());
+		}
+	}
+
+	@Test
+	public void getExistingSolutionTest() {
+
+		Metadata data = new Metadata();
+		data.setModelName("Predictor");
+		data.setOwnerId("361de562-2e4d-49d7-b6a2-b551c35050e6");
+
+		
+		try {
+			Assert.assertNotNull(commonOnboarding.getExistingSolution(data));
+		} catch (Exception e) {
+			Assert.fail("Exception occured while getExistingSolutionTest(): " + e.getMessage());
 		}
 	}
 
