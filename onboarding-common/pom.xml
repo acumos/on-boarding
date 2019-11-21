@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.6.0-SNAPSHOT</version>
+	<version>3.6.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -25,7 +25,12 @@
 		<sonar.exclusions>**/scripts/**/*,**.js</sonar.exclusions>
 		<sonar.test.exclusions>**/test/**/*,**/tests/**/*</sonar.test.exclusions>
 		<enforcer.skip>false</enforcer.skip>
-		<mockito.version>1.10.19</mockito.version>
+		<!-- <mockito.version>1.10.19</mockito.version> -->
+		
+		<junit4.version>4.12</junit4.version>
+		<mockito-core.version>2.8.9</mockito-core.version>
+		<powermock.version>1.7.4</powermock.version>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -124,6 +129,12 @@
 			<groupId>com.att.eelf</groupId>
 			<artifactId>eelf-core</artifactId>
 			<version>${eelf.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.powermock</groupId>
+					<artifactId>powermock-api-mockito</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -162,10 +173,11 @@
 			<!-- spring sets the -->
 			<version>1.1</version>
 		</dependency>
-		<dependency>
+		
+		<!-- <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<!-- Spring sets the <version>4.11</version> -->
+			Spring sets the <version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -188,7 +200,49 @@
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
 			<version>1.7.0</version>
+		</dependency> -->
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit4.version}</version>
+			<scope>test</scope>
 		</dependency>
+		<!-- Mockito 2 -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- PowerMock TestNG Module -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-testng</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- PowerMock JUnit 4.4+ Module -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- PowerMock Mockito2 API -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito2</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule-agent</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<!-- Dependency for retrieving a project version -->
 			<groupId>org.apache.maven</groupId>
@@ -310,12 +364,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.0</version>
-				<configuration>
-					<argLine>
-						--illegal-access=permit
-					</argLine>
-				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -327,11 +377,11 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<!-- Override Parent version -->
-				<!-- <version>${jacocoVersion}</version> -->
+				Override Parent version
+				<version>${jacocoVersion}</version>
 				<version>0.8.4</version>
 				<configuration>
 					<excludes>
@@ -339,7 +389,7 @@
 					</excludes>
 				</configuration>
 				<executions>
-					<!-- disable jacoco executions from oparent -->
+					disable jacoco executions from oparent
 					<execution>
 						<id>pre-unit-test</id>
 						<phase>none</phase>
@@ -356,7 +406,7 @@
 						<id>post-integration-test</id>
 						<phase>none</phase>
 					</execution>
-					<!-- Order matters -->
+					Order matters
 					<execution>
 						<id>portal-prepare-agent</id>
 						<goals>
@@ -378,7 +428,29 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin> -->
+			
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.4</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+			
 		</plugins>
 	</build>
 	<!-- The common jar must be deployed to Nexus. The IDs must match Jenkins 
