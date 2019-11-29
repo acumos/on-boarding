@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "self": {
+    "name": "acumos.schema.model",
+    "version": "0.6.0"
+  },
+  "properties": {
+    "schema": {
+      "type": "string",
+      "pattern": "^acumos.schema.model:\\d+\\.\\d+\\.\\d+$",
+      "description": "Identifies the specific model schema used in the json instance, e.g. 'acumos.schema.model:0.5.0'."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the model being on-boarded to Acumos, e.g. 'my-model'."
+    },
+    "runtime": {
+      "items": {"$ref": "#/definitions/Runtime"},
+      "description": "Describes the runtime and dependencies required by the model to operate."
+    },
+    "methods": {
+      "type": "object",
+      "description": "The methods that an on-boarded model provides. Can be any number of uniquely named Function or VoidFunction objects.",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/Function"
+          },
+          {
+            "$ref": "#/definitions/VoidFunction"
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "runtime",
+    "methods",
+    "schema",
+    "name"
+  ],
+  "definitions": {
+    "Runtime": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "python",
+            "r",
+            "javaargus",
+            "h2o",
+            "javageneric",
+            "javaspark",
+            "c++"
+          ]
+        },
+        "version": {
+          "type": "string"
+        },
+                "executable": {
+          "type": "string"
+        },
+        "dependencies": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/PythonDependencies"
+            },
+            {
+              "$ref": "#/definitions/RDependencies"
+            },
+            {
+              "$ref": "#/definitions/H2ODependencies"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "RDependencies": {
+      "type": "object",
+      "properties": {
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackRequirements"
+          }
+        }
+      },
+      "required": [
+        "packages"
+      ]
+    },
+    "RDependenciesPackages": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "H2ODependencies": {
+      "type": "object",
+      "properties": {
+        "java": {
+          "$ref": "#/definitions/JavaRequirements"
+        }
+      },
+      "required": [
+        "java"
+      ]
+    },
+    "JavaRequirements": {
+      "type": "object",
+      "properties": {
+        "indexes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/H2ORequirement"
+          }
+        }
+      },
+      "required": [
+        "indexes",
+        "requirements"
+      ]
+    },
+    "H2ORequirement": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "PackRequirements": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "PythonDependencies": {
+      "type": "object",
+      "properties": {
+        "conda": {
+          "$ref": "#/definitions/CondaRequirements"
+        },
+        "pip": {
+          "$ref": "#/definitions/PipRequirements"
+        }
+      },
+      "required": [
+        "pip",
+        "conda"
+      ]
+    },
+    "PipRequirements": {
+      "type": "object",
+      "properties": {
+        "indexes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PythonRequirement"
+          }
+        }
+      },
+      "required": [
+        "indexes",
+        "requirements"
+      ]
+    },
+    "CondaRequirements": {
+      "type": "object",
+      "properties": {
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PythonRequirement"
+          }
+        }
+      },
+      "required": [
+        "channels",
+        "requirements"
+      ]
+    },
+    "PythonRequirement": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "VoidFunction": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Provides documentation about the function, what it does, etc."
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "name": {
+                "type": "string",
+                "description": "The name of the method input."
+            },
+            "media_type": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "application/vnd.google.protobuf",
+                  "application/octet-stream",
+                  "application/json",
+                  "text/plain"
+                ]
+              }
+            },
+            "metadata": {
+              "type": "object"
+            },
+            "description": {
+              "type": "string",
+              "description": "Provides documentation about the method input, etc."
+            }
+          },
+          "required": [
+            "name",
+            "media_type"
+          ]
+        }
+      },
+      "required": [
+        "description",
+        "input"
+      ]
+    },
+    "Function": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Provides documentation about the function, what it does, etc."
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "name": {
+                "type": "string",
+                "description": "The name of the method input."
+            },
+            "media_type": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "application/vnd.google.protobuf",
+                  "application/octet-stream",
+                  "application/json",
+                  "text/plain"
+                ]
+              }
+            },
+            "metadata": {
+              "type": "object"
+            },
+            "description": {
+              "type": "string",
+                "description": "Provides documentation about the method input, etc."
+            }
+          },
+          "required": [
+            "name",
+            "media_type"
+          ]
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "name": {
+                "type": "string",
+                "description": "The name of the method output."
+            },
+            "media_type": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "application/vnd.google.protobuf",
+                  "application/octet-stream",
+                  "application/json",
+                  "text/plain"
+                ]
+              }
+            },
+            "metadata": {
+              "type": "object"
+            },
+            "description": {
+              "type": "string",
+              "description": "Provides documentation about the method output, etc."
+            }
+          },
+          "required": [
+            "name",
+            "media_type"
+          ]
+        }
+      },
+      "required": [
+        "description",
+        "input",
+        "output"
+      ]
+    }
+  }
+}
+
