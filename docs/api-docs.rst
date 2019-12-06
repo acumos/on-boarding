@@ -124,10 +124,4 @@ API Group 2
 Swagger
 =======
 
-You can also access to the on-boarding swagger API thanks to the following URL
-
-.. code:: bash
-
-   https://{ACUMOS_DOMAIN}:{ACUMOS_KONG_PROXY_SSL_PORT}/onboarding-app/swagger-ui.html
-
-where {ACUMOS_DOMAIN} and {ACUMOS_KONG_PROXY_SSL_PORT} value can be found in system-integration/AIO/acumos_env.sh file
+You can also access to the on-boarding swagger API. Please consult the acumos.url file located in system-integration/AIO folder after acumos installation.
