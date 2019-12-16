@@ -4,7 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
+<<<<<<< HEAD   (53961f Correct obdr swagger)
 	<version>3.6.1-SNAPSHOT</version>
+=======
+	<version>3.8.0-SNAPSHOT</version>
+>>>>>>> CHANGE (e04397 IST Release 3.8.0)
 	<name>Onboarding app for public use</name>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
