@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>3.8.1-SNAPSHOT</version>
+	<version>3.8.1</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>org.acumos.platform-oam</groupId>
 			<artifactId>logging-demo</artifactId>
-			<version>3.0.5-SNAPSHOT</version>
+			<version>3.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
