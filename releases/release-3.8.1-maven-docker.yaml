@@ -1,0 +1,10 @@
+---
+distribution_type: container
+container_release_tag: 3.8.1
+container_pull_registry: nexus3.acumos.org:10004
+container_push_registry: nexus3.acumos.org:10002
+project: onboarding-app
+ref: 075634642ee15565474c2bff3dacec328058a732
+containers:
+        - name: onboarding-app
+          version: 3.8.1
