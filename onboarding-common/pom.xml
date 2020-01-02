@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>org.acumos.platform-oam</groupId>
 			<artifactId>logging-demo</artifactId>
-			<version>3.0.5-SNAPSHOT</version>
+			<version>3.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

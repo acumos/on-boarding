@@ -342,6 +342,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
 
+						
 						revision = createSolutionRevision(mData, localProtobufFile);
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
 						if (license != null && !license.isEmpty()) {
@@ -443,17 +444,21 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					logger.debug( "Generate Microservice Flag: " +isCreateMicroservice);
 
 					ResponseEntity<ServiceResponse> response = null;
-
+					String dockerImageUri = null;
 					if (isCreateMicroservice) {
 						// call microservice
 						logger.debug(  "Before microservice call Parameters : SolutionId "
 								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 						try {
+							
 							response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
 									trackingID, modName, deployment_env, request_id);
+							
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
+								dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
+								logger.debug( "dockerImageUri: " + dockerImageUri);
 							}
 							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
@@ -485,7 +490,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					}
 
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, taskId, trackingID), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, taskId, trackingID, dockerImageUri), HttpStatus.CREATED);
 					logger.debug(
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
