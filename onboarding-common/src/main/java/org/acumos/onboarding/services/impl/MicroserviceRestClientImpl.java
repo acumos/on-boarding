@@ -123,7 +123,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
-			String authorization, String trackingID, String modName, Integer deployment_env, String request_id) {
+			String authorization, String trackingID, String modName, Integer deployment_env, String request_id, String dockerImageUri) {
 		logger.debug("In MicroserviceRestClientImpl: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		Map<String, Object> copy = new HashMap<>();
 		copy.put("solutioId", solutioId);
@@ -153,7 +153,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		HttpStatus statusCode = response.getStatusCode();
 		if (statusCode == HttpStatus.CREATED) {
 			return new ResponseEntity<ServiceResponse>(
-					ServiceResponse.successResponse(response.getBody().getModelName(), response.getBody().getTaskId(), response.getBody().getTrackingId()), HttpStatus.CREATED);
+					ServiceResponse.successResponse(response.getBody().getModelName(), response.getBody().getTaskId(), response.getBody().getTrackingId(), response.getBody().getDockerImageUri()), HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.successResponse(response.getBody().getErrorMessage()),
@@ -161,4 +161,12 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		}
 
 	}
+  
+  	@Override
+	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
+			String authorization, String trackingID, String modName, Integer deployment_env, String request_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+  
 }
