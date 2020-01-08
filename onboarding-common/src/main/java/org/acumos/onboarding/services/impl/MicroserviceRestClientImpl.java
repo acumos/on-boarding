@@ -153,7 +153,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		HttpStatus statusCode = response.getStatusCode();
 		if (statusCode == HttpStatus.CREATED) {
 			return new ResponseEntity<ServiceResponse>(
-					ServiceResponse.successResponse(response.getBody().getModelName(), response.getBody().getTaskId(), response.getBody().getTrackingId()), HttpStatus.CREATED);
+					ServiceResponse.successResponse(response.getBody().getModelName(), response.getBody().getTaskId(), response.getBody().getTrackingId(), response.getBody().getDockerImageUri()), HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<ServiceResponse>(
 					ServiceResponse.successResponse(response.getBody().getErrorMessage()),
