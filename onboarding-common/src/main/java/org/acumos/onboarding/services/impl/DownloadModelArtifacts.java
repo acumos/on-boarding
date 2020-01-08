@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -31,17 +31,22 @@ import org.acumos.nexus.client.NexusArtifactClient;
 import org.acumos.nexus.client.RepositoryLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 public class DownloadModelArtifacts {
 
 	private static final Logger logger = LoggerFactory.getLogger(DownloadModelArtifacts.class);
 
 	String artifactFileName;
-	
+
+	@Autowired
+	private Environment env;
+
 	CommonDataServiceRestClientImpl cmnDataService;
-	
+
 	File artifactFile = null;
-	
+
 	public String getModelArtifacts(String solutionId, String revisionId, String userName, String password,
 			String nexusUrl, String nexusUserName, String nexusPassword, String dataSource) throws Exception {
 		logger.debug("------ Start getBluePrintNexus-----------------");
@@ -52,7 +57,8 @@ public class DownloadModelArtifacts {
 		String nexusURI = "";
 
 		ByteArrayOutputStream byteArrayOutputStream = null;
-		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
+		//this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
+		this.cmnDataService = new CommonDataServiceRestClientImpl(env.getProperty("cmndatasvc.cmnDataSvcEndPoinURL"), env.getProperty("cmndatasvc.cmnDataSvcUser"), env.getProperty("cmndatasvc.cmnDataSvcPwd"), null);
 
 		File outputFolder = new File("dcae_model");
 		outputFolder.mkdirs();
@@ -99,7 +105,7 @@ public class DownloadModelArtifacts {
 		}
 		return artifactFileName;
 	}
-	
+
 	public List<String> getModelProtoArtifacts(String solutionId, String revisionId, String userName, String password,
 			String nexusUrl, String nexusUserName, String nexusPassword, String dataSource) throws Exception {
 		logger.debug("------ Start getBluePrintNexus-----------------");
@@ -112,14 +118,15 @@ public class DownloadModelArtifacts {
 		List<String> artifactNameArray = new ArrayList<String>();
 
 		ByteArrayOutputStream byteArrayOutputStream = null;
-		this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
+		//this.cmnDataService = new CommonDataServiceRestClientImpl(dataSource, userName, password, null);
+		this.cmnDataService = new CommonDataServiceRestClientImpl(env.getProperty("cmndatasvc.cmnDataSvcEndPoinURL"), env.getProperty("cmndatasvc.cmnDataSvcUser"), env.getProperty("cmndatasvc.cmnDataSvcPwd"), null);
 
 		File outputFolder = new File("dcae_model");
 		outputFolder.mkdirs();
 
 		File outputFolder1 = new File("dcae_model_proto");
 		outputFolder1.mkdirs();
-		
+
 		if (revisionId != null) {
 			/* Get the list of Artifacts for the SolutionId and revisionId. */
 			mlpArtifactList = cmnDataService.getSolutionRevisionArtifacts(solutionId, revisionId);
@@ -152,7 +159,7 @@ public class DownloadModelArtifacts {
 						if (byteArrayOutputStream != null) {
 							byteArrayOutputStream.close();
 						}
-						
+
 						if (artifactFileName.contains(".proto")) {
 							File file1 = new File(outputFolder1, artifactFileName);
 							FileOutputStream fout1 = new FileOutputStream(file1);
@@ -178,9 +185,9 @@ public class DownloadModelArtifacts {
 	public void setArtifactFile(File file) {
 		this.artifactFile = file;
 	}
-	
+
 	public File getArtifactFile() {
 		return this.artifactFile;
 	}
-	
+
 }

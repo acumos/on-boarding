@@ -8,9 +8,9 @@
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -126,29 +126,29 @@ public class PortalRestClientImpl implements PortalRestClient {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.baseUrl);
 		for (int p = 0; p < path.length; ++p)
 			builder.pathSegment(path[p]);
-		if (queryParams != null && queryParams.size() > 0) {
-			for (Map.Entry<String, ? extends Object> entry : queryParams.entrySet()) {
-				Object value = null;
-				// Server expect Date as Long.
-				if (entry.getValue() instanceof Date)
-					value = ((Date) entry.getValue()).getTime();
-				else
-					value = entry.getValue().toString();
-				builder.queryParam(entry.getKey(), value);
-			}
-		}
-		if (pageRequest != null) {
-			if (pageRequest.getSize() != null)
-				builder.queryParam("page", Integer.toString(pageRequest.getPage()));
-			if (pageRequest.getPage() != null)
-				builder.queryParam("size", Integer.toString(pageRequest.getSize()));
-			if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
-				for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
-					String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
-					builder.queryParam("sort", value);
-				}
-			}
-		}
+//		if (queryParams != null && queryParams.size() > 0) {
+//			for (Map.Entry<String, ? extends Object> entry : queryParams.entrySet()) {
+//				Object value = null;
+//				// Server expect Date as Long.
+//				if (entry.getValue() instanceof Date)
+//					value = ((Date) entry.getValue()).getTime();
+//				else
+//					value = entry.getValue().toString();
+//				builder.queryParam(entry.getKey(), value);
+//			}
+//		}
+//		if (pageRequest != null) {
+//			if (pageRequest.getSize() != null)
+//				builder.queryParam("page", Integer.toString(pageRequest.getPage()));
+//			if (pageRequest.getPage() != null)
+//				builder.queryParam("size", Integer.toString(pageRequest.getSize()));
+//			if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
+//				for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
+//					String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
+//					builder.queryParam("sort", value);
+//				}
+//			}
+//		}
 		return builder.build().encode().toUri();
 	}
 

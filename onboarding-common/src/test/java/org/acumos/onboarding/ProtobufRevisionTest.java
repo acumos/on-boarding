@@ -40,7 +40,7 @@ public class ProtobufRevisionTest {
 	@Mock
 	PortalRestClientImpl client;
 
-	@InjectMocks
+	@Mock
 	CommonOnboarding commonOnboarding;
 
 	@Mock
@@ -49,7 +49,7 @@ public class ProtobufRevisionTest {
 	@Mock
 	ToscaGeneratorClient toscaClient ;
 
-	@Mock
+	@InjectMocks
 	ProtobufRevision protoRevision ;
 
 	List<String> versionList = new ArrayList<>();
@@ -59,16 +59,16 @@ public class ProtobufRevisionTest {
 	int countA = 0;
 	int countB = 0;
 	int countC = 0;
-	
+
 	File protoBuf1 = new File(FilePathTest.filePath()+"model.proto");
 	File protoBuf2 = new File(FilePathTest.filePath()+"model2.proto");
-	
+
 	Protobuf protoBuff1 = null;
 	Protobuf protoBuff2 = null;
-	
+
 	String lastProtoBuffString = null;
 	String currentProtoBuffString = null;
-	
+
 	List<ProtobufMessageField> fieldList1 = new ArrayList<>();
 	List<ProtobufMessageField> fieldList2 = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class ProtobufRevisionTest {
 		} catch (Exception e) {
 			Assert.fail("Exception occured while getFullVersionTest(): " + e.getMessage());
 		}
-	
+
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ProtobufRevisionTest {
 		versionList.add(verA);
 		versionList.add(verB);
 		versionList.add(verC);
-		
+
 		try {
 			if (protoBuf1 != null && protoBuf1.exists()) {
 				FileInputStream fisProto;
@@ -119,7 +119,7 @@ public class ProtobufRevisionTest {
 			Assert.fail("Exception occured while checkMessageParametersTest(): " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void checkServiceParametersTest() {
 
@@ -130,7 +130,7 @@ public class ProtobufRevisionTest {
 		versionList.add(verA);
 		versionList.add(verB);
 		versionList.add(verC);
-		
+
 		try {
 			if (protoBuf1 != null && protoBuf1.exists()) {
 				FileInputStream fisProto;
@@ -156,10 +156,10 @@ public class ProtobufRevisionTest {
 			Assert.fail("Exception occured while checkServiceParametersTest(): " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void returnVersionWhenEqualNumberOfMessageFieldsTest() {
-		
+
 		try {
 
 			if (protoBuf1 != null && protoBuf1.exists()) {
@@ -189,10 +189,10 @@ public class ProtobufRevisionTest {
 			Assert.fail("Exception occured while returnVersionWhenEqualNumberOfMessageFieldsTest(): " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void returnVersionWhenUnEqualNumberOfMessageFieldsTest() {
-		
+
 		try {
 
 			if (protoBuf1 != null && protoBuf1.exists()) {
@@ -222,16 +222,16 @@ public class ProtobufRevisionTest {
 			Assert.fail("Exception occured while returnVersionWhenUnEqualNumberOfMessageFieldsTest(): " + e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void returnVersionWhenEqualNumberOfServiceFieldsTest() {
-		
+
 		List<ProtobufServiceOperation> serviceOperationsList1 = new ArrayList<>();
 		List<ProtobufServiceOperation> serviceOperationsList2 = new ArrayList<>();
-		
+
 		List<String> serviceFieldList1 = new ArrayList<>();
 		List<String> serviceFieldList2 = new ArrayList<>();
-		
+
 		try {
 
 			if (protoBuf1 != null && protoBuf1.exists()) {
@@ -256,7 +256,7 @@ public class ProtobufRevisionTest {
 					protoBuff1.getService().getOperations().size());
 			serviceOperationsList2 = protoBuff2.getService().getOperations().subList(0,
 					protoBuff2.getService().getOperations().size());
-			
+
 			serviceFieldList1 = serviceOperationsList1.get(0).getInputMessageNames();
 			serviceFieldList2 = serviceOperationsList2.get(0).getInputMessageNames();
 
