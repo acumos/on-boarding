@@ -40,7 +40,7 @@ public class ProtobufRevisionTest {
 	@Mock
 	PortalRestClientImpl client;
 
-	@InjectMocks
+	@Mock
 	CommonOnboarding commonOnboarding;
 
 	@Mock
@@ -49,7 +49,7 @@ public class ProtobufRevisionTest {
 	@Mock
 	ToscaGeneratorClient toscaClient ;
 
-	@Mock
+	@InjectMocks
 	ProtobufRevision protoRevision ;
 
 	List<String> versionList = new ArrayList<>();
