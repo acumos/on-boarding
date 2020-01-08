@@ -106,18 +106,18 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 				builder.queryParam(entry.getKey(), value);
 			}
 		}
-		if (pageRequest != null) {
-			if (pageRequest.getSize() != null)
-				builder.queryParam("page", Integer.toString(pageRequest.getPage()));
-			if (pageRequest.getPage() != null)
-				builder.queryParam("size", Integer.toString(pageRequest.getSize()));
-			if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
-				for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
-					String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
-					builder.queryParam("sort", value);
-				}
-			}
-		}
+//		if (pageRequest != null) {
+//			if (pageRequest.getSize() != null)
+//				builder.queryParam("page", Integer.toString(pageRequest.getPage()));
+//			if (pageRequest.getPage() != null)
+//				builder.queryParam("size", Integer.toString(pageRequest.getSize()));
+//			if (pageRequest.getFieldToDirectionMap() != null && pageRequest.getFieldToDirectionMap().size() > 0) {
+//				for (Map.Entry<String, String> entry : pageRequest.getFieldToDirectionMap().entrySet()) {
+//					String value = entry.getKey() + (entry.getValue() == null ? "" : ("," + entry.getValue()));
+//					builder.queryParam("sort", value);
+//				}
+//			}
+//		}
 		return builder.build().encode().toUri();
 	}
 
