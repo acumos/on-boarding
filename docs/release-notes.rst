@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.1.0, 21 Jan 2020
+--------------------------
+* Enrich message response with Docker URI `ACUMOS-3771 <https://jira.acumos.org/browse/ACUMOS-3771>`
+
+
 Version 3.8.1, 23 Dec 2019
 --------------------------
 * Common Data Service client at version 3.1.0
