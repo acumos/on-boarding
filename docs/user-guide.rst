@@ -87,11 +87,13 @@ For these three different languages it exists three on-boarding acumos clients t
 composed of differents files requested by Acumos. Whatever the kind of on-boarding, by WEB or by CLI, you can choose to
 trigger or not trigger the launch of the micro-service generation at the end of the on-boarding process.
 
-for CLI on-boarding you need to be authenticated before on-board a model. Whatever the acumos client  you used, you will
-prompt to provide your credentials in this way : "your_acumos_login":"your_api_token". Your api token can be retrieved in
-the acumos portal, after authentication, in your acumos settings.
+You can use the onboarding client to onboard your model bundle by CLI (Command line interface) thanks to a push() function
+Whatever the acumos client  you used, you will prompt to provide your credentials in this way : "your_acumos_login":"your_api_token".
+Your api token can be retrieved in the acumos portal, after authentication, in your acumos settings. After a successfull CLI
+onboarding the message respons will dysplay the acumos Docker URI that can be used to load the docker image model in your local
+Docker registry.
 
-Please refer to the following user guide : 
+Please refer to the following user guide :
 
 `Acumos R client user guide <../../acumos-r-client/docs/onboarding-r-guide.html>`_
 
