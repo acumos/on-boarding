@@ -63,6 +63,8 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,6 +97,9 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	LoggerDelegate logger = new LoggerDelegate(log);
 	Map<String, String> artifactsDetails = new HashMap<>();
 	public static String lOG_DIR_LOC = "/maven/logs/on-boarding/applog";
+
+	@Autowired
+	private Environment env;
 
 	public OnboardingController() {
 		// Property values are injected after the constructor finishes
@@ -187,7 +192,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		// code to retrieve the current pom version
 		// UtilityFunction.getCurrentVersion();
-		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
+		onboardingStatus = new OnboardingNotification(env.getProperty("cmndatasvc.cmnDataSvcEndPoinURL"), env.getProperty("cmndatasvc.cmnDataSvcUser"), env.getProperty("cmndatasvc.cmnDataSvcPwd"), request_id);
 		onboardingStatus.setRequestId(request_id);
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
 
@@ -663,7 +668,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		// code to retrieve the current pom version
 		// UtilityFunction.getCurrentVersion();
-		onboardingStatus = new OnboardingNotification(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, request_id);
+		onboardingStatus = new OnboardingNotification(env.getProperty("cmndatasvc.cmnDataSvcEndPoinURL"), env.getProperty("cmndatasvc.cmnDataSvcUser"), env.getProperty("cmndatasvc.cmnDataSvcPwd"), request_id);
 		onboardingStatus.setRequestId(request_id);
 		MDC.put(OnboardingLogConstants.MDCs.REQUEST_ID, request_id);
 

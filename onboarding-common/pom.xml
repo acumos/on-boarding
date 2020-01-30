@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.on-boarding</groupId>
 	<artifactId>onboarding-common</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
+	<version>4.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Onboarding common jar</name>
 	<parent>
@@ -155,7 +155,7 @@
 		<dependency>
 			<groupId>org.acumos.common-dataservice</groupId>
 			<artifactId>cmn-data-svc-client</artifactId>
-			<version>3.1.0</version>
+			<version>3.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.acumos.acumos-nexus-client</groupId>
@@ -184,34 +184,6 @@
 			<version>1.1</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			Spring sets the <version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>1.10.19</version>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-core</artifactId>
-			<version>1.6.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<version>1.7.0</version>
-		</dependency> -->
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -225,34 +197,6 @@
 			<version>${mockito-core.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- PowerMock TestNG Module -->
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-testng</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- PowerMock JUnit 4.4+ Module -->
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- PowerMock Mockito2 API -->
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito2</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4-rule-agent</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<!-- Dependency for retrieving a project version -->
 			<groupId>org.apache.maven</groupId>
@@ -304,6 +248,7 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
+
 
 	</dependencies>
 	<build>
