@@ -84,7 +84,7 @@ public class OnboardingNotificationTest {
 			logBean.setFileName("DummyFileName");
 			logBean.setLogPath("DummyLogPath");
 
-			Mockito.when(cdmsClient.createTask(stepResult)).thenReturn(stepResult);
+			//Mockito.when(cdmsClient.createTask(stepResult)).thenReturn(stepResult);
 			try {
 				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 				onboardingNotify.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started", logBean);

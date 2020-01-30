@@ -27,6 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 import java.io.IOException;
+
 import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;

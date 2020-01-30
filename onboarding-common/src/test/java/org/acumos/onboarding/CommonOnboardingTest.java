@@ -20,7 +20,14 @@
 
 package org.acumos.onboarding;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,18 +41,29 @@ import org.acumos.onboarding.common.utils.JsonResponse;
 import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.services.impl.CommonOnboarding;
 import org.acumos.onboarding.services.impl.PortalRestClientImpl;
+import org.apache.http.HttpStatus;
 import org.json.simple.JSONObject;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommonOnboardingTest {
+
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8000));
+
+	public static final String LOCAL_HOST = "http://localhost:8000/";
 
 	@Mock
 	RestTemplate restTemplate;
@@ -121,13 +139,34 @@ public class CommonOnboardingTest {
 		obj1.put("jwtToken", token);
 		JSONObject obj2 = new JSONObject();
 		obj2.put("request_body", obj1);
-		Mockito.when(client.tokenValidation(obj2, "GitHub")).thenReturn(valid);
 
-		/*try {
-		   Assert.assertNotNull(commonOnboarding.validate(token, "loginName", "GitHub"));
-		} catch (AcumosServiceException e) {
-			Assert.fail("Exception occured while validateTest(): " + e.getMessage());
-		}*/
+		JsonResponse<Object> jsonResponse = new JsonResponse<Object>();
+
+		ObjectMapper Obj = new ObjectMapper();
+		String jsonStr = null;
+		try {
+			jsonStr = Obj.writeValueAsString(jsonResponse);
+		} catch (IOException e) {
+			//logger.error("Exception occurred while parsing rest page response to string ", e.getMessage());
+		}
+
+		stubFor(post(urlEqualTo("/auth/validateToken")).willReturn(aResponse().withStatus(HttpStatus.SC_OK)
+				.withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).withBody(jsonStr)));
+
+//		try {
+//			commonOnboarding.validate(token, null);
+//		} catch (AcumosServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+
+//		try {
+//			Assert.assertNotNull(commonOnboarding.validate(token, "loginName", "GitHub"));
+//		} catch (AcumosServiceException e) {
+//			Assert.fail("Exception occured while validateTest(): " + e.getMessage());
+//		}
+
 	}
 
 	@Test
