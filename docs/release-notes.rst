@@ -26,6 +26,7 @@ for public use, which are released together.
 Version 4.2.0, 31 Jan 2020
 --------------------------
 * Common Data Service client at version 3.1.1
+* Null pointer fixes when onboarding using CLI https://gerrit.acumos.org/r/c/on-boarding/+/6308
 * Sonar code coverage for Obdr `ACUMOS-3954 <https://jira.acumos.org/browse/ACUMOS-3954>`
 
 Version 4.1.0, 21 Jan 2020
