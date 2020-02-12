@@ -21,12 +21,10 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +73,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -165,6 +162,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestPart(required = false) MultipartFile license,
+			@RequestPart(required = false) MultipartFile rdata,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
@@ -258,6 +256,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
 				File localMetadataFile = new File(outputFolder, metadata.getOriginalFilename());
 				File localProtobufFile = new File(outputFolder, schema.getOriginalFilename());
+
 				MLPSolutionRevision revision;
 				File licenseFile = null;
 
@@ -431,6 +430,15 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
 								"license", onboardingStatus);
+					}
+
+					if(rdata != null && !rdata.isEmpty()) {
+
+						File localRDataFile = new File(outputFolder, rdata.getOriginalFilename());
+						UtilityFunction.copyFile(rdata.getInputStream(), localRDataFile);
+
+						addArtifact(mData, localRDataFile, getArtifactTypeCode("Code"), mData.getModelName(),
+								onboardingStatus);
 					}
 
 					// Notify TOSCA generation started
@@ -640,6 +648,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 	@RequestMapping(value = "/advancedModel", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<ServiceResponse> advancedModelOnboard(HttpServletRequest request,
 			@RequestPart(required = false) MultipartFile model, @RequestPart(required = false) MultipartFile license,
+			@RequestPart(required = false) MultipartFile protobuf,
 			@RequestHeader(value = "modelname", required = true) String modName,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
@@ -648,7 +657,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "Request-ID", required = false) String request_id,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName)
-			throws AcumosServiceException {
+					throws AcumosServiceException {
 
 		OnboardingNotification onboardingStatus = null;
 
@@ -879,7 +888,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						addArtifact(mData, dockerfileURL, getArtifactTypeCode("Docker Image"), null);
 					} else if (modelType.equalsIgnoreCase("interchangedModel")) {
 						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
-						onboardingStatus);
+								onboardingStatus);
 					} else if(modelType.equalsIgnoreCase("other")) {
 						//Need to add modelType.equalsIgnoreCase("dockerImage")
 						dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
@@ -891,6 +900,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
 								"license", onboardingStatus);
+					}
+
+					if(protobuf != null && !protobuf.isEmpty()) {
+						File localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
+						UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
+						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+								onboardingStatus);
 					}
 
 					logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
@@ -1070,7 +1086,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
-   }
+	}
 
 
 	/**
@@ -1120,14 +1136,17 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 		return typeCode;
 	}
 
+	@Override
 	public String getCmnDataSvcEndPoinURL() {
 		return cmnDataSvcEndPoinURL;
 	}
 
+	@Override
 	public String getCmnDataSvcUser() {
 		return cmnDataSvcUser;
 	}
 
+	@Override
 	public String getCmnDataSvcPwd() {
 		return cmnDataSvcPwd;
 	}
