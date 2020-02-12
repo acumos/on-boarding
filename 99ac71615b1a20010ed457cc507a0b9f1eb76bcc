@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1eb12d2a_e6be0049",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 14
+      },
+      "writtenOn": "2020-02-12T13:58:32Z",
+      "side": 1,
+      "message": "Please check the extension type",
+      "revId": "99ac71615b1a20010ed457cc507a0b9f1eb76bcc",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
