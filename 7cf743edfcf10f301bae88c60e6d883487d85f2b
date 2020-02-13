@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f78b0d9_f18b8c48",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2020-02-13T13:39:59Z",
+      "side": 1,
+      "message": "and then, replace \n\n\"rdata file extension of \" + rdataFileName + \" should be \\\".r or .RData\\\"\"\n\nby \n\n\"R file extension of \" + rdataFileName + \" should be \\\".r,.R or .RData\\\"\"\n\nThanks",
+      "revId": "7cf743edfcf10f301bae88c60e6d883487d85f2b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41e7b3a1_a30ebfdf",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2020-02-13T13:39:59Z",
+      "side": 1,
+      "message": "Just a last thing Yaseen could you replace the error message \n\n\"Error Occured: RData File Required . Original File : \" + rdataFileName)\n\nby \n\n\"Error Occured: .RData or.R File Required . Original File : \" + rdataFileName)\n\nThanks",
+      "revId": "7cf743edfcf10f301bae88c60e6d883487d85f2b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
