@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c745745a_09216acb",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2020-02-13T14:54:46Z",
+      "side": 1,
+      "message": "\u003e and then, replace \n\u003e \n\u003e \"rdata file extension of \" + rdataFileName + \" should be \\\".r or .RData\\\"\"\n\u003e \n\u003e by \n\u003e \n\u003e \"R file extension of \" + rdataFileName + \" should be \\\".r, .R or .RData\\\"\"\n\u003e \n\u003e Thanks",
+      "parentUuid": "4f78b0d9_f18b8c48",
+      "revId": "7cf743edfcf10f301bae88c60e6d883487d85f2b",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41e7b3a1_a30ebfdf",
         "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/OnboardingController.java",
         "patchSetId": 2
