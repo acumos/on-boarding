@@ -437,7 +437,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						String rdataFileName = rdata.getOriginalFilename();
 						String rdataFileExtension = rdataFileName.substring(rdataFileName.indexOf('.'));
 
-						if (!rdataFileExtension.toLowerCase().equalsIgnoreCase(".RData") || !rdataFileExtension.toLowerCase().equalsIgnoreCase(".r")) {
+						if (!rdataFileExtension.toLowerCase().equalsIgnoreCase(".RData") && !rdataFileExtension.toLowerCase().equalsIgnoreCase(".r")) {
 							logger.debug("R file extension of " + rdataFileName + " should be \".r,.R or .RData\"");
 							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
 									OnboardingConstants.BAD_REQUEST_CODE,
