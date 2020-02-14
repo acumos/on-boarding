@@ -443,6 +443,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					logger.debug( "Generate Microservice Flag: " +isCreateMicroservice);
 
 					ResponseEntity<ServiceResponse> response = null;
+					String dockerUri = null;
 
 					if (isCreateMicroservice) {
 						// call microservice
@@ -484,8 +485,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 					}
 
+					if(response != null){
+						dockerUri = response.getBody().getDockerImageUri();
+					}
 					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, taskId, trackingID), HttpStatus.CREATED);
+							ServiceResponse.successResponse(mlpSolution, taskId, trackingID, dockerUri), HttpStatus.CREATED);
 					logger.debug(
 							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
 									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
