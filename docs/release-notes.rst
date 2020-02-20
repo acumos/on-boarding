@@ -23,21 +23,27 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.3.0, 20 Feb 2020
+--------------------------
+* Common Data Service client at version 3.1.1
+* Take into account code artifact in on-boarding process `ACUMOS-3777 <https://jira.acumos.org/browse/ACUMOS-3777>`_
+* Enrich pre-dockerized models `ACUMOS-3144 <https://jira.acumos.org/browse/ACUMOS-3144>`_
+
 Version 4.2.0, 31 Jan 2020
 --------------------------
 * Common Data Service client at version 3.1.1
 * Null pointer fixes when onboarding using CLI https://gerrit.acumos.org/r/c/on-boarding/+/6308
-* Sonar code coverage for Obdr `ACUMOS-3954 <https://jira.acumos.org/browse/ACUMOS-3954>`
+* Sonar code coverage for Obdr `ACUMOS-3954 <https://jira.acumos.org/browse/ACUMOS-3954>`_
 
 Version 4.1.0, 21 Jan 2020
 --------------------------
-* Enrich message response with Docker URI `ACUMOS-3771 <https://jira.acumos.org/browse/ACUMOS-3771>`
+* Enrich message response with Docker URI `ACUMOS-3771 <https://jira.acumos.org/browse/ACUMOS-3771>`_
 
 Version 3.8.1, 23 Dec 2019
 --------------------------
 * Common Data Service client at version 3.1.0
 * Security Verification at version 1.2.2
-* miss new logging library `ACUMOS-3847 <https://jira.acumos.org/browse/ACUMOS-3847>`
+* miss new logging library `ACUMOS-3847 <https://jira.acumos.org/browse/ACUMOS-3847>`_
 
 Version 3.8.0, 13 Dec 2019
 --------------------------
