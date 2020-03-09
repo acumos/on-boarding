@@ -89,8 +89,8 @@ trigger or not trigger the launch of the micro-service generation at the end of 
 
 You can use the onboarding client to onboard your model bundle by CLI (Command line interface) thanks to a push() function
 Whatever the acumos client  you used, you will prompt to provide your credentials in this way : "your_acumos_login":"your_api_token".
-Your api token can be retrieved in the acumos portal, after authentication, in your acumos settings. After a successfull CLI
-onboarding the message respons will dysplay the acumos Docker URI that can be used to load the docker image model in your local
+Your api token can be retrieved in the acumos portal, after authentication, in your acumos settings. After a successful CLI
+onboarding the message response will display the acumos Docker URI that can be used to load the docker image model in your local
 Docker registry.
 
 Please refer to the following user guide :
