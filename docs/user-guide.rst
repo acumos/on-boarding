@@ -29,15 +29,15 @@ Acumos is intended to enable the use of a wide range of tools and technologies i
 of machine learning models including support for both open sourced and proprietary toolkits.
 
 The goal of Onboarding is to provide an ingestion interface, by web or CLI(command line interface)
-for various types of models and to create required artifacts and identifiers to enter the  Acumos
-machine learning platform.
+for various types of models and to create required artifacts and identifiers to enter the Acumos
+platform.
 
 #. Legacy models
 
- As for Athena release, in Boreas you can on-board models developped in Java 8 or 9, Python>=3.5, <3.7,
- R>=3.4.4 and sourced from toolkits such as Scikit, TensorFlow, H2O, and R. But in Boreas you can choose
- to create or not the microservice at the end of the on-boarding process. If user choose to not create
- the microservice at teh end of on-boarding he can create it later.
+ You can on-board models developped in Java 8 or 9, Python>=3.6, <3.7, R>=3.4.4 and sourced from toolkits
+ such as Scikit, TensorFlow, H2O, and R. You can choose to create or not the microservice at the end
+ of the on-boarding process. If user choose to not create the microservice at the end of on-boarding he
+ can create it later.
 
  In short, our goals for these kinds of models are to generate or provide all the necessary materials
  required to use these kinds of models with the others components of Acumos like:
@@ -90,8 +90,8 @@ trigger or not trigger the launch of the micro-service generation at the end of 
 You can use the onboarding client to onboard your model bundle by CLI (Command line interface) thanks to a push() function
 Whatever the acumos client  you used, you will prompt to provide your credentials in this way : "your_acumos_login":"your_api_token".
 Your api token can be retrieved in the acumos portal, after authentication, in your acumos settings. After a successful CLI
-onboarding the message response will display the acumos Docker URI that can be used to load the docker image model in your local
-Docker registry.
+onboarding with Micro-service creation, the message response will display the acumos Docker URI that can be used to load the
+docker image model in your local Docker registry.
 
 Please refer to the following user guide :
 
@@ -117,8 +117,8 @@ Please refer to the following user guide
 **5: On-Boarding docker image model or docker URI model**
 ---------------------------------------------------------
 
-You can create models in the language of your choice then dockerize your models yourelves and onboard these
-dockerized models or dockerized model URIs. Of course for these kinds of models the microservice generation process is never used.
+You can create models in the language of your choice then dockerize your models yourelves and onboard these dockerized models
+or dockerized model URIs. Of course for these kinds of models the microservice generation process is never used.
 
 Please refer to the following user-guide
 
@@ -128,13 +128,14 @@ Please refer to the following user-guide
 --------------------------------------------
 
 You can on-board your model with a license (Except for dockerized models as we assume that modelers will embed their licence
-in their Docker image). Whatever the case, CLI or WEB on-boarding, if the license file extension is not 'json' the license
-on-boarding will not be possible and if the name is not 'license' Acumos will rename your license file as "license.json" and
-you will see your license file as "license-1.json" in the artifacts table. If you upload a new version of your license through
-the portal, the license number revision will be increased by one like that "license-2.json". To help user create the license file
-expected by Acumos a license user guide is available here :
+in their Docker image). During Web on-boarding you can choose "Upload" a license file, "Select licence Profil" or "Create New",
+please refer to licensing documentation for the details.
 
-`License user guide <../../../submodules/license-manager/docs/user-guide.html>`_
+Whatever the case, CLI or WEB on-boarding :
+
+ - If the license file extension is not 'json' the license on-boarding will not be possible.
+ - During the on-boarding, your license file will be renamed and you will see your license file as "license-1.0.0.json" in the artifact table.
+ - If you on-board a new version of your model through the portal, the license number revision will be increased like that "license-1.0.1.json" to follow the model number revision.
 
 Whatever the kinds of models :
 
