@@ -21,6 +21,7 @@
 package org.acumos.onboarding.services.impl;
 
 import java.io.File;
+import java.net.ConnectException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,7 @@ import org.acumos.onboarding.logging.OnboardingLogConstants;
 import org.acumos.onboarding.services.DockerService;
 import org.acumos.securityverification.domain.Workflow;
 import org.acumos.securityverification.utils.SVConstants;
+import org.apache.http.conn.HttpHostConnectException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -706,6 +708,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		MLPUser shareUser = null;
 		Metadata mData = new Metadata();
+		mData.setSolutionName(modName);
 		String modelName = null;
 		MLPTask task = null;
 		long taskId = 0;
@@ -913,6 +916,8 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								"license", onboardingStatus);
 					}
 
+					File localProtobufFile = null;
+
 					if(protobuf != null && !protobuf.isEmpty()) {
 
 						String protobufFileName = protobuf.getOriginalFilename();
@@ -926,10 +931,22 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 									HttpStatus.BAD_REQUEST);
 						}
 
-						File localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
+						localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
 						UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
 						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 								onboardingStatus);
+					}
+					
+					// Notify TOSCA generation started
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
+					}
+
+					generateTOSCA(localProtobufFile, null, mData, onboardingStatus);
+					
+					// Notify TOSCA generation successful
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
 					}
 
 					logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
@@ -949,6 +966,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							}
 							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
+							  if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
+                                  if (onboardingStatus != null) {
+                                      onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
+                                  }
+                                  throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
+							  }
+
 							logger.error(
 									"Exception occured while invoking microservice API " + e);
 							throw e;
