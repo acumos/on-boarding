@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.4.0, 16 March 2020
+----------------------------
+* Common Data Service client at version 3.1.1
+* While on-boarding error model, the error label is not visible in model description page `ACUMOS-3855 <https://jira.acumos.org/browse/ACUMOS-3855>`_
+
 Version 4.3.0, 20 Feb 2020
 --------------------------
 * Common Data Service client at version 3.1.1
