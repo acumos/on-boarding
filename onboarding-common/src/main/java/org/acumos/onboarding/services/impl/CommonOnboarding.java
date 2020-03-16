@@ -803,15 +803,10 @@ public class CommonOnboarding {
 					cmnDataSvcPwd);
 
 			logger.debug("MetaData Version before Generating TOSCA = " + metadata.getVersion());
-			String result = null;
-			if(localMetadataFile != null) {
-				result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
+			
+			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 						metadata.getRevisionId(), localProtobufFile, localMetadataFile);
-			} else {
-				logger.debug("Generate tosca for predockerize model started");
-				result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), null,
-						metadata.getRevisionId(), localProtobufFile, metadata.getSolutionName(), null);
-			}
+			
 			
 			logger.debug("Generate TOSCA completed and result:" + result);
 
