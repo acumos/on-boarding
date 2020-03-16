@@ -944,18 +944,6 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								onboardingStatus);
 					}
 					
-					// Notify TOSCA generation started
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
-					}
-					logger.debug( "TOSCA generation started for predockerize model.");
-					generateTOSCA(localProtobufFile, null, mData, onboardingStatus);
-					
-					// Notify TOSCA generation successful
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
-					}
-
 					logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
 
 					ResponseEntity<ServiceResponse> response = null;
