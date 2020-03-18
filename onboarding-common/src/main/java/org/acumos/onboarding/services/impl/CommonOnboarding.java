@@ -277,7 +277,7 @@ public class CommonOnboarding {
 			return solution;
 
 		} catch (HttpStatusCodeException e) {
-                        // Creat solution id - fail
+			// Creat solution id - fail
 			// Create Solution failed. Notify
 			if (onboardingStatus != null) {
 				// notify
@@ -332,7 +332,7 @@ public class CommonOnboarding {
 		else
 			return null;
 	}
-*/
+	 */
 	public MLPSolutionRevision createSolutionRevision(Metadata metadata) throws AcumosServiceException {
 		logger.debug("Create solution revision call started");
 		MLPSolutionRevision revision = new MLPSolutionRevision();
@@ -348,7 +348,7 @@ public class CommonOnboarding {
 
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
-		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
+		/*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
 		if (!typeCodeList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : typeCodeList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.ACCESS_TYPE_PRIVATE))
@@ -356,7 +356,7 @@ public class CommonOnboarding {
 			}
 		}*/
 
-			/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
+		/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
 		if (!validationStatusList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
@@ -393,7 +393,7 @@ public class CommonOnboarding {
 
 		revision.setVersion(metadata.getVersion());
 		revision.setSolutionId(metadata.getSolutionId());
-		 /*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
+		/*List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ACCESS_TYPE);
 		if (!typeCodeList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : typeCodeList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.ACCESS_TYPE_PRIVATE))
@@ -401,7 +401,7 @@ public class CommonOnboarding {
 			}
 		}*/
 
-			/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
+		/*List<MLPCodeNamePair> validationStatusList = cdmsClient.getCodeNamePairs(CodeNameType.VALIDATION_STATUS);
 		if (!validationStatusList.isEmpty()) {
 			for (MLPCodeNamePair mlpCodeNamePair : validationStatusList) {
 				if (mlpCodeNamePair.getName().equals(OnboardingConstants.VALIDATION_STATUS_IP))
@@ -487,8 +487,8 @@ public class CommonOnboarding {
 						countIncremental);
 				return version;
 			}
-				version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
-				logger.debug("Set a New Version = "+version);
+			version = ProtobufRevision.getFullVersion(countMajor, countMinor, countIncremental);
+			logger.debug("Set a New Version = "+version);
 
 		} catch (Exception e) {
 			logger.error("Failed to fetch and compare the Proto files : " + e.getMessage());
@@ -613,7 +613,7 @@ public class CommonOnboarding {
 					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
 							"Fail to call addSolutionRevisionArtifact for " + file.getName() + " - "
 									+ e.getResponseBodyAsString(),
-							e);
+									e);
 				}
 			} catch (HttpStatusCodeException e) {
 				logger.error( "Fail to create artificate for " + file.getName() + " - " + e.getResponseBodyAsString(), e);
@@ -644,8 +644,8 @@ public class CommonOnboarding {
 			throws AcumosServiceException {
 		MLPArtifact mlpArtifact;
 		try {
-			 mlpArtifact = addArtifact(metadata, file, "LG", nexusArtifactId, onboardingStatus);
-			 logger.debug("Upload Artifact for " + file.getName() + " started", logBean);
+			mlpArtifact = addArtifact(metadata, file, "LG", nexusArtifactId, onboardingStatus);
+			logger.debug("Upload Artifact for " + file.getName() + " started", logBean);
 			// Notify add artifacts started
 			if (onboardingStatus != null) {
 				onboardingStatus.notifyOnboardingStatus("AddArtifact", "ST",
@@ -765,7 +765,7 @@ public class CommonOnboarding {
 			logger.debug("create Artifact - " + uri + " for solution - " + metadata.getSolutionId() + " Successful",
 					logBean);
 			logger.debug("addSolutionRevisionArtifact - " + uri + " for solution - " + metadata.getSolutionId()
-					+ " Successful", logBean);
+			+ " Successful", logBean);
 			if (onboardingStatus != null) {
 				// onboardingStatus.setArtifactId(modelArtifact.getArtifactId());
 				onboardingStatus.notifyOnboardingStatus("AddDockerImage", "SU",
@@ -803,11 +803,19 @@ public class CommonOnboarding {
 					cmnDataSvcPwd);
 
 			logger.debug("MetaData Version before Generating TOSCA = " + metadata.getVersion());
-			
-			String result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
+
+			String result = null;
+			if(localMetadataFile != null) {
+				result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(),
 						metadata.getRevisionId(), localProtobufFile, localMetadataFile);
-			
-			
+			} else {
+				logger.debug("Predockerize tosca generation started. ");
+				result = client.generateTOSCA(metadata.getOwnerId(), metadata.getSolutionId(), metadata.getVersion(), metadata.getRevisionId(),
+						localProtobufFile, metadata.getModelName(), null);
+			}
+
+
+
 			logger.debug("Generate TOSCA completed and result:" + result);
 
 		} catch (Exception e) {
@@ -961,82 +969,82 @@ public class CommonOnboarding {
 		return cmnDataSvcPwd;
 	}
 	public String validateLicense(String license) throws LicenseProfileException, AcumosServiceException
-     {
-    	 try {
-	    	   ICommonDataServiceRestClient dataServiceRestClient = getClient();
-			   LicenseProfile licenseProfile= new LicenseProfile(dataServiceRestClient);
-	           LicenseProfileValidationResults licenseProfileValidationResults=licenseProfile.validate(license);
-	           Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
+	{
+		try {
+			ICommonDataServiceRestClient dataServiceRestClient = getClient();
+			LicenseProfile licenseProfile= new LicenseProfile(dataServiceRestClient);
+			LicenseProfileValidationResults licenseProfileValidationResults=licenseProfile.validate(license);
+			Set<ValidationMessage> errMesgList = licenseProfileValidationResults.getJsonSchemaErrors();
 
-	           if(errMesgList == null || errMesgList.isEmpty()) {
-	        	   logger.debug("License validated Successfully. ");
-	               return "SUCCESS";
-	           } else {
-	        	   logger.debug("Failed to validate license. ");
-	        	   return errMesgList.toString();
-	           }
+			if(errMesgList == null || errMesgList.isEmpty()) {
+				logger.debug("License validated Successfully. ");
+				return "SUCCESS";
+			} else {
+				logger.debug("Failed to validate license. ");
+				return errMesgList.toString();
+			}
 
-         } catch (LicenseProfileException licExp) {
-        	 logger.error("Exception occurred during License validation: "+licExp.getMessage());
-        	 throw licExp;
-         } catch (Exception e) {
- 			logger.error("Exception occurred during License validation: "+e.getMessage());
- 			throw e;
-         }
-     }
-	 public ICommonDataServiceRestClient getClient() {
+		} catch (LicenseProfileException licExp) {
+			logger.error("Exception occurred during License validation: "+licExp.getMessage());
+			throw licExp;
+		} catch (Exception e) {
+			logger.error("Exception occurred during License validation: "+e.getMessage());
+			throw e;
+		}
+	}
+	public ICommonDataServiceRestClient getClient() {
 		ICommonDataServiceRestClient client = new CommonDataServiceRestClientImpl(cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd, null);
 		client.setRequestId(MDC.get(OnboardingLogConstants.MDCs.REQUEST_ID));
 		return client;
 	}
-	 public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
- 		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId);
- 		logger.debug("Security Verificaton enable= "+securityVerificationEnable);
- 		Workflow workflow = getValidWorkflow();
- 		if (securityVerificationEnable) {
- 			try {
- 				SecurityVerificationClientServiceImpl sv = getSVClient();
+	public Workflow performSVScan(String solutionId, String revisionId, String workflowId, String loggedInUserId) {
+		logger.debug("performSVScan, solutionId=" + solutionId + ", revisionId=" + revisionId + ", workflowId=" + workflowId);
+		logger.debug("Security Verificaton enable= "+securityVerificationEnable);
+		Workflow workflow = getValidWorkflow();
+		if (securityVerificationEnable) {
+			try {
+				SecurityVerificationClientServiceImpl sv = getSVClient();
 
- 				workflow = sv.securityVerificationScan(solutionId, revisionId, workflowId, loggedInUserId);
- 				if (!workflow.isWorkflowAllowed()) {
- 					String message = (!UtilityFunction.isEmptyOrNullString(workflow.getSvException()))
- 							? workflow.getSvException()
- 							: (!UtilityFunction.isEmptyOrNullString(workflow.getReason())) ? workflow.getReason()
- 									: "Unknown problem occurred during security verification";
- 					workflow.setReason(message);
- 					logger.error("Problem occurred during SV scan: ", message);
- 				} else {
- 					logger.debug("SV Scan completed :  "+workflow);
- 				}
- 			} catch (Exception e) {
- 				String message = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
- 				workflow = getInvalidWorkflow(message);
- 				logger.error("Exception occurred during SV scan: ", message);
- 			}
- 		}
- 		return workflow;
- 	}
+				workflow = sv.securityVerificationScan(solutionId, revisionId, workflowId, loggedInUserId);
+				if (!workflow.isWorkflowAllowed()) {
+					String message = (!UtilityFunction.isEmptyOrNullString(workflow.getSvException()))
+							? workflow.getSvException()
+									: (!UtilityFunction.isEmptyOrNullString(workflow.getReason())) ? workflow.getReason()
+											: "Unknown problem occurred during security verification";
+									workflow.setReason(message);
+									logger.error("Problem occurred during SV scan: ", message);
+				} else {
+					logger.debug("SV Scan completed :  "+workflow);
+				}
+			} catch (Exception e) {
+				String message = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
+				workflow = getInvalidWorkflow(message);
+				logger.error("Exception occurred during SV scan: ", message);
+			}
+		}
+		return workflow;
+	}
 
-    protected Workflow getValidWorkflow() {
- 		Workflow workflow = new Workflow();
- 		workflow.setWorkflowAllowed(true);
- 		return workflow;
- 	}
+	protected Workflow getValidWorkflow() {
+		Workflow workflow = new Workflow();
+		workflow.setWorkflowAllowed(true);
+		return workflow;
+	}
 
- 	protected Workflow getInvalidWorkflow(String message) {
- 		Workflow workflow = new Workflow();
- 		workflow.setWorkflowAllowed(false);
- 		workflow.setReason(message);
- 		return workflow;
- 	}
+	protected Workflow getInvalidWorkflow(String message) {
+		Workflow workflow = new Workflow();
+		workflow.setWorkflowAllowed(false);
+		workflow.setReason(message);
+		return workflow;
+	}
 
- 	protected SecurityVerificationClientServiceImpl getSVClient() {
- 		SecurityVerificationClientServiceImpl securityVerificationServiceImpl = new SecurityVerificationClientServiceImpl(
- 				securityVerificationApiUrl,cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,
- 				nexusEndPointURL, nexusUserName, nexusPassword
- 				);
+	protected SecurityVerificationClientServiceImpl getSVClient() {
+		SecurityVerificationClientServiceImpl securityVerificationServiceImpl = new SecurityVerificationClientServiceImpl(
+				securityVerificationApiUrl,cmnDataSvcEndPoinURL, cmnDataSvcUser, cmnDataSvcPwd,
+				nexusEndPointURL, nexusUserName, nexusPassword
+				);
 
- 		return securityVerificationServiceImpl;
- 	}
+		return securityVerificationServiceImpl;
+	}
 
 }

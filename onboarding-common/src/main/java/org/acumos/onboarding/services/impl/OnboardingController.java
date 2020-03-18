@@ -484,13 +484,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							}
 							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
-							 if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
-                                 if (onboardingStatus != null) {
-                                     onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
-                                 }
-                                 logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
-                                 throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
-							  }
+							if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
+								if (onboardingStatus != null) {
+									onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
+								}
+								logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
+								throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
+							}
 							logger.error(
 									"Exception occured while invoking microservice API " + e);
 							throw e;
@@ -943,7 +943,19 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
 								onboardingStatus);
 					}
-					
+
+					// Notify TOSCA generation started
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
+					}
+
+					generateTOSCA(localProtobufFile, null, mData, onboardingStatus);
+
+					// Notify TOSCA generation successful
+					if (onboardingStatus != null) {
+						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
+					}
+
 					logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
 
 					ResponseEntity<ServiceResponse> response = null;
@@ -961,13 +973,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							}
 							taskId = response.getBody().getTaskId();
 						} catch (Exception e) {
-							  if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
-                                  if (onboardingStatus != null) {
-                                      onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
-                                  }
-                                  logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
-                                  throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
-							  }
+							if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
+								if (onboardingStatus != null) {
+									onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
+								}
+								logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
+								throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
+							}
 
 							logger.error(
 									"Exception occured while invoking microservice API " + e);
