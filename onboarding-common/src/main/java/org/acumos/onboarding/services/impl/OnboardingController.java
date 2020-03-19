@@ -793,417 +793,419 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 				}
 
-				try {
+				File localProtobufFile = null;
 
-					File localProtobufFile = null;
+				if(protobuf != null && !protobuf.isEmpty()) {
 
-					if(protobuf != null && !protobuf.isEmpty()) {
+					String protobufFileName = protobuf.getOriginalFilename();
+					String protobufFileExtension = protobufFileName.substring(protobufFileName.indexOf('.'));
 
-						String protobufFileName = protobuf.getOriginalFilename();
-						String protobufFileExtension = protobufFileName.substring(protobufFileName.indexOf('.'));
-
-						if (!protobufFileExtension.toLowerCase().equalsIgnoreCase(".proto")) {
-							logger.debug("Protobuf file extension of " + protobufFileName + " should be \".proto\"");
-							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
-									OnboardingConstants.BAD_REQUEST_CODE,
-									"Error Occurred: proto File Required . Original File : " + protobufFileName),
-									HttpStatus.BAD_REQUEST);
-						}
-
-						localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
-						UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
-						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
-								onboardingStatus);
+					if (!protobufFileExtension.toLowerCase().equalsIgnoreCase(".proto")) {
+						logger.debug("Protobuf file extension of " + protobufFileName + " should be \".proto\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								"Error Occurred: proto File Required . Original File : " + protobufFileName),
+								HttpStatus.BAD_REQUEST);
 					}
+
+					localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
+					UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
 
 					try {
-						// Notify Create solution or get existing solution ID
-						// has
-						// started
-						if (onboardingStatus != null) {
 
-							task = new MLPTask();
-							task.setTaskCode("OB");
-							task.setStatusCode("ST");
-							task.setName("OnBoarding");
-							task.setUserId(ownerId);
-							task.setCreated(Instant.now());
-							task.setModified(Instant.now());
-							task.setTrackingId(trackingID);
-							onboardingStatus.setTrackingId(trackingID);
-							onboardingStatus.setUserId(ownerId);
-							task = cdmsClient.createTask(task);
-
-							logger.debug( "TaskID: " + task.getTaskId());
-							taskId = task.getTaskId();
-							onboardingStatus.setTaskId(task.getTaskId());
-							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
-						}
-
-						if (modelType.equalsIgnoreCase("interchangedModel")) {
-
-							localmodelFile = new File(outputFolder, model.getOriginalFilename());
-							UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
-						}
-
-						logger.debug( "Set the owner ID and Model Name");
-						mData.setOwnerId(ownerId);
-						mData.setModelName(modName);
-
-						List<MLPSolution> solList = getExistingSolution(mData);
-						boolean isListEmpty = solList.isEmpty();
-
-						if (isListEmpty) {
-							mlpSolution = createSolution(mData, onboardingStatus);
-							mData.setSolutionId(mlpSolution.getSolutionId());
-							logger.debug(
-									"New solution created Successfully " + mlpSolution.getSolutionId());
-						} else {
-							logger.debug(
-									"Existing solution found for model name " + solList.get(0).getName());
-							mlpSolution = solList.get(0);
-							mData.setSolutionId(mlpSolution.getSolutionId());
-						}
-
-						revision = createSolutionRevision(mData, localProtobufFile);
-						modelName = mData.getModelName() + "_" + mData.getSolutionId();
-
-						// Solution id creation completed
-						// Notify Creation of solution ID is successful
-						if (onboardingStatus != null) {
-							// set solution Id
-							if (mlpSolution.getSolutionId() != null) {
-								onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
-							}
-							// set revision id
-							if (mData.getRevisionId() != null) {
-								onboardingStatus.setRevisionId(mData.getRevisionId());
-							}
-							// notify
-							onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU",
-									"CreateSolution Successful");
-						}
-					} catch (AcumosServiceException e) {
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-						logger.error( e.getErrorCode() + "  " + e.getMessage());
-						if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
-							httpCode = HttpStatus.BAD_REQUEST;
-						}
-						// Create Solution failed. Notify
-						if (onboardingStatus != null) {
-							// notify
-							onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
-						}
-						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
-					} catch (Exception e) {
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						logger.error( e.getMessage());
-						// Create Solution failed. Notify
-						if (onboardingStatus != null) {
-							// notify
-							onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
-						}
-						if (e instanceof AcumosServiceException) {
-							return new ResponseEntity<ServiceResponse>(
-									ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(),
-											e.getMessage(), modelName),
-									HttpStatus.INTERNAL_SERVER_ERROR);
-						} else {
-							return new ResponseEntity<ServiceResponse>(
-									ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
-											e.getMessage(), modelName),
-									HttpStatus.INTERNAL_SERVER_ERROR);
-						}
-					}
-
-					String dockerImageUri = null;
-					logger.debug("model type="+modelType);
-					artifactsDetails = getArtifactsDetails();
-
-					if (dockerfileURL != null) {
-						addArtifact(mData, dockerfileURL, getArtifactTypeCode("Docker Image"), null);
-					} else if (modelType.equalsIgnoreCase("interchangedModel")) {
-						addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
-								onboardingStatus);
-					} else if(modelType.equalsIgnoreCase("other")) {
-						//Need to add modelType.equalsIgnoreCase("dockerImage")
-						dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
-						logger.debug( "dockerImageUri: " + dockerImageUri);
-						addArtifact(mData, dockerImageUri, getArtifactTypeCode("Docker Image"),
-								onboardingStatus);
-					}
-
-					if (license != null && !license.isEmpty()) {
-						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
-								"license", onboardingStatus);
-					}
-
-					// Notify TOSCA generation started
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
-					}
-
-					generateTOSCA(localProtobufFile, null, mData, onboardingStatus);
-
-					// Notify TOSCA generation successful
-					if (onboardingStatus != null) {
-						onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
-					}
-
-					logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
-
-					ResponseEntity<ServiceResponse> response = null;
-
-					// call microservice
-					if (isCreateMicroservice) {
-						logger.debug( "Before microservice call Parameters : SolutionId "
-								+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
 						try {
-							response = microserviceClient.generateMicroservice(
-									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-									trackingID, mData.getModelName(), null, request_id);
-							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
-								isSuccess = true;
+							// Notify Create solution or get existing solution ID
+							// has
+							// started
+							if (onboardingStatus != null) {
+
+								task = new MLPTask();
+								task.setTaskCode("OB");
+								task.setStatusCode("ST");
+								task.setName("OnBoarding");
+								task.setUserId(ownerId);
+								task.setCreated(Instant.now());
+								task.setModified(Instant.now());
+								task.setTrackingId(trackingID);
+								onboardingStatus.setTrackingId(trackingID);
+								onboardingStatus.setUserId(ownerId);
+								task = cdmsClient.createTask(task);
+
+								logger.debug( "TaskID: " + task.getTaskId());
+								taskId = task.getTaskId();
+								onboardingStatus.setTaskId(task.getTaskId());
+								onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 							}
-							taskId = response.getBody().getTaskId();
-						} catch (Exception e) {
-							if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
-								if (onboardingStatus != null) {
-									onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
+
+							if (modelType.equalsIgnoreCase("interchangedModel")) {
+
+								localmodelFile = new File(outputFolder, model.getOriginalFilename());
+								UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
+							}
+
+							logger.debug( "Set the owner ID and Model Name");
+							mData.setOwnerId(ownerId);
+							mData.setModelName(modName);
+
+							List<MLPSolution> solList = getExistingSolution(mData);
+							boolean isListEmpty = solList.isEmpty();
+
+							if (isListEmpty) {
+								mlpSolution = createSolution(mData, onboardingStatus);
+								mData.setSolutionId(mlpSolution.getSolutionId());
+								logger.debug(
+										"New solution created Successfully " + mlpSolution.getSolutionId());
+							} else {
+								logger.debug(
+										"Existing solution found for model name " + solList.get(0).getName());
+								mlpSolution = solList.get(0);
+								mData.setSolutionId(mlpSolution.getSolutionId());
+							}
+
+							revision = createSolutionRevision(mData, localProtobufFile);
+							modelName = mData.getModelName() + "_" + mData.getSolutionId();
+
+							// Solution id creation completed
+							// Notify Creation of solution ID is successful
+							if (onboardingStatus != null) {
+								// set solution Id
+								if (mlpSolution.getSolutionId() != null) {
+									onboardingStatus.setSolutionId(mlpSolution.getSolutionId());
 								}
-								logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
-								throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
+								// set revision id
+								if (mData.getRevisionId() != null) {
+									onboardingStatus.setRevisionId(mData.getRevisionId());
+								}
+								// notify
+								onboardingStatus.notifyOnboardingStatus("CreateSolution", "SU",
+										"CreateSolution Successful");
 							}
-
-							logger.error(
-									"Exception occured while invoking microservice API " + e);
-							throw e;
-						}
-					} else {
-						isSuccess = true;
-					}
-
-					// Model Sharing
-					if (isSuccess && (shareUserName != null) && revision.getRevisionId() != null) {
-						try {
-							AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
-							AuthorTransport authors[] = new AuthorTransport[1];
-							logger.debug(
-									"Author Name " + author.getName() + " and Email " + author.getContact());
-							authors[0] = author;
-							revision.setAuthors(authors);
-							cdmsClient.updateSolutionRevision(revision);
-							logger.debug(
-									"Model Shared Successfully with " + shareUserName);
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
-									HttpStatus.CREATED.toString());
+						} catch (AcumosServiceException e) {
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+							logger.error( e.getErrorCode() + "  " + e.getMessage());
+							if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+								httpCode = HttpStatus.BAD_REQUEST;
+							}
+							// Create Solution failed. Notify
+							if (onboardingStatus != null) {
+								// notify
+								onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
+							}
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
 						} catch (Exception e) {
-							isSuccess = false;
-							logger.error( " Failed to share Model", e);
-							throw e;
-						}
-					}
-
-					ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
-							ServiceResponse.successResponse(mlpSolution, taskId, trackingID,dockerImageUri), HttpStatus.CREATED);
-					logger.debug(
-							"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
-									+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
-					return res;
-				} finally {
-
-					try {
-						UtilityFunction.deleteDirectory(outputFolder);
-
-						if (isSuccess == false) {
-							task.setSolutionId(mData.getSolutionId());
-							task.setRevisionId(mData.getRevisionId());
-							task.setStatusCode("FA");
-							logger.debug("MLP task updating with the values =" + task.toString());
-							cdmsClient.updateTask(task);
-							logger.debug("Onboarding Failed, Reverting failed solutions and artifacts.");
-							if (metadataParser != null && mData != null) {
-								revertbackOnboarding(metadataParser.getMetadata(), mlpSolution.getSolutionId());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							logger.error( e.getMessage());
+							// Create Solution failed. Notify
+							if (onboardingStatus != null) {
+								// notify
+								onboardingStatus.notifyOnboardingStatus("CreateSolution", "FA", e.getMessage());
+							}
+							if (e instanceof AcumosServiceException) {
+								return new ResponseEntity<ServiceResponse>(
+										ServiceResponse.errorResponse(((AcumosServiceException) e).getErrorCode(),
+												e.getMessage(), modelName),
+										HttpStatus.INTERNAL_SERVER_ERROR);
+							} else {
+								return new ResponseEntity<ServiceResponse>(
+										ServiceResponse.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(),
+												e.getMessage(), modelName),
+										HttpStatus.INTERNAL_SERVER_ERROR);
 							}
 						}
 
-						if (isSuccess == true) {
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.COMPLETED.name());
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Advanced Model Onboarding Completed");
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.CREATED.toString());
+						String dockerImageUri = null;
+						logger.debug("model type="+modelType);
+						artifactsDetails = getArtifactsDetails();
 
-							task.setSolutionId(mData.getSolutionId());
-							task.setRevisionId(mData.getRevisionId());
-							task.setStatusCode("SU");
-							logger.debug("MLP task updating with the values =" + task.toString());
-							cdmsClient.updateTask(task);
+						if (dockerfileURL != null) {
+							addArtifact(mData, dockerfileURL, getArtifactTypeCode("Docker Image"), null);
+						} else if (modelType.equalsIgnoreCase("interchangedModel")) {
+							addArtifact(mData, localmodelFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+									onboardingStatus);
+						} else if(modelType.equalsIgnoreCase("other")) {
+							//Need to add modelType.equalsIgnoreCase("dockerImage")
+							dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
+							logger.debug( "dockerImageUri: " + dockerImageUri);
+							addArtifact(mData, dockerImageUri, getArtifactTypeCode("Docker Image"),
+									onboardingStatus);
 						}
 
-						// push docker build log into nexus
+						if (license != null && !license.isEmpty()) {
+							addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
+									"license", onboardingStatus);
+						}
 
-						File file = new java.io.File(
-								lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
-						logger.debug( "Log file length " + file.length(), file.getPath(),
-								fileName);
-						if (mData != null) {
-							logger.debug(
-									"Adding of log artifacts into nexus started " + fileName);
+						if(protobuf != null && !protobuf.isEmpty()) {
+							addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+									onboardingStatus);
+						}
 
-							// String nexusArtifactID = "onboardingLog_"+trackingID;
-							String nexusArtifactID = "OnboardingLog";
+						// Notify TOSCA generation started
+						if (onboardingStatus != null) {
+							onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "ST", "TOSCA Generation Started");
+						}
 
-							addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
-									nexusArtifactID, onboardingStatus);
-							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
-									OnboardingLogConstants.ResponseStatus.COMPLETED.name());
-							logger.debug( "Artifacts log pushed to nexus successfully",
+						generateTOSCA(localProtobufFile, null, mData, onboardingStatus);
+
+						// Notify TOSCA generation successful
+						if (onboardingStatus != null) {
+							onboardingStatus.notifyOnboardingStatus("CreateTOSCA", "SU", "TOSCA Generation Successful");
+						}
+
+						logger.debug( "isCreateMicroservice: " + isCreateMicroservice);
+
+						ResponseEntity<ServiceResponse> response = null;
+
+						// call microservice
+						if (isCreateMicroservice) {
+							logger.debug( "Before microservice call Parameters : SolutionId "
+									+ mlpSolution.getSolutionId() + " and RevisionId " + revision.getRevisionId());
+							try {
+								response = microserviceClient.generateMicroservice(
+										mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
+										trackingID, mData.getModelName(), null, request_id);
+								if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
+									isSuccess = true;
+								}
+								taskId = response.getBody().getTaskId();
+							} catch (Exception e) {
+								if (e instanceof HttpHostConnectException || e.getCause() instanceof ConnectException) {
+									if (onboardingStatus != null) {
+										onboardingStatus.notifyOnboardingStatus("Dockerize", "FA", e.getMessage());
+									}
+									logger.debug( "Dockerize Failed due to connectException: " + e.getMessage());
+									throw new ConnectException("ConnectException occured while invoking microservice API " + e.getMessage());
+								}
+
+								logger.error(
+										"Exception occured while invoking microservice API " + e);
+								throw e;
+							}
+						} else {
+							isSuccess = true;
+						}
+
+						// Model Sharing
+						if (isSuccess && (shareUserName != null) && revision.getRevisionId() != null) {
+							try {
+								AuthorTransport author = new AuthorTransport(shareUserName, shareUser.getEmail());
+								AuthorTransport authors[] = new AuthorTransport[1];
+								logger.debug(
+										"Author Name " + author.getName() + " and Email " + author.getContact());
+								authors[0] = author;
+								revision.setAuthors(authors);
+								cdmsClient.updateSolutionRevision(revision);
+								logger.debug(
+										"Model Shared Successfully with " + shareUserName);
+								MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE,
+										HttpStatus.CREATED.toString());
+							} catch (Exception e) {
+								isSuccess = false;
+								logger.error( " Failed to share Model", e);
+								throw e;
+							}
+						}
+
+						ResponseEntity<ServiceResponse> res = new ResponseEntity<ServiceResponse>(
+								ServiceResponse.successResponse(mlpSolution, taskId, trackingID,dockerImageUri), HttpStatus.CREATED);
+						logger.debug(
+								"Onboarding is successful for model name: " + mlpSolution.getName() + ", SolutionID: "
+										+ mlpSolution.getSolutionId() + ", Status Code: " + res.getStatusCode());
+						return res;
+					} finally {
+
+						try {
+							UtilityFunction.deleteDirectory(outputFolder);
+
+							if (isSuccess == false) {
+								task.setSolutionId(mData.getSolutionId());
+								task.setRevisionId(mData.getRevisionId());
+								task.setStatusCode("FA");
+								logger.debug("MLP task updating with the values =" + task.toString());
+								cdmsClient.updateTask(task);
+								logger.debug("Onboarding Failed, Reverting failed solutions and artifacts.");
+								if (metadataParser != null && mData != null) {
+									revertbackOnboarding(metadataParser.getMetadata(), mlpSolution.getSolutionId());
+								}
+							}
+
+							if (isSuccess == true) {
+								MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.COMPLETED.name());
+								MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Advanced Model Onboarding Completed");
+								MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.CREATED.toString());
+
+								task.setSolutionId(mData.getSolutionId());
+								task.setRevisionId(mData.getRevisionId());
+								task.setStatusCode("SU");
+								logger.debug("MLP task updating with the values =" + task.toString());
+								cdmsClient.updateTask(task);
+							}
+
+							// push docker build log into nexus
+
+							File file = new java.io.File(
+									lOG_DIR_LOC + File.separator + trackingID + File.separator + fileName);
+							logger.debug( "Log file length " + file.length(), file.getPath(),
 									fileName);
-						}
+							if (mData != null) {
+								logger.debug(
+										"Adding of log artifacts into nexus started " + fileName);
 
-						// delete log file
-						UtilityFunction.deleteDirectory(file);
-						logThread.unset();
-						mData = null;
-					} catch (AcumosServiceException e) {
+								// String nexusArtifactID = "onboardingLog_"+trackingID;
+								String nexusArtifactID = "OnboardingLog";
+
+								addArtifact(mData, file, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LOG),
+										nexusArtifactID, onboardingStatus);
+								MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE,
+										OnboardingLogConstants.ResponseStatus.COMPLETED.name());
+								logger.debug( "Artifacts log pushed to nexus successfully",
+										fileName);
+							}
+
+							// delete log file
+							UtilityFunction.deleteDirectory(file);
+							logThread.unset();
+							mData = null;
+						} catch (AcumosServiceException e) {
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+							mData = null;
+							logger.error( "RevertbackOnboarding Failed");
+							HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+							return new ResponseEntity<ServiceResponse>(
+									ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+						}
+					}
+				} else {
+					try {
 						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-						mData = null;
-						logger.error( "RevertbackOnboarding Failed");
-						HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
+						MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.UNAUTHORIZED.toString());
+						logger.error( "Either Username/Password is invalid.");
+						throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
+								"Either Username/Password is invalid.");
+					} catch (AcumosServiceException e) {
 						return new ResponseEntity<ServiceResponse>(
-								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+								ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()), HttpStatus.UNAUTHORIZED);
 					}
 				}
-			} else {
-				try {
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, "Either Username/Password is invalid.");
-					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.UNAUTHORIZED.toString());
-					logger.error( "Either Username/Password is invalid.");
-					throw new AcumosServiceException(AcumosServiceException.ErrorCode.INVALID_TOKEN,
-							"Either Username/Password is invalid.");
-				} catch (AcumosServiceException e) {
-					return new ResponseEntity<ServiceResponse>(
-							ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage()), HttpStatus.UNAUTHORIZED);
+
+			} catch (AcumosServiceException e) {
+
+				HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+				logger.error( e.getErrorCode() + "  " + e.getMessage());
+				if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
+					httpCode = HttpStatus.BAD_REQUEST;
 				}
-			}
-
-		} catch (AcumosServiceException e) {
-
-			HttpStatus httpCode = HttpStatus.INTERNAL_SERVER_ERROR;
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			logger.error( e.getErrorCode() + "  " + e.getMessage());
-			if (e.getErrorCode().equalsIgnoreCase(OnboardingConstants.INVALID_PARAMETER)) {
-				httpCode = HttpStatus.BAD_REQUEST;
-			}
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,  httpCode.toString());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
-			return new ResponseEntity<ServiceResponse>(
-					ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
-		} catch (HttpClientErrorException e) {
-			// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
-			// invalid.
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
-			if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
-				logger.debug(
-						"Unauthorized User - Either Username/Password is invalid.");
-				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION,  httpCode.toString());
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, httpCode.toString());
 				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
-						HttpStatus.UNAUTHORIZED);
-			} else {
-				logger.error( e.getMessage(), e);
-				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
-				return new ResponseEntity<ServiceResponse>(
-						ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
-						e.getStatusCode());
-			}
-		} catch (Exception e) {
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
-			logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
-			if (e instanceof AcumosServiceException) {
-				return new ResponseEntity<ServiceResponse>(ServiceResponse
-						.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
-						HttpStatus.INTERNAL_SERVER_ERROR);
-			} else {
-				return new ResponseEntity<ServiceResponse>(ServiceResponse
-						.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(), modelName),
-						HttpStatus.INTERNAL_SERVER_ERROR);
+						ServiceResponse.errorResponse(e.getErrorCode(), e.getMessage(), modelName), httpCode);
+			} catch (HttpClientErrorException e) {
+				// Handling #401 and 400(BAD_REQUEST) is added as CDS throws 400 if apitoken is
+				// invalid.
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, e.getMessage());
+				if (HttpStatus.UNAUTHORIZED == e.getStatusCode() || HttpStatus.BAD_REQUEST == e.getStatusCode()) {
+					logger.debug(
+							"Unauthorized User - Either Username/Password is invalid.");
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
+					return new ResponseEntity<ServiceResponse>(
+							ServiceResponse.errorResponse("" + HttpStatus.UNAUTHORIZED, "Unauthorized User", modelName),
+							HttpStatus.UNAUTHORIZED);
+				} else {
+					logger.error( e.getMessage(), e);
+					MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, e.getStatusCode().toString());
+					return new ResponseEntity<ServiceResponse>(
+							ServiceResponse.errorResponse("" + e.getStatusCode(), e.getMessage(), modelName),
+							e.getStatusCode());
+				}
+			} catch (Exception e) {
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_STATUS_CODE, OnboardingLogConstants.ResponseStatus.ERROR.name());
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_DESCRIPTION, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				MDC.put(OnboardingLogConstants.MDCs.RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.toString());
+				logger.error( "onboardModel Failed Exception " + e.getMessage(), e);
+				if (e instanceof AcumosServiceException) {
+					return new ResponseEntity<ServiceResponse>(ServiceResponse
+							.errorResponse(((AcumosServiceException) e).getErrorCode(), e.getMessage(), modelName),
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				} else {
+					return new ResponseEntity<ServiceResponse>(ServiceResponse
+							.errorResponse(AcumosServiceException.ErrorCode.UNKNOWN.name(), e.getMessage(), modelName),
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				}
 			}
 		}
-	}
 
 
-	/**
-	 *  This method returns model type
-	 * @param model
-	 * @return model type
-	 */
-	private String getModelType(MultipartFile model) {
+		/**
+		 *  This method returns model type
+		 * @param model
+		 * @return model type
+		 */
+		private String getModelType(MultipartFile model) {
 
-		String modelType;
-		if (model != null && !model.isEmpty()) {
+			String modelType;
+			if (model != null && !model.isEmpty()) {
 
-			String fileExt = getExtensionOfFile(model.getOriginalFilename());
-			if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
-				modelType = "interchangedModel";
-				logger.debug( "ModelType is " + modelType);
-			} else if (fileExt.equalsIgnoreCase("tar")) {
-				modelType = "dockerImage";
-				logger.debug( "ModelType is " + modelType);
+				String fileExt = getExtensionOfFile(model.getOriginalFilename());
+				if (fileExt.equalsIgnoreCase("onnx") || fileExt.equalsIgnoreCase("pfa")) {
+					modelType = "interchangedModel";
+					logger.debug( "ModelType is " + modelType);
+				} else if (fileExt.equalsIgnoreCase("tar")) {
+					modelType = "dockerImage";
+					logger.debug( "ModelType is " + modelType);
+				} else {
+					modelType = "other";
+					logger.debug( "ModelType is " + modelType);
+				}
+
 			} else {
 				modelType = "other";
 				logger.debug( "ModelType is " + modelType);
 			}
 
-		} else {
-			modelType = "other";
-			logger.debug( "ModelType is " + modelType);
+			return modelType;
+
 		}
 
-		return modelType;
-
-	}
-
-	private Map<String, String> getArtifactsDetails() {
-		List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
-		Map<String, String> artifactsDetails = new HashMap<>();
-		if (!typeCodeList.isEmpty()) {
-			for (MLPCodeNamePair codeNamePair : typeCodeList) {
-				artifactsDetails.put(codeNamePair.getName(), codeNamePair.getCode());
+		private Map<String, String> getArtifactsDetails() {
+			List<MLPCodeNamePair> typeCodeList = cdmsClient.getCodeNamePairs(CodeNameType.ARTIFACT_TYPE);
+			Map<String, String> artifactsDetails = new HashMap<>();
+			if (!typeCodeList.isEmpty()) {
+				for (MLPCodeNamePair codeNamePair : typeCodeList) {
+					artifactsDetails.put(codeNamePair.getName(), codeNamePair.getCode());
+				}
 			}
+			return artifactsDetails;
 		}
-		return artifactsDetails;
-	}
 
-	private String getArtifactTypeCode(String artifactTypeName) {
-		String typeCode = artifactsDetails.get(artifactTypeName);
-		return typeCode;
-	}
+		private String getArtifactTypeCode(String artifactTypeName) {
+			String typeCode = artifactsDetails.get(artifactTypeName);
+			return typeCode;
+		}
 
-	@Override
-	public String getCmnDataSvcEndPoinURL() {
-		return cmnDataSvcEndPoinURL;
-	}
+		@Override
+		public String getCmnDataSvcEndPoinURL() {
+			return cmnDataSvcEndPoinURL;
+		}
 
-	@Override
-	public String getCmnDataSvcUser() {
-		return cmnDataSvcUser;
-	}
+		@Override
+		public String getCmnDataSvcUser() {
+			return cmnDataSvcUser;
+		}
 
-	@Override
-	public String getCmnDataSvcPwd() {
-		return cmnDataSvcPwd;
-	}
+		@Override
+		public String getCmnDataSvcPwd() {
+			return cmnDataSvcPwd;
+		}
 
-}
+	}
