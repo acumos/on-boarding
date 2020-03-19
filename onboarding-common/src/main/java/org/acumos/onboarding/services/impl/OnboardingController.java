@@ -793,28 +793,27 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					UtilityFunction.copyFile(license.getInputStream(), licenseFile);
 				}
 
-				try {
+				File localProtobufFile = null;
 
-					File localProtobufFile = null;
+				if(protobuf != null && !protobuf.isEmpty()) {
 
-					if(protobuf != null && !protobuf.isEmpty()) {
+					String protobufFileName = protobuf.getOriginalFilename();
+					String protobufFileExtension = protobufFileName.substring(protobufFileName.indexOf('.'));
 
-						String protobufFileName = protobuf.getOriginalFilename();
-						String protobufFileExtension = protobufFileName.substring(protobufFileName.indexOf('.'));
-
-						if (!protobufFileExtension.toLowerCase().equalsIgnoreCase(".proto")) {
-							logger.debug("Protobuf file extension of " + protobufFileName + " should be \".proto\"");
-							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
-									OnboardingConstants.BAD_REQUEST_CODE,
-									"Error Occurred: proto File Required . Original File : " + protobufFileName),
-									HttpStatus.BAD_REQUEST);
-						}
-
-						localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
-						UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
-						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
-								onboardingStatus);
+					if (!protobufFileExtension.toLowerCase().equalsIgnoreCase(".proto")) {
+						logger.debug("Protobuf file extension of " + protobufFileName + " should be \".proto\"");
+						return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+								OnboardingConstants.BAD_REQUEST_CODE,
+								"Error Occurred: proto File Required . Original File : " + protobufFileName),
+								HttpStatus.BAD_REQUEST);
 					}
+
+					localProtobufFile = new File(outputFolder, protobuf.getOriginalFilename());
+					UtilityFunction.copyFile(protobuf.getInputStream(), localProtobufFile);
+
+				}
+
+				try {
 
 					try {
 						// Notify Create solution or get existing solution ID
@@ -942,6 +941,11 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 					if (license != null && !license.isEmpty()) {
 						addArtifact(mData, licenseFile, getArtifactTypeCode(OnboardingConstants.ARTIFACT_TYPE_LICENSE_LOG),
 								"license", onboardingStatus);
+					}
+
+					if(protobuf != null && !protobuf.isEmpty()) {
+						addArtifact(mData, localProtobufFile, getArtifactTypeCode("Model Image"), mData.getModelName(),
+								onboardingStatus);
 					}
 
 					// Notify TOSCA generation started
