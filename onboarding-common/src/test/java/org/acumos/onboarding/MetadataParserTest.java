@@ -20,17 +20,17 @@
 
 package org.acumos.onboarding;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+import static org.junit.Assert.fail;
 import java.io.File;
 
 import org.acumos.onboarding.common.exception.AcumosServiceException;
 import org.acumos.onboarding.common.utils.LoggerDelegate;
+import org.acumos.onboarding.component.docker.preparation.Metadata;
 import org.acumos.onboarding.component.docker.preparation.MetadataParser;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +38,12 @@ import org.slf4j.LoggerFactory;
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataParserTest {
 
-	@Mock
-	MetadataParser metadataParser;
 	private static final Logger log = LoggerFactory.getLogger(MetadataParser.class);
 	LoggerDelegate logger = new LoggerDelegate(log);
 
 	String filePath = FilePathTest.filePath();
 	File validJsonFile = new File(filePath + "metadata.json");
+	File contextJsonFile = new File(filePath + "context.json");
 	File invalidJsonFile = new File(filePath + "meta.json");
 
 	@Test
@@ -52,7 +51,40 @@ public class MetadataParserTest {
 
 		MetadataParser mparser = new MetadataParser(validJsonFile);
 		assertNotNull(mparser);
+		Metadata mData = mparser.getMetadata();
+		System.out.println("mData: "+ mData);
+		assertNotNull("expect metadata object", mData);
+		assertEquals("example-model", mData.getModelName());
+		mData.setOwnerId("ownerId");
+		assertEquals("ownerId", mData.getOwnerId());
+		assertEquals(null, mData.getToolkit());
 
+
+	}
+
+	@Test
+	public void metadataParserNoFile() throws AcumosServiceException {
+
+		try {
+			new MetadataParser(null);
+			fail("expected IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+		 	log.info(e.getMessage());
+		}
+		
+	}
+
+
+	@Test
+	public void metadataParserNotMetadataJson() throws AcumosServiceException {
+
+		try {
+			new MetadataParser(contextJsonFile);
+			fail("expected IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+		 	log.info(e.getMessage());
+		}
+		
 	}
 
 	/**

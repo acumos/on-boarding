@@ -22,6 +22,7 @@ package org.acumos.onboarding.services.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -247,7 +248,13 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 				modelOriginalName = model.getOriginalFilename();
 				String modelId = UtilityFunction.getGUID();
 				File outputFolder = new File("tmp", modelId);
-				outputFolder.mkdirs();
+				if (outputFolder.mkdirs()) {
+					// display that the directory is created
+					// as the function returned true
+					logger.debug("Created output folder: " + outputFolder.toPath());
+				} else {
+					logger.debug("Directory cannot be created: " + outputFolder.toPath());
+				}
 				boolean isSuccess = false;
 				MLPSolution mlpSolution = null;
 				File localmodelFile = new File(outputFolder, model.getOriginalFilename());
@@ -314,21 +321,27 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							onboardingStatus.setTaskId(task.getTaskId());
 							onboardingStatus.notifyOnboardingStatus("CreateSolution", "ST", "CreateSolution Started");
 						}
-
+						logger.debug("Saving localmodelFile to tmp", localmodelFile.getAbsolutePath());
 						UtilityFunction.copyFile(model.getInputStream(), localmodelFile);
 
-						UtilityFunction.copyFile(metadata.getInputStream(), localMetadataFile);
+						InputStream metadataInputStream = metadata.getInputStream();
+						logger.debug("Saving localMetadatafile to tmp", localMetadataFile.getAbsolutePath());
+						UtilityFunction.copyFile(metadataInputStream, localMetadataFile);
 
+						logger.debug("Saving localProtobufFile to tmp", localProtobufFile.getAbsolutePath());
 						UtilityFunction.copyFile(schema.getInputStream(), localProtobufFile);
 
 						metadataParser = new MetadataParser(localMetadataFile);
 						mData = metadataParser.getMetadata();
-
+						logger.debug("Completed metadata parsing for model:" + mData);
+						logger.debug("ownerId: " + ownerId);
 						mData.setOwnerId(ownerId);
-
+						logger.debug("checking for existing solution");
 						List<MLPSolution> solList = getExistingSolution(mData);
+						logger.debug("Existing solution list?" + solList);
 
 						boolean isListEmpty = solList.isEmpty();
+						logger.debug("has existing solution matching name?" + isListEmpty);
 
 						if (isListEmpty) {
 							mlpSolution = createSolution(mData, onboardingStatus);
@@ -341,9 +354,14 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							mlpSolution = solList.get(0);
 							mData.setSolutionId(mlpSolution.getSolutionId());
 						}
+						logger.debug("Using solution id:" + mlpSolution.getSolutionId());
 
+						logger.debug("Start creating revision for model");
 						revision = createSolutionRevision(mData, localProtobufFile);
+						logger.debug("Revision created: " + revision.toString());
+
 						modelName = mData.getModelName() + "_" + mData.getSolutionId();
+						logger.debug("Model name:" + modelName);
 						if (license != null && !license.isEmpty()) {
 							Workflow workflow = performSVScan(mlpSolution.getSolutionId(), mData.getRevisionId(), SVConstants.CREATED, ownerId);
 							if (!workflow.isWorkflowAllowed()) {
@@ -683,7 +701,18 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 
 		String modelId = UtilityFunction.getGUID();
 		File outputFolder = new File("tmp", modelId);
-		outputFolder.mkdirs();
+				// check if the directory can be created 
+			// using the abstract path name 
+		if (outputFolder.mkdirs()) {
+			// display that the directory is created
+			// as the function returned true
+			logger.debug("Created output folder: " + outputFolder.toPath());
+		} else {
+			String message = "Directory cannot be created: " + outputFolder.toPath();
+			logger.error(message);
+			throw new AcumosServiceException(AcumosServiceException.ErrorCode.INTERNAL_SERVER_ERROR,
+			message);
+		}
 		boolean isSuccess = false;
 		MLPSolution mlpSolution = null;
 		String modelType = null;

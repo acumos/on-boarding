@@ -49,13 +49,21 @@ public class MetadataParser {
 	LoggerDelegate logger = new LoggerDelegate(log);
 	
 	public MetadataParser(File dataFile) throws AcumosServiceException {
+		if(dataFile == null){
+			throw new IllegalArgumentException("metadata file must be defined");
+		}
 		try {
 
 			logger.debug("::Parsing of metadata file started::");
 			String schemafile = null;
 
 			this.metadataJson = JsonLoader.fromFile(dataFile);
-			String schemaVersion = metadataJson.get("schema").asText();
+			JsonNode schameNode = metadataJson.get("schema");
+
+			if(schameNode == null){
+				throw new IllegalArgumentException("metadata schema must be defined");
+			}
+			String schemaVersion = schameNode.asText();
 			logger.debug("schemaVersion: " + schemaVersion);
 
 			if (schemaVersion.contains("1")) {
@@ -68,6 +76,10 @@ public class MetadataParser {
 				schemafile = "/model-schema-0.4.0.json";
 			} else if (schemaVersion.contains("5")) {
 				schemafile = "/model-schema-0.5.0.json";
+			}
+
+			if(schemafile == null){
+				throw new IllegalArgumentException("No matching schema found for schemaVersion:" + schemaVersion);
 			}
 
 			final JsonNode schema = JsonLoader.fromResource(schemafile);
