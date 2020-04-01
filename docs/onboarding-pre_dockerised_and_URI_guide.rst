@@ -81,7 +81,10 @@ The process of on-boarding a docker URI model in Acumos is reduced to create a s
 URI and if needed associate a license profile file with this URI. There are no micro-service, nor tosca file
 , nor metadata file, nor protobuf file created.
 
+**3 : Common to Dockerized Model URI and Dockerized Model**
+-----------------------------------------------------------
 
+Whatever the case you can on-board a protobuf file and/or a license file associated with your model by browsing or drag and drop (These two files are optional). The protobuf file will allow you to use your model in Design Studio.
 
 
 
