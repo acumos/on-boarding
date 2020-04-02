@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.5.0, 3 April 2020
+----------------------------
+* Common Data Service client at version 3.1.1
+* Create Tosca files (TOSCA, TOSCAPROTOBUF) based on protobuf file, for pre-dockerized model `ACUMOS-4045 <https://jira.acumos.org/browse/ACUMOS-4045>`_
+* Create Tosca files (TOSCA, TOSCAPROTOBUF) based on protobuf file, for dockerized model URI `ACUMOS-4046 <https://jira.acumos.org/browse/ACUMOS-4046>`_
+
+
 Version 4.4.0, 16 March 2020
 ----------------------------
 * Common Data Service client at version 3.1.1
