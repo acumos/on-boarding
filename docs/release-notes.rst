@@ -26,6 +26,7 @@ for public use, which are released together.
 Version 4.5.0, 3 April 2020
 ----------------------------
 * Common Data Service client at version 3.1.1
+* TOSCAModelGeneratorClient version 2.0.8
 * Create Tosca files (TOSCA, TOSCAPROTOBUF) based on protobuf file, for pre-dockerized model `ACUMOS-4045 <https://jira.acumos.org/browse/ACUMOS-4045>`_
 * Create Tosca files (TOSCA, TOSCAPROTOBUF) based on protobuf file, for dockerized model URI `ACUMOS-4046 <https://jira.acumos.org/browse/ACUMOS-4046>`_
 
