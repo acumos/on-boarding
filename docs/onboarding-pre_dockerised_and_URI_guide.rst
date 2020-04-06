@@ -74,7 +74,7 @@ not 'license' Acumos will rename your license profile file as license.json and y
 named as license.json in the artifacts table. If you upload a new version of your license profile after
 on-boarding, a number revision will be added to the name of your license profile file like : "license-2.json".
 To help user create the license profile file expected by Acumos
-a license profile editor user guide is available here : `License profile editor user guide <../../submodules/license-manager/docs/user-guide-license-profile-editor.html>`_
+a license profile editor user guide is available here : `License profile editor user guide <../../license-manager/docs/user-guide-license-profile-editor.html>`_
 
 
 The process of on-boarding a docker URI model in Acumos is reduced to create a solution Id, save the
