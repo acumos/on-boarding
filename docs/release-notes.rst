@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.6.0, 08 May 2020
+----------------------------
+* Common Data Service client at version 3.1.1
+* <IST><Onboarding>Error displayed while executing R model `ACUMOS-3861 <https://jira.acumos.org/browse/ACUMOS-3861>`_
+* <IST><Onboarding/Configuration> Getting error while tagging new image to already existing image. `ACUMOS-4109 <https://jira.acumos.org/browse/ACUMOS-4109>`_
+
+
 Version 4.5.0, 3 April 2020
 ----------------------------
 * Common Data Service client at version 3.1.1
