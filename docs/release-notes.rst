@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.6.1, 15 May 2020
+--------------------------
+* Common Data Service client at version 3.1.1
+* Update onboarding-base-r tag https://gerrit.acumos.org/r/c/on-boarding/+/7930
+
 Version 4.6.0, 08 May 2020
 --------------------------
 * Common Data Service client at version 3.1.1
