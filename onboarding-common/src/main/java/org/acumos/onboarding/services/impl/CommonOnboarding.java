@@ -125,6 +125,9 @@ public class CommonOnboarding {
 
 	@Value("${docker.imagetag.prefix}")
 	protected String imagetagPrefix;
+	
+	@Value("${docker.imagetag.proxyPrefix}")
+	protected String imagetagProxyPrefix;
 
 	@Value("${security.verificationApiUrl}")
 	protected String securityVerificationApiUrl;
