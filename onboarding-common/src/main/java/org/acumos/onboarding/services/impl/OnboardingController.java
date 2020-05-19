@@ -932,7 +932,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								onboardingStatus);
 					} else if(modelType.equalsIgnoreCase("other")) {
 						//Need to add modelType.equalsIgnoreCase("dockerImage")
-						dockerImageUri = imagetagPrefix+ File.separator + modelName +":" +mData.getVersion();
+						dockerImageUri = imagetagProxyPrefix+ File.separator + modelName +":" +mData.getVersion();
 						logger.debug( "dockerImageUri: " + dockerImageUri);
 						addArtifact(mData, dockerImageUri, getArtifactTypeCode("Docker Image"),
 								onboardingStatus);
