@@ -10,6 +10,6 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 RUN echo "deb http://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/" | tee -a /etc/apt/sources.list
 
 # put update and install on same RUN cmd to avoid Docker layer caching
-RUN apt-get update && apt-get -y --no-install-recommends install r-base libprotobuf-dev libcurl4-gnutls-dev libxml2-dev libprotoc-dev build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev libpq-dev
+RUN apt-get update && apt-get -y install r-base libprotobuf-dev libcurl4-gnutls-dev libxml2-dev libprotoc-dev build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev libpq-dev
 
 RUN Rscript /acumos.R
