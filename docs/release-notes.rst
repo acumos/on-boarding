@@ -23,6 +23,11 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.6.3, 29 May 2020
+--------------------------
+* Common Data Service client at version 3.1.1
+* Add acumos dependancies in base-r-image `ACUMOS-3861 <https://jira.acumos.org/browse/ACUMOS-3861>`_
+
 Version 4.6.2, 20 May 2020
 --------------------------
 * Common Data Service client at version 3.1.1
