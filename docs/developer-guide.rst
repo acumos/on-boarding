@@ -185,7 +185,7 @@ Steps:
 
 1: Clone the code from Gerrit Repo: https://gerrit.acumos.org
 
-Browse the repositories to find on-boarding project then use the HTTPS, HTTP or SSH git clone commande line.
+Browse the repositories to find on-boarding project then use the HTTPS, HTTP or SSH git clone --depth 1 commande line.
 
 2: After cloning import this project in your recommended IDE like STS.
 
