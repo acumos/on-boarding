@@ -1,0 +1,10 @@
+---
+distribution_type: container
+container_release_tag: 1.2.2
+container_pull_registry: nexus3.acumos.org:10004
+container_push_registry: nexus3.acumos.org:10002
+project: on-boarding-base-r
+ref: ad4f0f9d4a5dd3762b8d19412b6679615fa86758
+containers:
+           - name: onboarding-base-r
+           - version: 1.2.2
