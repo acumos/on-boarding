@@ -20,13 +20,12 @@ Provides an example of Docker URI cli on-boarding
 import requests
 import contextlib
 import getpass
+import os
 from os import environ
 
 _USERNAME_VAR = 'ACUMOS_USERNAME'
 _PASSWORD_VAR = 'ACUMOS_PASSWORD'
-host = "acumos"
-auth_api = "https://"+host+":443/onboarding-app/v2/auth"
-advance_api = "https://"+host+":443/onboarding-app/v2/advancedModel"
+host = ""
 
 
 class Options(object):
@@ -95,46 +94,85 @@ def _post_model(dockerImageURI, model_name, files, advance_api, auth_api, option
                'isCreateMicroservice': 'true' if options.create_microservice else 'false'}
     response = requests.post(advance_api, files=files, headers=headers)
     if response.status_code == 201:
-        print("Docker uri is pushed successfully on {"+host+"}, response is: ", response.status_code)
+        print("Docker uri is pushed successfully on {" + host + "}, response is: ", response.status_code)
     else:
-        print("Docker uri is not pushed on {"+host+"}, response is: ", response.status_code)
+        print("Docker uri is not pushed on {" + host + "}, response is: ", response.status_code)
+
+
+class Checkinput(object):
+    result = None
+    response = None
+
+    def __init__(self):
+        pass
+
+    def _check_userinput(self, response):
+        if response.lower() == 'y':
+            return True
+        elif response.lower() == 'n':
+            return True
+        else:
+            return False
+
+    def read_userinput(self, question):
+        self.response = input(question)
+        self.result = self._check_userinput(self.response)
+
+        if not self.result:
+            print('Invalid Input: Please enter y/n')
+            self.response = self.read_userinput(question)
+
+        return self.response
 
 
 if __name__ == "__main__":
-    user_name = input('Enter user Name: ')
-    __Password = getpass.getpass('Enter password: ')
-    model_name = input("Enter model Name: ")
+    user_name = input("Enter user name: ")
+    __Password = getpass.getpass("Enter password: ")
+    model_name = input("Enter model name: ")
+    print("Docker image URI look lik: https://example.com:port/image-tag:version")
     dockerImageURI = input("Enter docker image URI: ")
-    license = input("Due you want to attach license file (y/n):")
+    host = input("Enter the host name: ")
+    auth_api = "https://" + host + ":443/onboarding-app/v2/auth"
+    advance_api = "https://" + host + ":443/onboarding-app/v2/advancedModel"
     option = Options(create_microservice=False, license=True, protobuf=True)
-    if license.lower() == 'y':
-        option.license = True
-    elif license.lower() == 'n':
-        option.license = False
-    else:
-        print('You enter a wrong input, Its default value is False')
+    license_file = ""
+    check_input = Checkinput()
+
+    response = check_input.read_userinput("Do you want to attach license file (y/n):")
+    if response.lower() == 'y':
+        license_file = input("Enter the name of license file : ")
+        license_file = "./" + license_file
+        if os.path.isfile(license_file):
+            option.license = True
+        else:
+            print('This license file does not exist ')
+            option.license = False
+    elif response.lower() == 'n':
         option.license = False
 
-    protobuf = input("Due you want to attach protobuf file (y/n):")
-    if protobuf.lower() == 'y':
-        option.protobuf = True
-    elif protobuf.lower() =='n':
-        option.protobuf = False
-    else:
-        print('You enter a wrong input, Its default value is False')
+    response = check_input.read_userinput("Do you want to attach protobuf file (y/n):")
+    protobuf_file = ""
+    if response.lower() == 'y':
+        protobuf_file = input("Enter the name of protobuf file : ")
+        protobuf_file = "./" + protobuf_file
+        if os.path.isfile(protobuf_file):
+            option.protobuf = True
+        else:
+            print('This proto file does not exist ')
+            option.protobuf = False
+    elif response.lower() == 'n':
         option.protobuf = False
 
     with _patch_environ(**{_USERNAME_VAR: user_name, _PASSWORD_VAR: __Password}):
         files = {}
         if option.protobuf and option.license:
-            files = {'license': open('license.json', 'rb'), 'protobuf': open('model.proto', 'rb')}
+            files = {'license': open(license_file, 'rb'), 'protobuf': open(protobuf_file, 'rb')}
         elif option.license:
-            files = {'license': open('license.json', 'rb')}
+            files = {'license': open(license_file, 'rb')}
         elif option.protobuf:
-            files = {'protobuf': open('model.proto', 'rb')}
+            files = {'protobuf': open(protobuf_file, 'rb')}
         else:
             files = {}
 
-        _post_model(dockerImageURI=dockerImageURI, model_name=model_name, files=files, advance_api=advance_api, auth_api=auth_api, options=option)
-
-
+        _post_model(dockerImageURI=dockerImageURI, model_name=model_name, files=files, advance_api=advance_api,
+                    auth_api=auth_api, options=option)
