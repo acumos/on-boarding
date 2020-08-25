@@ -36,9 +36,12 @@ class Options(object):
     ----------
     create_microservice : bool, optional
         If True, instructs the Acumos platform to eagerly build the model microservice
+        but in this script its default value is false.
     license : str, optional
         A license to include with the Acumos model. This parameter may either be a path to a license
         file, or a string containing the license content.
+    protobuf : str, optional
+        A protobuf to include with the Acumos model.
     '''
     __slots__ = ('create_microservice', 'license', 'protobuf')
 
@@ -119,49 +122,43 @@ class Checkinput(object):
         self.result = self._check_userinput(self.response)
 
         if not self.result:
-            print('Invalid Input: Please enter y/n')
+            print('Invalid Input: ')
             self.response = self.read_userinput(question)
-
         return self.response
+
+    def attach_file(self, question, option, category):
+        file = ""
+        response = self.read_userinput(question).lower()
+        if response == 'y':
+            file = input("Enter the name of file : ")
+            file = "./" + file
+            if os.path.isfile(file):
+                if category == "license":
+                    option.license = True
+                elif category == "protobuf":
+                    option.protobuf = True
+                return file
+            else:
+                print('This {} file does not exist in this folder'.format(category))
+                return self.attach_file(question, option, category)
+        elif response.lower() == 'n':
+            return file
 
 
 if __name__ == "__main__":
-    user_name = input("Enter user name: ")
-    __Password = getpass.getpass("Enter password: ")
+    user_name = input("Enter your Acumos user name: ")
+    __Password = getpass.getpass("Enter your Acumos password: ")
     model_name = input("Enter model name: ")
-    print("Docker image URI look lik: https://example.com:port/image-tag:version")
+    print("Docker image URI looks like: https://example.com:port/image-tag:version")
     dockerImageURI = input("Enter docker image URI: ")
     host = input("Enter the host name: ")
     auth_api = "https://" + host + ":443/onboarding-app/v2/auth"
     advance_api = "https://" + host + ":443/onboarding-app/v2/advancedModel"
-    option = Options(create_microservice=False, license=True, protobuf=True)
-    license_file = ""
+    option = Options(create_microservice=False, license=False, protobuf=False)
     check_input = Checkinput()
 
-    response = check_input.read_userinput("Do you want to attach license file (y/n):")
-    if response.lower() == 'y':
-        license_file = input("Enter the name of license file : ")
-        license_file = "./" + license_file
-        if os.path.isfile(license_file):
-            option.license = True
-        else:
-            print('This license file does not exist ')
-            option.license = False
-    elif response.lower() == 'n':
-        option.license = False
-
-    response = check_input.read_userinput("Do you want to attach protobuf file (y/n):")
-    protobuf_file = ""
-    if response.lower() == 'y':
-        protobuf_file = input("Enter the name of protobuf file : ")
-        protobuf_file = "./" + protobuf_file
-        if os.path.isfile(protobuf_file):
-            option.protobuf = True
-        else:
-            print('This proto file does not exist ')
-            option.protobuf = False
-    elif response.lower() == 'n':
-        option.protobuf = False
+    license_file = check_input.attach_file("Do you want to attach license file (y/n)? : ", option, "license")
+    protobuf_file = check_input.attach_file("Do you want to attach protobuf file (y/n)? : ", option, "protobuf")
 
     with _patch_environ(**{_USERNAME_VAR: user_name, _PASSWORD_VAR: __Password}):
         files = {}
