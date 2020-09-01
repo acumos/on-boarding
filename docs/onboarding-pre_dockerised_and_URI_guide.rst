@@ -58,28 +58,40 @@ upload the model. There are no micro-service, nor tosca file, nor metadata file,
 created. Acumos doesn't request a license file during the on-boarding, if needed modelers can add a
 license file in their docker image model before the on-boarding.
 
-
 **2 : How to onboard a docker URI model ?**
 -------------------------------------------
 
-Acumos allows users to save all their docker image model URI. For each dockerised models, that have
-been previously stored by modelers in docker repo like Docker Hub for example, modelers have just to
-use the "Onboard dockerised model URI" panel in the "on-boarding model" page of the Acumos portal.
-In this panel, type the name of the model and the Host, optionally you can fill the port an the tag.
+Acumos allows users to save all their docker image model URI that have been previously stored by 
+modelers in docker repo like Docker Hub for example.
 
-It is also possible to on-board a licence file associated with your docker URI model. Just drag and
-drop or browse your licence file to on-board it. The license profile file name must be "license.json", if the
-license profile file extension is not 'json' the license profile on-boarding will not be possible and if the name is
-not 'license' Acumos will rename your license profile file as license.json and you will see your license profile file
-named as license.json in the artifacts table. If you upload a new version of your license profile after
-on-boarding, a number revision will be added to the name of your license profile file like : "license-2.json".
+Modelers can on-board their docker image model URI by Web or by CLI.
+
+Onboarding by Web :
+-------------------
+
+Modelers have just to use the "Onboard dockerised model URI" panel in the "on-boarding model" page of 
+the Acumos portal. In this panel, type the name of the model and the Host on which the docker image is stored.
+Optionally you can fill the port an the tag.
+
+It is also possible to Drag and Drop or browse a protobuf file or a license file alongside the docker image 
+model URI
+
+Onboarding by CLI :
+-------------------
+
+Modelers have just to use the following script "CLI_docker_image_uri_script.py" located in 
+"on-boarding/docs/script" repository.
+
+This python script will prompt users to enter their Acumos username and password. Then it will ask users
+to give a model name, the docker image URI and the host name of their own Acumos platform.
+
+Users have also the possibility to onboard their docker model URI with licence file and/or protobuf file
+ by putting these files in the same folder than the python script and say "yes" to the two last questions.
+
 To help user create the license profile file expected by Acumos
-a license profile editor user guide is available here : `License profile editor user guide <../../license-manager/docs/user-guide-license-profile-editor.html>`_
+a license profile editor user guide is available here : 
+`License profile editor user guide <../../license-manager/docs/user-guide-license-profile-editor.html>`_
 
-
-The process of on-boarding a docker URI model in Acumos is reduced to create a solution Id, save the
-URI and if needed associate a license profile file with this URI. There are no micro-service, nor tosca file
-, nor metadata file, nor protobuf file created.
 
 **3 : Common to Dockerized Model URI and Dockerized Model**
 -----------------------------------------------------------
