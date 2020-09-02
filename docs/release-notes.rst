@@ -26,7 +26,7 @@ for public use, which are released together.
 Version 4.6.2, 20 May 2020
 --------------------------
 * Common Data Service client at version 3.1.1
-* Wrong docker proxy port `ACUMOS-4146 <https://jira.acumos.org/browse/ACUMOS-4146>`_
+* Wrong docker proxy port  `ACUMOS-4146 <https://jira.acumos.org/browse/ACUMOS-4146>`_
 
 
 Version 4.6.1, 15 May 2020
