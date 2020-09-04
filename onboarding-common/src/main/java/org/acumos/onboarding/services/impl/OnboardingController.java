@@ -694,6 +694,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			request_id = UUID.randomUUID().toString();
 			logger.debug( "Request ID Created: " + request_id);
 		}
+		logger.debug("dockerFileURL: "+dockerfileURL);
 
 		// code to retrieve the current pom version
 		// UtilityFunction.getCurrentVersion();
@@ -865,7 +866,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						}
 
 						revision = createSolutionRevision(mData, localProtobufFile);
-						modelName = mData.getModelName() + "_" + mData.getSolutionId();
+						modelName = mData.getModelName();
 
 						// Solution id creation completed
 						// Notify Creation of solution ID is successful

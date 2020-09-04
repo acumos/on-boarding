@@ -93,8 +93,8 @@ def _post_model(dockerImageURI, model_name, files, advance_api, auth_api, option
     headers = {"Accept": "application/json",
                "modelname": model_name,
                "Authorization": _authenticate(auth_api),
-               "dockerImageUri": dockerImageURI,
-               'isCreateMicroservice': 'true' if options.create_microservice else 'false'}
+               "dockerFileURL": dockerImageURI,
+               'isCreateMicroservice': 'false'}
     response = requests.post(advance_api, files=files, headers=headers)
     if response.status_code == 201:
         print("Docker uri is pushed successfully on {" + host + "}, response is: ", response.status_code)

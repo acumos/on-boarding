@@ -6,3 +6,7 @@
 /logs/
 /target/
 
+/.idea/
+/onboarding-app-open/onboarding-app-open.iml
+/acumos-onboarding-project.iml
+/onboarding-common/onboarding-common.iml
