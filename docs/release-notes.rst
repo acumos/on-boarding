@@ -23,6 +23,13 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 4.6.4, 10 Sept 2020
+---------------------------
+* Common Data Service client at version 3.1.1
+* Write script to on-board model URI by CLI `ACUMOS-4213 <https://jira.acumos.org/browse/ACUMOS-4213>`_
+* Modelname and URI fixes for "CLI dockerized model URI" `ACUMOS-4266 <https://jira.acumos.org/browse/ACUMOS-4266>`_
+* Modifying on-boarding base-r image to speed up the creation of R model microservice `ACUMOS-4218 <https://jira.acumos.org/browse/ACUMOS-4218>`_
+
 Version 4.6.3, 29 May 2020
 --------------------------
 * Common Data Service client at version 3.1.1
