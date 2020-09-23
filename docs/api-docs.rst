@@ -124,4 +124,6 @@ API Group 2
 Swagger
 =======
 
-You can also access to the on-boarding swagger API. Please consult the acumos.url file located in system-integration/AIO folder after acumos installation.
+You can also access to a swagger to test the API independantly of the onboarding client. This swagger is located at : https://namespace/onboarding-app/swagger-ui.html
+
+"namespace" is the value of namespace variable you put in global_value.yaml file
