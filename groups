@@ -2,4 +2,3 @@
 #
 42f0c83244389e408b42fa668348002012ecba46                                      	GitHub Replication
 e2e8ec0f344014821229b47356dad6556e4a795e                                      	saml/acumos-gerrit-on-boarding-committers
-ldap:cn=acumos-gerrit-on-boarding-committers,ou=Groups,dc=freestandards,dc=org	ldap/acumos-gerrit-on-boarding-committers
