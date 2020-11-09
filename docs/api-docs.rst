@@ -124,4 +124,4 @@ API Group 2
 Swagger
 =======
 
-You can also access to the on-boarding swagger API. Please consult the acumos.url file located in system-integration/AIO folder after acumos installation.
+You can also access to the on-boarding swagger API thanks to the following url : https://acumos/onboarding-app/swagger-ui.html
