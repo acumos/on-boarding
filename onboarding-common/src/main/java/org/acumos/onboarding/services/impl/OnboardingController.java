@@ -167,6 +167,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = false) MultipartFile rdata,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
+			@RequestHeader(value = "deploy", required = false, defaultValue = "false") boolean deploy,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "shareUserName", required = false) String shareUserName,
@@ -478,7 +479,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						try {
 							response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-									trackingID, modName, deployment_env, request_id);
+									trackingID, modName, deployment_env, request_id, deploy);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
@@ -672,6 +673,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestHeader(value = "modelname", required = true) String modName,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false) boolean isCreateMicroservice,
+			@RequestHeader(value = "deploy", required = false, defaultValue = "false") boolean deploy,
 			@RequestHeader(value = "dockerfileURL", required = false) String dockerfileURL,
 			@RequestHeader(value = "provider", required = false) String provider,
 			@RequestHeader(value = "tracking_id", required = false) String trackingID,
@@ -974,7 +976,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						try {
 							response = microserviceClient.generateMicroservice(
 									mlpSolution.getSolutionId(), revision.getRevisionId(), provider, authorization,
-									trackingID, mData.getModelName(), null, request_id);
+									trackingID, mData.getModelName(), null, request_id, deploy);
 							if (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 201) {
 								isSuccess = true;
 							}
