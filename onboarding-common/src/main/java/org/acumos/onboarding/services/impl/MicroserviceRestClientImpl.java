@@ -123,11 +123,12 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 
 	@Override
 	public ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
-			String authorization, String trackingID, String modName, Integer deployment_env, String request_id) {
+			String authorization, String trackingID, String modName, Integer deployment_env, String request_id, boolean deploy) {
 		logger.debug("In MicroserviceRestClientImpl: SolutionId " + solutioId + " and RevisionId " + revisionId);
 		Map<String, Object> copy = new HashMap<>();
 		copy.put("solutioId", solutioId);
 		copy.put("revisionId", revisionId);
+		
 		if(modName != null && !modName.isEmpty()){
 			copy.put("modName", modName);
 		}
@@ -140,6 +141,7 @@ public class MicroserviceRestClientImpl implements MicroserviceRestClient{
 		headers.set("tracking_id", trackingID);
 		headers.set("provider", provider);
 		headers.set("Request-ID", request_id);
+		headers.set("deploy", deploy+"");
 
 		HttpEntity entity = new HttpEntity(headers);
 

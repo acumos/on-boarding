@@ -330,16 +330,16 @@ public class OnboardingControllerTest {
 			//Mockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyString())).thenReturn(response);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, null, "provider", null,null,null,null);
 
 			ResponseEntity<ServiceResponse> resp1 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, "trackingId", "provider", "shareUserName",null,null,"requestId");
+					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, "trackingId", "provider", "shareUserName",null,null,"requestId");
 
 			ResponseEntity<ServiceResponse> resp2 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, licenseFile,null, "authorization", true, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, licenseFile,null, "authorization", true, false, null, "provider", null,null,null,null);
 
 			ResponseEntity<ServiceResponse> resp3 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null, null,null, false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, null,null, false, false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
 			//assertEquals(201,resp.getStatusCodeValue());
@@ -464,16 +464,16 @@ public class OnboardingControllerTest {
 			//Mockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyString())).thenReturn(response);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
-					metaDatazipFile, licenseFile,null, modelname, "authorization", false, null, "provider", null,null,null);
+					metaDatazipFile, licenseFile,null, modelname, "authorization", false, false, null, "provider", null,null,null);
 
 			ResponseEntity<ServiceResponse> resp1 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
-					metaDatazipFile, licenseFile,null, modelname, "authorization", false, null, "provider", "trackingId","requestId", "shareUserName");
+					metaDatazipFile, licenseFile,null, modelname, "authorization", false, false, null, "provider", "trackingId","requestId", "shareUserName");
 
 			ResponseEntity<ServiceResponse> resp2 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
-					metaDatazipFile, licenseFile,null, modelname, null, false, null, "provider", null,null,null);
+					metaDatazipFile, licenseFile,null, modelname, null, false, false, null, "provider", null,null,null);
 
 			ResponseEntity<ServiceResponse> resp3 = onboardingController.advancedModelOnboard(mock(HttpServletRequest.class),
-					metaDatazipFile, licenseFile,null,modelname, "authorization", true, null, "provider", null,null,null);
+					metaDatazipFile, licenseFile,null,modelname, "authorization", true, false, null, "provider", null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
 			//assertEquals(201,resp.getStatusCodeValue());
@@ -553,7 +553,7 @@ public class OnboardingControllerTest {
 			//PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
 			assertEquals(401,resp.getStatusCodeValue());

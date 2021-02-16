@@ -25,6 +25,6 @@ import org.springframework.http.ResponseEntity;
 public interface MicroserviceRestClient {
 
 	ResponseEntity<ServiceResponse> generateMicroservice(String solutioId, String revisionId, String provider,
-			String authorization, String trackingID, String modName, Integer deployment_env, String request_id);
+			String authorization, String trackingID, String modName, Integer deployment_env, String request_id, boolean deploy);
 
 }
