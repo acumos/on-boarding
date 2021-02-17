@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "caaf4c6b_360cde37",
+        "filename": "onboarding-common/src/main/java/org/acumos/onboarding/services/impl/MicroserviceRestClientImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2021-02-17T09:02:31Z",
+      "side": 1,
+      "message": "Hi Aditya, why do we have this \"+\" here ? is it really needed or is it a typo ?",
+      "range": {
+        "startLine": 144,
+        "startChar": 30,
+        "endLine": 144,
+        "endChar": 35
+      },
+      "revId": "a5203ff3839db019666e6344053453ffa1b58a0c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
