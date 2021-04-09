@@ -164,7 +164,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile model, @RequestPart(required = true) MultipartFile metadata,
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestPart(required = false) MultipartFile license,
-			@RequestPart(required = false) MultipartFile rdata,
+			@RequestPart(required = false) MultipartFile source,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
 			@RequestHeader(value = "deploy", required = false, defaultValue = "false") boolean deploy,
@@ -435,23 +435,23 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 								"license", onboardingStatus);
 					}
 
-					if(rdata != null && !rdata.isEmpty()) {
+					if(source != null && !source.isEmpty()) {
 
-						String rdataFileName = rdata.getOriginalFilename();
-						String rdataFileExtension = rdataFileName.substring(rdataFileName.indexOf('.'));
+						String sourceFileName = source.getOriginalFilename();
+						String sourceFileExtension = sourceFileName.substring(sourceFileName.indexOf('.'));
 
-						if (!rdataFileExtension.toLowerCase().equalsIgnoreCase(".RData") && !rdataFileExtension.toLowerCase().equalsIgnoreCase(".r")) {
-							logger.debug("R file extension of " + rdataFileName + " should be \".r,.R or .RData\"");
+						if (!sourceFileExtension.toLowerCase().equalsIgnoreCase(".r")) {
+							logger.debug("R file extension of " + sourceFileName + " should be \".r or .R\"");
 							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
 									OnboardingConstants.BAD_REQUEST_CODE,
-									"Error Occured: .r, .R or .RData File Required . Original File : " + rdataFileName),
+									"Error Occured: .r or .R File Required . Original File : " + sourceFileName),
 									HttpStatus.BAD_REQUEST);
 						}
 
-						File localRDataFile = new File(outputFolder, rdata.getOriginalFilename());
-						UtilityFunction.copyFile(rdata.getInputStream(), localRDataFile);
+						File localRsourceFile = new File(outputFolder, source.getOriginalFilename());
+						UtilityFunction.copyFile(source.getInputStream(), localRsourceFile);
 
-						addArtifact(mData, localRDataFile, getArtifactTypeCode("Code"), mData.getModelName(),
+						addArtifact(mData, localRsourceFile, getArtifactTypeCode("Code"), mData.getModelName(),
 								onboardingStatus);
 					}
 
