@@ -23,6 +23,10 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 5.0.0, 12 April 2021
+----------------------------
+* Add "deploy" parameter in onboarding API `ACUMOS-4302 <https://jira.acumos.org/browse/ACUMOS-4302>`_
+
 Version 4.6.4, 10 Sept 2020
 ---------------------------
 * Common Data Service client at version 3.1.1
