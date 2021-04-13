@@ -1,0 +1,5 @@
+---
+distribution_type: maven
+version: 5.0.0
+project: on-boarding
+log_dir: on-boarding-app-maven-dl-stage-master/1271/
