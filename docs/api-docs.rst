@@ -82,6 +82,7 @@ API Group 2
         - license (optional parameter - license.json associated with model, Parameter Type - formdata)
         - Authorization(Optional - jwt token or username:apitoken, Parameter Type - header)
         - isCreateMicroservice (Optional - boolean value to trigger microservice generation, default=true, Parameter Type - header)
+        - deploy (Optional - boolean parameter to trigger deployment of the microservice, default=false, Parameter Type - header)
         - tracking_id (Optional - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
         - provider (Optional - for portal authentication, Parameter Type - header)
         - shareUserName (Optional - User Name for sharing the model as co-owner, Parameter Type - header)
@@ -96,7 +97,7 @@ API Group 2
 - Description : Upload the model bundle on the on-boarding server.
 
 
-**Push model API** : This API is used by web onboarding only to upload ONNX or PFA models in Acumos
+**Push model API** : This API is used to onboard Docker URI model 
 
 - URL=http://hostname:ACUMOS_ONBOARDING_PORT/onboarding-app/v2/advancedModel
 
@@ -109,6 +110,7 @@ API Group 2
         - modelname (Required - Model Name to be used as display name, Parameter Type - header)
         - Authorization (jwt token or username:apitoken, Parameter Type - header)
         - isCreateMicroservice (boolean value to trigger microservice generation, default=false, Parameter Type - header)
+        - deploy (Optional - boolean parameter to trigger deployment of the microservice, default=false, Parameter Type - header)
         - dockerfileURL (Optional - if docker URL is given then file is not necessary, Parameter Type - header)
         - provider (optional parameter - for portal authentication, Parameter Type - header)
         - tracking_id (optional parameter - UUID for tracking E2E transaction from Portal to onboarding to microservice generation, Parameter Type - header)
