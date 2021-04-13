@@ -47,15 +47,6 @@ platform.
  - SolutionID for CDS
  - Licence file for licensing management
 
-#. Since Boreas, we are able to on-board news kinds of model like :
-
- - model in onnx format : model.onnx
- - model in pfa format : model.pfa
- - Dockerized model : model dockerised by Data scientist himself
- - Docker model URI : URI of Dockerized model stored in external repo like Docker-Hub for example
-
- For this new kinds of model, Micro service generation and Design studio capabilities are not available.
-
 #. Acumos capabilities by models type
 
  This table sum-up all the Acumos capabilities available for each kinds of model
@@ -69,11 +60,11 @@ platform.
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
  | Java model       | Available                | Available      | Available    | Available             | WEB and CLI |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | ONNX model       | Not available            | Not available  | Available    | Available             | WEB only    |
+ | ONNX model       | Not available            | Available      | Available    | Available             | WEB and CLI |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
  | PFA model        | Not available            | Not available  | Available    | Available             | WEB only    |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
- | Dockerized model | Not applicable           | Not available  | Available    | Not available         | WEB only    |
+ | Dockerized model | Not applicable           | Not available  | Available    | Available             | WEB only    |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
  | URI model        | Not applicable           | Not applicable | Available    | Available             | WEB only    |
  +------------------+--------------------------+----------------+--------------+-----------------------+-------------+
@@ -108,12 +99,9 @@ Please refer to the following user guide :
 **4: Onboarding ONNX and PFA models**
 -------------------------------------
 
-Onboard ONNX and PFA model consists only of an upload of the model as there is no micro-service creation for the moment.
+Onboard PFA model consists only of an upload (web_onboarding) of the model as there is no micro-service creation for the moment.
 
-Please refer to the following user guide
-
-`On-Boarding ONNX and PFA Model user guide <onboarding-ONNX-PFA-guide.html>`_
-
+Please refer to the following user guide to on-board ONNX models `Acumos ONNX client user guide <https://pypi.org/project/onnx4acumos/>`_
 
 **5: On-Boarding docker image model or docker URI model**
 ---------------------------------------------------------
@@ -143,4 +131,11 @@ Whatever the kinds of models :
 
 - New solution is created in common database for a new model.
 - Existing solution is updated with, a new revision. Revision is updated with artefact details and those artefacts are uploaded to nexus maven repository.
+
+**6: Deploying model after on-boarding**
+----------------------------------------
+
+Thanks to deploy parameter, you can trigger the launch of a jenkins job in an external jenkins server. This  parameter is optional and set to False by default. 
+Please refers to client on-boarding user guide to have more details.
+
 
