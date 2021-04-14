@@ -26,6 +26,7 @@ for public use, which are released together.
 Version 5.0.0, 12 April 2021
 ----------------------------
 * Add "deploy" parameter in onboarding API `ACUMOS-4302 <https://jira.acumos.org/browse/ACUMOS-4302>`_
+* Update on-boarding base-r image with new install procédure `ACUMOS-4325 <https://jira.acumos.org/browse/ACUMOS-4325>`_
 
 Version 4.6.4, 10 Sept 2020
 ---------------------------
