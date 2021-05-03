@@ -76,6 +76,8 @@ public class MetadataParser {
 				schemafile = "/model-schema-0.4.0.json";
 			} else if (schemaVersion.contains("5")) {
 				schemafile = "/model-schema-0.5.0.json";
+			} else if (schemaVersion.contains("6")) {
+                                schemafile = "/model-schema-0.6.0.json";
 			}
 
 			if(schemafile == null){
