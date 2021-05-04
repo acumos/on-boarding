@@ -330,16 +330,16 @@ public class OnboardingControllerTest {
 			//Mockito.when(microserviceClient.generateMicroservice(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyString())).thenReturn(response);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null,null,null, "authorization", false, false, null, "provider", null,null,null,null);
 
 			ResponseEntity<ServiceResponse> resp1 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, "trackingId", "provider", "shareUserName",null,null,"requestId");
+					metaDatazipFile, metaDataFile, protoFile, null,null,null, "authorization", false, false, "trackingId", "provider", "shareUserName",null,null,"requestId");
 
 			ResponseEntity<ServiceResponse> resp2 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, licenseFile,null, "authorization", true, false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, licenseFile,null,null, "authorization", true, false, null, "provider", null,null,null,null);
 
 			ResponseEntity<ServiceResponse> resp3 = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null, null,null, false, false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null, null,null,null, false, false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
 			//assertEquals(201,resp.getStatusCodeValue());
@@ -553,7 +553,7 @@ public class OnboardingControllerTest {
 			//PowerMockito.when(portalClient.tokenValidation(Mockito.anyObject(),Mockito.anyString())).thenReturn(valid);
 
 			ResponseEntity<ServiceResponse> resp = onboardingController.onboardModel(mock(HttpServletRequest.class),
-					metaDatazipFile, metaDataFile, protoFile, null,null, "authorization", false, false, null, "provider", null,null,null,null);
+					metaDatazipFile, metaDataFile, protoFile, null,null,null, "authorization", false, false, null, "provider", null,null,null,null);
 
 			logger.info("HttpStatus code:" + resp.getStatusCodeValue() +" \nBody:"+ resp.getBody());
 			assertEquals(401,resp.getStatusCodeValue());
