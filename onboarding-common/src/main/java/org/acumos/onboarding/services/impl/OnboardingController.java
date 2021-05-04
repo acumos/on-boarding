@@ -13,7 +13,7 @@
  *
  * This file is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing permissions and/
  * limitations under the License.
  * ===============LICENSE_END=========================================================
  */
@@ -165,6 +165,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 			@RequestPart(required = true) MultipartFile schema,
 			@RequestPart(required = false) MultipartFile license,
 			@RequestPart(required = false) MultipartFile source,
+                        @RequestPart(required = false) MultipartFile swagger,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestHeader(value = "isCreateMicroservice", required = false, defaultValue = "true") boolean isCreateMicroservice,
 			@RequestHeader(value = "deploy", required = false, defaultValue = "false") boolean deploy,
@@ -444,7 +445,7 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 							logger.debug("R file extension of " + sourceFileName + " should be \".r or .R\"");
 							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
 									OnboardingConstants.BAD_REQUEST_CODE,
-									"Error Occured: .r or .R File Required . Original File : " + sourceFileName),
+									"Error Occured: .r or .R file Required . Original file : " + sourceFileName),
 									HttpStatus.BAD_REQUEST);
 						}
 
@@ -452,6 +453,26 @@ public class OnboardingController extends CommonOnboarding implements DockerServ
 						UtilityFunction.copyFile(source.getInputStream(), localRsourceFile);
 
 						addArtifact(mData, localRsourceFile, getArtifactTypeCode("Code"), mData.getModelName(),
+								onboardingStatus);
+					}
+
+					if(/ != null && !swagger.isEmpty()) {
+
+						String swaggerFileName = swagger.getOriginalFilename();
+						String swaggerFileExtension = swaggerFileName.substring(swaggerFileName.indexOf('.'));
+
+						if (!swaggerFileExtension.toLowerCase().equalsIgnoreCase(".yaml")) {
+							logger.debug("Swagger file extension of " + swaggerFileName + " should be \".yaml\"");
+							return new ResponseEntity<ServiceResponse>(ServiceResponse.errorResponse(
+									OnboardingConstants.BAD_REQUEST_CODE,
+									"Error Occured: .yaml file Required. Original file : " + swaggerFileName),
+									HttpStatus.BAD_REQUEST);
+						}
+
+						File localRswaggerFile = new File(outputFolder, swagger.getOriginalFilename());
+						UtilityFunction.copyFile(swagger.getInputStream(), localRswaggerFile);
+
+						addArtifact(mData, localRswaggerFile, getArtifactTypeCode("Swagger description"), mData.getModelName(),
 								onboardingStatus);
 					}
 
