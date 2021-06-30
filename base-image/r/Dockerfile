@@ -12,5 +12,5 @@ RUN echo "deb http://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/" | tee 
 # put update and install on same RUN cmd to avoid Docker layer caching
 RUN apt-get update && apt-get -y install r-base libprotobuf-dev libcurl4-gnutls-dev libxml2-dev libprotoc-dev build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev libpq-dev
 
-RUN Rscript /acumos.R
+#RUN Rscript /acumos.R
 RUN Rscript /packages.R
