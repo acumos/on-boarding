@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.acumos.onboarding</groupId>
 	<artifactId>onboarding-app-open</artifactId>
-	<version>5.0.2-SNAPSHOT</version>
+	<version>5.0.3-SNAPSHOT</version>
 	<name>Onboarding app for public use</name>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
