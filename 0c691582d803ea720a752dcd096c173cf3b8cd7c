@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ab3af26_05e9b935",
+        "filename": "base-image/r/acumos.R",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2021-07-01T09:21:47Z",
+      "side": 0,
+      "message": "Why all these packages have been removed ? in py point of view, only \"remotes\" and the command line \"install.packages\" should be removed",
+      "range": {
+        "startLine": 8,
+        "startChar": 76,
+        "endLine": 8,
+        "endChar": 77
+      },
+      "revId": "0c691582d803ea720a752dcd096c173cf3b8cd7c",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
