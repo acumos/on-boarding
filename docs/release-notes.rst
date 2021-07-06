@@ -23,8 +23,16 @@ On-Boarding Release Notes
 These release notes cover the on-boarding common library and the on-boarding application
 for public use, which are released together.
 
+Version 5.0.2, 06 June 2021
+---------------------------
+* Common Data Service client at version 3.1.1
+* use of Json and Swagger UI with R models `ACUMOS-4326 <https://jira.acumos.org/browse/ACUMOS-4326>`_
+* Correct the name and the checks of the R file awaited parameter `ACUMOS-4328 <https://jira.acumos.org/browse/ACUMOS-4328>`_
+* Remove installation of acumos-r-client from onboarding base-r-image `ACUMOS-4340 <https://jira.acumos.org/browse/ACUMOS-4340>`_
+
 Version 5.0.0, 12 April 2021
 ----------------------------
+* Common Data Service client at version 3.1.1
 * Add "deploy" parameter in onboarding API `ACUMOS-4302 <https://jira.acumos.org/browse/ACUMOS-4302>`_
 * Update on-boarding base-r image with new install procédure `ACUMOS-4325 <https://jira.acumos.org/browse/ACUMOS-4325>`_
 
